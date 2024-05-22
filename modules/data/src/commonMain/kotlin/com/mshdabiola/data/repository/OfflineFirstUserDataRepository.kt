@@ -4,7 +4,6 @@
 
 package com.mshdabiola.data.repository
 
-import co.touchlab.kermit.Logger
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.data.model.toData
 import com.mshdabiola.datastore.Store
@@ -18,12 +17,7 @@ import kotlinx.coroutines.flow.map
 internal class OfflineFirstUserDataRepository(
     private val settings: Store,
     private val analyticsHelper: AnalyticsHelper,
-    private val logger: Logger,
 ) : UserDataRepository {
-
-    init {
-        logger.d { "OfflineFirstUserDataRepository init" }
-    }
 
     override val userData: Flow<UserData> =
         settings

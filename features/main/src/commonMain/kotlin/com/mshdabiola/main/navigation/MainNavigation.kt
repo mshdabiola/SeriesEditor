@@ -18,9 +18,9 @@ fun NavController.navigateToMain(navOptions: NavOptions) = navigate(MAIN_ROUTE, 
 
 fun NavGraphBuilder.mainScreen(
     onShowSnack: suspend (String, String?) -> Boolean,
-    onClicked: (Long) -> Unit,
+    onClicked: (Long, Long) -> Unit,
     navigateToSetting: () -> Unit,
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (Long, Long) -> Unit,
     screenSize: ScreenSize,
 ) {
     composable(route = MAIN_ROUTE) {

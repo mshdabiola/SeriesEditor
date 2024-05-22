@@ -121,11 +121,8 @@ fun SkeletonApp() {
                             PermanentNavigationDrawer(
                                 drawerContent = {
                                     CommonNavigation(
-                                        modifier = Modifier
-                                            .width(300.dp)
-                                            .fillMaxHeight(),
-                                        currentNavigation = appState.currentDestination?.route
-                                            ?: "",
+                                        modifier = Modifier.width(300.dp),
+                                        currentNavigation = appState.currentDestination?.route ?: "",
                                         onNavigate = navigator,
                                     )
                                 },
@@ -144,6 +141,7 @@ fun SkeletonApp() {
                                                 onClick = {
                                                     appState.navController.navigateToDetail(
                                                         0,
+                                                        9
                                                     )
                                                 },
                                             ) {
@@ -157,7 +155,7 @@ fun SkeletonApp() {
                                         }
                                     },
 
-                                ) { padding ->
+                                    ) { padding ->
 
                                     Column(
                                         Modifier
@@ -198,14 +196,11 @@ fun SkeletonApp() {
                             Row {
                                 if (appState.shouldShowNavRail) {
                                     CommonRail(
-                                        modifier = Modifier
-                                            .width(100.dp)
-                                            .fillMaxHeight(),
-                                        currentNavigation = appState.currentDestination?.route
-                                            ?: "",
+                                        modifier = Modifier.width(100.dp),
+                                        currentNavigation = appState.currentDestination?.route ?: "",
                                         onNavigate = navigator,
 
-                                    )
+                                        )
                                 }
                                 Scaffold(
                                     modifier = Modifier.semanticsCommon {},
@@ -222,6 +217,7 @@ fun SkeletonApp() {
                                                 onClick = {
                                                     appState.navController.navigateToDetail(
                                                         0,
+                                                        4
                                                     )
                                                 },
                                             ) {
@@ -243,7 +239,7 @@ fun SkeletonApp() {
                                         }
                                     },
 
-                                ) { padding ->
+                                    ) { padding ->
 
                                     Column(
                                         Modifier

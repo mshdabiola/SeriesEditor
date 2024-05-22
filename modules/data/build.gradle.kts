@@ -16,12 +16,16 @@ kotlin {
 
                 implementation(libs.koin.core)
                 //   implementation(libs.kermit.log)
-                implementation(project(":modules:model"))
-                implementation(project(":modules:database"))
-                implementation(project(":modules:datastore"))
+               // implementation(project(":modules:model"))
+//                implementation(project(":modules:database"))
+                //implementation(project(":modules:datastore"))
                 implementation(project(":modules:network"))
                 implementation(libs.kotlinx.coroutines.core)
-                //implementation("app.cash.paging:paging-common:3.3.0-alpha02-0.5.1")
+                implementation("com.mshdabiola.series:database:0.0.1")
+                implementation("com.mshdabiola.series:model:0.0.1")
+                implementation("com.mshdabiola.series:datastore:0.0.1")
+
+
                 implementation(libs.paging.common)
 
                 // alternatively - without Android dependencies for tests

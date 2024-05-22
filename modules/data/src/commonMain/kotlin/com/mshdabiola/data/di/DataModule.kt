@@ -1,11 +1,23 @@
 package com.mshdabiola.data.di
 
 import com.mshdabiola.analytics.di.analyticsModule
+import com.mshdabiola.data.repository.ExaminationRepository
+import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IModelRepository
 import com.mshdabiola.data.repository.INetworkRepository
+import com.mshdabiola.data.repository.IQuestionRepository
+import com.mshdabiola.data.repository.ISettingRepository
+import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.data.repository.ITopicRepository
+import com.mshdabiola.data.repository.InstructionRepository
 import com.mshdabiola.data.repository.OfflineFirstUserDataRepository
+import com.mshdabiola.data.repository.QuestionRepository
 import com.mshdabiola.data.repository.RealINetworkRepository
 import com.mshdabiola.data.repository.RealModelRepository
+import com.mshdabiola.data.repository.SettingRepository
+import com.mshdabiola.data.repository.SubjectRepository
+import com.mshdabiola.data.repository.TopicRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.database.di.databaseModule
 import com.mshdabiola.datastore.di.datastoreModule
@@ -22,4 +34,15 @@ val dataModule = module {
     singleOf(::RealINetworkRepository) bind INetworkRepository::class
     singleOf(::RealModelRepository) bind IModelRepository::class
     singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
+
+    singleOf(::SettingRepository) bind ISettingRepository::class
+
+
+
+    singleOf(::SubjectRepository) bind ISubjectRepository::class
+    singleOf(::ExaminationRepository) bind IExaminationRepository::class
+    singleOf(::TopicRepository) bind ITopicRepository::class
+    singleOf(::InstructionRepository) bind IInstructionRepository::class
+    singleOf(::QuestionRepository) bind IQuestionRepository::class
+
 }

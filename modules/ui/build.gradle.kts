@@ -35,7 +35,9 @@ kotlin {
             dependencies {
                 implementation(project(":modules:analytics"))
                 implementation(project(":modules:designsystem"))
-                implementation(project(":modules:model"))
+                implementation("com.mshdabiola.series:model:0.0.1")
+                api("com.mshdabiola.series:retex:0.0.1")
+
                 api(libs.coil.kt)
                 api(libs.coil.kt.compose)
                 api(libs.coil.kt.svg)
