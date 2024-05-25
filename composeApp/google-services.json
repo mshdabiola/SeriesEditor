@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:801461677522:android:63a1c6467747f0a2a3ac0b",
         "android_client_info": {
-          "package_name": "com.mshdabiola.skeletonapp.debug"
+          "package_name": "com.mshdabiola.serieseditor.debug"
         }
       },
       "oauth_client": [
@@ -38,7 +38,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:801461677522:android:63a1c6467747f0a2a3ac0b",
         "android_client_info": {
-          "package_name": "com.mshdabiola.skeletonapp"
+          "package_name": "com.mshdabiola.serieseditor"
         }
       },
       "oauth_client": [
@@ -67,7 +67,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:801461677522:android:63a1c6467747f0a2a3ac0b",
         "android_client_info": {
-          "package_name": "com.mshdabiola.skeletonapp.benchmark"
+          "package_name": "com.mshdabiola.serieseditor.benchmark"
         }
       },
       "oauth_client": [
