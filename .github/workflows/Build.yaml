@@ -116,7 +116,7 @@ jobs:
       # release build
 
       - name: Build all build type and flavor permutations
-        run: ./gradlew :composeApp:assemble :benchmarks:assemble
+        run: ./gradlew :seriesEditorApp:assemble :benchmarks:assemble
           -x pixel6Api33NonMinifiedReleaseAndroidTest
           -x pixel6Api33NonMinifiedBenchmarkAndroidTest
           -x collectNonMinifiedReleaseBaselineProfile
@@ -136,7 +136,7 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
       - name: Check lint
-        run: ./gradlew :composeApp:lintRelease
+        run: ./gradlew :seriesEditorApp:lintRelease
 
       - name: Upload lint reports (HTML)
         if: always()

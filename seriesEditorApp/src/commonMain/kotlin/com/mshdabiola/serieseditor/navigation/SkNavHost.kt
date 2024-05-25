@@ -13,11 +13,11 @@ import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.setting.navigation.settingScreen
-import com.mshdabiola.serieseditor.ui.SkAppState
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 
 @Composable
 fun SkNavHost(
-    appState: SkAppState,
+    appState: SeriesEditorAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
     startDestination: String = MAIN_ROUTE,

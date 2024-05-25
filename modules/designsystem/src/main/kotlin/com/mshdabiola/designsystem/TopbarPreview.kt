@@ -4,7 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mshdabiola.designsystem.component.DetailTopAppBar
-import com.mshdabiola.designsystem.component.SkTopAppBar
+import com.mshdabiola.designsystem.component.SeriesEditorTopAppBar
 import com.mshdabiola.designsystem.icon.SkIcons
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -12,7 +12,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Preview("Top App Bar")
 @Composable
 private fun SkTopAppBarPreview() {
-    SkTopAppBar(
+    SeriesEditorTopAppBar(
         titleRes = "Testing",
         navigationIcon = SkIcons.Search,
         navigationIconContentDescription = "Navigation icon",

@@ -18,18 +18,18 @@ import com.mshdabiola.ui.ScreenSize
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberSkAppState(
+fun rememberSeriesEditorAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-): SkAppState {
+): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,
         coroutineScope,
         windowSizeClass,
     ) {
-        SkAppState(
+        SeriesEditorAppState(
             navController,
             coroutineScope,
             windowSizeClass,
@@ -38,7 +38,7 @@ fun rememberSkAppState(
 }
 
 @Stable
-class SkAppState(
+class SeriesEditorAppState(
     val navController: NavHostController,
     val coroutineScope: CoroutineScope,
     val windowSizeClass: WindowSizeClass,

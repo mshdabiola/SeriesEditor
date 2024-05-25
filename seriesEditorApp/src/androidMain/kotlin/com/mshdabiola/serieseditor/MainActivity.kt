@@ -24,7 +24,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
-import com.mshdabiola.serieseditor.ui.SkeletonApp
+import com.mshdabiola.serieseditor.ui.SeriesEditorApp
 import com.mshdabiola.serieseditor.ui.shouldUseDarkTheme
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -132,14 +132,14 @@ class MainActivity : ComponentActivity() {
                         Color.TRANSPARENT,
                     ) { darkTheme },
                     navigationBarStyle = SystemBarStyle.auto(
-                        lightScrim,
-                        darkScrim,
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
                     ) { darkTheme },
                 )
                 onDispose {}
             }
 
-            SkeletonApp()
+            SeriesEditorApp()
         }
     }
 }

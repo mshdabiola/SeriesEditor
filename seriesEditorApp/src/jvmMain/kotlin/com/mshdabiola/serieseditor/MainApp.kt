@@ -16,7 +16,7 @@ import com.mshdabiola.designsystem.drawable.defaultAppIcon
 import com.mshdabiola.designsystem.string.appName
 import com.mshdabiola.model.Writer
 import com.mshdabiola.serieseditor.di.appModule
-import com.mshdabiola.serieseditor.ui.SkeletonApp
+import com.mshdabiola.serieseditor.ui.SeriesEditorApp
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 import java.io.File
@@ -29,14 +29,14 @@ fun mainApp() {
             position = WindowPosition.Aligned(Alignment.Center),
         )
 
-        val version = "1.1.0"
+        val version = "0.0.1"
         Window(
             onCloseRequest = ::exitApplication,
             title = "$appName v$version",
             icon = defaultAppIcon,
             state = windowState,
         ) {
-            SkeletonApp()
+            SeriesEditorApp()
         }
     }
 }
