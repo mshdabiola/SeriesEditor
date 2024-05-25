@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.skeletonapp.ui
+package com.mshdabiola.serieseditor.ui
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -14,7 +14,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mshdabiola.designsystem.icon.mainRoute
 import com.mshdabiola.ui.ScreenSize
 import kotlinx.coroutines.CoroutineScope
 

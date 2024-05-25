@@ -12,7 +12,11 @@ internal val commonModule = module {
     single {
         StoreImpl(
             userdata = get(qualifier = qualifier("userdata")),
-            coroutineDispatcher = get(),
+            question = get(qualifier = qualifier("question")),
+            instruction = get(qualifier = qualifier("instruction")),
+            current = get(qualifier = qualifier("current")),
+            coroutineDispatcher = get()
         )
     } bind Store::class
+    // singleOf(::StoreImpl) bind Store::class
 }

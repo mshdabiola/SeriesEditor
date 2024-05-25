@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.skeletonapp.ui
+package com.mshdabiola.serieseditor.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -56,9 +55,9 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.setting.navigation.SETTING_ROUTE
 import com.mshdabiola.setting.navigation.navigateToSetting
-import com.mshdabiola.skeletonapp.MainActivityUiState
-import com.mshdabiola.skeletonapp.MainAppViewModel
-import com.mshdabiola.skeletonapp.navigation.SkNavHost
+import com.mshdabiola.serieseditor.MainActivityUiState
+import com.mshdabiola.serieseditor.MainAppViewModel
+import com.mshdabiola.serieseditor.navigation.SkNavHost
 import com.mshdabiola.ui.CommonBar
 import com.mshdabiola.ui.CommonNavigation
 import com.mshdabiola.ui.CommonRail

@@ -2,14 +2,14 @@
  *abiola 2022
  */
 
-package com.mshdabiola.skeletonapp
+package com.mshdabiola.serieseditor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.model.UserData
-import com.mshdabiola.skeletonapp.MainActivityUiState.Loading
-import com.mshdabiola.skeletonapp.MainActivityUiState.Success
+import com.mshdabiola.serieseditor.MainActivityUiState.Loading
+import com.mshdabiola.serieseditor.MainActivityUiState.Success
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

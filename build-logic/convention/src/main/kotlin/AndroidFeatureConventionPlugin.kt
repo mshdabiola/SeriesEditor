@@ -59,7 +59,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                         this.dependencies {
                             implementation(project(":modules:data"))
 
-                            implementation("com.mshdabiola.series:model:0.0.1")
+                            implementation(project(":modules:model"))
                             implementation(project(":modules:ui"))
 
                             implementation(project(":modules:designsystem"))

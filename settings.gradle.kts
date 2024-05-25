@@ -23,7 +23,7 @@ dependencyResolutionManagement {
         maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
     }
 }
-rootProject.name = "Hydraulic"
+rootProject.name = "SeriesEditor"
 //include(":app")
 //include(":app:baselineprofile")
 include(":modules:database")

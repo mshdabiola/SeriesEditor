@@ -16,8 +16,8 @@ plugins {
 
 }
 
-group = "com.mshdabiola.skeletonapp"
-version = "1.1.0"
+group = "com.mshdabiola.serieseditor"
+version = "0.0.1"
 
 dependencies {
 
@@ -148,10 +148,10 @@ android {
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/composeResources")
 
-    namespace = "com.mshdabiola.skeletonapp"
+    namespace = "com.mshdabiola.serieseditor"
 
     defaultConfig {
-        applicationId = "com.mshdabiola.skeletonapp"
+        applicationId = "com.mshdabiola.serieseditor"
         versionCode = 1
         versionName = "0.0.1" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
@@ -212,7 +212,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.mshdabiola.desktop.MainAppKt"
+        mainClass = "com.mshdabiola.serieseditor.MainAppKt"
 
 
         buildTypes.release.proguard {

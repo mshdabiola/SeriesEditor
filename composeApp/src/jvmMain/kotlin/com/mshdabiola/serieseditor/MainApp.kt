@@ -1,4 +1,4 @@
-package com.mshdabiola.desktop
+package com.mshdabiola.serieseditor
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.DpSize
@@ -15,8 +15,8 @@ import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.designsystem.drawable.defaultAppIcon
 import com.mshdabiola.designsystem.string.appName
 import com.mshdabiola.model.Writer
-import com.mshdabiola.skeletonapp.di.appModule
-import com.mshdabiola.skeletonapp.ui.SkeletonApp
+import com.mshdabiola.serieseditor.di.appModule
+import com.mshdabiola.serieseditor.ui.SkeletonApp
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 import java.io.File

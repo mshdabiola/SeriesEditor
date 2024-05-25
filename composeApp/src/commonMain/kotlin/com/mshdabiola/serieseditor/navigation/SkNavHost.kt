@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.skeletonapp.navigation
+package com.mshdabiola.serieseditor.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,7 +13,7 @@ import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.setting.navigation.settingScreen
-import com.mshdabiola.skeletonapp.ui.SkAppState
+import com.mshdabiola.serieseditor.ui.SkAppState
 
 @Composable
 fun SkNavHost(
