@@ -2,7 +2,10 @@ package com.mshdabiola.ui.image
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -69,7 +72,7 @@ fun ContentView(
                         Type.IMAGE ->
                             Box(childModifier, contentAlignment = Alignment.Center) {
                                 ImageUi(
-                                    Modifier.size(100.dp),
+                                    Modifier.fillMaxWidth().aspectRatio(16f/9f),
                                     path = ImageUtil.getGeneralDir(item.content, examId).path,
                                     contentDescription = "",
                                 )
@@ -118,7 +121,7 @@ fun Content(
                         })
 
                         Type.IMAGE -> ImageContent(
-                            childModifier,
+                            childModifier.fillMaxWidth().aspectRatio(16f/9f),
                             item,
                             examId = examId,
                             onTextChange = {
@@ -285,7 +288,7 @@ fun ImageContent(
 ) {
     Box(modifier, contentAlignment = Alignment.Center) {
         DragAndDropImage(
-            modifier = Modifier.size(100.dp),
+            modifier = modifier.fillMaxSize(),
             path = ImageUtil.getGeneralDir(image.content, examId).path,
             onPathChange = onTextChange,
         )

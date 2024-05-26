@@ -10,6 +10,7 @@ import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.model.Writer
+import com.mshdabiola.model.parentPath
 import com.mshdabiola.serieseditor.di.appModule
 import com.mshdabiola.serieseditor.di.jankStatsModule
 import org.koin.android.ext.koin.androidContext
@@ -30,6 +31,7 @@ class SkeletonApplication : Application() {
                 logger
             }
         }
+        parentPath = this.applicationContext.filesDir.path
 
         startKoin {
             logger(
