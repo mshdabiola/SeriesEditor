@@ -106,6 +106,7 @@ sqlite = "2.5.0-alpha02"
 kermit = "2.0.3"
 slf4jSimple = "2.0.12"
 
+calf = "0.4.0"
 
 
 
@@ -267,6 +268,10 @@ androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiaut
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+
+calf-filepicker = { module = "com.mohamedrejeb.calf:calf-file-picker", version.ref = "calf" }
+
 
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 firebase-performance-gradle = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }

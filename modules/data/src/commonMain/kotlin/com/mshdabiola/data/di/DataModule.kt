@@ -20,6 +20,7 @@ import com.mshdabiola.data.repository.SubjectRepository
 import com.mshdabiola.data.repository.TopicRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.database.di.databaseModule
+import com.mshdabiola.database.generalPath
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,8 +30,12 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val dataModule = module {
+
     includes(datastoreModule, databaseModule, networkModule, analyticsModule)
-    single { Dispatchers.IO } bind CoroutineDispatcher::class
+    single {
+        //sync path together
+        generalPath=com.mshdabiola.model.generalPath
+        Dispatchers.IO } bind CoroutineDispatcher::class
     singleOf(::RealINetworkRepository) bind INetworkRepository::class
     singleOf(::RealModelRepository) bind IModelRepository::class
     singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class

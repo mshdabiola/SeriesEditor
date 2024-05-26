@@ -20,13 +20,7 @@ actual val databaseModule: Module
     }
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<SkeletonDatabase> {
-    val path = File("${System.getProperty("user.home")}/AppData/Local/hydraulic")
-    if (path.exists().not()) {
-        path.mkdirs()
-    }
-    val file = File(path, "error.txt")
 
-    return try {
         val dbFile =
             File(
                 generalPath,
@@ -35,16 +29,9 @@ fun getDatabaseBuilder(): RoomDatabase.Builder<SkeletonDatabase> {
         // File(System.getProperty("java.io.tmpdir"), Constant.databaseName)
 
         val driver = BundledSQLiteDriver()
-        Room.databaseBuilder<SkeletonDatabase>(
+      return  Room.databaseBuilder<SkeletonDatabase>(
             name = dbFile.absolutePath,
         )
             .setDriver(driver)
-    } catch (e: Exception) {
-//        file.bufferedWriter()
-//            .write("Catch")
-        // file.writeText(e.stackTraceToString())
-        e.printStackTrace(PrintWriter(file.bufferedWriter()))
-//        file.close()
-        throw e
-    }
+
 }
