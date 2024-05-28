@@ -17,7 +17,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
-class SkeletonApplication : Application() {
+class SeriesEditorApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -37,8 +37,8 @@ class SkeletonApplication : Application() {
             logger(
                 KermitKoinLogger(Logger.withTag("koin")),
             )
-            androidContext(this@SkeletonApplication)
-            modules(appModule, jankStatsModule)
+            androidContext(this@SeriesEditorApplication)
+            modules(appModule, jankStatsModule,logModule)
         }
 
 //        if (packageName.contains("debug")) {
