@@ -101,7 +101,7 @@ class MainViewModel constructor(
     fun onExamDurationContentChange(text: String) {
 
         _mainState.update {
-            it.copy(examination = it.examination.copy(duration = text.toLong()))
+            it.copy(examination = it.examination.copy(duration = text.ifBlank { "0" }.toLong()))
         }
 //        try {
 //            _exam.value = exam.value?.copy(duration = text.toLongOrNull() ?: -1)
