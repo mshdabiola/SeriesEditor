@@ -4,7 +4,6 @@ import com.mshdabiola.analytics.di.analyticsModule
 import com.mshdabiola.data.repository.ExaminationRepository
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.data.repository.IModelRepository
 import com.mshdabiola.data.repository.INetworkRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
@@ -14,7 +13,6 @@ import com.mshdabiola.data.repository.InstructionRepository
 import com.mshdabiola.data.repository.OfflineFirstUserDataRepository
 import com.mshdabiola.data.repository.QuestionRepository
 import com.mshdabiola.data.repository.RealINetworkRepository
-import com.mshdabiola.data.repository.RealModelRepository
 import com.mshdabiola.data.repository.SettingRepository
 import com.mshdabiola.data.repository.SubjectRepository
 import com.mshdabiola.data.repository.TopicRepository
@@ -37,7 +35,6 @@ val dataModule = module {
         generalPath=com.mshdabiola.model.generalPath
         Dispatchers.IO } bind CoroutineDispatcher::class
     singleOf(::RealINetworkRepository) bind INetworkRepository::class
-    singleOf(::RealModelRepository) bind IModelRepository::class
     singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
 
     singleOf(::SettingRepository) bind ISettingRepository::class

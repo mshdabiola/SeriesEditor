@@ -54,10 +54,6 @@ fun OptionSer.asModel() = Option(
 fun Content.toSer() = ContentSer(content, type)
 fun ContentSer.asModel() = Content(content, type)
 
-fun Content.toSer2() = com.mshdabiola.database.converter.ContentSer(content, type.name)
-fun com.mshdabiola.database.converter.ContentSer.asModel() = Content(content, Type.valueOf(type))
-
-
 fun Question.asSer() = QuestionSer(
     id,
     number,

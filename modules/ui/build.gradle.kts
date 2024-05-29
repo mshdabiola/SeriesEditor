@@ -36,7 +36,7 @@ kotlin {
                 implementation(project(":modules:analytics"))
                 implementation(project(":modules:designsystem"))
                 implementation(project(":modules:model"))
-                api("com.mshdabiola.series:retex:0.0.1")
+                api("com.mshdabiola.series:retex:0.0.3")
 
                 api(libs.coil.kt)
                 api(libs.coil.kt.compose)
