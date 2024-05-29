@@ -85,7 +85,6 @@ class MainViewModel constructor(
     }
 
     fun onExamYearContentChange(text: String) {
-
         try {
             _mainState.update {
                 it.copy(examination = it.examination.copy(year = text.toLongOrNull() ?: -1))
@@ -103,7 +102,6 @@ class MainViewModel constructor(
     }
 
     fun onExamDurationContentChange(text: String) {
-
         try {
             _mainState.update {
                 it.copy(examination = it.examination.copy(duration = text.toLongOrNull() ?: -1))
@@ -130,7 +128,7 @@ class MainViewModel constructor(
 
     fun onUpdateExam(id: Long) {
         _mainState.update { mainState1 ->
-            mainState1.copy(examination = mainState.value.examinations.single { it.id== id })
+            mainState1.copy(examination = mainState.value.examinations.single { it.id == id })
         }
 //        examUiStates.value.find { it.id == id }?.let {
 //            _exam.value = it
