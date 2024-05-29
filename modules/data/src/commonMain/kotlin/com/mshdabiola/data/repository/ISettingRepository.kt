@@ -11,13 +11,9 @@ interface ISettingRepository {
     val questions: Flow<Map<Long, Question>>
     val currentExam: Flow<CurrentExam>
 
-
     suspend fun setCurrentInstruction(instruction: Map<Long, Instruction>)
-
 
     suspend fun setCurrentQuestion(question: Map<Long, Question>)
 
-
     suspend fun setCurrentExam(currentExam: CurrentExam)
-
 }

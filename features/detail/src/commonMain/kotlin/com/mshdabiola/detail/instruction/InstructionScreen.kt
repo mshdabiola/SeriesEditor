@@ -39,29 +39,28 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun InstructionRoute(
     screenSize: ScreenSize,
-    examId : Long,
-    subjectId:Long,
+    examId: Long,
+    subjectId: Long,
     onDismiss: () -> Unit = {},
     show: Boolean = false,
     setInstruction: (Long) -> Unit = {},
-    currentInstruction:Long?=null
-    ) {
+    currentInstruction: Long? = null,
+) {
     val viewModel: InstructionViewModel = koinViewModel(
         parameters = {
             parameterSetOf(
-               examId
+                examId,
             )
         },
     )
 
     InstructionContent(
         instructionUiState = viewModel.instructionUiState.value,
-        instructionUiStates = viewModel.instructions .value,
+        instructionUiStates = viewModel.instructions.value,
         instruInputUiState = viewModel.instruInputUiState.value,
         screenSize = screenSize,
         onTitleChange = viewModel::instructionTitleChange,
@@ -81,9 +80,8 @@ internal fun InstructionRoute(
         show = show,
         onDismiss = onDismiss,
         setInstruction = setInstruction,
-        currentInstruction = currentInstruction
+        currentInstruction = currentInstruction,
     )
-
 }
 
 @Composable
@@ -110,7 +108,7 @@ fun InstructionContent(
     onInstruInputChange: (String) -> Unit = {},
     onDismiss: () -> Unit = {},
     setInstruction: (Long) -> Unit = {},
-    currentInstruction:Long?=null
+    currentInstruction: Long? = null,
 ) {
     var showConvert by remember { mutableStateOf(false) }
 
@@ -129,7 +127,7 @@ fun InstructionContent(
                         instructionUiState = it,
                         onUpdate = onUpdateInstruction,
                         onDelete = onDeleteInstruction,
-                        isSelect = currentInstruction==it.id
+                        isSelect = currentInstruction == it.id,
                     )
                 }
             }

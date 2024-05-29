@@ -15,11 +15,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class TopicViewModel (
-    private val subjectId : Long,
+class TopicViewModel(
+    private val subjectId: Long,
     private val topicRepository: ITopicRepository,
 
-    ): ViewModel() {
+) : ViewModel() {
 
     private val converter = Converter()
 
@@ -30,7 +30,6 @@ class TopicViewModel (
                 .map { it.map { it.toUi() }.toImmutableList() }
                 .collectLatest {
                     topicUiStates.value = it
-
                 }
         }
     }
@@ -40,12 +39,10 @@ class TopicViewModel (
     private val _topicUiState = mutableStateOf(TopicUiState(subjectId = subjectId, name = ""))
     val topicUiState: State<TopicUiState> = _topicUiState
 
-
     private val _topicInputUiState = mutableStateOf(TopicInputUiState("", false))
     val topicInputUiState: State<TopicInputUiState> = _topicInputUiState
 
     // topic logic
-
 
     init {
 
@@ -55,7 +52,6 @@ class TopicViewModel (
                 .map { it.map { it.toUi() }.toImmutableList() }
                 .collectLatest {
                     topicUiStates.value = it
-
                 }
         }
     }
@@ -82,12 +78,11 @@ class TopicViewModel (
         }
     }
 
-
     fun onAddTopicFromInput() {
         viewModelScope.launch {
             try {
                 val list =
-                   converter.textToTopic(
+                    converter.textToTopic(
                         path = topicInputUiState.value.content,
                         subjectId = subjectId,
                     )
@@ -102,7 +97,6 @@ class TopicViewModel (
             }
         }
     }
-
 
     fun onTopicInputChanged(text: String) {
         _topicInputUiState.value = topicInputUiState.value.copy(content = text)

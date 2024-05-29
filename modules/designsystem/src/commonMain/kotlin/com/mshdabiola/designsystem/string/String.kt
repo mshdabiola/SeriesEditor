@@ -1,9 +1,9 @@
 package com.mshdabiola.designsystem.string
 
 import androidx.compose.runtime.Composable
-import hydraulic.modules.designsystem.generated.resources.Res
-import hydraulic.modules.designsystem.generated.resources.app_name
 import org.jetbrains.compose.resources.stringResource
+import serieseditor.modules.designsystem.generated.resources.Res
+import serieseditor.modules.designsystem.generated.resources.app_name
 
 val appName
     @Composable

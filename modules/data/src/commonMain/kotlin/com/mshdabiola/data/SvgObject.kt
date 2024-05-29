@@ -14,7 +14,7 @@ object SvgObject {
         fileString: String, // new image
         examId: Long,
 
-        ): String {
+    ): String {
         return withContext(Dispatchers.IO) {
             val oldPath = File(getGeneralDir(oldName, examId).path)
             println("oldPath ${oldPath.path}")
@@ -42,7 +42,7 @@ object SvgObject {
         fileString: String, // new image
         examId: Long,
 
-        ): String {
+    ): String {
         return withContext(Dispatchers.IO) {
             val oldPath = File(getGeneralDir(oldName, examId).path)
             println("oldPath ${oldPath.path}")

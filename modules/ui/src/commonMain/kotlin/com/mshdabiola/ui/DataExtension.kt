@@ -46,7 +46,7 @@ fun QuestionUiState.toQuestionWithOptions(examId: Long) = Question(
     answers = answers?.map { it.toItem() } ?: emptyList(),
     instruction = instructionUiState?.toInstruction(),
     topic = topicUiState?.toTopic(),
-    title = ""
+    title = "",
 )
 
 fun Option.toOptionUi(isEdit: Boolean = false) =
@@ -65,7 +65,7 @@ fun OptionUiState.toOption(questionId: Long, examId: Long) =
         examId = examId,
         contents = content.map { it.toItem() },
         isAnswer = isAnswer,
-        title = ""
+        title = "",
     )
 
 fun ItemUiState.toItem() = Content(content = content, type = type)
@@ -99,7 +99,7 @@ fun Examination.toUi() = ExamUiState(
     isObjectiveOnly = isObjectiveOnly,
     duration = duration,
     updateTime = updateTime,
-    subject = subject.toUi()
+    subject = subject.toUi(),
 )
 
 fun ExamUiState.toExam() =
@@ -109,7 +109,7 @@ fun ExamUiState.toExam() =
         isObjectiveOnly = isObjectiveOnly,
         duration = duration,
         updateTime = updateTime,
-        subject = subject.toSubject()
+        subject = subject.toSubject(),
     )
 
 fun Long.check() = if (this == -1L) null else this

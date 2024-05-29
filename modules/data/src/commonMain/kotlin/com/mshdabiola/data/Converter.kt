@@ -157,7 +157,7 @@ class Converter {
                     contents = listOf(itemise(s)),
                     isAnswer = false,
                     title = "",
-                    id = null
+                    id = null,
                 )
             }
 

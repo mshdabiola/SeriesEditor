@@ -44,18 +44,18 @@ import org.koin.core.parameter.parameterSetOf
 @Composable
 internal fun DetailRoute(
     screenSize: ScreenSize,
-    examId:Long,
-    subjectId:Long,
+    examId: Long,
+    subjectId: Long,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     onBack: () -> Unit,
 ) {
-    ExamScreen(examId,subjectId,screenSize,onBack)
+    ExamScreen(examId, subjectId, screenSize, onBack)
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-//@Composable
-//internal fun DetailScreen(
+// @OptIn(ExperimentalMaterial3Api::class)
+// @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+// @Composable
+// internal fun DetailScreen(
 //    modifier: Modifier = Modifier,
 //    title: String = "",
 //    content: String = "",
@@ -66,7 +66,7 @@ internal fun DetailRoute(
 //    onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
 //    onBack: () -> Unit = {},
 //    onDelete: () -> Unit = {},
-//) {
+// ) {
 //    val coroutineScope = rememberCoroutineScope()
 //    Column(modifier) {
 //        DetailTopAppBar(
@@ -97,28 +97,27 @@ internal fun DetailRoute(
 //    }
 //
 //    TrackScreenViewEvent(screenName = "Detail")
-//}
+// }
 
 //
-//@Composable
-//private fun DetailScreenPreview() {
+// @Composable
+// private fun DetailScreenPreview() {
 //    DetailScreen()
-//}
+// }
 
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    KoinExperimentalAPI::class
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
+    KoinExperimentalAPI::class,
 )
 @Composable
 fun ExamScreen(
-    examId:Long,
-    subjectId:Long,
+    examId: Long,
+    subjectId: Long,
     screenSize: ScreenSize,
     onBack: () -> Unit = {},
 
-    ) {
-
-
+) {
     val action: @Composable RowScope.() -> Unit = {
         IconButton(onClick = onBack) {
             Icon(Icons.Default.ArrowBack, "back")
@@ -129,13 +128,13 @@ fun ExamScreen(
     val questionViewModel: QuestionViewModel = koinViewModel(
         parameters = {
             parameterSetOf(
-                examId, subjectId
+                examId,
+                subjectId,
             )
         },
     )
 
     val question = questionViewModel.question.value
-
 
     Scaffold(
         topBar = {
@@ -203,15 +202,15 @@ fun ExamScreen(
             ) {
                 when (state) {
                     0 ->
-                     QuestionRoute(
-                         screenSize = screenSize,
-                         examId = examId,
-                         subjectId = subjectId,
-                         onDismiss = onDismiss,
-                         show = show,
-                        viewModel = questionViewModel
+                        QuestionRoute(
+                            screenSize = screenSize,
+                            examId = examId,
+                            subjectId = subjectId,
+                            onDismiss = onDismiss,
+                            show = show,
+                            viewModel = questionViewModel,
 
-                     )
+                        )
                     1 ->
                         InstructionRoute(
                             screenSize = screenSize,
@@ -220,9 +219,8 @@ fun ExamScreen(
                             onDismiss = onDismiss,
                             show = show,
                             currentInstruction = question.instructionUiState?.id,
-                            setInstruction = questionViewModel::onInstructionIdChange
+                            setInstruction = questionViewModel::onInstructionIdChange,
                         )
-
 
                     else ->
                         TopicRoute(
@@ -232,13 +230,10 @@ fun ExamScreen(
                             onDismiss = onDismiss,
                             show = show,
                             currentTopic = question.topicUiState?.id,
-                            setTopic = questionViewModel::onTopicInputChanged
+                            setTopic = questionViewModel::onTopicInputChanged,
                         )
-
                 }
             }
         }
     }
 }
-
-

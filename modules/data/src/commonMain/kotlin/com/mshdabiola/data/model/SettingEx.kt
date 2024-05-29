@@ -15,13 +15,11 @@ import com.mshdabiola.model.data.Option
 import com.mshdabiola.model.data.Question
 import com.mshdabiola.model.data.Topic
 
-
 fun UserData.toSer() =
     UserDataSer(themeBrand, darkThemeConfig, useDynamicColor, shouldHideOnboarding, contrast)
 
 fun UserDataSer.toData() =
     UserData(themeBrand, darkThemeConfig, useDynamicColor, shouldHideOnboarding, contrast)
-
 
 fun Instruction.toSer() = InstructionSer(id, examId, title, content.map { it.toSer() })
 
@@ -37,7 +35,7 @@ fun Option.toSer() = OptionSer(
     examId = examId,
     title = title,
     contents = contents.map { it.toSer() },
-    isAnswer = isAnswer
+    isAnswer = isAnswer,
 )
 
 fun OptionSer.asModel() = Option(
@@ -47,12 +45,11 @@ fun OptionSer.asModel() = Option(
     examId = examId,
     title = title,
     contents = contents.map { it.asModel() },
-    isAnswer = isAnswer
+    isAnswer = isAnswer,
 )
 
 fun Content.toSer() = ContentSer(content, type)
 fun ContentSer.asModel() = Content(content, type)
-
 
 fun Question.asSer() = QuestionSer(
     id,
@@ -64,9 +61,8 @@ fun Question.asSer() = QuestionSer(
     options?.map { it.toSer() },
     isTheory,
     instruction?.toSer(),
-    topic?.toSer()
+    topic?.toSer(),
 )
-
 
 fun QuestionSer.asModel() = Question(
     id,
@@ -78,9 +74,8 @@ fun QuestionSer.asModel() = Question(
     optionSers?.map { it.asModel() },
     isTheory,
     instructionSer?.asModel(),
-    topicSer?.asModel()
+    topicSer?.asModel(),
 )
-
 
 fun CurrentExam.toSer() =
     CurrentExamSer(id, currentTime, totalTime, isSubmit, paperIndex, examPart, choose)

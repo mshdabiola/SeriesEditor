@@ -2,6 +2,7 @@ package com.mshdabiola.data.repository
 
 import com.mshdabiola.data.model.asExam
 import com.mshdabiola.data.model.asExamEntity
+import com.mshdabiola.database.DatabaseExportImport
 import com.mshdabiola.database.dao.ExaminationDao
 import com.mshdabiola.model.data.Examination
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,8 +14,8 @@ import kotlinx.coroutines.withContext
 internal class ExaminationRepository constructor(
     private val examinationDao: ExaminationDao,
     private val ioDispatcher: CoroutineDispatcher,
+    private val exportImport: DatabaseExportImport,
 ) : IExaminationRepository {
-
 
     override suspend fun upsert(examination: Examination): Long {
         return withContext(ioDispatcher) {
@@ -58,13 +59,12 @@ internal class ExaminationRepository constructor(
         path: String,
         name: String,
         version: Int,
-        key: String
+        key: String,
     ) {
-        TODO("Not yet implemented")
+        exportImport.export(examsId.toSet(), path, name, version, key)
     }
 
     override suspend fun import(path: String, key: String) {
-        TODO("Not yet implemented")
+        exportImport.import(path, key)
     }
-
 }

@@ -33,7 +33,7 @@ import kotlin.math.tan
  * @param content The background content.
  */
 @Composable
-fun SkBackground(
+fun SeriesEditorBackground(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -59,7 +59,7 @@ fun SkBackground(
  * @param content The background content.
  */
 @Composable
-fun SkGradientBackground(
+fun SeriesEditorGradientBackground(
     modifier: Modifier = Modifier,
     gradientColors: GradientColors = LocalGradientColors.current,
     content: @Composable () -> Unit,

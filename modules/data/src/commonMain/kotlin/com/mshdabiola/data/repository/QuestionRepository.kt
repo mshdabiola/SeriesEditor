@@ -1,5 +1,6 @@
 package com.mshdabiola.data.repository
 
+import co.touchlab.kermit.Logger
 import com.mshdabiola.data.model.asEntity
 import com.mshdabiola.data.model.asModel
 import com.mshdabiola.database.dao.OptionDao
@@ -15,12 +16,13 @@ internal class QuestionRepository constructor(
     private val questionDao: QuestionDao,
     private val optionDao: OptionDao,
     private val ioDispatcher: CoroutineDispatcher,
+    private val logger: Logger,
 ) : IQuestionRepository {
     override suspend fun upsert(question: Question): Long {
         return withContext(ioDispatcher) {
+            var id = questionDao.upsert(question.asModel())
 
-            val id = questionDao.upsert(question.asModel())
-
+            id = if (id < 0L) question.id!! else id
             question
                 .options
                 ?.map { it.asEntity().copy(questionId = id) }
@@ -87,5 +89,4 @@ internal class QuestionRepository constructor(
     override suspend fun deleteOption(id: Long) {
         optionDao.delete(id)
     }
-
 }

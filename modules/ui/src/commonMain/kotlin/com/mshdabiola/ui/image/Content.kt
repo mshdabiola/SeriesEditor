@@ -2,8 +2,9 @@ package com.mshdabiola.ui.image
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -35,11 +36,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import com.mshdabiola.model.ImageUtil
 import com.mshdabiola.model.data.Type
 import com.mshdabiola.retex.Latex
-import com.mshdabiola.ui.MarkUpText
+import com.mshdabiola.retex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
 
@@ -69,7 +69,7 @@ fun ContentView(
                         Type.IMAGE ->
                             Box(childModifier, contentAlignment = Alignment.Center) {
                                 ImageUi(
-                                    Modifier.size(100.dp),
+                                    Modifier.fillMaxWidth().aspectRatio(16f / 9f),
                                     path = ImageUtil.getGeneralDir(item.content, examId).path,
                                     contentDescription = "",
                                 )
@@ -77,7 +77,7 @@ fun ContentView(
                     }
                 },
 
-                )
+            )
         }
     }
 }
@@ -97,7 +97,7 @@ fun Content(
     changeType: (Int, Type) -> Unit = { _, _ -> },
     onTextChange: (Int, String) -> Unit = { _, _ -> },
 
-    ) {
+) {
     Column(modifier) {
         items.forEachIndexed { index, item ->
             var showContext by remember { mutableStateOf(false) }
@@ -118,7 +118,7 @@ fun Content(
                         })
 
                         Type.IMAGE -> ImageContent(
-                            childModifier,
+                            childModifier.fillMaxWidth().aspectRatio(16f / 9f),
                             item,
                             examId = examId,
                             onTextChange = {
@@ -285,7 +285,7 @@ fun ImageContent(
 ) {
     Box(modifier, contentAlignment = Alignment.Center) {
         DragAndDropImage(
-            modifier = Modifier.size(100.dp),
+            modifier = modifier.fillMaxSize(),
             path = ImageUtil.getGeneralDir(image.content, examId).path,
             onPathChange = onTextChange,
         )

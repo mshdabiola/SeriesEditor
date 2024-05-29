@@ -1,8 +1,5 @@
 package com.mshdabiola.ui.state
 
-import com.mshdabiola.ui.state.ExamUiState
-import com.mshdabiola.ui.state.QuestionUiState
-import com.mshdabiola.ui.state.ScoreUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 

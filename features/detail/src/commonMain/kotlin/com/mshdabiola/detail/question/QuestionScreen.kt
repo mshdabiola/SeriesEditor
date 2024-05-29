@@ -45,7 +45,6 @@ import com.mshdabiola.ui.state.ExamInputUiState
 import com.mshdabiola.ui.state.QuestionUiState
 import kotlinx.collections.immutable.ImmutableList
 
-
 @Composable
 internal fun QuestionRoute(
     screenSize: ScreenSize,
@@ -53,10 +52,8 @@ internal fun QuestionRoute(
     subjectId: Long,
     onDismiss: () -> Unit = {},
     show: Boolean = false,
-   viewModel: QuestionViewModel
+    viewModel: QuestionViewModel,
 ) {
-
-
     ExamContent(
         modifier = Modifier,
         questionUiState = viewModel.question.value,
@@ -126,7 +123,7 @@ fun ExamContent(
     onExamInputChange: (String) -> Unit = {},
     onDismiss: () -> Unit = {},
 
-    ) {
+) {
     var showTopiDropdown by remember { mutableStateOf(false) }
     var showConvert by remember { mutableStateOf(false) }
 
@@ -170,7 +167,6 @@ fun ExamContent(
                         label = { Text("Instruction id") },
                     )
 
-
                     OutlinedTextField(
                         modifier = Modifier.weight(0.5f),
                         readOnly = true,
@@ -178,7 +174,6 @@ fun ExamContent(
                         onValueChange = {},
                         label = { Text("Topic id") },
                     )
-
                 }
                 QuestionEditUi(
                     questionUiState = questionUiState,

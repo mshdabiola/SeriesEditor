@@ -66,7 +66,7 @@ android {
         }
     }
 
-    targetProjectPath = ":composeApp"
+    targetProjectPath = ":seriesEditorApp"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 

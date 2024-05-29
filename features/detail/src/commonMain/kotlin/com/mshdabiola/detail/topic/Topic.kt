@@ -23,9 +23,9 @@ import com.mshdabiola.ui.state.TopicUiState
 
 @Composable
 fun TopicUi(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     topicUiState: TopicUiState,
-    isSelect :Boolean=false,
+    isSelect: Boolean = false,
     onDelete: (Long) -> Unit = {},
     onUpdate: (Long) -> Unit = {},
 ) {
@@ -62,6 +62,7 @@ fun TopicUi(
             }
         },
         colors = ListItemDefaults.colors(
-            if (isSelect) MaterialTheme.colorScheme.primaryContainer else ListItemDefaults.containerColor)
+            if (isSelect) MaterialTheme.colorScheme.primaryContainer else ListItemDefaults.containerColor,
+        ),
     )
 }

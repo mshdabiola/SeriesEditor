@@ -30,8 +30,8 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.retex.Latex
-import com.mshdabiola.ui.MarkUpEngine
-import com.mshdabiola.ui.MarkUpText
+import com.mshdabiola.retex.MarkUpEngine
+import com.mshdabiola.retex.MarkUpText
 
 @OptIn(
     ExperimentalLayoutApi::class,
@@ -131,15 +131,15 @@ fun TemplateUi() {
                 "\\mbox{~and~} ",
                 "\\left[ \\begin{array}{cc|r} 3 & 4 & 5 \\\\ 1 & 3 & 729 \\end{array} \\right]",
                 "\\begin{eqnarray}\n" +
-                        "\\cos 2\\theta & = & \\cos^2 \\theta - \\sin^2 \\theta \\\\\n" +
-                        "& = & 2 \\cos^2 \\theta - 1.\n" +
-                        "\\end{eqnarray}",
+                    "\\cos 2\\theta & = & \\cos^2 \\theta - \\sin^2 \\theta \\\\\n" +
+                    "& = & 2 \\cos^2 \\theta - 1.\n" +
+                    "\\end{eqnarray}",
                 "\\begin{tabular}{|l|l|l|}\\hline\n" +
-                        "Chicago&U.S.A.&1893\\\\\n" +
-                        "Z\\\"{u}rich&Switzerland&1897\\\\\n" +
-                        "Paris&France&1900\\\\\n" +
-                        "Heidelberg&Germany&1904\\\\\n" +
-                        "Rome&Italy&1908\\hline\\end{tabular}",
+                    "Chicago&U.S.A.&1893\\\\\n" +
+                    "Z\\\"{u}rich&Switzerland&1897\\\\\n" +
+                    "Paris&France&1900\\\\\n" +
+                    "Heidelberg&Germany&1904\\\\\n" +
+                    "Rome&Italy&1908\\hline\\end{tabular}",
             ),
         ), // equation
         mapOf(
@@ -155,7 +155,7 @@ fun TemplateUi() {
                 "\\hat{a}",
                 "\\vec{a}",
 
-                ),
+            ),
             "Font" to listOf(
                 " \\mathcal{A}",
                 " \\mathbb{A}",
@@ -519,7 +519,7 @@ fun TemplateUi() {
                 "\\wp",
                 "\\|",
 
-                ),
+            ),
         ), // symbol
 
     )

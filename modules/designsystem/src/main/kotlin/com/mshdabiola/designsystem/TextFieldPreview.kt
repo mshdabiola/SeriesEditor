@@ -4,11 +4,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mshdabiola.designsystem.component.SkTextField
+import com.mshdabiola.designsystem.component.SeriesEditorTextField
 
 @OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 private fun SkTextFieldPreview() {
-    SkTextField(state = TextFieldState("Sk Testing"))
+    SeriesEditorTextField(state = TextFieldState("Sk Testing"))
 }

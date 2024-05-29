@@ -67,7 +67,7 @@ fun QuestionEditUi(
             changeType = { i, t -> changeType(-1, i, t) },
             onTextChange = { i, s -> onTextChange(-1, i, s) },
 
-            )
+        )
 
 //        questionUiState.options.chunked(2).forEachIndexed { index1, optionsUiStates ->
 //            Row {
@@ -109,7 +109,7 @@ fun QuestionEditUi(
                     changeType = { ii, t -> changeType(i, ii, t) },
                     onTextChange = { idn, s -> onTextChange(i, idn, s) },
 
-                    )
+                )
             }
         }
 
@@ -128,7 +128,7 @@ fun QuestionEditUi(
                 changeType = { i, t -> changeType(-2, i, t) },
                 onTextChange = { i, s -> onTextChange(-2, i, s) },
 
-                )
+            )
         }
     }
 }
@@ -250,7 +250,7 @@ fun QuestionUi(
                     items = questionUiState.answers!!,
                     examId = questionUiState.examId,
 
-                    )
+                )
             }
         }
     }

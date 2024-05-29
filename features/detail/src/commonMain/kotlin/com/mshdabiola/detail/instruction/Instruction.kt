@@ -73,13 +73,13 @@ fun InstructionEditUi(
 fun InstructionUi(
     modifier: Modifier = Modifier,
     instructionUiState: InstructionUiState,
-    isSelect :Boolean=false,
+    isSelect: Boolean = false,
     onUpdate: (Long) -> Unit = {},
     onDelete: (Long) -> Unit = {},
 ) {
     var showDrop by remember { mutableStateOf(false) }
     val color =
-    if (isSelect) MaterialTheme.colorScheme.primaryContainer else ListItemDefaults.containerColor
+        if (isSelect) MaterialTheme.colorScheme.primaryContainer else ListItemDefaults.containerColor
     ListItem(
         modifier = modifier,
         headlineContent = {
@@ -120,6 +120,6 @@ fun InstructionUi(
                 }
             }
         },
-        colors =ListItemDefaults.colors(color)
+        colors = ListItemDefaults.colors(color),
     )
 }
