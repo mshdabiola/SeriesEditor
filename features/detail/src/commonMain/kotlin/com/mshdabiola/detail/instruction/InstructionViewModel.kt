@@ -24,14 +24,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class InstructionViewModel(
-    private val examId : Long,
+    private val examId: Long,
     private val instructionRepository: IInstructionRepository,
     private val settingRepository: ISettingRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     val converter = Converter()
-
 
     private val defaultInstruction = InstructionUiState(
         examId = examId,
@@ -44,10 +43,8 @@ class InstructionViewModel(
     val instructionUiState: State<InstructionUiState> = _instructionUiState
     val instructions = mutableStateOf(emptyList<InstructionUiState>().toImmutableList())
 
-
     private val _instruInputUiState = mutableStateOf(InstruInputUiState("", false))
     val instruInputUiState: State<InstruInputUiState> = _instruInputUiState
-
 
     init {
 
@@ -94,13 +91,9 @@ class InstructionViewModel(
                 }
                 .collectLatest {
                     instructions.value = it
-
                 }
         }
-
     }
-
-
 
     // instruction logic
 
@@ -264,8 +257,6 @@ class InstructionViewModel(
         }
     }
 
-
-
     fun onInstuInputChanged(text: String) {
         _instruInputUiState.value = instruInputUiState.value.copy(content = text)
     }
@@ -293,5 +284,4 @@ class InstructionViewModel(
     private fun log(msg: String) {
 //        co.touchlab.kermit.Logger.e(msg)
     }
-
 }

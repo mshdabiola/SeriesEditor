@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 internal class SettingRepository(
     private val settings: Store,
 
-    ) : ISettingRepository {
+) : ISettingRepository {
     override val instructions: Flow<Map<Long, Instruction>>
         get() = settings
             .instructions
@@ -35,15 +35,11 @@ internal class SettingRepository(
         settings.updateInstruction { instruction.mapValues { it.value.toSer() } }
     }
 
-
     override suspend fun setCurrentQuestion(question: Map<Long, Question>) {
         settings.updateQuestion { question.mapValues { it.value.asSer() } }
     }
 
-
     override suspend fun setCurrentExam(currentExam: CurrentExam) {
         settings.updateCurrentQuestion { currentExam.toSer() }
     }
-
-
 }

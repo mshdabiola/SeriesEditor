@@ -44,22 +44,21 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun TopicRoute(
     screenSize: ScreenSize,
-    examId : Long,
-    subjectId:Long,
+    examId: Long,
+    subjectId: Long,
     onDismiss: () -> Unit = {},
     show: Boolean = false,
     setTopic: (Long) -> Unit = {},
-    currentTopic:Long?=null
+    currentTopic: Long? = null,
 ) {
     val viewModel: TopicViewModel = koinViewModel(
         parameters = {
             parameterSetOf(
-                subjectId
+                subjectId,
             )
         },
     )
@@ -78,9 +77,10 @@ internal fun TopicRoute(
         show = show,
         onDismiss = onDismiss,
         setTopic = setTopic,
-        currentTopic = currentTopic
+        currentTopic = currentTopic,
     )
 }
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopicContent(
@@ -98,7 +98,7 @@ fun TopicContent(
     onTopicInputChange: (String) -> Unit = {},
     onDismiss: () -> Unit = {},
     setTopic: (Long) -> Unit = {},
-    currentTopic:Long?=null
+    currentTopic: Long? = null,
 ) {
     var showConvert by remember { mutableStateOf(false) }
 
@@ -109,12 +109,12 @@ fun TopicContent(
                 items(items = topicUiStates, key = { it.id }) {
                     TopicUi(
                         modifier = Modifier.clickable {
-                          setTopic(it.id)
+                            setTopic(it.id)
                         },
                         topicUiState = it,
                         onDelete = onDelete,
                         onUpdate = onUpdate,
-                        isSelect = it.id==currentTopic
+                        isSelect = it.id == currentTopic,
                     )
                 }
             }
@@ -192,4 +192,3 @@ fun TopicContent(
         onDismiss,
     )
 }
-

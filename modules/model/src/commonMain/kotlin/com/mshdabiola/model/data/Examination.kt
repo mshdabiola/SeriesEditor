@@ -6,5 +6,5 @@ data class Examination(
     val isObjectiveOnly: Boolean,
     val duration: Long,
     val updateTime: Long,
-    val subject: Subject
+    val subject: Subject,
 )

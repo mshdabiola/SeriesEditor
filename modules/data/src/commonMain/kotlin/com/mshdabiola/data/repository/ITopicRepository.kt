@@ -13,5 +13,4 @@ interface ITopicRepository {
     fun getOne(id: Long): Flow<Topic?>
 
     suspend fun delete(id: Long)
-
 }

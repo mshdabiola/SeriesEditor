@@ -4,7 +4,6 @@ import androidx.datastore.core.okio.OkioSerializer
 import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
-import com.mshdabiola.model.data.Content
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
@@ -29,14 +28,14 @@ internal object QuestionJsonSerializer : OkioSerializer<Map<Long, QuestionSer>> 
                 json.encodeToString(
                     MapSerializer(
                         Long.serializer(),
-                        QuestionSer.serializer()
-                    ), t
-                )
+                        QuestionSer.serializer(),
+                    ),
+                    t,
+                ),
             )
         }
     }
 }
-
 
 internal object InstructionJsonSerializer : OkioSerializer<Map<Long, InstructionSer>> {
 
@@ -53,14 +52,14 @@ internal object InstructionJsonSerializer : OkioSerializer<Map<Long, Instruction
                 json.encodeToString(
                     MapSerializer(
                         Long.serializer(),
-                        InstructionSer.serializer()
-                    ), t
-                )
+                        InstructionSer.serializer(),
+                    ),
+                    t,
+                ),
             )
         }
     }
 }
-
 
 internal object CurrentExamJsonSerializer : OkioSerializer<CurrentExamSer> {
 
@@ -77,7 +76,6 @@ internal object CurrentExamJsonSerializer : OkioSerializer<CurrentExamSer> {
         }
     }
 }
-
 
 internal object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
 
@@ -101,11 +99,10 @@ internal object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
     }
 }
 
-
-fun String.toContent():List<ContentSer>{
+fun String.toContent(): List<ContentSer> {
     return json.decodeFromString(this)
 }
 
-fun List<ContentSer>.asString():String{
-    return json.encodeToString(ListSerializer(ContentSer.serializer()),this)
+fun List<ContentSer>.asString(): String {
+    return json.encodeToString(ListSerializer(ContentSer.serializer()), this)
 }

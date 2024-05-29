@@ -5,7 +5,6 @@ import com.mshdabiola.datastore.createDataStoreCurrentExam
 import com.mshdabiola.datastore.createDataStoreInstruction
 import com.mshdabiola.datastore.createDataStoreQuestion
 import com.mshdabiola.datastore.createDataStoreUserData
-import com.mshdabiola.model.generalPath
 import org.koin.core.module.Module
 import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
@@ -24,18 +23,18 @@ actual val datastoreModule: Module
         single(qualifier = qualifier("question")) {
             val context: Context = get()
 
-            createDataStoreQuestion {  context.filesDir.resolve("question").absolutePath }
+            createDataStoreQuestion { context.filesDir.resolve("question").absolutePath }
         }
 
         single(qualifier = qualifier("instruction")) {
             val context: Context = get()
 
-            createDataStoreInstruction {  context.filesDir.resolve("instruction").absolutePath}
+            createDataStoreInstruction { context.filesDir.resolve("instruction").absolutePath }
         }
 
         single(qualifier = qualifier("current")) {
             val context: Context = get()
 
-            createDataStoreCurrentExam {  context.filesDir.resolve("current").absolutePath }
+            createDataStoreCurrentExam { context.filesDir.resolve("current").absolutePath }
         }
     }

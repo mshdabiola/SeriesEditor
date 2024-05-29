@@ -14,9 +14,8 @@ import kotlinx.coroutines.withContext
 internal class ExaminationRepository constructor(
     private val examinationDao: ExaminationDao,
     private val ioDispatcher: CoroutineDispatcher,
-    private val exportImport: DatabaseExportImport
+    private val exportImport: DatabaseExportImport,
 ) : IExaminationRepository {
-
 
     override suspend fun upsert(examination: Examination): Long {
         return withContext(ioDispatcher) {
@@ -60,13 +59,12 @@ internal class ExaminationRepository constructor(
         path: String,
         name: String,
         version: Int,
-        key: String
+        key: String,
     ) {
-        exportImport.export(examsId.toSet(),path, name, version, key)
+        exportImport.export(examsId.toSet(), path, name, version, key)
     }
 
     override suspend fun import(path: String, key: String) {
         exportImport.import(path, key)
     }
-
 }

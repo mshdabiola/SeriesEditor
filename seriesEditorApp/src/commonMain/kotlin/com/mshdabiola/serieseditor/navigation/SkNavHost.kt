@@ -11,9 +11,9 @@ import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.setting.navigation.settingScreen
-import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 
 @Composable
 fun SkNavHost(

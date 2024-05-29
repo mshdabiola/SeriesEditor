@@ -24,7 +24,6 @@ private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
 internal const val DETAIL_ID_ARG = "topicId"
 internal const val DETAIL_ID_ARG2 = "topicId2"
 
-
 internal class DetailArgs(val id: Long) {
     constructor(savedStateHandle: SavedStateHandle) : this(checkNotNull<Long>(savedStateHandle[DETAIL_ID_ARG]))
     // this(URLDecoder.decode(checkNotNull(savedStateHandle[DETAIL_ID_ARG]), URL_CHARACTER_ENCODING))
@@ -62,14 +61,12 @@ fun NavGraphBuilder.detailScreen(
         val examId = backStack.arguments?.getLong(DETAIL_ID_ARG)
         val subjectId = backStack.arguments?.getLong(DETAIL_ID_ARG2)
 
-
-
         DetailRoute(
             screenSize = screenSize,
             onShowSnackbar = onShowSnack,
             onBack = onBack,
-           examId = examId ?: 4,
-            subjectId = subjectId ?:5
+            examId = examId ?: 4,
+            subjectId = subjectId ?: 5,
         )
     }
 }

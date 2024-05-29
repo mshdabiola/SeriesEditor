@@ -2,9 +2,7 @@ package com.mshdabiola.ui.image
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -78,7 +76,7 @@ actual fun DragAndDropImage(
         modifier = modifier,
         factory = {
             ComposePanel().apply {
-              // setSize(200, 200)
+                // setSize(200, 200)
                 setContent {
                     Card(
                         modifier = modifier,

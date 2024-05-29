@@ -46,11 +46,11 @@ import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
-import com.mshdabiola.setting.navigation.SETTING_ROUTE
-import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.serieseditor.MainActivityUiState
 import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.serieseditor.navigation.SkNavHost
+import com.mshdabiola.setting.navigation.SETTING_ROUTE
+import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.CommonBar
 import com.mshdabiola.ui.CommonNavigation
 import com.mshdabiola.ui.CommonRail
@@ -125,7 +125,7 @@ fun SeriesEditorApp() {
                                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                     snackbarHost = { SnackbarHost(snackbarHostState) },
 
-                                    ) { padding ->
+                                ) { padding ->
 
                                     Column(
                                         Modifier
@@ -170,7 +170,7 @@ fun SeriesEditorApp() {
                                         currentNavigation = appState.currentDestination?.route ?: "",
                                         onNavigate = navigator,
 
-                                        )
+                                    )
                                 }
                                 Scaffold(
                                     modifier = Modifier.semanticsCommon {},
@@ -187,7 +187,7 @@ fun SeriesEditorApp() {
                                         }
                                     },
 
-                                    ) { padding ->
+                                ) { padding ->
 
                                     Column(
                                         Modifier

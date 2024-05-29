@@ -3,7 +3,6 @@ package com.mshdabiola.datastore.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-
 data class CurrentExamSer(
     val id: Long,
     val currentTime: Long = 0,

@@ -60,5 +60,4 @@ internal class InstructionRepository(
             instructionDao.delete(id)
         }
     }
-
 }

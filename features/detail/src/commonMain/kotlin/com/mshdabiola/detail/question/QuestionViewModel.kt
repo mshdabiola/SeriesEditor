@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class QuestionViewModel (
+class QuestionViewModel(
     private val examId: Long,
     private val subjectId: Long,
     private val questionRepository: IQuestionRepository,
@@ -43,7 +43,7 @@ class QuestionViewModel (
     private val settingRepository: ISettingRepository,
     private val topicRepository: ITopicRepository,
 
-    ): ViewModel() {
+) : ViewModel() {
 
     val converter = Converter()
 
@@ -52,14 +52,14 @@ class QuestionViewModel (
             getEmptyQuestion(),
         )
     val question: State<QuestionUiState> = _question
-   // private val _instructIdError = mutableStateOf(false)
-    //val instructIdError: State<Boolean> = _instructIdError
-   private var instructions :List<Instruction> = emptyList()
 
-    private var topics :List<Topic> = emptyList()
+    // private val _instructIdError = mutableStateOf(false)
+    // val instructIdError: State<Boolean> = _instructIdError
+    private var instructions: List<Instruction> = emptyList()
+
+    private var topics: List<Topic> = emptyList()
 
     val questions = mutableStateOf(emptyList<QuestionUiState>().toImmutableList())
-
 
     init {
 
@@ -67,14 +67,14 @@ class QuestionViewModel (
             instructionRepository
                 .getAll()
                 .collectLatest {
-                    instructions=it
+                    instructions = it
                 }
         }
         viewModelScope.launch(Dispatchers.Default) {
             topicRepository
                 .getAll()
                 .collectLatest {
-                    topics=it
+                    topics = it
                 }
         }
 
@@ -121,12 +121,8 @@ class QuestionViewModel (
                 .collectLatest {
 
                     questions.value = it
-
                 }
         }
-
-
-
     }
 
     private fun updateExamType(isObjOnly: Boolean) {
@@ -257,7 +253,7 @@ class QuestionViewModel (
                 }
                 ?.toImmutableList(),
 
-            )
+        )
 
         _question.value = question
     }
@@ -474,8 +470,6 @@ class QuestionViewModel (
         }
     }
 
-
-
     private fun editContent(
         questionIndex: Int,
         items: suspend (MutableList<ItemUiState>) -> Int?,
@@ -532,8 +526,6 @@ class QuestionViewModel (
         }
     }
 
-
-
     private val _examInputUiState = mutableStateOf(ExamInputUiState("", false))
     val examInputUiState: State<ExamInputUiState> = _examInputUiState
 
@@ -564,39 +556,30 @@ class QuestionViewModel (
         }
     }
 
+    fun onInstructionIdChange(id: Long?) {
+        if (id == null) {
+            _question.value = question.value.copy(instructionUiState = null)
+        } else {
+            val instr = instructions.find { it.id == id }
 
-
-    fun onInstructionIdChange(id:Long?) {
-
-
-            if (id==null) {
-                _question.value = question.value.copy(instructionUiState = null)
-            } else {
-                val instr = instructions.find { it.id == id}
-
-                _question.value = question.value.copy(instructionUiState = instr?.toInstructionUiState())
-            }
-
+            _question.value = question.value.copy(instructionUiState = instr?.toInstructionUiState())
+        }
     }
 
     fun onTopicInputChanged(id: Long?) {
-        if (id==null) {
+        if (id == null) {
             _question.value = question.value.copy(topicUiState = null)
         } else {
-            val topic = topics.find { it.id == id}
+            val topic = topics.find { it.id == id }
 
             _question.value = question.value.copy(topicUiState = topic?.toUi())
         }
-
     }
-
 
     fun onTopicSelect(id: Long) {
 //        val topic = topicUiStates.value.find { it.id == id }
 //        _question.value = question.value.copy(topicUiState = topic)
     }
-
-
 
     private fun log(msg: String) {
 //        co.touchlab.kermit.Logger.e(msg)

@@ -1,6 +1,5 @@
 package com.mshdabiola.model.data
 
-
 data class CurrentExam(
     val id: Long,
     val currentTime: Long = 0,

@@ -50,7 +50,7 @@ fun CommonScreen(
                 }, actions = action)
             },
 
-            ) {
+        ) {
             firstScreen(Modifier.padding(it))
             if (show) {
                 ModalBottomSheet(

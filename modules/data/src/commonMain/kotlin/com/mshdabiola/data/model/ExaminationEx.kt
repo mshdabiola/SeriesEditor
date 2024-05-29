@@ -27,7 +27,7 @@ fun Examination.asExamEntity() = ExaminationEntity(
     year = year,
     isObjectiveOnly = isObjectiveOnly,
     duration = duration,
-    updateTime = updateTime
+    updateTime = updateTime,
 )
 
 fun ExaminationFull.asExam() = Examination(
@@ -36,11 +36,12 @@ fun ExaminationFull.asExam() = Examination(
     isObjectiveOnly = examinationEntity.isObjectiveOnly,
     duration = examinationEntity.duration,
     updateTime = examinationEntity.updateTime,
-    subject = subjectEntity.asSub()
+    subject = subjectEntity.asSub(),
 )
 
 fun SubjectEntity.asSub() = Subject(
-    id, title = title
+    id,
+    title = title,
 )
 
 fun Subject.asEntity() = SubjectEntity(id, title)
@@ -59,7 +60,7 @@ fun Option.asEntity() = OptionEntity(
     examId = examId,
     title = title,
     contents = contents.map { it.toSer() }.asString(),
-    isAnswer = isAnswer
+    isAnswer = isAnswer,
 )
 
 fun OptionEntity.asModel() = Option(
@@ -69,11 +70,11 @@ fun OptionEntity.asModel() = Option(
     examId = examId,
     title = title,
     contents = contents.toContent().map { it.asModel() },
-    isAnswer = isAnswer
+    isAnswer = isAnswer,
 )
 
 fun Question.asModel() = QuestionEntity(
-    id, number, examId, title, contents.map { it.toSer() }.asString(), answers.map { it.toSer() }.asString(), isTheory, instruction?.id, topic?.id
+    id, number, examId, title, contents.map { it.toSer() }.asString(), answers.map { it.toSer() }.asString(), isTheory, instruction?.id, topic?.id,
 )
 
 fun QuestionFull.asModel() = Question(
@@ -86,5 +87,5 @@ fun QuestionFull.asModel() = Question(
     options = options.map { it.asModel() },
     isTheory = questionEntity.isTheory,
     instruction = instructionEntity?.asModel(),
-    topic = topicEntity?.asModel()
+    topic = topicEntity?.asModel(),
 )

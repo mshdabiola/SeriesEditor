@@ -1,6 +1,5 @@
 package com.mshdabiola.main
 
-import com.mshdabiola.model.Note
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.state.SubjectUiState
 import kotlinx.collections.immutable.ImmutableList
@@ -24,4 +23,3 @@ data class MainState(
     val subjects: ImmutableList<SubjectUiState> = emptyList<SubjectUiState>().toImmutableList(),
 //    val messages: ImmutableList<Notify> = emptyList<Notify>().toImmutableList()
 )
-

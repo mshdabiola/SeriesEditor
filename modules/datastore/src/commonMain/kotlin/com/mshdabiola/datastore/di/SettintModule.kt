@@ -15,7 +15,7 @@ internal val commonModule = module {
             question = get(qualifier = qualifier("question")),
             instruction = get(qualifier = qualifier("instruction")),
             current = get(qualifier = qualifier("current")),
-            coroutineDispatcher = get()
+            coroutineDispatcher = get(),
         )
     } bind Store::class
     // singleOf(::StoreImpl) bind Store::class

@@ -411,7 +411,7 @@ internal fun MainRoute(
                     action = action,
                     topbar = topbar,
 
-                    )
+                )
             },
         )
     }
@@ -499,7 +499,7 @@ internal fun MainScreen(
                         toggleSelect = toggleSelect,
                         isSelectMode = isSelectMode,
 
-                        )
+                    )
                 }
             }
         },
@@ -721,7 +721,7 @@ fun MainDialog(
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         maxLines = 1,
 
-                        )
+                    )
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = key,
@@ -804,7 +804,6 @@ fun ItemImage(imageModel: Image) {
         },
     )
 }
-
 
 // @Preview
 @Composable

@@ -31,20 +31,18 @@ val dataModule = module {
 
     includes(datastoreModule, databaseModule, networkModule, analyticsModule)
     single {
-        //sync path together
-        generalPath=com.mshdabiola.model.generalPath
-        Dispatchers.IO } bind CoroutineDispatcher::class
+        // sync path together
+        generalPath = com.mshdabiola.model.generalPath
+        Dispatchers.IO
+    } bind CoroutineDispatcher::class
     singleOf(::RealINetworkRepository) bind INetworkRepository::class
     singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
 
     singleOf(::SettingRepository) bind ISettingRepository::class
-
-
 
     singleOf(::SubjectRepository) bind ISubjectRepository::class
     singleOf(::ExaminationRepository) bind IExaminationRepository::class
     singleOf(::TopicRepository) bind ITopicRepository::class
     singleOf(::InstructionRepository) bind IInstructionRepository::class
     singleOf(::QuestionRepository) bind IQuestionRepository::class
-
 }

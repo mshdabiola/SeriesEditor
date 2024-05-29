@@ -13,7 +13,6 @@ interface IInstructionRepository {
 
     fun getAllByExamId(examId: Long): Flow<List<Instruction>>
 
-
     fun getOne(id: Long): Flow<Instruction?>
 
     suspend fun delete(id: Long)

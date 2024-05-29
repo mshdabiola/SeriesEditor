@@ -11,10 +11,9 @@ val detailModule = module {
         QuestionViewModel(param[0], param[1], get(), get(), get(), get(), get())
     }
     viewModel { param ->
-        TopicViewModel(param[0],  get())
+        TopicViewModel(param[0], get())
     }
     viewModel { param ->
-        InstructionViewModel(param[0],  get(), get())
+        InstructionViewModel(param[0], get(), get())
     }
-
 }

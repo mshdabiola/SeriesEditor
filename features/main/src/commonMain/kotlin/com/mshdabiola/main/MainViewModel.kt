@@ -25,7 +25,7 @@ class MainViewModel constructor(
     private val iSubjectRepository: ISubjectRepository,
     private val iExamRepository: IExaminationRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
@@ -55,7 +55,6 @@ class MainViewModel constructor(
     }
 
     fun onSubject(index: Long) {
-
         _mainState.update {
             it.copy(currentSubjectId = index)
         }
@@ -86,7 +85,6 @@ class MainViewModel constructor(
     }
 
     fun onExamYearContentChange(text: String) {
-
         _mainState.update {
             it.copy(examination = it.examination.copy(year = text.toLong()))
         }
@@ -99,7 +97,6 @@ class MainViewModel constructor(
     }
 
     fun onExamDurationContentChange(text: String) {
-
         _mainState.update {
             it.copy(examination = it.examination.copy(duration = text.ifBlank { "0" }.toLong()))
         }
@@ -187,21 +184,19 @@ class MainViewModel constructor(
         _mainState.update {
             it.copy(
                 isSelectMode = false,
-                examinations = exams
+                examinations = exams,
             )
         }
-
     }
 
     fun selectAll() {
         val exams = mainState.value.examinations
-
             .map { it.copy(isSelected = true) }
             .toImmutableList()
 
         _mainState.update {
             it.copy(
-                examinations = exams
+                examinations = exams,
             )
         }
     }
@@ -220,7 +215,7 @@ class MainViewModel constructor(
 
         _mainState.update {
             it.copy(
-                examinations = exams
+                examinations = exams,
             )
         }
 //
@@ -243,5 +238,4 @@ class MainViewModel constructor(
         }
 //        _isSelectMode.value = false
     }
-
 }

@@ -16,9 +16,7 @@ internal class SubjectRepository constructor(
 ) : ISubjectRepository {
     override suspend fun upsert(subject: Subject): Long {
         return withContext(ioDispatcher) {
-
             subjectDao.upsert(subject.asEntity())
-
         }
     }
 
@@ -45,5 +43,4 @@ internal class SubjectRepository constructor(
             subjectDao.delete(id)
         }
     }
-
 }

@@ -9,9 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +40,7 @@ actual fun DragAndDropImage(
             uri?.path?.let {
                 val time = System.currentTimeMillis()
                 val extension = getFileMimeType(uri, context)
-               // Timber.e("extention $extension")
+                // Timber.e("extention $extension")
                 val path2 = File.createTempFile("abiola", "ima.${extension ?: "jpg"}")
                 val outputStream = FileOutputStream(path2)
 
@@ -72,7 +70,7 @@ actual fun DragAndDropImage(
             BorderStroke(width = 2.dp, color = Color.Black)
         },
 
-        ) {
+    ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             //  if (File(path).exists()) {
             ImageUi(

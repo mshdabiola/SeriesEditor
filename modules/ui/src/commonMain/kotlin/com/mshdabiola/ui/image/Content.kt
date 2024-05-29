@@ -69,7 +69,7 @@ fun ContentView(
                         Type.IMAGE ->
                             Box(childModifier, contentAlignment = Alignment.Center) {
                                 ImageUi(
-                                    Modifier.fillMaxWidth().aspectRatio(16f/9f),
+                                    Modifier.fillMaxWidth().aspectRatio(16f / 9f),
                                     path = ImageUtil.getGeneralDir(item.content, examId).path,
                                     contentDescription = "",
                                 )
@@ -77,7 +77,7 @@ fun ContentView(
                     }
                 },
 
-                )
+            )
         }
     }
 }
@@ -97,7 +97,7 @@ fun Content(
     changeType: (Int, Type) -> Unit = { _, _ -> },
     onTextChange: (Int, String) -> Unit = { _, _ -> },
 
-    ) {
+) {
     Column(modifier) {
         items.forEachIndexed { index, item ->
             var showContext by remember { mutableStateOf(false) }
@@ -118,7 +118,7 @@ fun Content(
                         })
 
                         Type.IMAGE -> ImageContent(
-                            childModifier.fillMaxWidth().aspectRatio(16f/9f),
+                            childModifier.fillMaxWidth().aspectRatio(16f / 9f),
                             item,
                             examId = examId,
                             onTextChange = {

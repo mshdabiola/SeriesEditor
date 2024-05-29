@@ -38,7 +38,7 @@ class SeriesEditorApplication : Application() {
                 KermitKoinLogger(Logger.withTag("koin")),
             )
             androidContext(this@SeriesEditorApplication)
-            modules(appModule, jankStatsModule,logModule)
+            modules(appModule, jankStatsModule, logModule)
         }
 
 //        if (packageName.contains("debug")) {

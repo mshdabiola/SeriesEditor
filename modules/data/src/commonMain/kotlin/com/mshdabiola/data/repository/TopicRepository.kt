@@ -16,17 +16,13 @@ internal class TopicRepository constructor(
 ) : ITopicRepository {
     override suspend fun upsert(topic: Topic): Long {
         return withContext(ioDispatcher) {
-
             topicDao.upsert(topic.asEntity())
-
         }
     }
 
     override suspend fun insertAll(topic: List<Topic>) {
         return withContext(ioDispatcher) {
-
             topicDao.insertAll(topic.map { it.asEntity() })
-
         }
     }
 
@@ -64,5 +60,4 @@ internal class TopicRepository constructor(
             topicDao.delete(id)
         }
     }
-
 }

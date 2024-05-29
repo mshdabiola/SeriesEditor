@@ -1,10 +1,8 @@
 package com.mshdabiola.ui.image
 
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
@@ -28,11 +26,9 @@ fun ImageUi(
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
                 contentDescription = contentDescription,
-                contentScale =contentScale
+                contentScale = contentScale,
             )
-
         }
-
 
         else -> {
             AsyncImage(
@@ -41,18 +37,18 @@ fun ImageUi(
                     .data(path)
                     .build(),
                 contentDescription = contentDescription,
-                contentScale =contentScale
+                contentScale = contentScale,
             )
         }
     }
 }
 //
-//expect fun loadSvgPainter(file: File, density: Density): Painter
-//expect fun loadSvgPainter1(file: File, density: Density): ImageBitmap?
+// expect fun loadSvgPainter(file: File, density: Density): Painter
+// expect fun loadSvgPainter1(file: File, density: Density): ImageBitmap?
 //
-//// fun loadSvgPainter2(file : File, density: Density) : ImageVector {
-////    return loadSvgPainter1(file, density)
-//// }
+// // fun loadSvgPainter2(file : File, density: Density) : ImageVector {
+// //    return loadSvgPainter1(file, density)
+// // }
 //
-//expect fun loadXmlImageVector(file: File, density: Density): ImageVector
-//expect fun loadImageBitmap(file: File): ImageBitmap?
+// expect fun loadXmlImageVector(file: File, density: Density): ImageVector
+// expect fun loadImageBitmap(file: File): ImageBitmap?

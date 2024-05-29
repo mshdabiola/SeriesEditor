@@ -53,12 +53,9 @@ internal class StoreImpl(
         }
     }
 
-
     override suspend fun updateCurrentQuestion(transform: suspend (CurrentExamSer) -> CurrentExamSer): CurrentExamSer {
         return withContext(coroutineDispatcher) {
             current.updateData(transform)
         }
     }
-
-
 }

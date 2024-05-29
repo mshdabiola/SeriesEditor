@@ -14,7 +14,6 @@ import com.mshdabiola.datastore.model.UserDataSer
 import okio.FileSystem
 import okio.Path.Companion.toPath
 
-
 fun createDataStoreUserData(
     producePath: () -> String,
 ): DataStore<UserDataSer> = DataStoreFactory.create(
@@ -26,7 +25,6 @@ fun createDataStoreUserData(
         },
     ),
 )
-
 
 fun createDataStoreInstruction(
     producePath: () -> String,
@@ -40,7 +38,6 @@ fun createDataStoreInstruction(
     ),
 )
 
-
 fun createDataStoreQuestion(
     producePath: () -> String,
 ): DataStore<Map<Long, QuestionSer>> = DataStoreFactory.create(
@@ -52,7 +49,6 @@ fun createDataStoreQuestion(
         },
     ),
 )
-
 
 fun createDataStoreCurrentExam(
     producePath: () -> String,

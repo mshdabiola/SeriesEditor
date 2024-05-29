@@ -24,14 +24,12 @@ actual fun DirtoryUi(
 
                 onFile(file.file)
             }
-
-        }
+        },
     )
     LaunchedEffect(show) {
         if (show) {
             pickerLauncher.launch()
             onDismiss()
-
         }
     }
 }

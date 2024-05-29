@@ -10,5 +10,5 @@ data class OptionSer(
     val examId: Long,
     val title: String,
     val contents: List<ContentSer>,
-    val isAnswer: Boolean
+    val isAnswer: Boolean,
 )

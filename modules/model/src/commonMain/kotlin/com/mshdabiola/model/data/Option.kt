@@ -7,5 +7,5 @@ data class Option(
     val examId: Long,
     val title: String,
     val contents: List<Content>,
-    val isAnswer: Boolean
+    val isAnswer: Boolean,
 )

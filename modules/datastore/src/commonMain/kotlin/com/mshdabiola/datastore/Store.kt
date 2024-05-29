@@ -13,11 +13,9 @@ interface Store {
     val instructions: Flow<Map<Long, InstructionSer>>
     val currentExam: Flow<CurrentExamSer>
 
-
     suspend fun updateUserData(transform: suspend (UserDataSer) -> UserDataSer): UserDataSer
 
     suspend fun updateQuestion(transform: suspend (Map<Long, QuestionSer>) -> Map<Long, QuestionSer>): Map<Long, QuestionSer>
     suspend fun updateInstruction(transform: suspend (Map<Long, InstructionSer>) -> Map<Long, InstructionSer>): Map<Long, InstructionSer>
     suspend fun updateCurrentQuestion(transform: suspend (CurrentExamSer) -> CurrentExamSer): CurrentExamSer
-
 }
