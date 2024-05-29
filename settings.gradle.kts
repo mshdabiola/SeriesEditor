@@ -1,3 +1,5 @@
+import java.util.Properties
+
 pluginManagement {
     repositories {
         includeBuild("build-logic")
@@ -9,20 +11,29 @@ pluginManagement {
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-//val project = File(rootDir, "local.properties").inputStream().use {
-//    java.util.Properties().apply { load(it) }
-//}
+var project :Properties?=null
+try {
+      project=  File(rootDir, "local.properties").inputStream().use {
+            java.util.Properties().apply { load(it) }
+
+        }
+    println("user ${ project?.getProperty("gpr.user")}")
+    } catch (e: Exception) {
+
+        e.printStackTrace()
+    }
+
 dependencyResolutionManagement {
 //    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-      //  mavenLocal()
+        //  mavenLocal()
         maven {
             url = uri("https://maven.pkg.github.com/mshdabiola/series")
             credentials {
                 username = "41789315"//project.getProperty("gpr.user")  ?: System.getenv("USERNAME")
-                password = "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"//project.getProperty("gpr.key") ?: System.getenv("TOKEN")
+                password = "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"//project.getProperty("gpr.key") ?: System.getenv("TOKEN")
             }
         }
         maven(url = "https://www.jitpack.io")
