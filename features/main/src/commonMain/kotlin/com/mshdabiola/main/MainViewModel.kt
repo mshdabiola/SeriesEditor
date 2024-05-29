@@ -85,9 +85,15 @@ class MainViewModel constructor(
     }
 
     fun onExamYearContentChange(text: String) {
-        _mainState.update {
-            it.copy(examination = it.examination.copy(year = text.toLong()))
+
+        try {
+            _mainState.update {
+                it.copy(examination = it.examination.copy(year = text.toLongOrNull() ?: -1))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
 //        try {
 //            _dateError.value = false
 //            _exam.value = exam.value?.copy(year = text.toLong())
@@ -97,13 +103,14 @@ class MainViewModel constructor(
     }
 
     fun onExamDurationContentChange(text: String) {
-        _mainState.update {
-            it.copy(examination = it.examination.copy(duration = text.ifBlank { "0" }.toLong()))
+
+        try {
+            _mainState.update {
+                it.copy(examination = it.examination.copy(duration = text.toLongOrNull() ?: -1))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-//        try {
-//            _exam.value = exam.value?.copy(duration = text.toLongOrNull() ?: -1)
-//        } catch (e: Exception) {
-//        }
     }
 
     fun onSubjectIdChange(id: Long) {
@@ -122,8 +129,8 @@ class MainViewModel constructor(
     }
 
     fun onUpdateExam(id: Long) {
-        _mainState.update {
-            it.copy(examination = mainState.value.examinations[id.toInt()])
+        _mainState.update { mainState1 ->
+            mainState1.copy(examination = mainState.value.examinations.single { it.id== id })
         }
 //        examUiStates.value.find { it.id == id }?.let {
 //            _exam.value = it
