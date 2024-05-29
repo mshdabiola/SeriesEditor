@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             url = uri("https://maven.pkg.github.com/mshdabiola/series")
             credentials {
                 username = "41789315"//project.getProperty("gpr.user")  ?: System.getenv("USERNAME")
-                password = "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"//project.getProperty("gpr.key") ?: System.getenv("TOKEN")
+                password = "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"//project.getProperty("gpr.key") ?: System.getenv("TOKEN")
             }
         }
         maven(url = "https://www.jitpack.io")
