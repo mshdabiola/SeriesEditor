@@ -9,9 +9,9 @@ pluginManagement {
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-val project = File(rootDir, "local.properties").inputStream().use {
-    java.util.Properties().apply { load(it) }
-}
+//val project = File(rootDir, "local.properties").inputStream().use {
+//    java.util.Properties().apply { load(it) }
+//}
 dependencyResolutionManagement {
 //    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
