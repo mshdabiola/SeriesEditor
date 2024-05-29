@@ -24,6 +24,9 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build jar
+        env:
+          USERID: ${{ secrets.USERID }}
+          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew createReleaseDistributable
 
       - name: Run Conveyor
