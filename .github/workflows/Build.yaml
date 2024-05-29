@@ -92,6 +92,9 @@ jobs:
       - name: Run all local screenshot tests (Roborazzi)
         id: screenshotsverify
         continue-on-error: true
+        env:
+          USERID: ${{ secrets.USERID }}
+          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew verifyRoborazziDebug
 
       - name: Prevent pushing new screenshots if this is a fork
