@@ -24,9 +24,9 @@ try {
 
         e.printStackTrace()
     }
-val user = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
-val token=  project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
-println("user $user token $token")
+//val user = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
+//val token=  project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
+//println("user $user token $token")
 
 dependencyResolutionManagement {
 //    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
