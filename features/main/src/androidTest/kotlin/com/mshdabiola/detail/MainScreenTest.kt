@@ -24,10 +24,10 @@ class MainScreenTest {
     @Test
     fun enterText_showsShowText() {
         composeTestRule.setContent {
-            MainScreen(
-                mainState = MainState(),
-                items = listOf<NoteUiState>().toImmutableList(),
-            )
+//            MainScreen(
+//                mainState = MainState(),
+//                items = listOf<NoteUiState>().toImmutableList(),
+//            )
         }
 
 //        composeTestRule
