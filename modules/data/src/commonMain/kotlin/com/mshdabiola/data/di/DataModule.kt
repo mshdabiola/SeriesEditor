@@ -18,7 +18,6 @@ import com.mshdabiola.data.repository.SubjectRepository
 import com.mshdabiola.data.repository.TopicRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.database.di.databaseModule
-import com.mshdabiola.database.generalPath
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,7 +31,6 @@ val dataModule = module {
     includes(datastoreModule, databaseModule, networkModule, analyticsModule)
     single {
         // sync path together
-        generalPath = com.mshdabiola.model.generalPath
         Dispatchers.IO
     } bind CoroutineDispatcher::class
     singleOf(::RealINetworkRepository) bind INetworkRepository::class

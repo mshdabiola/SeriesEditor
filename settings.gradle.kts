@@ -13,7 +13,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 var project :Properties?=null
 try {
-      project=  File(rootDir, "local2.properties").inputStream().use {
+      project=  File(rootDir, "local.properties").inputStream().use {
             java.util.Properties().apply { load(it) }
 
         }
@@ -33,7 +33,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        //  mavenLocal()
+          mavenLocal()
         maven {
             url = uri("https://maven.pkg.github.com/mshdabiola/series")
             credentials {
@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 rootProject.name = "SeriesEditor"
 //include(":app")
 //include(":app:baselineprofile")
-include(":modules:database")
+//include(":modules:database")
 include(":modules:designsystem")
 include(":modules:model")
 include(":modules:network")

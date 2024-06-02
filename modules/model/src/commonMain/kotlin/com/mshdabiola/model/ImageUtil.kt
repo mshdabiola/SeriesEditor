@@ -11,10 +11,6 @@ object ImageUtil {
     }
 
     fun getGeneralDir(name: String, examId: Long): File {
-        val homeDir = File(generalPath, examId.toString())
-        if (homeDir.exists().not()) {
-            homeDir.mkdirs()
-        }
-        return File(homeDir, name)
+        return File(generalPath, "image/$examId/$name")
     }
 }

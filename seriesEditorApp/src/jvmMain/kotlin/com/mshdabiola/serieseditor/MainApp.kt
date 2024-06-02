@@ -12,6 +12,7 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
+import com.mshdabiola.database.generalPath
 import com.mshdabiola.designsystem.drawable.defaultAppIcon
 import com.mshdabiola.designsystem.string.appName
 import com.mshdabiola.model.Writer
@@ -43,6 +44,8 @@ fun mainApp() {
 
 fun main() {
     val path = File("${System.getProperty("user.home")}/AppData/Local/hydraulic")
+    generalPath = com.mshdabiola.model.generalPath
+
     if (path.exists().not()) {
         path.mkdirs()
     }

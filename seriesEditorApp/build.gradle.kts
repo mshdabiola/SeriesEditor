@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.mshdabiola.serieseditor"
-version = "0.0.1"
+version = "0.0.2"
 
 dependencies {
 
@@ -77,8 +77,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "17"
-            }
+                jvmTarget = "1.8"            }
         }
     }
 
@@ -119,6 +118,7 @@ kotlin {
             implementation(libs.kermit)
 
             implementation(libs.kermit.koin)
+            implementation(libs.database)
 
 
         }
@@ -152,8 +152,8 @@ android {
 
     defaultConfig {
         applicationId = "com.mshdabiola.serieseditor"
-        versionCode = 1
-        versionName = "0.0.1" // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCode = 2
+        versionName = "0.0.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
         testInstrumentationRunner = "com.mshdabiola.testing.TestRunner"
@@ -179,7 +179,7 @@ android {
             // TODO: Abstract the signing configuration to a separate file to avoid hardcoding this.
             // signingConfig = signingConfigs.getByName("debug")
             // Ensure Baseline Profile is fresh for release builds.
-            baselineProfile.automaticGenerationDuringBuild = true
+            baselineProfile.automaticGenerationDuringBuild = false
         }
         create("benchmark") {
             // Enable all the optimizations from release build through initWith(release).

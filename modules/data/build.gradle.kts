@@ -21,7 +21,7 @@ kotlin {
                 implementation(project(":modules:datastore"))
                 implementation(project(":modules:network"))
                 implementation(libs.kotlinx.coroutines.core)
-                implementation("com.mshdabiola.series:database:0.0.3")
+                implementation(libs.database)
 
 
 
