@@ -235,8 +235,8 @@ com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 com.google.j2objc:j2objc-annotations:2.8
 com.google.protobuf:protobuf-javalite:3.22.3
 com.jakewharton.timber:timber:5.0.1
-com.mshdabiola.series:database-android:0.0.3
-com.mshdabiola.series:database:0.0.3
+com.mshdabiola.series:database-android:0.0.4
+com.mshdabiola.series:database:0.0.4
 com.mshdabiola.series:jretex:0.0.3
 com.mshdabiola.series:retex-android:0.0.3
 com.mshdabiola.series:retex:0.0.3
