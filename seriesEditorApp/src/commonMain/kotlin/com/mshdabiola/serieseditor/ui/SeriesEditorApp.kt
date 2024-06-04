@@ -54,7 +54,6 @@ import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.CommonBar
 import com.mshdabiola.ui.CommonNavigation
 import com.mshdabiola.ui.CommonRail
-import com.mshdabiola.ui.SplashScreen
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.semanticsCommon
 import org.koin.compose.koinInject
@@ -104,113 +103,109 @@ fun SeriesEditorApp() {
                         GradientColors()
                     },
                 ) {
-                    if (uiState == MainActivityUiState.Loading) {
-                        SplashScreen()
-                    } else {
-                        val snackbarHostState = remember { SnackbarHostState() }
+                    val snackbarHostState = remember { SnackbarHostState() }
 
-                        if (appState.shouldShowDrawer) {
-                            PermanentNavigationDrawer(
-                                drawerContent = {
-                                    CommonNavigation(
-                                        modifier = Modifier.width(300.dp),
-                                        currentNavigation = appState.currentDestination?.route ?: "",
-                                        onNavigate = navigator,
-                                    )
-                                },
-                            ) {
-                                Scaffold(
-                                    modifier = Modifier.semanticsCommon {},
-                                    containerColor = Color.Transparent,
-                                    contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                    if (appState.shouldShowDrawer) {
+                        PermanentNavigationDrawer(
+                            drawerContent = {
+                                CommonNavigation(
+                                    modifier = Modifier.width(300.dp),
+                                    currentNavigation = appState.currentDestination?.route ?: "",
+                                    onNavigate = navigator,
+                                )
+                            },
+                        ) {
+                            Scaffold(
+                                modifier = Modifier.semanticsCommon {},
+                                containerColor = Color.Transparent,
+                                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                                snackbarHost = { SnackbarHost(snackbarHostState) },
 
-                                ) { padding ->
+                            ) { padding ->
 
-                                    Column(
-                                        Modifier
-                                            .fillMaxSize()
-                                            .padding(padding)
-                                            .consumeWindowInsets(padding)
-                                            .windowInsetsPadding(
-                                                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
-                                            ),
-                                    ) {
-                                        when (appState.windowSizeClass.widthSizeClass) {
-                                            WindowWidthSizeClass.Compact -> {}
-                                            else -> {
+                                Column(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .padding(padding)
+                                        .consumeWindowInsets(padding)
+                                        .windowInsetsPadding(
+                                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+                                        ),
+                                ) {
+                                    when (appState.windowSizeClass.widthSizeClass) {
+                                        WindowWidthSizeClass.Compact -> {}
+                                        else -> {
 //                                            Row {
 
 //                                                CommonNavigation (
 //                                                    modifier = Modifier.weight(0.3f),
 //                                                    currentNavigation = appState.currentDestination?.route ?:""
 //                                                )
-                                                SkNavHost(
+                                            SkNavHost(
 //                                                    modifier = Modifier.weight(0.7f),
-                                                    appState = appState,
-                                                    onShowSnackbar = { message, action ->
-                                                        snackbarHostState.showSnackbar(
-                                                            message = message,
-                                                            actionLabel = action,
-                                                            duration = SnackbarDuration.Short,
-                                                        ) == SnackbarResult.ActionPerformed
-                                                    },
-                                                )
+                                                appState = appState,
+                                                onShowSnackbar = { message, action ->
+                                                    snackbarHostState.showSnackbar(
+                                                        message = message,
+                                                        actionLabel = action,
+                                                        duration = SnackbarDuration.Short,
+                                                    ) == SnackbarResult.ActionPerformed
+                                                },
+                                            )
 //                                            }
-                                            }
                                         }
                                     }
                                 }
                             }
-                        } else {
-                            Row {
-                                if (appState.shouldShowNavRail) {
-                                    CommonRail(
-                                        modifier = Modifier.width(100.dp),
-                                        currentNavigation = appState.currentDestination?.route ?: "",
-                                        onNavigate = navigator,
+                        }
+                    } else {
+                        Row {
+                            if (appState.shouldShowNavRail) {
+                                CommonRail(
+                                    modifier = Modifier.width(100.dp),
+                                    currentNavigation = appState.currentDestination?.route ?: "",
+                                    onNavigate = navigator,
 
-                                    )
-                                }
-                                Scaffold(
-                                    modifier = Modifier.semanticsCommon {},
-                                    containerColor = Color.Transparent,
-                                    contentColor = MaterialTheme.colorScheme.onBackground,
-                                    contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                                    snackbarHost = { SnackbarHost(snackbarHostState) },
-                                    bottomBar = {
-                                        if (appState.shouldShowBottomBar) {
-                                            CommonBar(
-                                                currentNavigation = appState.currentDestination?.route
-                                                    ?: "",
-                                            ) { navigator(it) }
-                                        }
-                                    },
-
-                                ) { padding ->
-
-                                    Column(
-                                        Modifier
-                                            .fillMaxSize()
-                                            .padding(padding)
-                                            .consumeWindowInsets(padding)
-                                            .windowInsetsPadding(
-                                                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
-                                            ),
-                                    ) {
-                                        SkNavHost(
-//                                                    modifier = Modifier.weight(0.7f),
-                                            appState = appState,
-                                            onShowSnackbar = { message, action ->
-                                                snackbarHostState.showSnackbar(
-                                                    message = message,
-                                                    actionLabel = action,
-                                                    duration = SnackbarDuration.Short,
-                                                ) == SnackbarResult.ActionPerformed
-                                            },
-                                        )
-//                                            }
+                                )
+                            }
+                            Scaffold(
+                                modifier = Modifier.semanticsCommon {},
+                                containerColor = Color.Transparent,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                                snackbarHost = { SnackbarHost(snackbarHostState) },
+                                bottomBar = {
+                                    if (appState.shouldShowBottomBar) {
+                                        CommonBar(
+                                            currentNavigation = appState.currentDestination?.route
+                                                ?: "",
+                                        ) { navigator(it) }
                                     }
+                                },
+
+                            ) { padding ->
+
+                                Column(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .padding(padding)
+                                        .consumeWindowInsets(padding)
+                                        .windowInsetsPadding(
+                                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+                                        ),
+                                ) {
+                                    SkNavHost(
+//                                                    modifier = Modifier.weight(0.7f),
+                                        appState = appState,
+                                        onShowSnackbar = { message, action ->
+                                            snackbarHostState.showSnackbar(
+                                                message = message,
+                                                actionLabel = action,
+                                                duration = SnackbarDuration.Short,
+                                            ) == SnackbarResult.ActionPerformed
+                                        },
+                                    )
+//                                            }
                                 }
                             }
                         }

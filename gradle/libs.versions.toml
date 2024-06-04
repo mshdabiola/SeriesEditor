@@ -4,6 +4,7 @@ androidTools = "31.4.0"
 
 accompanist = "0.34.0"
 
+database = "0.0.4"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
 leakcanaryAndroid = "3.0-alpha-1"
@@ -142,6 +143,7 @@ androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 
+database = { module = "com.mshdabiola.series:database", version.ref = "database" }
 decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decomposeVersion" }
 decompose-android = { module = "com.arkivanov.decompose:extensions-android", version.ref = "decomposeVersion" }
 decompose-compose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decomposeVersion" }

@@ -578,7 +578,7 @@ internal fun MainScreen(
 
                 Button(
                     modifier = Modifier.align(Alignment.End),
-                    enabled = examUiState?.subject?.name?.isNotBlank() == true && examUiState.year >0 && examUiState.duration>0,
+                    enabled = examUiState?.subject?.name?.isNotBlank() == true && examUiState.year > 0 && examUiState.duration > 0,
                     onClick = {
                         addExam()
                     },

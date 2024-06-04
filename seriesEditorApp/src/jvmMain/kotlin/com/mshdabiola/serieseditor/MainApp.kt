@@ -1,6 +1,12 @@
 package com.mshdabiola.serieseditor
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -12,11 +18,14 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
+import com.mshdabiola.database.generalPath
 import com.mshdabiola.designsystem.drawable.defaultAppIcon
 import com.mshdabiola.designsystem.string.appName
 import com.mshdabiola.model.Writer
 import com.mshdabiola.serieseditor.di.appModule
 import com.mshdabiola.serieseditor.ui.SeriesEditorApp
+import com.mshdabiola.ui.SplashScreen
+import kotlinx.coroutines.delay
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 import java.io.File
@@ -29,20 +38,32 @@ fun mainApp() {
             position = WindowPosition.Aligned(Alignment.Center),
         )
 
-        val version = "0.0.1"
+        val version = "0.0.10"
         Window(
             onCloseRequest = ::exitApplication,
             title = "$appName v$version",
             icon = defaultAppIcon,
             state = windowState,
         ) {
-            SeriesEditorApp()
+            val show = remember { mutableStateOf(true) }
+            LaunchedEffect(Unit) {
+                delay(2000)
+                show.value = false
+            }
+            Box(Modifier.fillMaxSize()) {
+                SeriesEditorApp()
+                if (show.value) {
+                    SplashScreen()
+                }
+            }
         }
     }
 }
 
 fun main() {
     val path = File("${System.getProperty("user.home")}/AppData/Local/hydraulic")
+    generalPath = com.mshdabiola.model.generalPath
+
     if (path.exists().not()) {
         path.mkdirs()
     }
