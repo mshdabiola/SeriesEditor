@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.mshdabiola.serieseditor"
-version = "0.0.2"
+version = "0.0.10"
 
 dependencies {
 
@@ -153,7 +153,7 @@ android {
     defaultConfig {
         applicationId = "com.mshdabiola.serieseditor"
         versionCode = 2
-        versionName = "0.0.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionName = "0.0.10" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
         testInstrumentationRunner = "com.mshdabiola.testing.TestRunner"
