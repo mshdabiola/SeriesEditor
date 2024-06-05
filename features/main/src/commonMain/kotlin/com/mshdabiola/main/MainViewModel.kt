@@ -17,6 +17,9 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -43,12 +46,19 @@ class MainViewModel constructor(
         }
 
         viewModelScope.launch {
-            iExamRepository
-                .getAll()
-                .mapNotNull { subjectList -> subjectList.map { it.toUi() }.toImmutableList() }
-                .collectLatest { exams ->
+            combine(iExamRepository.getAll().map { it.map { it.toUi() } }, mainState.map { it.currentSubjectId }) { examinations, id ->
+                Pair(id, examinations)
+            }
+                .distinctUntilChanged { old, new -> old == new }
+                .collectLatest { pair ->
+                    val list: List<ExamUiState> = if (pair.first < 0) {
+                        pair.second
+                    } else {
+                        pair.second.filter { it.subject.id == pair.first }
+                    }
+
                     _mainState.update {
-                        it.copy(examinations = exams)
+                        it.copy(examinations = list.toImmutableList())
                     }
                 }
         }
@@ -56,7 +66,7 @@ class MainViewModel constructor(
 
     fun onSubject(index: Long) {
         _mainState.update {
-            it.copy(currentSubjectId = index)
+            it.copy(currentSubjectId = index, isSelectMode = false)
         }
     }
 
@@ -136,8 +146,8 @@ class MainViewModel constructor(
     }
 
     fun updateSubject(id: Long) {
-        _mainState.update {
-            it.copy(subject = mainState.value.subjects[id.toInt()].copy(focus = true))
+        _mainState.update { state ->
+            state.copy(subject = mainState.value.subjects.single { it.id == id }.copy(focus = true))
         }
 //        subjects.value.find { it.id == id }?.let {
 //            _subject.value = it.copy(focus = true)
