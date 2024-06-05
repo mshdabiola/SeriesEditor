@@ -46,16 +46,15 @@ class MainViewModel constructor(
         }
 
         viewModelScope.launch {
-            combine(iExamRepository.getAll().map { it.map { it.toUi() } },mainState.map { it.currentSubjectId }){examinations,id->
-                Pair(id,examinations)
+            combine(iExamRepository.getAll().map { it.map { it.toUi() } }, mainState.map { it.currentSubjectId }) { examinations, id ->
+                Pair(id, examinations)
             }
-                .distinctUntilChanged { old, new -> old==new }
+                .distinctUntilChanged { old, new -> old == new }
                 .collectLatest { pair ->
-                    val list:List<ExamUiState> = if (pair.first < 0) {
-                             pair.second
-                    }
-                    else{
-                        pair.second.filter { it.subject.id==pair.first }
+                    val list: List<ExamUiState> = if (pair.first < 0) {
+                        pair.second
+                    } else {
+                        pair.second.filter { it.subject.id == pair.first }
                     }
 
                     _mainState.update {
@@ -67,7 +66,7 @@ class MainViewModel constructor(
 
     fun onSubject(index: Long) {
         _mainState.update {
-            it.copy(currentSubjectId = index,isSelectMode=false)
+            it.copy(currentSubjectId = index, isSelectMode = false)
         }
     }
 
@@ -148,7 +147,7 @@ class MainViewModel constructor(
 
     fun updateSubject(id: Long) {
         _mainState.update { state ->
-            state.copy(subject = mainState.value.subjects.single { it.id==id }.copy(focus = true))
+            state.copy(subject = mainState.value.subjects.single { it.id == id }.copy(focus = true))
         }
 //        subjects.value.find { it.id == id }?.let {
 //            _subject.value = it.copy(focus = true)
