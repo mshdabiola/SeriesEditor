@@ -90,10 +90,7 @@ fun SeriesEditorApp() {
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
             darkTheme = darkTheme,
-            themeBrand = chooseTheme(uiState),
-            themeContrast = chooseContrast(uiState),
             disableDynamicTheming = shouldDisableDynamicTheming(uiState),
-            useAndroidTheme = shouldUseAndroidTheme(uiState),
         ) {
             SeriesEditorBackground {
                 SeriesEditorGradientBackground(

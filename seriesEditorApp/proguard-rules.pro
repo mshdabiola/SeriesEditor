@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 #https://issuetracker.google.com/issues/265188224
+-dontwarn com.google.firebase.perf.network.FirebasePerfUrlConnection
 
 -keep,allowshrinking class * extends androidx.compose.ui.node.ModifierNodeElement {
 
