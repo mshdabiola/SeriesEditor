@@ -1,4 +1,4 @@
-package: name='com.mshdabiola.serieseditor.foss' versionCode='3' versionName='0.0.11' platformBuildVersionName='14' platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
+package: name='com.mshdabiola.serieseditor.foss' versionCode='11' versionName='0.0.11' platformBuildVersionName='14' platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
 sdkVersion:'24'
 targetSdkVersion:'34'
 uses-permission: name='android.permission.INTERNET'
