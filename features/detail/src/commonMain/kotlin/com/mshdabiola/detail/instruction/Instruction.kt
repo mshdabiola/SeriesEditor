@@ -26,7 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.model.data.Type
+import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.image.ContentView
 import com.mshdabiola.ui.state.InstructionUiState

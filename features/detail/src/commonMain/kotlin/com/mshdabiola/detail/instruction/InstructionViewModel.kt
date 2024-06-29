@@ -10,7 +10,7 @@ import com.mshdabiola.data.SvgObject
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.model.ImageUtil.getGeneralDir
-import com.mshdabiola.model.data.Type
+import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.state.InstruInputUiState
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState

@@ -1,6 +1,6 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.model.data.Examination
+import com.mshdabiola.generalmodel.Examination
 import kotlinx.coroutines.flow.Flow
 
 interface IExaminationRepository {

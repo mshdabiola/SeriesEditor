@@ -15,8 +15,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlinx.coroutines.core)
                 api(libs.model)
+
+                implementation(libs.kotlinx.coroutines.core)
 
             }
         }

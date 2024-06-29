@@ -1,10 +1,10 @@
 package com.mshdabiola.data
 
-import com.mshdabiola.model.data.Content
-import com.mshdabiola.model.data.Instruction
-import com.mshdabiola.model.data.Option
-import com.mshdabiola.model.data.Question
-import com.mshdabiola.model.data.Topic
+import com.mshdabiola.generalmodel.Content
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.generalmodel.Topic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

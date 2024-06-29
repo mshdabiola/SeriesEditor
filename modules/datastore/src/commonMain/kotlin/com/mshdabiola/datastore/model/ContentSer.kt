@@ -1,6 +1,6 @@
 package com.mshdabiola.datastore.model
 
-import com.mshdabiola.model.data.Type
+import com.mshdabiola.generalmodel.Type
 import kotlinx.serialization.Serializable
 
 @Serializable

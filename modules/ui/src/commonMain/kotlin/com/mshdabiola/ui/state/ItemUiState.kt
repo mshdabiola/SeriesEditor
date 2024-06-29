@@ -1,6 +1,6 @@
 package com.mshdabiola.ui.state
 
-import com.mshdabiola.model.data.Type
+import com.mshdabiola.generalmodel.Type
 
 data class ItemUiState(
     val content: String = "",

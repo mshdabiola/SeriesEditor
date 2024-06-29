@@ -29,7 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.model.data.Type
+import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.CommonScreen2
 import com.mshdabiola.ui.ScreenSize
 import com.mshdabiola.ui.state.InstruInputUiState

@@ -14,12 +14,12 @@ import com.mshdabiola.database.model.SubjectEntity
 import com.mshdabiola.database.model.TopicEntity
 import com.mshdabiola.datastore.model.asString
 import com.mshdabiola.datastore.model.toContent
-import com.mshdabiola.model.data.Examination
-import com.mshdabiola.model.data.Instruction
-import com.mshdabiola.model.data.Option
-import com.mshdabiola.model.data.Question
-import com.mshdabiola.model.data.Subject
-import com.mshdabiola.model.data.Topic
+import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.generalmodel.Subject
+import com.mshdabiola.generalmodel.Topic
 
 fun Examination.asExamEntity() = ExaminationEntity(
     id = id,

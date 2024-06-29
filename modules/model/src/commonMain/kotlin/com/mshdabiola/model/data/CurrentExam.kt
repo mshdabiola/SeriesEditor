@@ -1,4 +1,4 @@
-package com.mshdabiola.model.data
+package com.mshdabiola.generalmodel
 
 data class CurrentExam(
     val id: Long,

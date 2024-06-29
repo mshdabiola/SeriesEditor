@@ -5,7 +5,7 @@ import com.mshdabiola.data.model.asEntity
 import com.mshdabiola.data.model.asModel
 import com.mshdabiola.database.dao.OptionDao
 import com.mshdabiola.database.dao.QuestionDao
-import com.mshdabiola.model.data.Question
+import com.mshdabiola.generalmodel.Question
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

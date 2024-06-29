@@ -4,7 +4,7 @@ import com.mshdabiola.data.model.asExam
 import com.mshdabiola.data.model.asExamEntity
 import com.mshdabiola.database.DatabaseExportImport
 import com.mshdabiola.database.dao.ExaminationDao
-import com.mshdabiola.model.data.Examination
+import com.mshdabiola.generalmodel.Examination
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

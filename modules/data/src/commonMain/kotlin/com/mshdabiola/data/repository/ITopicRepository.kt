@@ -1,6 +1,6 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.model.data.Topic
+import com.mshdabiola.generalmodel.Topic
 import kotlinx.coroutines.flow.Flow
 
 interface ITopicRepository {
