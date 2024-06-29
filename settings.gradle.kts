@@ -22,7 +22,7 @@ try {
 
 } catch (e: Exception) {
 
-        e.printStackTrace()
+//        e.printStackTrace()
     }
 //val user = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
 //val token=  project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
