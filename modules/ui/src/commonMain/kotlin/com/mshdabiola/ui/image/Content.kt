@@ -36,8 +36,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
-import com.mshdabiola.model.ImageUtil
 import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.model.ImageUtil
 import com.mshdabiola.retex.Latex
 import com.mshdabiola.retex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
