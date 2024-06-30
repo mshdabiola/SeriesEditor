@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +41,7 @@ import androidx.compose.material.icons.rounded.SaveAs
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
@@ -66,11 +68,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -277,43 +280,16 @@ internal fun MainRoute(
             modifier = Modifier,
             drawerState = drawerState,
             drawerContent = {
-                Card(
+                MainNavigation(
                     modifier = Modifier.fillMaxHeight().width(300.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    cardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
                     shape = RoundedCornerShape(0.dp, 8.dp, 8.dp, 0.dp),
-                ) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxHeight()
-                            .systemBarsPadding()
-                            .padding(16.dp),
-                    ) {
-                        item {
-                            NavigationDrawerItem(
-                                modifier = Modifier.fillMaxWidth(),
+                    currentSubjectIndex = mainState.currentSubjectId,
+                    subjects = mainState.subjects,
+                    paddingValues = PaddingValues(16.dp),
+                    onSubject = viewModel::onSubjectIdChange,
 
-                                label = { Text("All Examination") },
-                                onClick = {
-                                    viewModel.onSubject(-1)
-
-                                    coroutineScope.launch { drawerState.close() }
-                                },
-                                selected = mainState.currentSubjectId == -1L,
-                            )
-                        }
-                        items(mainState.subjects, key = { it.id }) {
-                            NavigationDrawerItem(
-                                modifier = Modifier.fillMaxWidth(),
-                                label = { Text(it.name) },
-                                onClick = {
-                                    viewModel.onSubject(it.id)
-                                    coroutineScope.launch { drawerState.close() }
-                                },
-                                selected = mainState.currentSubjectId == it.id,
-                            )
-                        }
-                    }
-                }
+                    )
             },
             content = {
                 MainScreen(
@@ -337,15 +313,17 @@ internal fun MainRoute(
                     onDeleteSubject = { deleteId = it },
                     onUpdateSubject = viewModel::onUpdateExam,
                     action = {
-                        IconButton(onClick = {
-                            coroutineScope.launch {
-                                if (drawerState.isOpen) {
-                                    drawerState.close()
-                                } else {
-                                    drawerState.open()
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    if (drawerState.isOpen) {
+                                        drawerState.close()
+                                    } else {
+                                        drawerState.open()
+                                    }
                                 }
-                            }
-                        }) {
+                            },
+                        ) {
                             Icon(Icons.Default.Menu, "menu")
                         }
                         action()
@@ -357,35 +335,15 @@ internal fun MainRoute(
         PermanentNavigationDrawer(
             modifier = Modifier,
             drawerContent = {
-                Card(
+                MainNavigation(
                     modifier = Modifier.fillMaxHeight().width(300.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                    shape = RectangleShape,
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                ) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxHeight()
-                            .systemBarsPadding()
-                            .padding(16.dp),
-                    ) {
-                        item {
-                            NavigationDrawerItem(
-                                modifier = Modifier.fillMaxWidth(),
-                                label = { Text("All Examination") },
-                                onClick = { viewModel.onSubject(-1) },
-                                selected = mainState.currentSubjectId == -1L,
-                            )
-                        }
-                        items(mainState.subjects, key = { it.id }) {
-                            NavigationDrawerItem(
-                                modifier = Modifier.fillMaxWidth(),
-                                label = { Text(it.name) },
-                                onClick = { viewModel.onSubject(it.id) },
-                                selected = mainState.currentSubjectId == it.id,
-                            )
-                        }
-                    }
-                }
+                    cardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+                    currentSubjectIndex = mainState.currentSubjectId,
+                    subjects = mainState.subjects,
+                    paddingValues = PaddingValues(horizontal = 16.dp),
+                    onSubject = viewModel::onSubjectIdChange,
+
+                    )
             },
             content = {
                 MainScreen(
@@ -411,7 +369,7 @@ internal fun MainRoute(
                     action = action,
                     topbar = topbar,
 
-                )
+                    )
             },
         )
     }
@@ -424,14 +382,16 @@ internal fun MainRoute(
                 }
             },
             confirmButton = {
-                ElevatedButton(onClick = {
-                    if (deleteId == -1L) {
-                        viewModel.deleteSelected()
-                    } else {
-                        viewModel.onDeleteExam(deleteId!!)
-                    }
-                    deleteId = null
-                }) {
+                ElevatedButton(
+                    onClick = {
+                        if (deleteId == -1L) {
+                            viewModel.deleteSelected()
+                        } else {
+                            viewModel.onDeleteExam(deleteId!!)
+                        }
+                        deleteId = null
+                    },
+                ) {
                     Text("Delete exam")
                 }
             },
@@ -444,7 +404,6 @@ internal fun MainRoute(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun MainScreen(
     modifier: Modifier = Modifier,
@@ -483,7 +442,11 @@ internal fun MainScreen(
     CommonScreen(
         screenSize = screenSize,
         firstScreen = {
-            LazyColumn(it.fillMaxSize()) {
+            LazyColumn(
+                modifier = it
+                    .fillMaxSize()
+                    .testTag("main:list"),
+            ) {
                 items(exams, key = { it.id }) {
                     ExamUi(
                         modifier = Modifier.clickable {
@@ -499,19 +462,22 @@ internal fun MainScreen(
                         toggleSelect = toggleSelect,
                         isSelectMode = isSelectMode,
 
-                    )
+                        )
                 }
             }
         },
         secondScreen = {
             Column(
                 Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text("Add Examination")
                 com.mshdabiola.ui.image.DropdownMenu(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .testTag("main:subject:dropdown"),
+                    textModifier = Modifier.fillMaxWidth(),
                     currentIndex = subjects.indexOfFirst { it.name == examUiState?.subject?.name },
                     data = subjects.map { it.name }.toImmutableList(),
                     onDataChange = {
@@ -519,41 +485,14 @@ internal fun MainScreen(
                     },
                     label = "Subject",
                 )
-//                Box {
-//                    TextField(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        label = { Text("Subject") },
-//                        value = examUiState.subject,
-//                        onValueChange = {},
-//                        trailingIcon = {
-//                            IconButton(onClick = {
-//                                showmenu = !showmenu
-//                            }) { Icon(imageVector = Icons.Default.ArrowDropDown, "down") }
-//                        },
-//                        readOnly = true,
-//
-//                    )
-//                    DropdownMenu(
-//                        expanded = showmenu,
-//                        onDismissRequest = { showmenu = false },
-//                    ) {
-//                        subjects.forEach { subj ->
-//                            DropdownMenuItem(
-//                                text = { Text(subj.name) },
-//                                onClick = {
-//                                    onSubjectIdChange(subj.id)
-//                                    showmenu = false
-//                                },
-//                            )
-//                        }
-//                    }
-//                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     TextField(
-                        modifier = Modifier.weight(0.5f),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .testTag("main:year"),
                         label = { Text("Year") },
                         value = if (examUiState?.year != -1L) examUiState?.year.toString() else "",
                         placeholder = { Text("2012") },
@@ -565,7 +504,9 @@ internal fun MainScreen(
                     )
 
                     TextField(
-                        modifier = Modifier.weight(0.5f),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .testTag("main:duration"),
                         label = { Text("Duration") },
                         value = if (examUiState?.duration != -1L) examUiState?.duration.toString() else "",
                         placeholder = { Text("15") },
@@ -577,7 +518,9 @@ internal fun MainScreen(
                 }
 
                 Button(
-                    modifier = Modifier.align(Alignment.End),
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .testTag("main:add_exam"),
                     enabled = examUiState?.subject?.name?.isNotBlank() == true && examUiState.year > 0 && examUiState.duration > 0,
                     onClick = {
                         addExam()
@@ -589,7 +532,10 @@ internal fun MainScreen(
 
                 Text("Add Subject")
                 TextField(
-                    modifier = Modifier.fillMaxWidth().focusRequester(subjectFocus),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("main:subject")
+                        .focusRequester(subjectFocus),
                     label = { Text("Subject") },
                     placeholder = { Text("Mathematics") },
                     value = subjectUiState.name,
@@ -603,7 +549,9 @@ internal fun MainScreen(
                     maxLines = 1,
                 )
                 Button(
-                    modifier = Modifier.align(Alignment.End),
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .testTag("main:add_subject"),
                     enabled = subjectUiState.name.isNotBlank(),
                     onClick = {
                         addSubject()
@@ -614,8 +562,52 @@ internal fun MainScreen(
             }
         },
         action = action,
-        topbar = topbar,
+        topBar = topbar,
     )
+}
+
+@Composable
+internal fun MainNavigation(
+    modifier: Modifier = Modifier,
+    currentSubjectIndex: Long = 0,
+    subjects: ImmutableList<SubjectUiState> = emptyList<SubjectUiState>().toImmutableList(),
+    shape: Shape = RectangleShape,
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    cardColors: CardColors = CardDefaults.cardColors(),
+    onSubject: (Long) -> Unit = {},
+) {
+    Card(
+        modifier = modifier,
+        colors = cardColors,
+        shape = shape,
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxHeight()
+                .systemBarsPadding()
+                .testTag("main:navigation:list")
+                .padding(paddingValues),
+        ) {
+            item {
+                NavigationDrawerItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("main:all_exam"),
+                    label = { Text("All Examination") },
+                    onClick = { onSubject(-1) },
+                    selected = currentSubjectIndex == -1L,
+                )
+            }
+            items(subjects, key = { it.id }) {
+                NavigationDrawerItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(it.name) },
+                    onClick = { onSubject(it.id) },
+                    selected = currentSubjectIndex == it.id,
+                )
+            }
+        }
+    }
 }
 
 // @Preview
@@ -721,7 +713,7 @@ fun MainDialog(
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         maxLines = 1,
 
-                    )
+                        )
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = key,

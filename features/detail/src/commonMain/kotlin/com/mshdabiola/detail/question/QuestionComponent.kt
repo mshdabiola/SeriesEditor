@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.image.Content
@@ -55,7 +56,7 @@ fun QuestionEditUi(
     onTextChange: (Int, Int, String) -> Unit = { _, _, _ -> },
     fillIt: Boolean = false,
 ) {
-    Column(modifier) {
+    Column(modifier.testTag("question")) {
         Content(
             items = questionUiState.contents,
             examId = questionUiState.examId,

@@ -37,6 +37,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.CommonScreen2
@@ -216,7 +217,7 @@ fun ExamContent(
                         )
                     }
 
-                    Button(modifier = Modifier, onClick = onAddQuestion) {
+                    Button(modifier = Modifier.testTag("question:add_question"), onClick = onAddQuestion) {
                         Icon(Icons.Default.Add, "add")
                         Spacer(Modifier.width(ButtonDefaults.IconSpacing))
                         Text("Add Question")

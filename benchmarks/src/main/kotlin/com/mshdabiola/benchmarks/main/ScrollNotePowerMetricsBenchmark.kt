@@ -51,6 +51,6 @@ class ScrollNotePowerMetricsBenchmark {
                 startActivityAndWait()
             },
         ) {
-            mainScrollNoteDownUp()
+            //mainScrollNoteDownUp()
         }
 }

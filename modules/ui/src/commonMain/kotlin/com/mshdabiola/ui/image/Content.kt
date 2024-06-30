@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil
@@ -106,7 +107,7 @@ fun Content(
             ListItem(
                 modifier = Modifier.fillMaxWidth(),
                 headlineContent = {
-                    val childModifier = Modifier.fillMaxWidth()
+                    val childModifier = Modifier.fillMaxWidth().testTag("content")
 
                     when (item.type) {
                         Type.EQUATION -> EquationContent(childModifier, item, onTextChange = {

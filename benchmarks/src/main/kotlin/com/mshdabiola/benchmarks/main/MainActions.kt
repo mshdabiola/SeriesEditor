@@ -6,26 +6,61 @@ package com.mshdabiola.benchmarks.main
 
 import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.Until
 import com.mshdabiola.benchmarks.flingElementDownUp
 
-fun MacrobenchmarkScope.goToDetailScreen() {
-    val savedSelector = By.res("main:add")
-
-    device.wait(Until.hasObject(savedSelector), 5000)
-
-    val addButton = device.findObject(savedSelector)
-    addButton.click()
-    device.waitForIdle()
-    // Wait until saved title are shown on screen
-}
-
-fun MacrobenchmarkScope.mainScrollNoteDownUp() {
+fun MacrobenchmarkScope.goAddQuestionToDScreen() {
     val selector = By.res("main:list")
     device.wait(Until.hasObject(selector), 5000)
 
-    val feedList = device.findObject(selector)
-    device.flingElementDownUp(feedList)
+    val examList = device.findObject(selector)
+
+
+    examList.children[0].click()
+    // Wait until saved title are shown on screen
+}
+
+
+fun MacrobenchmarkScope.addSubject(subject:String){
+
+    val buttonSelector= By.res("add")
+
+    device.wait(Until.hasObject(buttonSelector),5000)
+
+    device.findObject(buttonSelector)
+        .click()
+    device.waitForIdle()
+
+
+    device.findObject(By.res("main:subject"))
+        .text=subject
+
+    device.findObject(By.res("main:add_subject"))
+
+    device.findObject(By.res("handle"))
+        .fling(Direction.DOWN)
+}
+
+fun MacrobenchmarkScope.addExam(){
+
+    val buttonSelector= By.res("add")
+
+    device.wait(Until.hasObject(buttonSelector),5000)
+
+    device.findObject(buttonSelector)
+        .click()
+
+    device.findObject(By.res("main:duration"))
+        .text="24"
+    device.findObject(By.res("main:year"))
+        .text="2014"
+
+    device.findObject(By.res("main:add_exam"))
+        .click()
+
+    device.findObject(By.res("handle"))
+        .fling(Direction.DOWN)
 }
 
 fun MacrobenchmarkScope.mainWaitForContent() {

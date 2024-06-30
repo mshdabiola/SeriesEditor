@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.detail.instruction.InstructionRoute
 import com.mshdabiola.detail.question.QuestionRoute
@@ -119,7 +120,7 @@ fun ExamScreen(
 
 ) {
     val action: @Composable RowScope.() -> Unit = {
-        IconButton(onClick = onBack) {
+        IconButton(modifier = Modifier.testTag("back"), onClick = onBack) {
             Icon(Icons.Default.ArrowBack, "back")
         }
     }
