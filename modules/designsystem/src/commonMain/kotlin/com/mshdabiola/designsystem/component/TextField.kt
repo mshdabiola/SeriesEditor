@@ -18,6 +18,8 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.CodepointTransformation
 import androidx.compose.foundation.text2.input.InputTransformation
+import androidx.compose.foundation.text2.input.TextFieldBuffer
+import androidx.compose.foundation.text2.input.TextFieldCharSequence
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -52,9 +55,12 @@ fun SeriesEditorTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String? = null,
+    label: String?=null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: () -> Unit = {},
+    keyboardType: KeyboardType=KeyboardType.Text,
     maxNum: TextFieldLineLimits = TextFieldLineLimits.Default,
+    inputTransformation: InputTransformation?=null
 ) {
     MyTextField(
         modifier = modifier,
@@ -62,6 +68,11 @@ fun SeriesEditorTextField(
 //            .focusRequester(focusRequester)
 
         state = state,
+        label = {
+            if (label != null) {
+                Text(text = label)
+            }
+        },
         placeholder = {
             if (placeholder != null) {
                 Text(text = placeholder)
@@ -79,10 +90,12 @@ fun SeriesEditorTextField(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrect = true,
             imeAction = imeAction,
+            keyboardType = keyboardType
         ),
         keyboardActions = KeyboardActions { keyboardAction() },
 
         lineLimits = maxNum,
+        inputTransformation = inputTransformation
     )
 }
 
@@ -115,7 +128,7 @@ fun MyTextField(
     codepointTransformation: CodepointTransformation? = null,
     scrollState: ScrollState = rememberScrollState(),
 
-) {
+    ) {
     // If color is not provided via the text style, use content color as a default
     val textColor = textStyle.color.takeOrElse {
         colors.textColor(enabled, isError, interactionSource).value
@@ -294,3 +307,20 @@ internal fun TextFieldColors.textColor(
 }
 
 internal val OutlinedTextFieldTopPadding = 8.dp
+
+@OptIn(ExperimentalFoundationApi::class)
+object DigitOnlyTransformation : InputTransformation{
+    override fun transformInput(
+        originalValue: TextFieldCharSequence,
+        valueWithChanges: TextFieldBuffer,
+    ) {
+        if (!valueWithChanges.asCharSequence().isDigitOnly()) {
+            valueWithChanges.revertAllChanges()
+        }
+    }
+
+}
+
+fun CharSequence.isDigitOnly():Boolean{
+    return all { it.isDigit() }
+}
