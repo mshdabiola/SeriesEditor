@@ -7,20 +7,24 @@ package com.mshdabiola.serieseditor.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.detail.navigation.detailScreen
-import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.main.navigation.MAIN_ROUTE
+import com.mshdabiola.main.navigation.DEFAULT_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.serieseditor.ui.Screen
 import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
-import com.mshdabiola.setting.navigation.navigateToSetting
+import com.mshdabiola.serieseditor.ui.mainpanel.DEFAULT_MAIN_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.mainpanel.mainPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
+import com.mshdabiola.template.navigation.composeExaminationScreen
 
 @Composable
 fun SkNavHost(
     appState: SeriesEditorAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = MAIN_ROUTE,
+    startDestination: String = DEFAULT_MAIN_PANEL_ROUTE,
 ) {
     val navController = appState.navController
     NavHost(
@@ -29,11 +33,8 @@ fun SkNavHost(
         modifier = modifier,
     ) {
         mainScreen(
-            screenSize = appState.screenSize,
             onShowSnack = onShowSnackbar,
-            onClicked = navController::navigateToDetail,
-            navigateToSetting = navController::navigateToSetting,
-            navigateToDetail = navController::navigateToDetail,
+            navigateToQuestion = {},
         )
         detailScreen(
             screenSize = appState.screenSize,
@@ -45,5 +46,17 @@ fun SkNavHost(
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
         )
+        composeSubjectScreen(
+            onShowSnack = onShowSnackbar
+        )
+
+        composeExaminationScreen(
+            onShowSnack = onShowSnackbar
+        )
+
+        mainPanelScreen(
+            onShowSnack = onShowSnackbar
+        )
+
     }
 }

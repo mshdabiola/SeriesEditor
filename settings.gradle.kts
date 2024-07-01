@@ -79,6 +79,10 @@ include(":seriesEditorApp")
 include(":features:main")
 include(":features:detail")
 include(":features:setting")
+include("features:composesubject")
+include("features:composeexamination")
+
+
 
 include(":ui-test-hilt-manifest")
 

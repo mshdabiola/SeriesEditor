@@ -14,6 +14,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.mainpanel.SUBJECT_ID
 import com.mshdabiola.ui.ScreenSize
 import kotlinx.coroutines.CoroutineScope
 
@@ -46,12 +48,39 @@ class SeriesEditorAppState(
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
+
+    val largeScreen: Screen
+        @Composable
+        get() {
+
+            return when {
+                currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true -> {
+                    val subjectId = navController
+                        .currentBackStackEntryAsState()
+                        .value
+                        ?.arguments
+                        ?.getLong(SUBJECT_ID) ?: -1
+                    println("subject id is $subjectId")
+
+                    Screen.Main(subjectId)
+                }
+
+                else -> Screen.Other
+            }
+        }
+
+
     val screenSize
         get() = when (windowSizeClass.widthSizeClass) {
             WindowWidthSizeClass.Compact -> ScreenSize.COMPACT
             WindowWidthSizeClass.Medium -> ScreenSize.MEDIUM
             else -> ScreenSize.EXPANDED
         }
+
+    val shouldShowPermanentDrawer: Boolean
+        @Composable get() =
+    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+            largeScreen is Screen.Main
 
     val shouldShowBottomBar: Boolean
         @Composable get() = false
