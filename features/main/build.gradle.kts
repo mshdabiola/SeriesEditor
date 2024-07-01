@@ -12,12 +12,6 @@ android {
 }
 kotlin {
     sourceSets {
-        val jvmMain by getting{
-            dependencies{
-                implementation(libs.calf.filepicker)
-
-            }
-        }
         val commonMain by getting {
             dependencies {
                 api(compose.components.resources)

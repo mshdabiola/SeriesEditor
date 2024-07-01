@@ -4,810 +4,249 @@
 
 package com.mshdabiola.main
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.HdrOnSelect
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.SelectAll
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Subject
-import androidx.compose.material.icons.filled.Update
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Deselect
-import androidx.compose.material.icons.rounded.SaveAs
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import coil3.compose.AsyncImage
-import com.mshdabiola.model.Image
-import com.mshdabiola.ui.CommonScreen
-import com.mshdabiola.ui.ScreenSize
+import com.mshdabiola.analytics.LocalAnalyticsHelper
+import com.mshdabiola.data.model.Result
+import com.mshdabiola.designsystem.component.SeriesEditorLoadingWheel
+import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
+import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
+import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
+import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
+import com.mshdabiola.ui.logNoteOpened
 import com.mshdabiola.ui.state.ExamUiState
-import com.mshdabiola.ui.state.SubjectUiState
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.launch
+import serieseditor.features.main.generated.resources.Res
+import serieseditor.features.main.generated.resources.features_main_empty_description
+import serieseditor.features.main.generated.resources.features_main_empty_error
+import serieseditor.features.main.generated.resources.features_main_img_empty_bookmarks
+import serieseditor.features.main.generated.resources.features_main_loading
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import java.io.File
+import org.koin.core.parameter.parameterArrayOf
+import org.koin.core.parameter.parametersOf
 
 // import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
+@OptIn(KoinExperimentalAPI::class)
 @Composable
-internal fun MainRoute(
-    screenSize: ScreenSize,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
-    onClicked: (Long, Long) -> Unit,
-    navigateToSetting: () -> Unit,
-    navigateToDetail: (Long, Long) -> Unit,
-
-//    viewModel: MainViewModel,
+ fun MainRoute(
+    modifier: Modifier = Modifier,
+    navigateToQuestion: (Long) -> Unit,
+    subjectId: Long,
 ) {
-    val viewModel: MainViewModel = koinViewModel()
+    val viewModel: MainViewModel = koinViewModel(parameters = { parametersOf(subjectId) })
 
-    val mainState = viewModel.mainState.collectAsStateWithLifecycleCommon().value
-    // var show by remember { mutableStateOf(false) }
+    val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
 
-    var showDrop by remember { mutableStateOf(false) }
-    var deleteId by remember { mutableStateOf<Long?>(null) }
-    var showDialog by remember {
-        mutableStateOf(false)
-    }
-    MainDialog(showDialog, viewModel::onExport) { showDialog = false }
-//    DirtoryUi(show, onDismiss = { show = false }, {
-//        it?.let {
-//            viewModel.onExport(it.path)
-//        }
-//    }
-    // )
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-    val action: @Composable RowScope.() -> Unit = {
-        IconButton(
-            onClick = navigateToSetting,
-            // enabled = currentSubjectIndex > -1
-        ) {
-            Icon(Icons.Default.Settings, "setting")
-        }
-        Box {
-            IconButton(
-                onClick = { showDrop = true },
-                // enabled = currentSubjectIndex > -1
-            ) {
-                Icon(Icons.Default.MoreVert, "more")
-            }
+    MainScreen(
+        modifier = modifier,
+        mainState = feedNote.value,
+        navigateToQuestion = navigateToQuestion,
+        onDelete=viewModel::onDeleteExam,
+        onUpdate=viewModel::onUpdateExam,
+        toggleSelect = viewModel::toggleSelect,
+        isSelectMode = viewModel.mainState.value.isSelectMode
 
-            if (mainState.isSelectMode) {
-                DropdownMenu(
-                    expanded = showDrop,
-                    onDismissRequest = { showDrop = false },
-                ) {
-                    DropdownMenuItem(
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.SelectAll,
-                                "select All",
-                            )
-                        },
-                        text = { Text("Select All") },
-                        onClick = {
-                            viewModel.selectAll()
-                        },
-                    )
-
-                    if (mainState.currentSubjectId > -1) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.Subject,
-                                    "select all subject",
-                                )
-                            },
-                            text = { Text("Select Current Subject") },
-                            onClick = {
-                                viewModel.selectAllSubject()
-                            },
-                        )
-                    }
-                    DropdownMenuItem(
-                        leadingIcon = {
-                            Icon(
-                                Icons.Rounded.Deselect,
-                                "deselect",
-                            )
-                        },
-                        text = { Text("DeSelect All") },
-                        onClick = {
-                            viewModel.deselectAll()
-                            showDrop = false
-                        },
-                    )
-
-                    DropdownMenuItem(
-                        leadingIcon = {
-                            Icon(
-                                Icons.Rounded.SaveAs,
-                                "save",
-                            )
-                        },
-                        text = { Text("Export Selected") },
-                        onClick = {
-                            // onDelete(examUiState.id)
-                            showDialog = true
-                            showDrop = false
-                        },
-                    )
-
-                    DropdownMenuItem(
-                        leadingIcon = {
-                            Icon(
-                                Icons.Rounded.Delete,
-                                "delete",
-                            )
-                        },
-                        text = { Text("Delete selected") },
-                        onClick = {
-                            deleteId = -1
-                            showDrop = false
-                        },
-                    )
-                }
-            } else {
-                DropdownMenu(
-                    expanded = showDrop,
-                    onDismissRequest = { showDrop = false },
-                ) {
-                    if (mainState.currentSubjectId > -1) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.Update,
-                                    "update",
-                                )
-                            },
-                            text = { Text("Update") },
-                            onClick = {
-                                viewModel.updateSubject(mainState.currentSubjectId)
-                                showDrop = false
-                            },
-                        )
-                    }
-
-                    DropdownMenuItem(
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.HdrOnSelect,
-                                "select mode",
-                            )
-                        },
-                        text = { Text("Select mode") },
-                        onClick = {
-                            viewModel.toggleSelectMode()
-                            showDrop = false
-                        },
-                    )
-
-//                            DropdownMenuItem(
-//                                leadingIcon = {
-//                                    androidx.compose.material.Icon(
-//                                        Icons.Default.Delete,
-//                                        "Delete"
-//                                    )
-//                                },
-//                                text = { Text("Delete") },
-//                                onClick = {
-//
-//                                })
-                }
-            }
-        }
-    }
-    val topbar: @Composable () -> Unit = {
-        //  if (windowSizeClass.widthSizeClass== WindowWidthSizeClass.Expanded) {
-        TopAppBar(
-            title = { Text("Main Screen") },
-            actions = action,
-        )
-        // }
-    }
-
-    if (screenSize == ScreenSize.COMPACT) {
-        ModalNavigationDrawer(
-            modifier = Modifier,
-            drawerState = drawerState,
-            drawerContent = {
-                MainNavigation(
-                    modifier = Modifier.fillMaxHeight().width(300.dp),
-                    cardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                    shape = RoundedCornerShape(0.dp, 8.dp, 8.dp, 0.dp),
-                    currentSubjectIndex = mainState.currentSubjectId,
-                    subjects = mainState.subjects,
-                    paddingValues = PaddingValues(16.dp),
-                    onSubject = viewModel::onSubjectIdChange,
-
-                    )
-            },
-            content = {
-                MainScreen(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp),
-                    exams = mainState.examinations,
-                    examYearError = mainState.dateError,
-                    examUiState = mainState.examination,
-                    subjectUiState = mainState.subject,
-                    isSelectMode = mainState.isSelectMode,
-                    screenSize = screenSize,
-                    subjects = mainState.subjects,
-                    addExam = viewModel::addExam,
-                    addSubject = viewModel::addSubject,
-                    onExamClick = navigateToDetail,
-                    toggleSelect = viewModel::toggleSelect,
-                    onSubjectIdChange = viewModel::onSubjectIdChange,
-                    onExamYearChange = viewModel::onExamYearContentChange,
-                    onExamDurationChange = viewModel::onExamDurationContentChange,
-                    onSubjectNameChange = viewModel::onSubjectContentChange,
-                    onDeleteSubject = { deleteId = it },
-                    onUpdateSubject = viewModel::onUpdateExam,
-                    action = {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    if (drawerState.isOpen) {
-                                        drawerState.close()
-                                    } else {
-                                        drawerState.open()
-                                    }
-                                }
-                            },
-                        ) {
-                            Icon(Icons.Default.Menu, "menu")
-                        }
-                        action()
-                    },
-                )
-            },
-        )
-    } else {
-        PermanentNavigationDrawer(
-            modifier = Modifier,
-            drawerContent = {
-                MainNavigation(
-                    modifier = Modifier.fillMaxHeight().width(300.dp),
-                    cardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                    currentSubjectIndex = mainState.currentSubjectId,
-                    subjects = mainState.subjects,
-                    paddingValues = PaddingValues(horizontal = 16.dp),
-                    onSubject = viewModel::onSubjectIdChange,
-
-                    )
-            },
-            content = {
-                MainScreen(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp),
-                    exams = mainState.examinations,
-                    examYearError = mainState.dateError,
-                    examUiState = mainState.examination,
-                    subjectUiState = mainState.subject,
-                    isSelectMode = mainState.isSelectMode,
-                    screenSize = screenSize,
-                    subjects = mainState.subjects,
-                    addExam = viewModel::addExam,
-                    addSubject = viewModel::addSubject,
-                    onExamClick = navigateToDetail,
-                    toggleSelect = viewModel::toggleSelect,
-                    onSubjectIdChange = viewModel::onSubjectIdChange,
-                    onExamYearChange = viewModel::onExamYearContentChange,
-                    onExamDurationChange = viewModel::onExamDurationContentChange,
-                    onSubjectNameChange = viewModel::onSubjectContentChange,
-                    onDeleteSubject = { deleteId = it },
-                    onUpdateSubject = viewModel::onUpdateExam,
-                    action = action,
-                    topbar = topbar,
-
-                    )
-            },
-        )
-    }
-    if (deleteId != null) {
-        AlertDialog(
-            onDismissRequest = { deleteId = null },
-            dismissButton = {
-                TextButton(onClick = { deleteId = null }) {
-                    Text("Cancel")
-                }
-            },
-            confirmButton = {
-                ElevatedButton(
-                    onClick = {
-                        if (deleteId == -1L) {
-                            viewModel.deleteSelected()
-                        } else {
-                            viewModel.onDeleteExam(deleteId!!)
-                        }
-                        deleteId = null
-                    },
-                ) {
-                    Text("Delete exam")
-                }
-            },
-            icon = { Icon(Icons.Default.Delete, "delete") },
-            title = { Text(text = "Delete Subject") },
-            text = {
-                Text("Are you sure you want to delete this examination?")
-            },
-        )
-    }
+    )
 }
 
 @Composable
 internal fun MainScreen(
     modifier: Modifier = Modifier,
-    subjects: ImmutableList<SubjectUiState> = emptyList<SubjectUiState>().toImmutableList(),
-    exams: ImmutableList<ExamUiState> = emptyList<ExamUiState>().toImmutableList(),
-    examUiState: ExamUiState?,
-    isSelectMode: Boolean = false,
-    subjectUiState: SubjectUiState,
-    examYearError: Boolean = false,
-    screenSize: ScreenSize,
-    addSubject: () -> Unit = {},
+    mainState: Result<List<ExamUiState>>,
+    onDelete: (Long) -> Unit = {},
+    onUpdate: (Long) -> Unit = {},
     toggleSelect: (Long) -> Unit = {},
-    addExam: () -> Unit = {},
-    onExamClick: (Long, Long) -> Unit = { _, _ -> },
-    onExamYearChange: (String) -> Unit = {},
-    onExamDurationChange: (String) -> Unit = {},
-    onSubjectIdChange: (Long) -> Unit = {},
-    onSubjectNameChange: (String) -> Unit = {},
-    onUpdateSubject: (Long) -> Unit = {},
-    onDeleteSubject: (Long) -> Unit = {},
-    action: @Composable RowScope.() -> Unit = {},
-    topbar: @Composable () -> Unit = {},
-) {
-    var showmenu by remember {
-        mutableStateOf(false)
-    }
+    isSelectMode: Boolean = false,
+    navigateToQuestion: (Long) -> Unit = {},
+    ) {
+    val state = rememberLazyListState()
 
-    val subjectFocus = remember { FocusRequester() }
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .testTag("main:screen"),
 
-    LaunchedEffect(subjectUiState.focus) {
-        if (subjectUiState.focus) {
-            subjectFocus.requestFocus()
-        }
-    }
-
-    CommonScreen(
-        screenSize = screenSize,
-        firstScreen = {
-            LazyColumn(
-                modifier = it
-                    .fillMaxSize()
-                    .testTag("main:list"),
-            ) {
-                items(exams, key = { it.id }) {
-                    ExamUi(
-                        modifier = Modifier.clickable {
-                            if (isSelectMode) {
-                                toggleSelect(it.id)
-                            } else {
-                                onExamClick(it.id, it.subject.id)
-                            }
-                        },
-                        examUiState = it,
-                        onDelete = onDeleteSubject,
-                        onUpdate = onUpdateSubject,
-                        toggleSelect = toggleSelect,
-                        isSelectMode = isSelectMode,
-
-                        )
-                }
-            }
-        },
-        secondScreen = {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text("Add Examination")
-                com.mshdabiola.ui.image.DropdownMenu(
-                    modifier = Modifier
-                        .testTag("main:subject:dropdown"),
-                    textModifier = Modifier.fillMaxWidth(),
-                    currentIndex = subjects.indexOfFirst { it.name == examUiState?.subject?.name },
-                    data = subjects.map { it.name }.toImmutableList(),
-                    onDataChange = {
-                        onSubjectIdChange(it.toLong())
-                    },
-                    label = "Subject",
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    TextField(
-                        modifier = Modifier
-                            .weight(0.5f)
-                            .testTag("main:year"),
-                        label = { Text("Year") },
-                        value = if (examUiState?.year != -1L) examUiState?.year.toString() else "",
-                        placeholder = { Text("2012") },
-                        isError = examYearError,
-                        onValueChange = { onExamYearChange(it) },
-                        maxLines = 1,
-
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
-
-                    TextField(
-                        modifier = Modifier
-                            .weight(0.5f)
-                            .testTag("main:duration"),
-                        label = { Text("Duration") },
-                        value = if (examUiState?.duration != -1L) examUiState?.duration.toString() else "",
-                        placeholder = { Text("15") },
-                        suffix = { Text("Min") },
-                        onValueChange = { onExamDurationChange(it) },
-                        maxLines = 1,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
-                }
-
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .testTag("main:add_exam"),
-                    enabled = examUiState?.subject?.name?.isNotBlank() == true && examUiState.year > 0 && examUiState.duration > 0,
-                    onClick = {
-                        addExam()
-                    },
-                ) {
-                    Text("Add Exam")
-                }
-                Spacer(Modifier.width(16.dp))
-
-                Text("Add Subject")
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("main:subject")
-                        .focusRequester(subjectFocus),
-                    label = { Text("Subject") },
-                    placeholder = { Text("Mathematics") },
-                    value = subjectUiState.name,
-                    onValueChange = {
-                        onSubjectNameChange(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        autoCorrect = true,
-                    ),
-                    maxLines = 1,
-                )
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .testTag("main:add_subject"),
-                    enabled = subjectUiState.name.isNotBlank(),
-                    onClick = {
-                        addSubject()
-                    },
-                ) {
-                    Text("Add Subject")
-                }
-            }
-        },
-        action = action,
-        topBar = topbar,
-    )
-}
-
-@Composable
-internal fun MainNavigation(
-    modifier: Modifier = Modifier,
-    currentSubjectIndex: Long = 0,
-    subjects: ImmutableList<SubjectUiState> = emptyList<SubjectUiState>().toImmutableList(),
-    shape: Shape = RectangleShape,
-    paddingValues: PaddingValues = PaddingValues(0.dp),
-    cardColors: CardColors = CardDefaults.cardColors(),
-    onSubject: (Long) -> Unit = {},
-) {
-    Card(
-        modifier = modifier,
-        colors = cardColors,
-        shape = shape,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxHeight()
-                .systemBarsPadding()
-                .testTag("main:navigation:list")
-                .padding(paddingValues),
+            state = state,
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .testTag("main:list"),
         ) {
             item {
-                NavigationDrawerItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("main:all_exam"),
-                    label = { Text("All Examination") },
-                    onClick = { onSubject(-1) },
-                    selected = currentSubjectIndex == -1L,
-                )
+                // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
             }
-            items(subjects, key = { it.id }) {
-                NavigationDrawerItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(it.name) },
-                    onClick = { onSubject(it.id) },
-                    selected = currentSubjectIndex == it.id,
-                )
-            }
-        }
-    }
-}
+            when (mainState) {
+                is Result.Loading -> item {
+                    LoadingState()
+                }
 
-// @Preview
-@Composable
-fun ContentPreview() {
-    MaterialTheme {
-    }
-}
-//
-// @OptIn(ExperimentalSplitPaneApi::class, ExperimentalResourceApi::class)
-// @Preview
-// @Composable
-// fun id() {
-//    MaterialTheme {
-//
-//        val state = rememberSplitPaneState(0.5f, true)
-//        HorizontalSplitPane(splitPaneState = state) {
-//            splitter {
-//                this.visiblePart {
-//                    Box(Modifier.background(Color.Yellow).width(10.dp).fillMaxHeight())
-//                }
-//                handle {
-//                    Box(Modifier.background(Color.Blue).width(20.dp).fillMaxHeight().markAsHandle())
-//                }
-//            }
-//            first {
-//
-//                Image(painter = painterResource("drawables/logo.png"), "")
-//
-//
-//
-//                Text("Abiola")
-//            }
-//            second {
-//                Button(onClick = {}, content = {
-//                    Text("Click")
-//                    Icon(Icons.Default.Android, contentDescription = null)
-//                })
-//            }
-//        }
-//
-//
-//    }
-//
-// }
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun MainDialog(
-    show: Boolean,
-    export: (String, String, String, Int) -> Unit = { _, _, _, _ -> },
-    onClose: () -> Unit = {},
-) {
-    var showDir by remember {
-        mutableStateOf(false)
-    }
-    var path by remember {
-        mutableStateOf("")
-    }
-    var name by remember {
-        mutableStateOf("")
-    }
-    var key by remember {
-        mutableStateOf("")
-    }
-    var version by remember {
-        mutableStateOf("")
-    }
-    if (show) {
-        Dialog(onDismissRequest = onClose, properties = DialogProperties()) {
-            Card {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = "Export Examination",
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Text(modifier = Modifier.weight(0.3f), text = "Directory")
-                        Text(
-                            modifier = Modifier.weight(0.6f).basicMarquee(),
-                            text = path,
-                            maxLines = 1,
+                is Result.Error -> TODO()
+                is Result.Success -> {
+                    if (mainState.data.isEmpty()) {
+                        item {
+                            EmptyState()
+                        }
+                    } else {
+                        examItems(
+                            items = mainState.data,
+                            onExamClick = navigateToQuestion,
+                            itemModifier = Modifier,
+                            onDelete = onDelete,
+                            onUpdate = onUpdate,
+                            toggleSelect = toggleSelect,
+                            isSelectMode = isSelectMode,
                         )
-                        IconButton(onClick = { showDir = true }) {
-                            Icon(
-                                modifier = Modifier.weight(0.1f),
-                                imageVector = Icons.Default.MoreHoriz,
-                                contentDescription = "select",
-                            )
-                        }
-                    }
-
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = name,
-                        label = { Text("Name") },
-                        placeholder = { Text("data") },
-                        onValueChange = { name = it },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        maxLines = 1,
-
-                        )
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = key,
-                        label = { Text("Key") },
-                        placeholder = { Text("SwordFish") },
-                        onValueChange = { key = it },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        maxLines = 1,
-                    )
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = version,
-                        placeholder = { Text("1") },
-                        label = { Text("Data version") },
-                        onValueChange = { version = it },
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next,
-                            keyboardType = KeyboardType.Number,
-                        ),
-                        maxLines = 1,
-                    )
-
-                    Row(
-                        modifier = Modifier.align(Alignment.End),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        TextButton(onClick = onClose) {
-                            Text("Cancel")
-                        }
-
-                        Button(
-                            onClick = {
-                                export(
-                                    path,
-                                    name.ifBlank { "data" },
-                                    key.ifBlank { "SwordFish" },
-                                    version.toIntOrNull() ?: 0,
-                                )
-                                path = ""
-                                version = ""
-                                key = ""
-                                name = ""
-                                onClose()
-                            },
-                            enabled = path.isNotBlank(),
-                        ) {
-                            Text("Export")
-                        }
                     }
                 }
             }
+            item {
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            }
         }
+        val itemsAvailable = examUiStateItemsSize(mainState)
+        val scrollbarState = state.scrollbarState(
+            itemsAvailable = itemsAvailable,
+        )
+        state.DraggableScrollbar(
+            modifier = Modifier
+                .fillMaxHeight()
+                .windowInsetsPadding(WindowInsets.systemBars)
+                .padding(horizontal = 2.dp)
+                .align(Alignment.CenterEnd),
+            state = scrollbarState,
+            orientation = Orientation.Vertical,
+            onThumbMoved = state.rememberDraggableScroller(
+                itemsAvailable = itemsAvailable,
+            ),
+        )
     }
-    DirtoryUi(showDir, onDismiss = { showDir = false }) {
-        it?.let {
-            path = it.path
-        }
-    }
+
+
 }
-//
-// @Preview
-// @Composable
-// fun MainScreenPreview() {
-//    MainScreen(
-//        mainState = MainState(),
-//       items =listOf(ModelUiState(2, "")).toImmutableList()
-//    )
-// }
 
 @Composable
-fun ItemImage(imageModel: Image) {
-    ListItem(
-        headlineContent = { Text(imageModel.user ?: "name") },
-        leadingContent = {
-            AsyncImage(
-                modifier = Modifier.size(150.dp),
-                model = imageModel.url,
-                contentDescription = null,
-            )
-        },
+private fun LoadingState(modifier: Modifier = Modifier) {
+    SeriesEditorLoadingWheel(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentSize()
+            .testTag("main:loading"),
+        contentDesc = stringResource(Res.string.features_main_loading),
     )
 }
 
-// @Preview
 @Composable
-fun MainDialogPreveiw() {
-//    SeriesTheme {
-//        MainDialog(true)
-//    }
+private fun EmptyState(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxSize()
+            .testTag("main:empty"),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val iconTint = LocalTintTheme.current.iconTint
+        Image(
+            modifier = Modifier.fillMaxWidth(),
+            painter = painterResource(Res.drawable.features_main_img_empty_bookmarks),
+            colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,
+            contentDescription = null,
+        )
+
+        Spacer(modifier = Modifier.height(48.dp))
+
+        Text(
+            text = stringResource(Res.string.features_main_empty_error),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(Res.string.features_main_empty_description),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
 }
 
-@Composable
-expect fun DirtoryUi(
-    show: Boolean,
-    onDismiss: () -> Unit = {},
-    onFile: (File?) -> Unit = {},
+private fun examUiStateItemsSize(
+    topicUiState: Result<List<ExamUiState>>,
+) = when (topicUiState) {
+    is Result.Error -> 0 // Nothing
+    is Result.Loading -> 1 // Loading bar
+    is Result.Success -> topicUiState.data.size + 2
+}
+
+
+fun LazyListScope.examItems(
+    items: List<ExamUiState>,
+    onExamClick: (Long) -> Unit,
+    itemModifier: Modifier = Modifier,
+    onDelete: (Long) -> Unit = {},
+    onUpdate: (Long) -> Unit = {},
+    toggleSelect: (Long) -> Unit = {},
+    isSelectMode: Boolean = false,
+) = items(
+    items = items,
+    key = { it.id },
+    itemContent = { examUiState ->
+        val analyticsHelper = LocalAnalyticsHelper.current
+
+        ExamCard(
+            modifier = itemModifier
+                .clickable {
+                    analyticsHelper.logNoteOpened(examUiState.id.toString())
+                    onExamClick(examUiState.id)
+                },
+            examUiState = examUiState,
+            onDelete = onDelete,
+            onUpdate = onUpdate,
+            toggleSelect = toggleSelect,
+            isSelectMode = isSelectMode,
+        )
+    },
 )
+

@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.ui.state.ExamUiState
 
 @Composable
-fun ExamUi(
+fun ExamCard(
     modifier: Modifier = Modifier,
     examUiState: ExamUiState,
     onDelete: (Long) -> Unit = {},
