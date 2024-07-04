@@ -15,25 +15,34 @@ import com.mshdabiola.composesubject.SubjectRoute
 
 const val CS_ROUTE = "cs_route"
 const val SUBJECT_ID = "subject_id"
+const val FULL_CS_ROUTE = "$CS_ROUTE/{$SUBJECT_ID}"
 
-fun NavController.navigateToComposeSubject(subjectId: Long,navOptions: NavOptions= androidx.navigation.navOptions {  }) = navigate("$CS_ROUTE/$subjectId", navOptions)
+
+fun NavController.navigateToComposeSubject(
+    subjectId: Long,
+    navOptions: NavOptions = androidx.navigation.navOptions { },
+) = navigate("$CS_ROUTE/$subjectId", navOptions)
 
 fun NavGraphBuilder.composeSubjectScreen(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
+    onFinish: () -> Unit,
 ) {
     composable(
         route = "$CS_ROUTE/{$SUBJECT_ID}",
-        arguments = listOf(navArgument(SUBJECT_ID) {
-            type = NavType.LongType
-            defaultValue=-1L
-        })
+        arguments = listOf(
+            navArgument(SUBJECT_ID) {
+                type = NavType.LongType
+                defaultValue = -1L
+            },
+        ),
     ) {
         val subjectId = it.arguments?.getLong(SUBJECT_ID) ?: -1L
         SubjectRoute(
-            modifier=modifier,
-            subjectId=subjectId,
-           // onShowSnackbar = onShowSnack,
+            modifier = modifier,
+            subjectId = subjectId,
+            onShowSnack = onShowSnack,
+            onFinish = onFinish,
         )
     }
 }
