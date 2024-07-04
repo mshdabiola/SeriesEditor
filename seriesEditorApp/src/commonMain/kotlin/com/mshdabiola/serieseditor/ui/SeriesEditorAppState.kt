@@ -7,20 +7,45 @@ package com.mshdabiola.serieseditor.ui
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mshdabiola.main.navigation.MAIN_ROUTE
+import com.mshdabiola.main.navigation.SUBJECT_ARG
+import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.mainpanel.SUBJECT_ID
-import com.mshdabiola.ui.ScreenSize
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberSeriesEditorAppState(
+fun rememberExtend(
+    windowSizeClass: WindowSizeClass,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navController: NavHostController = rememberNavController(),
+    mainNavController: NavHostController = rememberNavController(),
+     subjectNavHostController:NavHostController = rememberNavController(),
+    examNavHostController :NavHostController = rememberNavController()
+): SeriesEditorAppState {
+    // NavigationTrackingSideEffect(navController)
+    return remember(
+        navController,
+        coroutineScope,
+        windowSizeClass,
+        mainNavController,
+        subjectNavHostController,
+        examNavHostController
+    ) {
+
+        Extended(
+                navController, coroutineScope, windowSizeClass, mainNavController, subjectNavHostController, examNavHostController
+            )
+    }
+}
+
+@Composable
+fun rememberOther(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
@@ -29,94 +54,93 @@ fun rememberSeriesEditorAppState(
     return remember(
         navController,
         coroutineScope,
-        windowSizeClass,
+        windowSizeClass
     ) {
-        SeriesEditorAppState(
-            navController,
-            coroutineScope,
-            windowSizeClass,
+
+        Other(
+            navController, coroutineScope, windowSizeClass
         )
     }
 }
 
-@Stable
-class SeriesEditorAppState(
-    val navController: NavHostController,
-    val coroutineScope: CoroutineScope,
-    val windowSizeClass: WindowSizeClass,
-) {
+sealed class SeriesEditorAppState(
+    open val navController: NavHostController,
+    open val coroutineScope: CoroutineScope,
+    open val windowSizeClass: WindowSizeClass,
+){
+   abstract val showMainTopBar: Boolean
+       @Composable get
+
+    abstract val showPermanentDrawer: Boolean
+        @Composable get
+
+    abstract val currentSubjectId :Long
+        @Composable get
+
+    abstract fun onSubjectClick(id:Long)
+
+}
+
+class Extended(
+    override val navController: NavHostController,
+    override val coroutineScope: CoroutineScope,
+    override val windowSizeClass: WindowSizeClass,
+    val mainNavController: NavHostController,
+    val subjectNavHostController: NavHostController,
+    val examNavHostController: NavHostController
+
+) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass){
+
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val largeScreen: Screen
-        @Composable
-        get() {
+    override val showMainTopBar: Boolean
+      @Composable  get() =  currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true
 
-            return when {
-                currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true -> {
-                    val subjectId = navController
-                        .currentBackStackEntryAsState()
-                        .value
-                        ?.arguments
-                        ?.getLong(SUBJECT_ID) ?: -1
-                    println("subject id is $subjectId")
+    override val showPermanentDrawer: Boolean
+      @Composable  get() = true
 
-                    Screen.Main(subjectId)
-                }
+    override val currentSubjectId: Long
+        @Composable get() = mainNavController
+            .currentBackStackEntryAsState()
+            .value
+            ?.arguments
+            ?.getLong(SUBJECT_ARG) ?: -1
 
-                else -> Screen.Other
-            }
-        }
-
-
-    val screenSize
-        get() = when (windowSizeClass.widthSizeClass) {
-            WindowWidthSizeClass.Compact -> ScreenSize.COMPACT
-            WindowWidthSizeClass.Medium -> ScreenSize.MEDIUM
-            else -> ScreenSize.EXPANDED
-        }
-
-    val shouldShowPermanentDrawer: Boolean
-        @Composable get() =
-    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
-            largeScreen is Screen.Main
-
-    val shouldShowBottomBar: Boolean
-        @Composable get() = false
-
-    //            windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact &&
-//            mainRoute.contains(currentDestination?.route)
-    val shouldShowNavRail: Boolean
-        @Composable get() = false
-//    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium &&
-//            mainRoute.contains(currentDestination?.route)
-
-    val shouldShowDrawer: Boolean
-        @Composable get() = false
-//    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
-//            mainRoute.contains(currentDestination?.route)
-
-//    val isOffline = networkMonitor.isOnline
-//        .map(Boolean::not)
-//        .stateIn(
-//            scope = coroutineScope,
-//            started = SharingStarted.WhileSubscribed(5_000),
-//            initialValue = false,
-//        )
+    override fun onSubjectClick(id: Long) {
+        mainNavController.navigateToMain(id)
+    }
 }
-//
-// @Composable
-// private fun NavigationTrackingSideEffect(navController: NavHostController) {
-//    TrackDisposableJank(navController) { metricsHolder ->
-//        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-//            metricsHolder.state?.putState("Navigation", destination.route.toString())
-//        }
-//
-//        navController.addOnDestinationChangedListener(listener)
-//
-//        onDispose {
-//            navController.removeOnDestinationChangedListener(listener)
-//        }
-//    }
-// }
+
+class Other(
+    override val navController: NavHostController,
+    override val coroutineScope: CoroutineScope,
+    override val windowSizeClass: WindowSizeClass,
+): SeriesEditorAppState(navController, coroutineScope, windowSizeClass){
+
+    val currentDestination: NavDestination?
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination
+
+    override val showMainTopBar: Boolean
+        @Composable  get() =  currentDestination?.route?.contains(MAIN_ROUTE) == true
+
+    override val currentSubjectId: Long
+        @Composable get() = navController
+            .currentBackStackEntryAsState()
+            .value
+            ?.arguments
+            ?.getLong(SUBJECT_ARG) ?: -1
+
+    override val showPermanentDrawer: Boolean
+        @Composable  get() = when(windowSizeClass.widthSizeClass){
+            WindowWidthSizeClass.Compact->false
+            else-> true
+        }
+
+    override fun onSubjectClick(id: Long) {
+        navController.navigateToMain(id)
+    }
+}
+

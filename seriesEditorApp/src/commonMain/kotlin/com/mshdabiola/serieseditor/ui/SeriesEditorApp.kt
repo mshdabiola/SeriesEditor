@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
@@ -35,6 +36,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -43,17 +45,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.navOptions
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
-import com.mshdabiola.main.MainTopBarSection
-import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
@@ -61,11 +61,8 @@ import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
 import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.serieseditor.navigation.SkNavHost
-import com.mshdabiola.serieseditor.ui.mainpanel.navigateToMainPanel
-import com.mshdabiola.setting.navigation.SETTING_ROUTE
+import com.mshdabiola.serieseditor.navigation.SkNavHost2
 import com.mshdabiola.setting.navigation.navigateToSetting
-import com.mshdabiola.template.navigation.navigateToComposeExamination
-import com.mshdabiola.ui.CommonBar
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.ui.state.SubjectUiState
@@ -77,23 +74,12 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun SeriesEditorApp() {
     val windowSizeClass = calculateWindowSizeClass()
-    val appState = rememberSeriesEditorAppState(
-        windowSizeClass = windowSizeClass,
-    )
-    val shouldShowGradientBackground = false
-    val navigator: (String) -> Unit = {
-        println("navigation $it seting is $SETTING_ROUTE")
-
-        when (it) {
-            MAIN_ROUTE -> {
-                appState.navController.navigateToMain(-1, navOptions = navOptions { })
-            }
-
-            SETTING_ROUTE -> {
-                appState.navController.navigateToSetting()
-            }
+    val appState =
+        when(windowSizeClass.widthSizeClass){
+            WindowWidthSizeClass.Expanded-> rememberExtend(windowSizeClass)
+            else -> rememberOther(windowSizeClass)
         }
-    }
+    val shouldShowGradientBackground = false
 
     val viewModel: MainAppViewModel = koinViewModel()
     val analyticsHelper = koinInject<AnalyticsHelper>()
@@ -118,26 +104,27 @@ fun SeriesEditorApp() {
                     },
                 ) {
                     val snackbarHostState = remember { SnackbarHostState() }
+                    val currentSubjectId = appState.currentSubjectId
 
                     PermanentNavigationDrawer(
                         drawerContent = {
-                            PermanentDrawerSheet(
+                            if (appState.showPermanentDrawer) {
+                                PermanentDrawerSheet(
+                                    modifier = Modifier.widthIn(max=300.dp)
+                                ){
+                                    NavigationSheet(
+                                        modifier = Modifier
+                                            .padding(top = 16.dp, start = 16.dp, end = 8.dp),
+                                        subjects = subjects.value,
 
-                            ) {
-                                val currentSubjectId =
-                                    (appState.largeScreen as? Screen.Main)?.subjectId
-                                NavigationSheet(
-                                    modifier = Modifier
-                                        .padding(top = 16.dp, start = 16.dp, end = 8.dp),
-                                    subjects = subjects.value,
+                                        addSubject = {},
+                                        onSubjectClick = appState::onSubjectClick,
+                                        checkIfSelected = { currentSubjectId == it },
+                                    )
 
-                                    addSubject = {},
-                                    onSubjectClick = appState.navController::navigateToMainPanel,
-                                    checkIfSelected = { currentSubjectId == it },
-                                )
 
+                                }
                             }
-
                         },
                     ) {
                         Scaffold(
@@ -147,22 +134,30 @@ fun SeriesEditorApp() {
                             contentWindowInsets = WindowInsets(0, 0, 0, 0),
                             snackbarHost = { SnackbarHost(snackbarHostState) },
                             bottomBar = {
-                                if (appState.shouldShowBottomBar) {
-                                    CommonBar(
-                                        currentNavigation = appState.currentDestination?.route
-                                            ?: "",
-                                    ) { navigator(it) }
-                                }
+//                                if (appState.shouldShowBottomBar) {
+//                                    CommonBar(
+//                                        currentNavigation = appState.currentDestination?.route
+//                                            ?: "",
+//                                    ) { navigator(it) }
+//                                }
                             },
                             topBar = {
-                                if (appState.largeScreen is Screen.Main) {
+                                if (appState.showMainTopBar) {
                                     MainTopBarSection(
                                         navigateToSetting = appState.navController::navigateToSetting,
-                                        currentSubjectId = (appState.largeScreen as? Screen.Main)?.subjectId
-                                            ?: -1,
+                                        subjectId = currentSubjectId,
+                                        updateSubject = {
+                                            if (appState is Extended) {
+                                                appState.subjectNavHostController.navigateToComposeSubject(
+                                                    it,
+                                                )
+                                            } else {
+                                                appState.navController.navigateToComposeSubject(it)
+                                            }
+                                        },
                                     )
                                 }
-                            }
+                            },
 
                             ) { padding ->
 
@@ -175,18 +170,34 @@ fun SeriesEditorApp() {
                                         WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
                                     ),
                             ) {
-                                SkNavHost(
-//                                                    modifier = Modifier.weight(0.7f),
-                                    appState = appState,
-                                    onShowSnackbar = { message, action ->
-                                        snackbarHostState.showSnackbar(
-                                            message = message,
-                                            actionLabel = action,
-                                            duration = SnackbarDuration.Short,
-                                        ) == SnackbarResult.ActionPerformed
-                                    },
-                                )
-//                                            }
+                                when (appState) {
+                                    is Extended -> {
+                                        SkNavHost(
+                                            appState = appState,
+                                            onShowSnackbar = { message, action ->
+                                                snackbarHostState.showSnackbar(
+                                                    message = message,
+                                                    actionLabel = action,
+                                                    duration = SnackbarDuration.Short,
+                                                ) == SnackbarResult.ActionPerformed
+                                            },
+                                        )
+                                    }
+
+                                    is Other -> {
+                                        SkNavHost2(
+                                            appState = appState,
+                                            onShowSnackbar = { message, action ->
+                                                snackbarHostState.showSnackbar(
+                                                    message = message,
+                                                    actionLabel = action,
+                                                    duration = SnackbarDuration.Short,
+                                                ) == SnackbarResult.ActionPerformed
+                                            },
+                                        )
+                                    }
+                                }
+
                             }
                         }
                     }

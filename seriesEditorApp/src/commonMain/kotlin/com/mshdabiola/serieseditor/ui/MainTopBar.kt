@@ -1,4 +1,4 @@
-package com.mshdabiola.main
+package com.mshdabiola.serieseditor.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,35 +9,38 @@ import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.component.DeleteDialog
 import com.mshdabiola.designsystem.component.MainExportDialog
 import com.mshdabiola.designsystem.component.MainTopBar
+import com.mshdabiola.serieseditor.MainAppViewModel
+import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.parameter.parameterArrayOf
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun MainTopBarSection(
     modifier: Modifier = Modifier,
     navigateToSetting: () -> Unit,
-    currentSubjectId:Long,
+    subjectId:Long,
+    updateSubject:(Long)->Unit
 
     ) {
-    val viewModel: MainViewModel = koinViewModel(parameters = { parameterArrayOf(currentSubjectId) })
+    val viewModel: MainAppViewModel = koinViewModel()
 
-    var deleteState by remember { mutableStateOf<DeleteState?>(null) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
+    val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
 
 
     MainTopBar(
         modifier = modifier,
-        isSelectMode = viewModel.mainState.value.isSelectMode,
-        currentSubjectId = viewModel.mainState.value.currentSubjectId,
+        isSelectMode = isSelect.value,
+        currentSubjectId = subjectId,
         selectAll = viewModel::selectAll,
-        selectAllSubject = viewModel::selectAllSubject,
         deselectAll = viewModel::deselectAll,
         navigateToSetting = navigateToSetting,
         showExportDialog = { showDialog = true },
         toggleSelectMode = viewModel::toggleSelectMode,
-        showDeleteDialog = {},
+        showDeleteDialog = {showDeleteDialog=true},
+        updateSubject = updateSubject
     )
 
     MainExportDialog(
@@ -47,21 +50,14 @@ fun MainTopBarSection(
     )
 
     DeleteDialog(
-        show = deleteState != null,
+        show = showDeleteDialog,
         onDismiss = {
-
+            showDeleteDialog=false
         },
         onDelete = {
 
-            when (deleteState) {
-                null -> TODO()
-                DeleteState.All -> {
-                    viewModel.deleteSelected()
-                }
-
-                is DeleteState.Id -> viewModel.onDeleteExam((deleteState as DeleteState.Id).id)
-            }
-            deleteState = null
+           viewModel.deleteSelected()
+            showDeleteDialog=false
         },
     )
 
