@@ -139,7 +139,7 @@ kotlin {
 
 
             implementation(projects.features.main)
-            implementation(projects.features.detail)
+           // implementation(projects.features.detail)
             implementation(projects.features.setting)
             implementation(projects.features.composesubject)
             implementation(projects.features.composeexamination)

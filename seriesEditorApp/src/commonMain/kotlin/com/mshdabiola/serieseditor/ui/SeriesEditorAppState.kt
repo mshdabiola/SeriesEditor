@@ -13,6 +13,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.SUBJECT_ARG
 import com.mshdabiola.main.navigation.navigateToMain
@@ -78,6 +79,8 @@ sealed class SeriesEditorAppState(
         @Composable get
 
     abstract fun onSubjectClick(id:Long)
+    abstract fun onUpdateSubject(id:Long)
+
 
 }
 
@@ -111,6 +114,10 @@ class Extended(
     override fun onSubjectClick(id: Long) {
         mainNavController.navigateToMain(id)
     }
+
+    override fun onUpdateSubject(id: Long) {
+        subjectNavHostController.navigateToComposeSubject(id)
+    }
 }
 
 class Other(
@@ -141,6 +148,10 @@ class Other(
 
     override fun onSubjectClick(id: Long) {
         navController.navigateToMain(id)
+    }
+
+    override fun onUpdateSubject(id: Long) {
+        navController.navigateToComposeSubject(id)
     }
 }
 

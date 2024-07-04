@@ -4,19 +4,22 @@
 
 package com.mshdabiola.serieseditor.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.main.navigation.DEFAULT_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
-import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.mainpanel.mainPanelScreen
+import com.mshdabiola.topics.navigation.composeExaminationScreen
+import com.mshdabiola.topics.navigation.navigateToComposeExamination
 
 @Composable
-fun SkNavHost(
+fun ExtendNavHost(
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
@@ -60,7 +63,7 @@ fun SkNavHost(
 
 
 @Composable
-fun SkNavHost2(
+fun OtherNavHost(
     appState: Other,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
@@ -75,7 +78,17 @@ fun SkNavHost2(
         mainScreen(
             onShowSnack = onShowSnackbar,
             navigateToQuestion = {},
-            updateExam = {}
+            updateExam = navController::navigateToComposeExamination
+        )
+        composeSubjectScreen(
+            modifier=Modifier.fillMaxSize(),
+            onShowSnack = onShowSnackbar,
+            onFinish = navController::popBackStack,
+        )
+        composeExaminationScreen(
+            modifier=Modifier.fillMaxSize(),
+            onShowSnack = onShowSnackbar,
+            onBack = navController::popBackStack
         )
     }
 }

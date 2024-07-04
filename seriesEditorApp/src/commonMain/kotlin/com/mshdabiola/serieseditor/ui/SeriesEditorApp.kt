@@ -17,16 +17,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -35,6 +37,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
@@ -42,30 +45,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
-import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
-import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
 import com.mshdabiola.serieseditor.MainAppViewModel
-import com.mshdabiola.serieseditor.navigation.SkNavHost
-import com.mshdabiola.serieseditor.navigation.SkNavHost2
+import com.mshdabiola.serieseditor.navigation.ExtendNavHost
+import com.mshdabiola.serieseditor.navigation.OtherNavHost
 import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.ui.state.SubjectUiState
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -75,8 +78,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 fun SeriesEditorApp() {
     val windowSizeClass = calculateWindowSizeClass()
     val appState =
-        when(windowSizeClass.widthSizeClass){
-            WindowWidthSizeClass.Expanded-> rememberExtend(windowSizeClass)
+        when (windowSizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Expanded -> rememberExtend(windowSizeClass)
             else -> rememberOther(windowSizeClass)
         }
     val shouldShowGradientBackground = false
@@ -87,6 +90,8 @@ fun SeriesEditorApp() {
     val darkTheme = shouldUseDarkTheme(uiState)
 
     val subjects = viewModel.subjects.collectAsStateWithLifecycleCommon()
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val coroutincope = rememberCoroutineScope()
 
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
@@ -110,8 +115,8 @@ fun SeriesEditorApp() {
                         drawerContent = {
                             if (appState.showPermanentDrawer) {
                                 PermanentDrawerSheet(
-                                    modifier = Modifier.widthIn(max=300.dp)
-                                ){
+                                    modifier = Modifier.widthIn(max = 300.dp),
+                                ) {
                                     NavigationSheet(
                                         modifier = Modifier
                                             .padding(top = 16.dp, start = 16.dp, end = 8.dp),
@@ -127,79 +132,99 @@ fun SeriesEditorApp() {
                             }
                         },
                     ) {
-                        Scaffold(
-                            modifier = Modifier.semanticsCommon {},
-                            containerColor = Color.Transparent,
-                            contentColor = MaterialTheme.colorScheme.onBackground,
-                            contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                            snackbarHost = { SnackbarHost(snackbarHostState) },
-                            bottomBar = {
+                        ModalNavigationDrawer(
+                            drawerState = drawerState,
+                            drawerContent = {
+                                if (!appState.showPermanentDrawer) {
+                                    ModalDrawerSheet(
+                                        modifier = Modifier.widthIn(max = 300.dp),
+                                    ) {
+                                        NavigationSheet(
+                                            modifier = Modifier
+                                                .padding(top = 16.dp, start = 16.dp, end = 8.dp),
+                                            subjects = subjects.value,
+
+                                            addSubject = {},
+                                            onSubjectClick = {
+                                                appState.onSubjectClick(it)
+                                                coroutincope.launch { drawerState.close()}
+                                            },
+                                            checkIfSelected = { currentSubjectId == it },
+                                        )
+                                    }
+                                }
+                            },
+                        ) {
+                            Scaffold(
+                                modifier = Modifier.semanticsCommon {},
+                                containerColor = Color.Transparent,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                                snackbarHost = { SnackbarHost(snackbarHostState) },
+                                bottomBar = {
 //                                if (appState.shouldShowBottomBar) {
 //                                    CommonBar(
 //                                        currentNavigation = appState.currentDestination?.route
 //                                            ?: "",
 //                                    ) { navigator(it) }
 //                                }
-                            },
-                            topBar = {
-                                if (appState.showMainTopBar) {
-                                    MainTopBarSection(
-                                        navigateToSetting = appState.navController::navigateToSetting,
-                                        subjectId = currentSubjectId,
-                                        updateSubject = {
-                                            if (appState is Extended) {
-                                                appState.subjectNavHostController.navigateToComposeSubject(
-                                                    it,
-                                                )
-                                            } else {
-                                                appState.navController.navigateToComposeSubject(it)
-                                            }
-                                        },
-                                    )
-                                }
-                            },
-
-                            ) { padding ->
-
-                            Column(
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(padding)
-                                    .consumeWindowInsets(padding)
-                                    .windowInsetsPadding(
-                                        WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
-                                    ),
-                            ) {
-                                when (appState) {
-                                    is Extended -> {
-                                        SkNavHost(
-                                            appState = appState,
-                                            onShowSnackbar = { message, action ->
-                                                snackbarHostState.showSnackbar(
-                                                    message = message,
-                                                    actionLabel = action,
-                                                    duration = SnackbarDuration.Short,
-                                                ) == SnackbarResult.ActionPerformed
-                                            },
+                                },
+                                topBar = {
+                                    if (appState.showMainTopBar) {
+                                        MainTopBarSection(
+                                            navigateToSetting = appState.navController::navigateToSetting,
+                                            subjectId = currentSubjectId,
+                                            updateSubject = appState::onUpdateSubject,
+                                            onNavigationClick = if (!appState.showPermanentDrawer) {
+                                                { coroutincope.launch { drawerState.open() } }
+                                            } else null,
                                         )
                                     }
+                                },
 
-                                    is Other -> {
-                                        SkNavHost2(
-                                            appState = appState,
-                                            onShowSnackbar = { message, action ->
-                                                snackbarHostState.showSnackbar(
-                                                    message = message,
-                                                    actionLabel = action,
-                                                    duration = SnackbarDuration.Short,
-                                                ) == SnackbarResult.ActionPerformed
-                                            },
-                                        )
+                                ) { padding ->
+
+                                Column(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .padding(padding)
+                                        .consumeWindowInsets(padding)
+                                        .windowInsetsPadding(
+                                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+                                        ),
+                                ) {
+                                    when (appState) {
+                                        is Extended -> {
+                                            ExtendNavHost(
+                                                appState = appState,
+                                                onShowSnackbar = { message, action ->
+                                                    snackbarHostState.showSnackbar(
+                                                        message = message,
+                                                        actionLabel = action,
+                                                        duration = SnackbarDuration.Short,
+                                                    ) == SnackbarResult.ActionPerformed
+                                                },
+                                            )
+                                        }
+
+                                        is Other -> {
+                                            OtherNavHost(
+                                                appState = appState,
+                                                onShowSnackbar = { message, action ->
+                                                    snackbarHostState.showSnackbar(
+                                                        message = message,
+                                                        actionLabel = action,
+                                                        duration = SnackbarDuration.Short,
+                                                    ) == SnackbarResult.ActionPerformed
+                                                },
+                                            )
+                                        }
                                     }
-                                }
 
+                                }
                             }
                         }
+
                     }
                 }
             }

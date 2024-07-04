@@ -20,9 +20,11 @@ fun MainTopBarSection(
     modifier: Modifier = Modifier,
     navigateToSetting: () -> Unit,
     subjectId:Long,
-    updateSubject:(Long)->Unit
+    updateSubject:(Long)->Unit,
+    onNavigationClick: (() -> Unit)?=null
 
-    ) {
+
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -40,7 +42,8 @@ fun MainTopBarSection(
         showExportDialog = { showDialog = true },
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = {showDeleteDialog=true},
-        updateSubject = updateSubject
+        updateSubject = updateSubject,
+        onNavigationClick = onNavigationClick
     )
 
     MainExportDialog(
