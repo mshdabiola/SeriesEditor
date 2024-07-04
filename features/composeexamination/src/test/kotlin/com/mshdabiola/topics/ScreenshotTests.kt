@@ -2,7 +2,7 @@
  *abiola 2023
  */
 
-package com.mshdabiola.template
+package com.mshdabiola.topics
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable

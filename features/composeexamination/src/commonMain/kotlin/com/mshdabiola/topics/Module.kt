@@ -1,4 +1,4 @@
-package com.mshdabiola.template
+package com.mshdabiola.topics
 
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module

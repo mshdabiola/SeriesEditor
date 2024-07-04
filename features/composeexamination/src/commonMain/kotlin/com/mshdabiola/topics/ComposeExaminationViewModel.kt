@@ -2,22 +2,26 @@
  *abiola 2022
  */
 
-package com.mshdabiola.template
+package com.mshdabiola.topics
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.ui.toSubject
 import com.mshdabiola.ui.toUi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -37,6 +41,8 @@ class ComposeExaminationViewModel(
             initialValue = listOf(),
         )
 
+    private val _update =MutableStateFlow<Update>(Update.Edit)
+    val update = _update.asStateFlow()
 
     val duration = TextFieldState()
     val year = TextFieldState()
@@ -70,6 +76,9 @@ class ComposeExaminationViewModel(
 
     fun addExam() {
         viewModelScope.launch {
+
+            _update.update { Update.Saving }
+            delay(5000)
             val subject = subjects.value.single { it.name == subject.text.toString() }
             val exam = Examination(
                 id = if (examId > 0) examId else null,
@@ -80,6 +89,9 @@ class ComposeExaminationViewModel(
                 updateTime = System.currentTimeMillis(),
             )
             examRepository.upsert(exam)
+
+
+            _update.update { Update.Success }
 
 
         }
