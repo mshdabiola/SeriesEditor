@@ -17,28 +17,35 @@ import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ITopicRepository
+import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil.getGeneralDir
+import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.state.OptionUiState
 import com.mshdabiola.ui.state.QuestionUiState
+import com.mshdabiola.ui.state.TopicUiState
+import com.mshdabiola.ui.toInstructionUiState
 import com.mshdabiola.ui.toQuestionUiState
 import com.mshdabiola.ui.toQuestionWithOptions
+import com.mshdabiola.ui.toUi
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 class CqViewModel(
     private val examId: Long,
-    private val questionId:Long,
+    private val questionId: Long,
     private val questionRepository: IQuestionRepository,
     private val instructionRepository: IInstructionRepository,
     private val examRepository: IExaminationRepository,
@@ -51,11 +58,51 @@ class CqViewModel(
         mutableStateOf(
             getEmptyQuestion(),
         )
-     val question: State<QuestionUiState> = _question
+    val question: State<QuestionUiState> = _question
     private val _update = MutableStateFlow(Update.Edit)
-    val update=_update.asStateFlow()
+    val update = _update.asStateFlow()
+
+    private val _topics = MutableStateFlow(emptyList<TopicUiState>().toImmutableList())
+    val topic = _topics.asStateFlow()
+
+    val instructs = instructionRepository
+        .getAllByExamId(examId)
+        .map { instructions ->
+            instructions
+                .map {
+                    it.toInstructionUiState()
+                }
+                .toImmutableList()
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList<InstructionUiState>().toImmutableList(),
+        )
+
+    var subjectId =-1L
 
     init {
+
+        viewModelScope.launch {
+            val examtem = examRepository
+                .getOne(examId)
+                .first()
+
+            subjectId=examtem?.subject?.id ?: -1L
+
+            examtem?.subject?.id?.let {
+                topicRepository
+                    .getAllBySubject(it)
+                    .map { it.map { it.toUi() } }
+                    .collectLatest { topics ->
+                        _topics.update {
+                            topics.toImmutableList()
+                        }
+                    }
+            }
+
+        }
         viewModelScope.launch {
             settingRepository.questions
                 .first()[examId]
@@ -237,6 +284,7 @@ class CqViewModel(
             null
         }
     }
+
     fun delete(questionIndex: Int, index: Int) {
         var removeOption = false
         editContent(questionIndex) {
@@ -279,6 +327,7 @@ class CqViewModel(
             _question.value = quest.copy(options = options.toImmutableList())
         }
     }
+
 
     fun changeType(questionIndex: Int, index: Int, type: Type) {
         editContent(questionIndex) {
@@ -358,9 +407,9 @@ class CqViewModel(
             _update.update {
                 Update.Saving
             }
-            delay(5000)
+
             var question2 = _question.value
-            val questions=questionRepository
+            val questions = questionRepository
                 .getByExamId(examId)
                 .first()
 
@@ -374,6 +423,13 @@ class CqViewModel(
             updateExamType(isObjOnly = allIsObj)
 
             _question.value = getEmptyQuestion(question2.options!!.size, question2.isTheory)
+
+//remove from save
+            val inst = settingRepository.questions
+                .first()
+                .toMutableMap()
+            inst.remove(examId)
+            settingRepository.setCurrentQuestion(inst)
 
             _update.update {
                 Update.Success
@@ -390,6 +446,15 @@ class CqViewModel(
 
             if (it[index].isEditMode) index else null
         }
+    }
+
+    fun onTopicChange(index: Int) {
+        _question.value= question.value.copy(topicUiState = topic.value.getOrNull(index))
+
+    }
+
+    fun onInstructionChange(index: Int) {
+        _question.value= question.value.copy(instructionUiState = instructs.value.getOrNull(index))
     }
 
 }
