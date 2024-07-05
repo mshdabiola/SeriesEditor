@@ -1,5 +1,6 @@
 package com.mshdabiola.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -35,10 +36,17 @@ fun ExamCard(
     onUpdate: (Long) -> Unit = {},
     toggleSelect: (Long) -> Unit = {},
     isSelectMode: Boolean = false,
+    onExamClick: (Long) -> Unit = {},
 ) {
     var showDrop by remember { mutableStateOf(false) }
     ListItem(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            if (isSelectMode){
+                toggleSelect(examUiState.id)
+            }else{
+                onExamClick(examUiState.id)
+            }
+        },
         colors = if (examUiState.isSelected) {
             ListItemDefaults.colors(
                 containerColor =

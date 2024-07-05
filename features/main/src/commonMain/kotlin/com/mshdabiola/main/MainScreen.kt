@@ -64,23 +64,28 @@ import org.koin.core.parameter.parametersOf
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
- fun MainRoute(
+internal fun MainRoute(
     modifier: Modifier = Modifier,
     navigateToQuestion: (Long) -> Unit,
+    updateExam : (Long)->Unit,
     subjectId: Long,
 ) {
-    val viewModel: MainViewModel = koinViewModel(parameters = { parametersOf(subjectId) })
+    val viewModel: MainViewModel = koinViewModel(parameters = { parametersOf(subjectId) }, key = "test")
+    println("main $viewModel")
+    println("main id $subjectId")
+
 
     val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
+    val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
 
     MainScreen(
         modifier = modifier,
         mainState = feedNote.value,
         navigateToQuestion = navigateToQuestion,
         onDelete=viewModel::onDeleteExam,
-        onUpdate=viewModel::onUpdateExam,
+        onUpdate=updateExam,
         toggleSelect = viewModel::toggleSelect,
-        isSelectMode = viewModel.mainState.value.isSelectMode
+        isSelectMode = isSelect.value
 
     )
 }
@@ -236,16 +241,16 @@ fun LazyListScope.examItems(
         val analyticsHelper = LocalAnalyticsHelper.current
 
         ExamCard(
-            modifier = itemModifier
-                .clickable {
-                    analyticsHelper.logNoteOpened(examUiState.id.toString())
-                    onExamClick(examUiState.id)
-                },
+            modifier = itemModifier,
             examUiState = examUiState,
             onDelete = onDelete,
             onUpdate = onUpdate,
             toggleSelect = toggleSelect,
             isSelectMode = isSelectMode,
+            onExamClick = {
+                analyticsHelper.logNoteOpened(examUiState.id.toString())
+                onExamClick(examUiState.id)
+            }
         )
     },
 )

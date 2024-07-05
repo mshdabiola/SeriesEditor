@@ -23,7 +23,9 @@ fun NavGraphBuilder.mainScreen(
     modifier: Modifier=Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     navigateToQuestion: (Long) -> Unit,
-) {
+    updateExam : (Long)->Unit,
+
+    ) {
     composable(
         route = "$MAIN_ROUTE/{$SUBJECT_ARG}",
         arguments = listOf(
@@ -38,7 +40,8 @@ fun NavGraphBuilder.mainScreen(
             modifier=modifier,
            // onShowSnackbar = onShowSnack,
             subjectId =currentSubjectId,
-            navigateToQuestion = navigateToQuestion
+            navigateToQuestion = navigateToQuestion,
+            updateExam = updateExam
         )
     }
 }
