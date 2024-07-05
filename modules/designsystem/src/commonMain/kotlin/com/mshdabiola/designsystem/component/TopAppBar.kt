@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HdrOnSelect
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Settings
@@ -82,30 +83,22 @@ fun SeriesEditorTopAppBar(
 fun DetailTopAppBar(
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-    onNavigationClick: () -> Unit = {},
-    onDeleteClick: () -> Unit = {},
+    onNavigationClick:( () -> Unit)? = null,
 ) {
-    CenterAlignedTopAppBar(
-        title = { Text(text = "") },
+    TopAppBar(
+        title = { Text(text = "Series Editor") },
         navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
-                Icon(
-                    modifier = Modifier.testTag("back"),
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "back",
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
+            if (onNavigationClick != null) {
+                IconButton(onClick = onNavigationClick) {
+                    Icon(
+                        modifier = Modifier.testTag("back"),
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "back",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
             }
-        },
-        actions = {
-            IconButton(onClick = onDeleteClick) {
-                Icon(
-                    modifier = Modifier.testTag("delete"),
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "delete",
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
+
         },
         colors = colors,
         modifier = modifier.testTag("detailTopAppBar"),
@@ -119,17 +112,27 @@ fun MainTopBar(
     isSelectMode: Boolean = false,
     currentSubjectId: Long = 0,
     selectAll: () -> Unit = {},
-    selectAllSubject: () -> Unit = {},
     deselectAll: () -> Unit = {},
     navigateToSetting: () -> Unit = {},
     showExportDialog: () -> Unit = {},
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
+    updateSubject:(Long)->Unit={},
+    onNavigationClick: (() -> Unit)?=null
+
 ) {
     var showDrop by remember { mutableStateOf(false) }
 
     TopAppBar(
+        modifier = modifier,
             title = { Text("Main Screen") },
+            navigationIcon ={
+                if(onNavigationClick!=null){
+                    IconButton( onClick = onNavigationClick){
+                        Icon(Icons.Default.Menu,"menu")
+                    }
+                }
+            } ,
             actions = {
                 IconButton(
                     onClick = navigateToSetting,
@@ -163,20 +166,6 @@ fun MainTopBar(
                                 },
                             )
 
-                            if (currentSubjectId > -1) {
-                                DropdownMenuItem(
-                                    leadingIcon = {
-                                        Icon(
-                                            Icons.Default.Subject,
-                                            "select all subject",
-                                        )
-                                    },
-                                    text = { Text("Select Current Subject") },
-                                    onClick = {
-                                        selectAllSubject()
-                                    },
-                                )
-                            }
                             DropdownMenuItem(
                                 leadingIcon = {
                                     Icon(
@@ -184,7 +173,7 @@ fun MainTopBar(
                                         "deselect",
                                     )
                                 },
-                                text = { Text("DeSelect All") },
+                                text = { Text("Deselect All") },
                                 onClick = {
                                     deselectAll()
                                     showDrop = false
@@ -235,7 +224,7 @@ fun MainTopBar(
                                     },
                                     text = { Text("Update") },
                                     onClick = {
-                                        TODO("add navigate to update")
+                                        updateSubject(currentSubjectId)
                                         showDrop = false
                                     },
                                 )
