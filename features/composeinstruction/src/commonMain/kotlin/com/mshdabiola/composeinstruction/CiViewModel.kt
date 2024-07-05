@@ -52,6 +52,19 @@ class CiViewModel(
     )
     val instructionUiState: State<InstructionUiState> = _instructionUiState
 
+    init {
+
+        viewModelScope.launch {
+            val instruct = instructionRepository
+                .getOne(introductionId)
+                .first()
+
+            if (instruct != null) {
+                _instructionUiState.value= instruct.toInstructionUiState(isEdit = true)
+            }
+        }
+    }
+
     // instruction logic
 
     private val _update = MutableStateFlow(Update.Edit)
@@ -172,12 +185,6 @@ class CiViewModel(
                 .copy(
                     content = items.toImmutableList(),
                 )
-        }
-    }
-
-    fun onDelete(id: Long) {
-        viewModelScope.launch {
-            instructionRepository.delete(id)
         }
     }
 
