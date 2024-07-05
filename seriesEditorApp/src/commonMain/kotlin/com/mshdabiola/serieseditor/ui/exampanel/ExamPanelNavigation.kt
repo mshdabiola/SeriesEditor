@@ -18,7 +18,9 @@ fun NavController.navigateToExamPanel(examId: Long,navOptions: NavOptions = andr
 fun NavGraphBuilder.examPanelScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
-) {
+    navigateToTopicPanel: (Long) ->Unit,
+
+    ) {
     composable(
         route = "$EXAM_PANEL_ROUTE/{${EXAM_ARG}}",
         arguments = listOf(
@@ -28,7 +30,8 @@ fun NavGraphBuilder.examPanelScreen(
         ExamPaneScreen(
             modifier = modifier,
             onShowSnackbar = onShowSnack,
-            examId=examId
+            examId=examId,
+            navigateToTopicPanel = navigateToTopicPanel
         )
     }
 }

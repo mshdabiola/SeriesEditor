@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 fun ExamPaneScreen(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
+    navigateToTopicPanel: (Long) -> Unit = {  },
     examId: Long,
 ) {
     var state by remember {
@@ -114,6 +115,12 @@ fun ExamPaneScreen(
                                         }
                                     },
                                     defaultExamId = examId,
+                                    navigateToInstruction = {
+                                        coroutineScope.launch {
+                                            pagerState.animateScrollToPage(1)
+                                        }
+                                    },
+                                    navigateToTopic = navigateToTopicPanel
 
                                     )
                             }
