@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -11,13 +12,15 @@ import androidx.navigation.compose.NavHost
 import com.mshdabiola.composesubject.navigation.FULL_CS_ROUTE
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
+import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.main.navigation.DEFAULT_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.serieseditor.ui.Extended
-import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
-import com.mshdabiola.topics.navigation.FULL_COMPOSE_EXAMINATION_ROUTE
-import com.mshdabiola.topics.navigation.composeExaminationScreen
-import com.mshdabiola.topics.navigation.navigateToComposeExamination
+import com.mshdabiola.serieseditor.ui.exampanel.navigateToExamPanel
+import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
+import com.mshdabiola.composeexam.navigation.FULL_COMPOSE_EXAMINATION_ROUTE
+import com.mshdabiola.composeexam.navigation.composeExaminationScreen
+import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 
 
 @Composable
@@ -35,7 +38,7 @@ fun MainPaneScreen(
         ) {
             mainScreen(
                 onShowSnack = onShowSnackbar,
-                navigateToQuestion = {},
+                navigateToQuestion = appState.navController::navigateToExamPanel,
                 updateExam = appState.examNavHostController::navigateToComposeExamination,
             )
 
@@ -80,6 +83,10 @@ fun MainPaneScreen(
                     },
                 )
 
+            }
+
+            SeriesEditorButton(onClick = { appState.navController.navigateToTopicPanel(subjectId = 1L) }){
+                Text("Add Topic")
             }
 
         }

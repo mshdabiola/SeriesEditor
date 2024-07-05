@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -51,9 +52,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
+import com.mshdabiola.designsystem.component.DetailTopAppBar
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
+import com.mshdabiola.designsystem.component.SeriesEditorTopAppBar
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
@@ -73,7 +76,9 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, KoinExperimentalAPI::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, KoinExperimentalAPI::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun SeriesEditorApp() {
     val windowSizeClass = calculateWindowSizeClass()
@@ -179,6 +184,11 @@ fun SeriesEditorApp() {
                                                 { coroutincope.launch { drawerState.open() } }
                                             } else null,
                                         )
+                                    }else{
+                                        DetailTopAppBar(
+                                           onNavigationClick = appState.navController::popBackStack
+                                        )
+
                                     }
                                 },
 

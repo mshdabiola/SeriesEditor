@@ -143,6 +143,16 @@ kotlin {
             implementation(projects.features.setting)
             implementation(projects.features.composesubject)
             implementation(projects.features.composeexamination)
+            implementation(projects.features.composequestion)
+            implementation(projects.features.composeinstruction)
+            implementation(projects.features.composetopic)
+            implementation(projects.features.questions)
+            implementation(projects.features.instructions)
+            implementation(projects.features.topics)
+
+
+
+
 
 
 

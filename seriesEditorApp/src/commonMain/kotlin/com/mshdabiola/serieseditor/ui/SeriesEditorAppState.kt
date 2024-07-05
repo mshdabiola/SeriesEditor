@@ -102,7 +102,7 @@ class Extended(
       @Composable  get() =  currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true
 
     override val showPermanentDrawer: Boolean
-      @Composable  get() = true
+      @Composable  get() = currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true
 
     override val currentSubjectId: Long
         @Composable get() = mainNavController
