@@ -27,6 +27,7 @@ class QuestionsViewModel(
 ) : ViewModel() {
 
     val questions= MutableStateFlow<Result<List<QuestionUiState>>> (Result.Loading)
+
 //    val questions = mutableStateOf(emptyList<QuestionUiState>().toImmutableList())
 
 
@@ -38,6 +39,8 @@ class QuestionsViewModel(
                     notes
                         .map { it.toQuestionUiState() }
                         .sortedBy { it.number }
+                        .sortedBy { it.isTheory }
+
                 }
                 .asResult()
                 .collectLatest { result->

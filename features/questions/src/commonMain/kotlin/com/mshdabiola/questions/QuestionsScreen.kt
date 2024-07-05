@@ -4,6 +4,7 @@
 
 package com.mshdabiola.questions
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -38,10 +39,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -101,7 +99,7 @@ fun QuestionsRoute(
         onDelete = viewModel::onDeleteQuestion,
         onAnswer = viewModel::onAnswerClick,
 
-    )
+        )
 }
 
 @Composable
@@ -115,6 +113,7 @@ internal fun QuestionsScreen(
     onAnswer: (Long, Long) -> Unit = { _, _ -> },
 ) {
     val state = rememberLazyListState()
+
 
     Box(
         modifier = modifier
@@ -150,7 +149,7 @@ internal fun QuestionsScreen(
                             onMoveUp = onMoveUp,
                             onMoveDown = onMoveDown,
                             onDelete = onDelete,
-                            onAnswer = onAnswer
+                            onAnswer = onAnswer,
                         )
                     }
                 }
@@ -235,7 +234,7 @@ private fun questionsItemsSize(
 ) = when (topicUiState) {
     is Result.Error -> 0 // Nothing
     is Result.Loading -> 1 // Loading bar
-    is Result.Success -> topicUiState.data.size+2
+    is Result.Success -> topicUiState.data.size + 2
 }
 
 
@@ -258,13 +257,13 @@ fun LazyListScope.questionItems(
             onMoveUp = onMoveUp,
             onMoveDown = onMoveDown,
             onDelete = onDelete,
-            onAnswer = onAnswer
+            onAnswer = onAnswer,
         )
     },
 )
 
 
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun QuestionUi(
     modifier: Modifier = Modifier,
@@ -278,107 +277,135 @@ fun QuestionUi(
     var showDrop by remember {
         mutableStateOf(false)
     }
-        Column(modifier)
-        {
+    Column(modifier)
+    {
 
 
-            Row(
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = if (questionUiState.isTheory) "Theory" else "Objective",
-                )
-                Box {
-                    IconButton(onClick = { showDrop = true }) {
-                        Icon(Icons.Default.MoreVert, "more")
-                    }
-                    DropdownMenu(expanded = showDrop, onDismissRequest = { showDrop = false }) {
-                        DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Default.Update, "update") },
-                            text = { Text("Update") },
-                            onClick = {
-                                onUpdate(questionUiState.id)
-                                showDrop = false
-                            },
-                        )
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (questionUiState.topicUiState != null) {
+                Text("Topic:", color = MaterialTheme.colorScheme.secondary)
+                Text(" ${questionUiState.topicUiState!!.name}   ")
+            }
+            Text(
+                modifier = Modifier.weight(1f),
+                text = if (questionUiState.isTheory) "Theory" else "Objective",
+            )
+            Box {
+                IconButton(onClick = { showDrop = true }) {
+                    Icon(Icons.Default.MoreVert, "more")
+                }
+                DropdownMenu(expanded = showDrop, onDismissRequest = { showDrop = false }) {
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.Update, "update") },
+                        text = { Text("Update") },
+                        onClick = {
+                            onUpdate(questionUiState.id)
+                            showDrop = false
+                        },
+                    )
 
-                        DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Default.ArrowUpward, "up") },
-                            text = { Text("Move Up") },
-                            onClick = {
-                                onMoveUp(questionUiState.id)
-                                showDrop = false
-                            },
-                        )
-                        DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Default.ArrowDownward, "down") },
-                            text = { Text("Move Down") },
-                            onClick = {
-                                onMoveDown(questionUiState.id)
-                                showDrop = false
-                            },
-                        )
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.ArrowUpward, "up") },
+                        text = { Text("Move Up") },
+                        onClick = {
+                            onMoveUp(questionUiState.id)
+                            showDrop = false
+                        },
+                    )
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.ArrowDownward, "down") },
+                        text = { Text("Move Down") },
+                        onClick = {
+                            onMoveDown(questionUiState.id)
+                            showDrop = false
+                        },
+                    )
 
-                        DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Default.Delete, "Delete") },
-                            text = { Text("Delete") },
-                            onClick = {
-                                onDelete(questionUiState.id)
-                                showDrop = false
-                            },
-                        )
-                    }
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.Delete, "Delete") },
+                        text = { Text("Delete") },
+                        onClick = {
+                            onDelete(questionUiState.id)
+                            showDrop = false
+                        },
+                    )
                 }
             }
+        }
 //            Spacer(modifier = Modifier.height(4.dp))
+
+        if (questionUiState.instructionUiState != null) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = "Instruction", color = MaterialTheme.colorScheme.secondary,
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = questionUiState.instructionUiState!!.title.text.toString(),
+            )
             ContentView(
-                items = questionUiState.contents,
+                modifier = Modifier.padding(horizontal = 16.dp),
+                items = questionUiState.instructionUiState!!.content,
                 examId = questionUiState.examId,
-                color =  Color.Transparent
+                color = Color.Transparent,
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
-                text = "Options",
-                color = MaterialTheme.colorScheme.secondary
-            )
-            questionUiState.options?.chunked(2)?.forEach { optionsUiStates ->
-                Row {
-                    optionsUiStates.forEach { optionsUiState ->
-                        ContentView(
-                            modifier = Modifier
-                                .weight(0.5f)
-                                .clickable(onClick = {
+        }
+        ContentView(
+            items = questionUiState.contents,
+            examId = questionUiState.examId,
+            color = Color.Transparent,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+            text = "Options",
+            color = MaterialTheme.colorScheme.secondary,
+        )
+        questionUiState.options?.chunked(2)?.forEach { optionsUiStates ->
+            Row {
+                optionsUiStates.forEach { optionsUiState ->
+                    ContentView(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .clickable(
+                                onClick = {
                                     onAnswer(
                                         questionUiState.id,
                                         optionsUiState.id,
                                     )
-                                }),
-                            color = if (optionsUiState.isAnswer) {
-                                Color.Green.copy(alpha = 0.5f)
-                            } else {
-                                Color.Transparent
-                            },
+                                },
+                            ),
+                        color = if (optionsUiState.isAnswer) {
+                            Color.Green.copy(alpha = 0.5f)
+                        } else {
+                            Color.Transparent
+                        },
 
-                            items = optionsUiState.content,
-                            examId = questionUiState.examId,
-                        )
-                    }
+                        items = optionsUiState.content,
+                        examId = questionUiState.examId,
+                    )
                 }
             }
-
-            if (questionUiState.answers != null && !questionUiState.answers!!.isEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text("Answer", modifier = Modifier.padding(horizontal = 16.dp))
-                ContentView(
-                    items = questionUiState.answers!!,
-                    examId = questionUiState.examId,
-
-                    )
-            }
-
-
         }
+
+        if (questionUiState.answers != null && !questionUiState.answers!!.isEmpty()) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text("Answer", modifier = Modifier.padding(horizontal = 16.dp))
+            ContentView(
+                items = questionUiState.answers!!,
+                examId = questionUiState.examId,
+                color = Color.Transparent,
+
+
+                )
+        }
+
+
+    }
 
 }
