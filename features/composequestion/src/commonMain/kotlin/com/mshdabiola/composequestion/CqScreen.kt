@@ -355,7 +355,6 @@ internal fun CqScreen(
                 }
                 Content(
                     items = questionUiState.contents,
-                    examId = questionUiState.examId,
                     label = "Question",
                     addUp = { addUp(-1, it) },
                     addBottom = { addBottom(-1, it) },
@@ -382,7 +381,6 @@ internal fun CqScreen(
                             modifier = Modifier.fillMaxWidth(if (fillIt) 1f else 0.499999f), // .weight(0.5f)
                             items = optionUiState.content,
                             label = "Option ${i + 1}",
-                            examId = questionUiState.examId,
                             addUp = { addUp(i, it) },
                             addBottom = { addBottom(i, it) },
                             delete = { delete(i, it) },
@@ -401,7 +399,6 @@ internal fun CqScreen(
                     Text("Answer", modifier = Modifier.padding(horizontal = 16.dp))
                     Content(
                         items = questionUiState.answers!!,
-                        examId = questionUiState.id,
                         label = "Answer",
                         addUp = { addUp(-2, it) },
                         addBottom = { addBottom(-2, it) },

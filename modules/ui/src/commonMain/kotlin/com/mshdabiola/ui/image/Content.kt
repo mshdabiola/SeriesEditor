@@ -99,7 +99,6 @@ fun ContentView(
 fun Content(
     modifier: Modifier = Modifier,
     items: ImmutableList<ItemUiState>,
-    examId: Long,
     label :String,
     addUp: (Int) -> Unit = {},
     addBottom: (Int) -> Unit = {},
@@ -127,7 +126,6 @@ fun Content(
                     Type.IMAGE -> ImageContent(
                         childModifier.aspectRatio(16f / 9f),
                         item,
-                        examId = examId,
                     )
                 }
                 Box {
@@ -286,16 +284,15 @@ fun EquationContent(
 fun ImageContent(
     modifier: Modifier = Modifier,
     image: ItemUiState,
-    examId: Long,
 ) {
     Box(modifier, contentAlignment = Alignment.Center) {
         DragAndDropImage(
             modifier = modifier.fillMaxSize(),
-            path = ImageUtil.getGeneralDir(image.content.toString(), examId).path,
-            onPathChange = {
+            path = image.content.text.toString(),
+            onPathChange = {path->
                 image.content.clearText()
                 image.content.edit {
-                    append(it)
+                    append(path)
                 }
             },
         )

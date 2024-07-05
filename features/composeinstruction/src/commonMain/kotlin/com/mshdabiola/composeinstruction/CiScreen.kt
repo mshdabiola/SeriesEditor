@@ -125,7 +125,6 @@ internal fun CiScreen(
                     moveUp = moveUp,
                     moveDown = moveDown,
                     changeType = changeType,
-                    examId = instructionUiState.examId,
                 )
                 Spacer(Modifier.height(4.dp))
 
