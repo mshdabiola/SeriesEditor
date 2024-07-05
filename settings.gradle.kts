@@ -77,10 +77,18 @@ include(":seriesEditorApp")
 
 
 include(":features:main")
-include(":features:detail")
+//include(":features:detail")
 include(":features:setting")
 include("features:composesubject")
 include("features:composeexamination")
+include("features:composeinstruction")
+include("features:composequestion")
+include("features:composetopic")
+include("features:instructions")
+include("features:questions")
+include("features:topics")
+
+
 
 
 
