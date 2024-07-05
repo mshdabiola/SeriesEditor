@@ -1,11 +1,14 @@
 package com.mshdabiola.ui.image
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChangeCircle
@@ -23,7 +26,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +39,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil
 import com.mshdabiola.retex.Latex
@@ -44,6 +48,7 @@ import com.mshdabiola.retex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentView(
     modifier: Modifier = Modifier,
@@ -55,30 +60,36 @@ fun ContentView(
         items.forEachIndexed { _, item ->
 
             ListItem(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.padding(0.dp).fillMaxWidth(),
                 colors = ListItemDefaults.colors(containerColor = color),
                 headlineContent = {
                     val childModifier = Modifier.fillMaxWidth()
 
                     when (item.type) {
                         Type.EQUATION -> Box(childModifier, contentAlignment = Alignment.Center) {
-                            Latex(modifier = Modifier, item.content)
+                            Latex(modifier = Modifier, item.content.text.toString())
                         }
 
-                        Type.TEXT -> MarkUpText(modifier = childModifier, text = item.content)
+                        Type.TEXT -> MarkUpText(
+                            modifier = childModifier,
+                            text = item.content.text.toString(),
+                        )
 
                         Type.IMAGE ->
                             Box(childModifier, contentAlignment = Alignment.Center) {
                                 ImageUi(
                                     Modifier.fillMaxWidth().aspectRatio(16f / 9f),
-                                    path = ImageUtil.getGeneralDir(item.content, examId).path,
+                                    path = ImageUtil.getGeneralDir(
+                                        item.content.text.toString(),
+                                        examId,
+                                    ).path,
                                     contentDescription = "",
                                 )
                             }
                     }
                 },
 
-            )
+                )
         }
     }
 }
@@ -89,168 +100,162 @@ fun Content(
     modifier: Modifier = Modifier,
     items: ImmutableList<ItemUiState>,
     examId: Long,
+    label :String,
     addUp: (Int) -> Unit = {},
     addBottom: (Int) -> Unit = {},
     delete: (Int) -> Unit = {},
     moveUp: (Int) -> Unit = {},
     moveDown: (Int) -> Unit = {},
-    edit: (Int) -> Unit = {},
+    changeView: (Int) -> Unit = {},
     changeType: (Int, Type) -> Unit = { _, _ -> },
-    onTextChange: (Int, String) -> Unit = { _, _ -> },
 
-) {
+    ) {
     Column(modifier) {
         items.forEachIndexed { index, item ->
             var showContext by remember { mutableStateOf(false) }
             var showChange by remember { mutableStateOf(false) }
 
-            ListItem(
-                modifier = Modifier.fillMaxWidth(),
-                headlineContent = {
-                    val childModifier = Modifier.fillMaxWidth().testTag("content")
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically){
+                val childModifier = Modifier.weight(1f).testTag("content")
 
-                    when (item.type) {
-                        Type.EQUATION -> EquationContent(childModifier, item, onTextChange = {
-                            onTextChange(index, it)
-                        })
+                when (item.type) {
+                    Type.EQUATION -> EquationContent(childModifier, item)
 
-                        Type.TEXT -> TextContent(childModifier, item, onTextChange = {
-                            onTextChange(index, it)
-                        })
+                    Type.TEXT -> TextContent(childModifier, item,"$label line ${index+1}")
 
-                        Type.IMAGE -> ImageContent(
-                            childModifier.fillMaxWidth().aspectRatio(16f / 9f),
-                            item,
-                            examId = examId,
-                            onTextChange = {
-                                onTextChange(index, it)
-                            },
-                        )
+                    Type.IMAGE -> ImageContent(
+                        childModifier.aspectRatio(16f / 9f),
+                        item,
+                        examId = examId,
+                    )
+                }
+                Box {
+                    IconButton(onClick = { showContext = true }) {
+                        Icon(Icons.Default.MoreVert, "")
                     }
-                },
-                trailingContent = {
-                    Box {
-                        IconButton(onClick = { showContext = true }) {
-                            Icon(Icons.Default.MoreVert, "")
-                        }
 
-                        DropdownMenu(
-                            expanded = showContext,
-                            onDismissRequest = {
-                                showContext = false
-                                showChange = false
-                            },
-                        ) {
-                            if (showChange) {
-                                if (item.type != Type.IMAGE) {
-                                    DropdownMenuItem(text = { Text("Image") }, onClick = {
+                    DropdownMenu(
+                        expanded = showContext,
+                        onDismissRequest = {
+                            showContext = false
+                            showChange = false
+                        },
+                    ) {
+                        if (showChange) {
+                            if (item.type != Type.IMAGE) {
+                                DropdownMenuItem(
+                                    text = { Text("Image") },
+                                    onClick = {
                                         changeType(index, Type.IMAGE)
                                         showChange = false
-                                        showContext = false
-                                    })
-                                }
-
-                                if (item.type != Type.EQUATION) {
-                                    DropdownMenuItem(
-                                        text = { Text("Equation") },
-                                        onClick = {
-                                            changeType(index, Type.EQUATION)
-                                            showChange = false
-                                            showContext = false
-                                        },
-                                    )
-                                }
-
-                                if (item.type != Type.TEXT) {
-                                    DropdownMenuItem(text = { Text("Text") }, onClick = {
-                                        changeType(index, Type.TEXT)
-                                        showChange = false
-                                        showContext = false
-                                    })
-                                }
-                            } else {
-                                DropdownMenuItem(
-                                    leadingIcon = {
-                                        if (!item.isEditMode) {
-                                            Icon(
-                                                Icons.Default.Edit,
-                                                "edit",
-                                            )
-                                        } else {
-                                            Icon(Icons.Default.ViewAgenda, "view")
-                                        }
-                                    },
-                                    text = { Text(if (!item.isEditMode) "Edit" else "View") },
-                                    onClick = {
-                                        edit(index)
-                                        showContext = false
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    leadingIcon = {
-                                        Icon(Icons.Default.ChangeCircle, "change")
-                                    },
-                                    text = { Text("Change Type") },
-                                    onClick = {
-                                        showChange = true
-                                    },
-                                )
-
-                                DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Default.Add, "delete") },
-                                    text = { Text("Add Top") },
-                                    onClick = {
-                                        addUp(index)
-                                        showContext = false
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Default.Add, "delete") },
-                                    text = { Text("Add Down") },
-                                    onClick = {
-                                        addBottom(index)
-                                        showContext = false
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Default.Delete, "delete") },
-                                    text = { Text("Delete") },
-                                    onClick = {
-                                        delete(index)
-                                        showContext = false
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Default.MoveUp, "delete") },
-                                    text = { Text("Move up") },
-                                    onClick = {
-                                        moveUp(index)
-                                        showContext = false
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Default.MoveDown, "delete") },
-                                    text = { Text("Move down") },
-                                    onClick = {
-                                        moveDown(index)
                                         showContext = false
                                     },
                                 )
                             }
+
+                            if (item.type != Type.EQUATION) {
+                                DropdownMenuItem(
+                                    text = { Text("Equation") },
+                                    onClick = {
+                                        changeType(index, Type.EQUATION)
+                                        showChange = false
+                                        showContext = false
+                                    },
+                                )
+                            }
+
+                            if (item.type != Type.TEXT) {
+                                DropdownMenuItem(
+                                    text = { Text("Text") },
+                                    onClick = {
+                                        changeType(index, Type.TEXT)
+                                        showChange = false
+                                        showContext = false
+                                    },
+                                )
+                            }
+                        } else {
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    if (!item.isEditMode) {
+                                        Icon(
+                                            Icons.Default.Edit,
+                                            "edit",
+                                        )
+                                    } else {
+                                        Icon(Icons.Default.ViewAgenda, "view")
+                                    }
+                                },
+                                text = { Text(if (!item.isEditMode) "Edit" else "View") },
+                                onClick = {
+                                      changeView(index)
+                                    showContext = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(Icons.Default.ChangeCircle, "change")
+                                },
+                                text = { Text("Change Type") },
+                                onClick = {
+                                    showChange = true
+                                },
+                            )
+
+                            DropdownMenuItem(
+                                leadingIcon = { Icon(Icons.Default.Add, "delete") },
+                                text = { Text("Add Top") },
+                                onClick = {
+                                    addUp(index)
+                                    showContext = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = { Icon(Icons.Default.Add, "delete") },
+                                text = { Text("Add Down") },
+                                onClick = {
+                                    addBottom(index)
+                                    showContext = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = { Icon(Icons.Default.Delete, "delete") },
+                                text = { Text("Delete") },
+                                onClick = {
+                                    delete(index)
+                                    showContext = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = { Icon(Icons.Default.MoveUp, "delete") },
+                                text = { Text("Move up") },
+                                onClick = {
+                                    moveUp(index)
+                                    showContext = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = { Icon(Icons.Default.MoveDown, "delete") },
+                                text = { Text("Move down") },
+                                onClick = {
+                                    moveDown(index)
+                                    showContext = false
+                                },
+                            )
                         }
                     }
-                },
-            )
+                }
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EquationContent(
     modifier: Modifier = Modifier,
     equation: ItemUiState,
-    onTextChange: (String) -> Unit = {},
 ) {
     val focusRequester = remember {
         FocusRequester()
@@ -263,42 +268,46 @@ fun EquationContent(
 
     Box(modifier, contentAlignment = Alignment.Center) {
         if (equation.isEditMode) {
-            TextField(
+            SeriesEditorTextField(
                 modifier = Modifier.focusRequester(focusRequester).fillMaxWidth(),
-                label = { Text("Equation") },
-                maxLines = 1,
-                value = equation.content,
-                onValueChange = onTextChange,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                label = "Equation",
+                maxNum = androidx.compose.foundation.text2.input.TextFieldLineLimits.SingleLine,
+                state = equation.content,
+                imeAction = ImeAction.Next,
             )
         } else {
-            Latex(modifier = Modifier, equation.content)
+            Latex(modifier = Modifier, equation.content.text.toString())
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageContent(
     modifier: Modifier = Modifier,
     image: ItemUiState,
     examId: Long,
-    onTextChange: (String) -> Unit = {},
 ) {
     Box(modifier, contentAlignment = Alignment.Center) {
         DragAndDropImage(
             modifier = modifier.fillMaxSize(),
-            path = ImageUtil.getGeneralDir(image.content, examId).path,
-            onPathChange = onTextChange,
+            path = ImageUtil.getGeneralDir(image.content.toString(), examId).path,
+            onPathChange = {
+                image.content.clearText()
+                image.content.edit {
+                    append(it)
+                }
+            },
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TextContent(
     modifier: Modifier = Modifier,
     text: ItemUiState,
-    onTextChange: (String) -> Unit = {},
+    label: String
 ) {
     val focusRequester = remember {
         FocusRequester()
@@ -309,15 +318,16 @@ fun TextContent(
         }
     }
     if (text.isEditMode) {
-        TextField(
-            modifier = modifier.focusRequester(focusRequester).fillMaxWidth(),
-            value = text.content,
-            label = { Text("Text Content") },
-            maxLines = 1,
-            onValueChange = onTextChange,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        SeriesEditorTextField(
+            modifier = modifier.focusRequester(focusRequester),
+            label = label,
+            maxNum = androidx.compose.foundation.text2.input.TextFieldLineLimits.SingleLine,
+            state = text.content,
+            imeAction = ImeAction.Next,
         )
+
+
     } else {
-        MarkUpText(modifier = modifier, text = text.content)
+        MarkUpText(modifier = modifier, text = text.content.text.toString())
     }
 }
