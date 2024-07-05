@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.topics
+package com.mshdabiola.composeexam
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule

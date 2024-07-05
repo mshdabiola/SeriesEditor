@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.topics
+package com.mshdabiola.composeexam
 
 import com.mshdabiola.testing.repository.TestNoteRepository
 import com.mshdabiola.testing.repository.TestUserDataRepository
