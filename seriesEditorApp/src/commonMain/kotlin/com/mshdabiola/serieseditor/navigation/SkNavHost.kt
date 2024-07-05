@@ -19,6 +19,7 @@ import com.mshdabiola.serieseditor.ui.mainpanel.mainPanelScreen
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.composeexam.navigation.composeExaminationScreen
 import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
+import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 
 @Composable
 fun ExtendNavHost(
@@ -40,6 +41,7 @@ fun ExtendNavHost(
        examPanelScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
+           navigateToTopicPanel = navController::navigateToTopicPanel
 
             )
         topicPanelScreen(
