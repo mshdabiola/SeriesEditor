@@ -5,6 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface IExaminationRepository {
 
+    val isSelectMode :Flow<Boolean>
+    val selectedList : Flow<List<Long>>
+
     suspend fun upsert(examination: Examination): Long
     fun getAll(): Flow<List<Examination>>
 
@@ -26,4 +29,7 @@ interface IExaminationRepository {
         path: String,
         key: String,
     )
+
+     fun updateSelect(isSelect: Boolean)
+     fun updateSelectedList(selectedList: List<Long>)
 }
