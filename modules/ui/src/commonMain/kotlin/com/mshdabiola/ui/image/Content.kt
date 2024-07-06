@@ -28,6 +28,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,6 +47,7 @@ import com.mshdabiola.retex.Latex
 import com.mshdabiola.retex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
+import org.koin.core.qualifier.qualifier
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -78,10 +80,7 @@ fun ContentView(
                             Box(childModifier, contentAlignment = Alignment.Center) {
                                 ImageUi(
                                     Modifier.fillMaxWidth().aspectRatio(16f / 9f),
-                                    path = ImageUtil.getGeneralDir(
-                                        item.content.text.toString(),
-                                        examId,
-                                    ).path,
+                                    path = item.content.text.toString(),
                                     contentDescription = "",
                                 )
                             }
@@ -132,7 +131,11 @@ fun Content(
                             }
 
                         } else {
-                            EquationContent(childModifier, item)
+                            EquationContent(
+                                childModifier
+                                    .clickable { onItemClicked(item) },
+                                item,
+                            )
                         }
                     }
 
@@ -150,7 +153,7 @@ fun Content(
                         } else {
                             ImageContent(
                                 childModifier
-                                    .clickable { onItemClicked(item)  }
+                                    .clickable { onItemClicked(item) }
                                     .aspectRatio(16f / 9f),
                                 item,
                             )
@@ -285,7 +288,10 @@ fun EquationContent(
     modifier: Modifier = Modifier,
     equation: ItemUiState,
 ) {
-    Latex(modifier = modifier, equation.content.text.toString())
+    key(equation.content.text){
+        Latex(modifier = modifier, equation.content.text.toString())
+    }
+
 
 }
 
