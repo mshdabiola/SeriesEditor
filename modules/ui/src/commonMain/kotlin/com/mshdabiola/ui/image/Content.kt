@@ -1,14 +1,13 @@
 package com.mshdabiola.ui.image
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChangeCircle
@@ -20,12 +19,12 @@ import androidx.compose.material.icons.filled.MoveUp
 import androidx.compose.material.icons.filled.ViewAgenda
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -94,12 +93,12 @@ fun ContentView(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     modifier: Modifier = Modifier,
     items: ImmutableList<ItemUiState>,
-    label :String,
+    label: String,
     addUp: (Int) -> Unit = {},
     addBottom: (Int) -> Unit = {},
     delete: (Int) -> Unit = {},
@@ -107,6 +106,8 @@ fun Content(
     moveDown: (Int) -> Unit = {},
     changeView: (Int) -> Unit = {},
     changeType: (Int, Type) -> Unit = { _, _ -> },
+    onItemClicked: (ItemUiState) -> Unit = {},
+
 
     ) {
     Column(modifier) {
@@ -114,19 +115,48 @@ fun Content(
             var showContext by remember { mutableStateOf(false) }
             var showChange by remember { mutableStateOf(false) }
 
-            Row(modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically){
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 val childModifier = Modifier.weight(1f).testTag("content")
 
                 when (item.type) {
-                    Type.EQUATION -> EquationContent(childModifier, item)
+                    Type.EQUATION -> {
+                        if (item.content.text.isBlank()) {
+                            Box(childModifier, contentAlignment = Alignment.Center) {
+                                TextButton(onClick = { onItemClicked(item) }) {
+                                    Icon(Icons.Default.Add, "add")
+                                    Text("Add Equation")
+                                }
+                            }
 
-                    Type.TEXT -> TextContent(childModifier, item,"$label line ${index+1}")
+                        } else {
+                            EquationContent(childModifier, item)
+                        }
+                    }
 
-                    Type.IMAGE -> ImageContent(
-                        childModifier.aspectRatio(16f / 9f),
-                        item,
-                    )
+                    Type.TEXT -> TextContent(childModifier, item, "$label line ${index + 1}")
+
+                    Type.IMAGE -> {
+                        if (item.content.text.isBlank()) {
+                            Box(childModifier, contentAlignment = Alignment.Center) {
+                                TextButton(onClick = { onItemClicked(item) }) {
+                                    Icon(Icons.Default.Add, "add")
+                                    Text("Add Image")
+                                }
+                            }
+
+                        } else {
+                            ImageContent(
+                                childModifier
+                                    .clickable { onItemClicked(item)  }
+                                    .aspectRatio(16f / 9f),
+                                item,
+                            )
+                        }
+
+                    }
                 }
                 Box {
                     IconButton(onClick = { showContext = true }) {
@@ -187,7 +217,7 @@ fun Content(
                                 },
                                 text = { Text(if (!item.isEditMode) "Edit" else "View") },
                                 onClick = {
-                                      changeView(index)
+                                    changeView(index)
                                     showContext = false
                                 },
                             )
@@ -255,28 +285,8 @@ fun EquationContent(
     modifier: Modifier = Modifier,
     equation: ItemUiState,
 ) {
-    val focusRequester = remember {
-        FocusRequester()
-    }
-    LaunchedEffect(equation.focus) {
-        if (equation.focus) {
-            focusRequester.requestFocus()
-        }
-    }
+    Latex(modifier = modifier, equation.content.text.toString())
 
-    Box(modifier, contentAlignment = Alignment.Center) {
-        if (equation.isEditMode) {
-            SeriesEditorTextField(
-                modifier = Modifier.focusRequester(focusRequester).fillMaxWidth(),
-                label = "Equation",
-                maxNum = androidx.compose.foundation.text2.input.TextFieldLineLimits.SingleLine,
-                state = equation.content,
-                imeAction = ImeAction.Next,
-            )
-        } else {
-            Latex(modifier = Modifier, equation.content.text.toString())
-        }
-    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -285,18 +295,17 @@ fun ImageContent(
     modifier: Modifier = Modifier,
     image: ItemUiState,
 ) {
-    Box(modifier, contentAlignment = Alignment.Center) {
-        DragAndDropImage(
-            modifier = modifier.fillMaxSize(),
+
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        //  if (File(path).exists()) {
+        ImageUi(
+            Modifier,
             path = image.content.text.toString(),
-            onPathChange = {path->
-                image.content.clearText()
-                image.content.edit {
-                    append(path)
-                }
-            },
+            contentDescription = "",
         )
+
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -304,7 +313,7 @@ fun ImageContent(
 fun TextContent(
     modifier: Modifier = Modifier,
     text: ItemUiState,
-    label: String
+    label: String,
 ) {
     val focusRequester = remember {
         FocusRequester()

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
@@ -57,6 +58,7 @@ import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.image.ContentView
 import com.mshdabiola.ui.state.InstructionUiState
+import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.state.QuestionUiState
 import com.mshdabiola.ui.state.TopicUiState
 import kotlinx.collections.immutable.ImmutableList
@@ -82,6 +84,7 @@ internal fun CqRoute(
 
     val topic = viewModel.topic.collectAsStateWithLifecycleCommon()
     val instructs = viewModel.instructs.collectAsStateWithLifecycleCommon()
+    var itemUiState by remember { mutableStateOf<ItemUiState?>(null) }
 
 
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
@@ -114,10 +117,9 @@ internal fun CqRoute(
         navigateToInstruction = navigateToInstruction,
         onTopicChange = viewModel::onTopicChange,
         onInstructionChange = viewModel::onInstructionChange,
-
-        //
-
+        onItemClicked = { itemUiState=it}
     )
+    QuestionDialog(itemUiState = itemUiState, onDismiss = {itemUiState=null})
 }
 
 @OptIn(
@@ -147,7 +149,9 @@ internal fun CqScreen(
     navigateToInstruction: () -> Unit = {},
     onTopicChange: (Int) -> Unit = {},
     onInstructionChange: (Int) -> Unit = {},
-) {
+    onItemClicked: (ItemUiState) -> Unit = {},
+
+    ) {
 
     var showTopiDropdown by remember { mutableStateOf(false) }
     var showConvert by remember { mutableStateOf(false) }
@@ -363,9 +367,12 @@ internal fun CqScreen(
                     moveDown = { moveDown(-1, it) },
                     changeView = { changeView(-1, it) },
                     changeType = { i, t -> changeType(-1, i, t) },
+                    onItemClicked = onItemClicked
                     // onTextChange = { i, s -> onTextChange(-1, i, s) },
 
                 )
+
+
 
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -388,6 +395,7 @@ internal fun CqScreen(
                             moveDown = { moveDown(i, it) },
                             changeView = { changeView(i, it) },
                             changeType = { ii, t -> changeType(i, ii, t) },
+                            onItemClicked=onItemClicked
                             // onTextChange = { idn, s -> onTextChange(i, idn, s) },
 
                         )
