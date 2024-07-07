@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -56,7 +55,6 @@ import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.designsystem.component.DetailTopAppBar
-import com.mshdabiola.designsystem.component.SeButtonAppBar
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
@@ -154,7 +152,11 @@ fun SeriesEditorApp() {
                                                 .padding(top = 16.dp, start = 16.dp, end = 8.dp),
                                             subjects = subjects.value,
 
-                                            addSubject = {appState.navController.navigateToComposeSubject(-1)},
+                                            addSubject = {
+                                                appState.navController.navigateToComposeSubject(
+                                                    -1,
+                                                )
+                                            },
                                             onSubjectClick = {
                                                 appState.onSubjectClick(it)
                                                 coroutine.launch { drawerState.close() }
@@ -176,31 +178,15 @@ fun SeriesEditorApp() {
                                     if (appState is Other) {
 
 
-                                        SeButtonAppBar(
+                                        MainBottomBarSection(
                                             modifier = Modifier,
-                                            onFabClick =
-                                            if (appState.isList) {
-                                                {
-                                                    appState.onAdd()
-                                                }
-                                            } else {
-                                                null
-                                            },
                                             onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
                                                 { coroutine.launch { drawerState.open() } }
                                             } else {
                                                 null
                                             },
-                                            onSettingsClick = if (appState.isMain) {
-                                                appState.navController::navigateToSetting
-                                            } else {
-                                                null
-                                            },
-                                            onBackClick = if (!appState.isMain) {
-                                                { appState.navController.popBackStack() }
-                                            } else {
-                                                null
-                                            },
+                                            subjectId = currentSubjectId,
+                                            appState = appState,
                                         )
 
                                     }
