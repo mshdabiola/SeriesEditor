@@ -40,6 +40,7 @@ enum class DefaultTestDevices(val description: String, val spec: String) {
     FOLDABLE("foldable", "spec:shape=Normal,width=673,height=841,unit=dp,dpi=480"),
     TABLET("tablet", "spec:shape=Normal,width=1280,height=800,unit=dp,dpi=480"),
 }
+
 fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.captureMultiDevice(
     screenshotName: String,
     body: @Composable () -> Unit,
@@ -146,11 +147,11 @@ fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.c
                 this.onRoot()
                     .captureRoboImage(
                         "src/test/screenshots/" +
-                            "$name/$filename" +
-                            "_$darkModeDesc" +
-                            "_$androidThemeDesc" +
-                            "_$dynamicThemingDesc" +
-                            ".png",
+                                "$name/$filename" +
+                                "_$darkModeDesc" +
+                                "_$androidThemeDesc" +
+                                "_$dynamicThemingDesc" +
+                                ".png",
                         roborazziOptions = DefaultRoborazziOptions,
                     )
             }
@@ -168,21 +169,21 @@ private fun generateDescription(
     dynamicTheming: Boolean,
 ): String {
     val description = "" +
-        if (shouldCompareDarkMode) {
-            if (darkMode) "Dark" else "Light"
-        } else {
-            ""
-        } +
-        if (shouldCompareAndroidTheme) {
-            if (androidTheme) " Android" else " Default"
-        } else {
-            ""
-        } +
-        if (shouldCompareDynamicColor) {
-            if (dynamicTheming) " Dynamic" else ""
-        } else {
-            ""
-        }
+            if (shouldCompareDarkMode) {
+                if (darkMode) "Dark" else "Light"
+            } else {
+                ""
+            } +
+            if (shouldCompareAndroidTheme) {
+                if (androidTheme) " Android" else " Default"
+            } else {
+                ""
+            } +
+            if (shouldCompareDynamicColor) {
+                if (dynamicTheming) " Dynamic" else ""
+            } else {
+                ""
+            }
 
     return description.trim()
 }
