@@ -26,10 +26,8 @@ import androidx.compose.ui.unit.dp
  *        supported. This parameter has no effect if [androidTheme] is `true`.
  */
 
-@Composable
-fun getExtendedColor(darkTheme: Boolean= isSystemInDarkTheme()): ExtendedColorScheme {
-    return if (darkTheme) extendedDark else extendedLight
-}
+lateinit var extendedColorScheme :ExtendedColorScheme
+
 @Composable
 fun SeriesEditorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -37,6 +35,7 @@ fun SeriesEditorTheme(
     disableDynamicTheming: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+    extendedColorScheme=if (darkTheme) extendedDark else extendedLight
     val colorScheme = when {
         androidTheme -> if (darkTheme) highContrastDarkColorScheme else highContrastLightColorScheme
         !disableDynamicTheming && supportsDynamicTheming() -> {

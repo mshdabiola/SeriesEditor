@@ -11,7 +11,6 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -61,7 +60,7 @@ import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
 import com.mshdabiola.designsystem.theme.LocalTintTheme
-import com.mshdabiola.designsystem.theme.getExtendedColor
+import com.mshdabiola.designsystem.theme.extendedColorScheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.ContentView
 import com.mshdabiola.ui.state.QuestionUiState
@@ -278,6 +277,7 @@ fun QuestionUi(
     var showDrop by remember {
         mutableStateOf(false)
     }
+
     Column(modifier)
     {
 
@@ -381,7 +381,7 @@ fun QuestionUi(
                                 },
                             ),
                         color = if (optionsUiState.isAnswer) {
-                            getExtendedColor().wrong.colorContainer
+                            extendedColorScheme.right.colorContainer
                         } else {
                             Color.Transparent
                         },

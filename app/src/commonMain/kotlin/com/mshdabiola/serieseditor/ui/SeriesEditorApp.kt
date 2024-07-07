@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -53,6 +54,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.designsystem.component.DetailTopAppBar
 import com.mshdabiola.designsystem.component.SeButtonAppBar
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
@@ -129,7 +131,7 @@ fun SeriesEditorApp() {
                                             .padding(top = 16.dp, start = 16.dp, end = 8.dp),
                                         subjects = subjects.value,
 
-                                        addSubject = {},
+                                        addSubject = null,
                                         onSubjectClick = appState::onSubjectClick,
                                         checkIfSelected = { currentSubjectId == it },
                                         onAddTopic = { appState.onAddTopic(currentSubjectId) },
@@ -152,7 +154,7 @@ fun SeriesEditorApp() {
                                                 .padding(top = 16.dp, start = 16.dp, end = 8.dp),
                                             subjects = subjects.value,
 
-                                            addSubject = {},
+                                            addSubject = {appState.navController.navigateToComposeSubject(-1)},
                                             onSubjectClick = {
                                                 appState.onSubjectClick(it)
                                                 coroutine.launch { drawerState.close() }
