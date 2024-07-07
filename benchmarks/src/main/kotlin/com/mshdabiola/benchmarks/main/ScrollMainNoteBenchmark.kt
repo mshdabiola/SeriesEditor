@@ -38,6 +38,6 @@ class ScrollMainNoteBenchmark {
             startActivityAndAllowNotifications()
         },
     ) {
-        //mainScrollNoteDownUp()
+        // mainScrollNoteDownUp()
     }
 }

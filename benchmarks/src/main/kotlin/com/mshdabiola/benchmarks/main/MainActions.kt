@@ -8,7 +8,6 @@ import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.Until
-import com.mshdabiola.benchmarks.flingElementDownUp
 
 fun MacrobenchmarkScope.goAddQuestionToDScreen() {
     val selector = By.res("main:list")
@@ -16,14 +15,11 @@ fun MacrobenchmarkScope.goAddQuestionToDScreen() {
 
     val examList = device.findObject(selector)
 
-
     examList.children[0].click()
     // Wait until saved title are shown on screen
 }
 
-
 fun MacrobenchmarkScope.addSubject(subject: String) {
-
     val buttonSelector = By.res("add")
 
     device.wait(Until.hasObject(buttonSelector), 5000)
@@ -31,7 +27,6 @@ fun MacrobenchmarkScope.addSubject(subject: String) {
     device.findObject(buttonSelector)
         .click()
     device.waitForIdle()
-
 
     device.findObject(By.res("main:subject"))
         .text = subject
@@ -43,7 +38,6 @@ fun MacrobenchmarkScope.addSubject(subject: String) {
 }
 
 fun MacrobenchmarkScope.addExam() {
-
     val buttonSelector = By.res("add")
 
     device.wait(Until.hasObject(buttonSelector), 5000)

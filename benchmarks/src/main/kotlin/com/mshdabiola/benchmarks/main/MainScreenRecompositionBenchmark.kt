@@ -39,6 +39,6 @@ class MainScreenRecompositionBenchmark {
                 //   device.findObject(By.res("main:add")).click()
             },
         ) {
-            //mainScrollNoteDownUp()
+            // mainScrollNoteDownUp()
         }
 }

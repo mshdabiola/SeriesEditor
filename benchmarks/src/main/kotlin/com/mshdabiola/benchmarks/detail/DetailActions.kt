@@ -34,7 +34,6 @@ fun MacrobenchmarkScope.addQuestion() {
 
         uiObject2.text = question[index]
         device.waitForIdle()
-
     }
 
     device.findObject(By.res("main:add_question"))
