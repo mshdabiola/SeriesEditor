@@ -9,14 +9,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.generalmodel.Type
-import com.mshdabiola.model.ImageUtil.getGeneralDir
+import com.mshdabiola.model.ImageUtil.getAppPath
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.toInstruction
@@ -25,8 +24,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -149,7 +146,7 @@ class CiViewModel(
         editContentInstruction() {
             val oldItem = it[index]
             if (oldItem.type == Type.IMAGE) {
-                getGeneralDir(oldItem.content.text.toString(), examId).deleteOnExit()
+                getAppPath("$examId/${oldItem.content.text}").deleteOnExit()
             }
             it.removeAt(index)
             null
@@ -160,7 +157,7 @@ class CiViewModel(
         editContentInstruction() {
             val oldItem = it[index]
             if (oldItem.type == Type.IMAGE) {
-                getGeneralDir(oldItem.content.text.toString(), examId).deleteOnExit()
+                getAppPath("$examId/${oldItem.content.text}").deleteOnExit()
             }
             it[index] = ItemUiState(isEditMode = true, type = type)
             index

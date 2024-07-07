@@ -39,9 +39,11 @@ import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.ui.QuestionDialog
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.state.InstructionUiState
+import com.mshdabiola.ui.state.ItemUiState
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
@@ -59,6 +61,7 @@ internal fun CiRoute(
     instructionId: Long
 ) {
     val viewModel: CiViewModel = koinViewModel(parameters = { parametersOf(examId,instructionId) })
+    var itemUiState by remember { mutableStateOf<ItemUiState?>(null) }
 
 //    val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
@@ -82,7 +85,13 @@ internal fun CiRoute(
         onAddInstruction = viewModel::onAdd,
         onChangeView=viewModel::changeView,
         onAddInstructionUiState = viewModel::onAddInstructionInput,
-        instructionInput = viewModel.instructionInput
+        instructionInput = viewModel.instructionInput,
+        onItemClicked = { itemUiState = it }
+    )
+    QuestionDialog(
+        itemUiState = itemUiState,
+        onDismiss = { itemUiState = null },
+        examId =  examId,
     )
 }
 
@@ -102,7 +111,9 @@ internal fun CiScreen(
     onAddInstruction: () -> Unit = {},
     onAddInstructionUiState: () -> Unit = {},
     onChangeView: (Int) -> Unit = { _ -> },
-) {
+    onItemClicked: (ItemUiState) -> Unit = {},
+
+    ) {
     var showConvert by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
@@ -125,6 +136,7 @@ internal fun CiScreen(
                     moveUp = moveUp,
                     moveDown = moveDown,
                     changeType = changeType,
+                    onItemClicked = onItemClicked
                 )
                 Spacer(Modifier.height(4.dp))
 
