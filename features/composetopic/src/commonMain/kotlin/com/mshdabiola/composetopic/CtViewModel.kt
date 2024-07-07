@@ -4,7 +4,6 @@
 
 package com.mshdabiola.composetopic
 
-
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.clearText
@@ -12,9 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.generalmodel.Subject
 import com.mshdabiola.generalmodel.Topic
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -50,9 +47,7 @@ class CtViewModel(
                 }
             }
         }
-
     }
-
 
     fun addTopic() {
         viewModelScope.launch {
@@ -76,7 +71,5 @@ class CtViewModel(
     }
 
     fun addTopicInput() {
-
     }
-
 }

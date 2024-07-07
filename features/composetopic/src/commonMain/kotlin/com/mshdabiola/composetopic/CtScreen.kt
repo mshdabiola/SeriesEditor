@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -65,7 +64,6 @@ internal fun CtRoute(
 
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
-
             onFinish()
             onShowSnack("Add Topic", null)
         }
@@ -101,7 +99,6 @@ internal fun CtScreen(
     ) {
         when (update) {
             Update.Edit -> {
-
                 Section(title = "Topic Section")
                 val focusRequester = remember {
                     FocusRequester()
@@ -109,7 +106,6 @@ internal fun CtScreen(
                 LaunchedEffect(Unit) {
                     delay(1000)
                     focusRequester.requestFocus()
-
                 }
                 SeriesEditorTextField(
                     modifier = Modifier
@@ -131,13 +127,10 @@ internal fun CtScreen(
             }
 
             Update.Saving -> {
-
                 Waiting()
-
             }
 
             else -> {
-
             }
         }
 
@@ -189,8 +182,4 @@ internal fun CtScreen(
             }
         }
     }
-
-
 }
-
-
