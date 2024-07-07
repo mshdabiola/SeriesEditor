@@ -96,10 +96,10 @@ internal fun SubjectScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 SeriesEditorButton(
                     modifier = Modifier.align(Alignment.End),
-                    enabled =state.text.isNotBlank(),
+                    enabled = state.text.isNotBlank(),
                     onClick = addSubject,
                 ) {
-                    Icon(Icons.Default.Add,"Add")
+                    Icon(Icons.Default.Add, "Add")
                     Text("Add Subject")
                 }
             }

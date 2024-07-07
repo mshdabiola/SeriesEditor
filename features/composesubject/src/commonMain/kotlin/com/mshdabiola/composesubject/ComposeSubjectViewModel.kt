@@ -21,21 +21,21 @@ import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
-class ComposeSubjectViewModel (
-    private val subjectId:Long,
-    private val subjectRepository: ISubjectRepository
-): ViewModel() {
+class ComposeSubjectViewModel(
+    private val subjectId: Long,
+    private val subjectRepository: ISubjectRepository,
+) : ViewModel() {
 
     @OptIn(ExperimentalFoundationApi::class)
-    val state =TextFieldState()
+    val state = TextFieldState()
 
     private val _update = MutableStateFlow(Update.Edit)
     val update = _update.asStateFlow()
 
     init {
         viewModelScope.launch {
-            if (subjectId>0){
-                val sub=subjectRepository
+            if (subjectId > 0) {
+                val sub = subjectRepository
                     .getOne(subjectId)
                     .first()
 
@@ -46,20 +46,20 @@ class ComposeSubjectViewModel (
                     }
                 }
 
+            }
         }
-    }
 
     }
 
 
-    fun addSubject(){
+    fun addSubject() {
         viewModelScope.launch {
             _update.update { Update.Saving }
             subjectRepository.upsert(
                 Subject(
-                    id=if (subjectId>0) subjectId else null,
-                    title = state.text.toString()
-                )
+                    id = if (subjectId > 0) subjectId else null,
+                    title = state.text.toString(),
+                ),
             )
             _update.update { Update.Success }
         }
