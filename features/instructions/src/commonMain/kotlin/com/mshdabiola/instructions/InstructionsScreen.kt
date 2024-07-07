@@ -10,7 +10,6 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -36,8 +35,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -109,16 +106,14 @@ internal fun InstructionScreen(
 
     Box(
         modifier = modifier
-            .fillMaxSize()
-            .testTag("main:screen"),
+            .testTag("instruction:screen"),
 
         ) {
         LazyColumn(
             state = state,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .testTag("main:list"),
+                .testTag("instruction:list"),
         ) {
             item {
                 // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
@@ -256,40 +251,47 @@ fun InstructionUi(
     onDelete: (Long) -> Unit = {},
 ) {
     var showDrop by remember { mutableStateOf(false) }
-    Row(modifier = modifier){
-        Column (Modifier.weight(1f)){
-            Text(text = instructionUiState.title.text.toString(),
-                style = MaterialTheme.typography.titleSmall)
-            ContentView(
-                items = instructionUiState.content,
-                examId = instructionUiState.examId,
-                color = Color.Transparent
-            )
-        }
-        Box {
-            IconButton(onClick = { showDrop = true }) {
-                Icon(Icons.Default.MoreVert, "more")
-            }
-            DropdownMenu(expanded = showDrop, onDismissRequest = { showDrop = false }) {
-                DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Default.Update, "update") },
-                    text = { Text("Update") },
-                    onClick = {
-                        onUpdate(instructionUiState.id)
-                        showDrop = false
-                    },
-                )
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(text = instructionUiState.title.text.toString())
 
-                DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Default.Delete, "Delete") },
-                    text = { Text("Delete") },
-                    onClick = {
-                        onDelete(instructionUiState.id)
-                        showDrop = false
-                    },
-                )
+            }
+            Box {
+                IconButton(onClick = { showDrop = true }) {
+                    Icon(Icons.Default.MoreVert, "more")
+                }
+                DropdownMenu(expanded = showDrop, onDismissRequest = { showDrop = false })
+                {
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.Update, "update") },
+                        text = { Text("Update") },
+                        onClick = {
+                            onUpdate(instructionUiState.id)
+                            showDrop = false
+                        },
+                    )
+
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.Delete, "Delete") },
+                        text = { Text("Delete") },
+                        onClick = {
+                            onDelete(instructionUiState.id)
+                            showDrop = false
+                        },
+                    )
+                }
             }
         }
+        ContentView(
+            items = instructionUiState.content,
+            examId = instructionUiState.examId,
+            color = Color.Transparent,
+        )
     }
+
 
 }

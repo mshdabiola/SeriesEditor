@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.data.model.Update
+import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
@@ -120,6 +121,7 @@ internal fun CiScreen(
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         when(update){
             Update.Edit->{
+                Section(title = "Instruction Section")
                 SeriesEditorTextField(
                     modifier = Modifier.fillMaxWidth(),
                     state = instructionUiState.title,
@@ -154,6 +156,7 @@ internal fun CiScreen(
                 Row(
                     Modifier
                         .clickable(onClick = { showConvert = !showConvert })
+                        .padding(horizontal = 16.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -194,6 +197,8 @@ internal fun CiScreen(
                                 Text("Convert to Instruction")
                             }
                         }
+
+                        Spacer(Modifier.height(16.dp))
                     }
                 }
             }
