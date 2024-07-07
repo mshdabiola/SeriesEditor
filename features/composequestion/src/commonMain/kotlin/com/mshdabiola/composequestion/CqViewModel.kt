@@ -4,7 +4,6 @@
 
 package com.mshdabiola.composequestion
 
-
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -51,7 +50,7 @@ class CqViewModel(
     private val settingRepository: ISettingRepository,
     private val topicRepository: ITopicRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     private var _question =
         mutableStateOf(
@@ -100,7 +99,6 @@ class CqViewModel(
                         }
                     }
             }
-
         }
         viewModelScope.launch {
             settingRepository.questions
@@ -144,8 +142,6 @@ class CqViewModel(
                     }
                 }
         }
-
-
     }
 
     private fun updateExamType(isObjOnly: Boolean) {
@@ -157,7 +153,6 @@ class CqViewModel(
             }
         }
     }
-
 
     // question edit logic
     fun onAddOption() {
@@ -178,7 +173,7 @@ class CqViewModel(
                 }
                 ?.toImmutableList(),
 
-            )
+        )
 
         _question.value = question
     }
@@ -327,7 +322,6 @@ class CqViewModel(
         }
     }
 
-
     fun changeType(questionIndex: Int, index: Int, type: Type) {
         editContent(questionIndex) {
             val oldItem = it[index]
@@ -399,9 +393,7 @@ class CqViewModel(
 //        co.touchlab.kermit.Logger.e(msg)
     }
 
-
     fun onAddQuestion() {
-
         viewModelScope.launch {
             _update.update {
                 Update.Saving
@@ -416,14 +408,13 @@ class CqViewModel(
                 if (question2.number == -1L) questions.filter { it.isTheory == question2.isTheory }.size.toLong() + 1 else question2.number
             question2 = question2.copy(number = number)
 
-
             val allIsObj = questions.all { it.isTheory.not() } && question2.isTheory.not()
             questionRepository.upsert(question2.toQuestionWithOptions(examId = examId))
             updateExamType(isObjOnly = allIsObj)
 
             _question.value = getEmptyQuestion(question2.options!!.size, question2.isTheory)
 
-//remove from save
+// remove from save
             val inst = settingRepository.questions
                 .first()
                 .toMutableMap()
@@ -434,7 +425,6 @@ class CqViewModel(
                 Update.Success
             }
         }
-
     }
 
     fun changeView(questionIndex: Int, index: Int) {
@@ -449,11 +439,9 @@ class CqViewModel(
 
     fun onTopicChange(index: Int) {
         _question.value = question.value.copy(topicUiState = topic.value.getOrNull(index))
-
     }
 
     fun onInstructionChange(index: Int) {
         _question.value = question.value.copy(instructionUiState = instructs.value.getOrNull(index))
     }
-
 }

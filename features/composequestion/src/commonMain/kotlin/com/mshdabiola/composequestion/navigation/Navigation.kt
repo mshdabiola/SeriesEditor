@@ -33,8 +33,7 @@ fun NavGraphBuilder.composeQuestionScreen(
     navigateToInstruction: (Long, Long) -> Unit,
     onFinish: () -> Unit,
 
-
-    ) {
+) {
     composable(
         route = COMPOSE_QUESTION_ROUTE,
         arguments = listOf(

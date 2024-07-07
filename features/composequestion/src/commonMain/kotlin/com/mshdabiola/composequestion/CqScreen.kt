@@ -89,7 +89,6 @@ internal fun CqRoute(
     val instructs = viewModel.instructs.collectAsStateWithLifecycleCommon()
     var itemUiState by remember { mutableStateOf<ItemUiState?>(null) }
 
-
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
@@ -130,7 +129,8 @@ internal fun CqRoute(
 }
 
 @OptIn(
-    ExperimentalLayoutApi::class, ExperimentalFoundationApi::class,
+    ExperimentalLayoutApi::class,
+    ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class,
 )
 @Composable
@@ -158,8 +158,7 @@ internal fun CqScreen(
     onInstructionChange: (Int) -> Unit = {},
     onItemClicked: (ItemUiState) -> Unit = {},
 
-    ) {
-
+) {
     var showTopiDropdown by remember { mutableStateOf(false) }
     var showConvert by remember { mutableStateOf(false) }
     val state = rememberTextFieldState()
@@ -190,7 +189,6 @@ internal fun CqScreen(
         }
     }
 
-
 //    var fillIt =
 //        rememberUpdatedState(screenSize != ScreenSize.EXPANDED)
 
@@ -199,7 +197,7 @@ internal fun CqScreen(
             .verticalScroll(state = rememberScrollState())
             .testTag("cq:screen"),
 
-        ) {
+    ) {
         when (update) {
             Update.Edit -> {
                 Section(title = "Question Section")
@@ -266,7 +264,6 @@ internal fun CqScreen(
                                 },
                                 contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                             )
-
                         }
                     }
 
@@ -294,7 +291,6 @@ internal fun CqScreen(
                             expanded = instrucExpanded,
                             onDismissRequest = { instrucExpanded = false },
                         ) {
-
                             if (instructs.isNotEmpty()) {
                                 DropdownMenuItem(
                                     modifier = Modifier,
@@ -326,7 +322,6 @@ internal fun CqScreen(
                                 text = { Text("Add Instruct") },
                                 leadingIcon = {
                                     Icon(Icons.Default.Add, "add")
-
                                 },
                                 onClick = {
                                     instrucExpanded = false
@@ -345,13 +340,13 @@ internal fun CqScreen(
                         Text("Topic:", color = MaterialTheme.colorScheme.secondary)
                         Text(" ${questionUiState.topicUiState!!.name}")
                     }
-
                 }
                 if (questionUiState.instructionUiState != null) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        text = "Instruction", color = MaterialTheme.colorScheme.secondary,
+                        text = "Instruction",
+                        color = MaterialTheme.colorScheme.secondary,
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -379,8 +374,6 @@ internal fun CqScreen(
                     // onTextChange = { i, s -> onTextChange(-1, i, s) },
 
                 )
-
-
 
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -423,7 +416,7 @@ internal fun CqScreen(
                         moveDown = { moveDown(-2, it) },
                         changeView = { changeView(-2, it) },
                         changeType = { i, t -> changeType(-2, i, t) },
-                        //onTextChange = { i, s -> onTextChange(-2, i, s) },
+                        // onTextChange = { i, s -> onTextChange(-2, i, s) },
 
                     )
                 }
@@ -463,7 +456,7 @@ internal fun CqScreen(
                         label = { Text("Add Option") },
                     )
 
-                    //TODO("fix answer not null")
+                    // TODO("fix answer not null")
                     SuggestionChip(
                         onClick = { onAddAnswer(questionUiState.answers == null) },
                         label = {
@@ -512,25 +505,16 @@ internal fun CqScreen(
                             Text("Convert to Exam")
                         }
                     }
-
                 }
                 Spacer(Modifier.height(16.dp))
-                //TemplateUi()
+                // TemplateUi()
             }
 
             Update.Saving -> {
                 Waiting()
-
-
             }
 
             else -> {}
         }
-
-
     }
-
-
 }
-
-
