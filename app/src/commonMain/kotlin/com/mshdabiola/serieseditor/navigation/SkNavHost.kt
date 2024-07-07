@@ -57,6 +57,11 @@ fun ExtendNavHost(
         topicPanelScreen(
             modifier, onShowSnackbar,
         )
+        settingScreen(
+            modifier = Modifier,
+            onShowSnack = onShowSnackbar,
+            onBack = navController::popBackStack,
+            )
 
     }
 }
@@ -123,6 +128,7 @@ fun OtherNavHost(
             subjectId = -1,
         )
         settingScreen(
+            modifier = Modifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
 

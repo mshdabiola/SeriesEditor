@@ -43,6 +43,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun SettingRoute(
+    modifier: Modifier,
     onBack: () -> Unit,
     onShowSnack: suspend (String, String?) -> Boolean,
     viewModel: SettingViewModel,
@@ -50,6 +51,7 @@ internal fun SettingRoute(
     val settingState = viewModel.uiState.collectAsStateWithLifecycleCommon()
 
     SettingScreen(
+        modifier=modifier,
         settingState = settingState.value,
         onBack = onBack,
         setThemeBrand = viewModel::setThemeBrand,
@@ -61,6 +63,7 @@ internal fun SettingRoute(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun SettingScreen(
+    modifier: Modifier,
     settingState: SettingState,
     onBack: () -> Unit = {},
     setThemeBrand: (ThemeBrand) -> Unit = {},
@@ -68,97 +71,77 @@ internal fun SettingScreen(
     setContrast: (Contrast) -> Unit = {},
 
 ) {
-    Scaffold(
-        modifier = Modifier, // .semantics { this.testTagsAsResourceId = true },
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "back",
-                        )
-                    }
-                },
-                title = {
-                    Text(text = "Setting")
+    Column(
+       modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(0.8f),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Theme")
+            DropdownMenu(
+                currentIndex = ThemeBrand.entries.indexOf(settingState.userData.themeBrand),
+                data = ThemeBrand.entries.map { themeBrand ->
+                    themeBrand
+                        .name
+                        .lowercase()
+                        .replaceFirstChar {
+                            it.uppercaseChar()
+                        }
+                }
+                    .toImmutableList(),
+                onDataChange = {
+                    setThemeBrand(ThemeBrand.entries[it])
                 },
             )
-        },
-        containerColor = Color.Transparent,
-    ) { paddingValues ->
-        Column(
-            Modifier.padding(paddingValues).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(0.8f),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(0.8f),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text("Theme")
-                DropdownMenu(
-                    currentIndex = ThemeBrand.entries.indexOf(settingState.userData.themeBrand),
-                    data = ThemeBrand.entries.map { themeBrand ->
-                        themeBrand
-                            .name
-                            .lowercase()
-                            .replaceFirstChar {
-                                it.uppercaseChar()
-                            }
-                    }
-                        .toImmutableList(),
-                    onDataChange = {
-                        setThemeBrand(ThemeBrand.entries[it])
-                    },
-                )
-            }
+            Text("Contrast")
+            DropdownMenu(
+                currentIndex = Contrast.entries.indexOf(settingState.userData.contrast),
+                data = Contrast.entries.map { themeBrand ->
+                    themeBrand
+                        .name
+                        .lowercase()
+                        .replaceFirstChar {
+                            it.uppercaseChar()
+                        }
+                }
+                    .toImmutableList(),
+                onDataChange = {
+                    setContrast(Contrast.entries[it])
+                },
+            )
+        }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(0.8f),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text("Contrast")
-                DropdownMenu(
-                    currentIndex = Contrast.entries.indexOf(settingState.userData.contrast),
-                    data = Contrast.entries.map { themeBrand ->
-                        themeBrand
-                            .name
-                            .lowercase()
-                            .replaceFirstChar {
-                                it.uppercaseChar()
-                            }
-                    }
-                        .toImmutableList(),
-                    onDataChange = {
-                        setContrast(Contrast.entries[it])
-                    },
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(0.8f),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text("Dark")
-                DropdownMenu(
-                    currentIndex = DarkThemeConfig.entries.indexOf(settingState.userData.darkThemeConfig),
-                    data = DarkThemeConfig.entries.map { themeBrand ->
-                        themeBrand
-                            .name
-                            .lowercase()
-                            .replaceFirstChar {
-                                it.uppercaseChar()
-                            }
-                    }
-                        .toImmutableList(),
-                    onDataChange = {
-                        setDarkThemeConfig(DarkThemeConfig.entries[it])
-                    },
-                )
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(0.8f),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Dark")
+            DropdownMenu(
+                currentIndex = DarkThemeConfig.entries.indexOf(settingState.userData.darkThemeConfig),
+                data = DarkThemeConfig.entries.map { themeBrand ->
+                    themeBrand
+                        .name
+                        .lowercase()
+                        .replaceFirstChar {
+                            it.uppercaseChar()
+                        }
+                }
+                    .toImmutableList(),
+                onDataChange = {
+                    setDarkThemeConfig(DarkThemeConfig.entries[it])
+                },
+            )
         }
     }
 }
