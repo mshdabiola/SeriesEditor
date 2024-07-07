@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 fun ExamPaneScreen(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
-    navigateToTopicPanel: (Long) -> Unit = {  },
+    navigateToTopicPanel: (Long) -> Unit = { },
     examId: Long,
 ) {
     var state by remember {
@@ -51,7 +51,7 @@ fun ExamPaneScreen(
     val cmNavHostController = rememberNavController()
     val instructionNavHostController = rememberNavController()
     val ciNavHostController = rememberNavController()
-    val screenModifier=modifier.fillMaxSize().padding(8.dp)
+    val screenModifier = modifier.fillMaxSize().padding(8.dp)
 
 
     Column(modifier) {
@@ -123,8 +123,9 @@ fun ExamPaneScreen(
                                             pagerState.animateScrollToPage(1)
                                         }
                                     },
-                                    navigateToTopic = {id,_->
-                                        navigateToTopicPanel(id) },
+                                    navigateToTopic = { id, _ ->
+                                        navigateToTopicPanel(id)
+                                    },
 
                                     )
                             }

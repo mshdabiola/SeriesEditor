@@ -2,13 +2,8 @@ package com.mshdabiola.serieseditor.ui.mainpanel
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,7 +27,7 @@ fun MainPaneScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
 ) {
 
-    val screenModifier=modifier.fillMaxSize().padding(8.dp)
+    val screenModifier = modifier.fillMaxSize().padding(8.dp)
 
     Row(modifier) {
         NavHost(

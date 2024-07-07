@@ -26,7 +26,7 @@ fun TopicPaneScreen(
 
     val topicNav = rememberNavController()
     val ctNav = rememberNavController()
-    val screenModifier=modifier.fillMaxSize().padding(8.dp)
+    val screenModifier = modifier.fillMaxSize().padding(8.dp)
 
 
     Row(Modifier.fillMaxSize()) {

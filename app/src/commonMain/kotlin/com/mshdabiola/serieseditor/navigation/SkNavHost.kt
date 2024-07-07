@@ -44,7 +44,7 @@ fun ExtendNavHost(
     startDestination: String = MAIN_PANEL_ROUTE,
 ) {
     val navController = appState.navController
-    val screenModifier=modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
+    val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
 
     NavHost(
         navController = navController,
@@ -68,7 +68,7 @@ fun ExtendNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
-            )
+        )
 
     }
 }
@@ -83,7 +83,7 @@ fun OtherNavHost(
     startDestination: String = DEFAULT_ROUTE,
 ) {
     val navController = appState.navController
-    val screenModifier=modifier
+    val screenModifier = modifier
         .fillMaxSize()
         .padding(horizontal = 16.dp, vertical = 8.dp)
         .windowInsetsPadding(WindowInsets.systemBars)
@@ -94,29 +94,29 @@ fun OtherNavHost(
         modifier = modifier,
     ) {
         mainScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             navigateToQuestion = navController::navigateToExamPanel,
             updateExam = navController::navigateToComposeExamination,
         )
         composeSubjectScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onFinish = navController::popBackStack,
         )
         composeExaminationScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
         )
 
         examPanelScreen(
-            modifier=Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             onShowSnack = onShowSnackbar,
             appState = appState,
         )
         composeQuestionScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             navigateToInstruction = navController::navigateToComposeInstruction,
             navigateToTopic = navController::navigateToComposeTopic,
@@ -124,24 +124,24 @@ fun OtherNavHost(
         )
 
         composeInstructionScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onFinish = navController::popBackStack,
         )
         topicScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             navigateToComposeTopic = navController::navigateToComposeTopic,
             subjectId = -1,
         )
         composeTopicScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onFinish = navController::popBackStack,
             subjectId = -1,
         )
         settingScreen(
-            modifier=screenModifier,
+            modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
 

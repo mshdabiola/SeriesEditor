@@ -23,7 +23,7 @@ fun NavGraphBuilder.mainPanelScreen(
     ) {
         MainPaneScreen(
             modifier = modifier,
-            appState=appState,
+            appState = appState,
             onShowSnackbar = onShowSnack,
         )
     }
