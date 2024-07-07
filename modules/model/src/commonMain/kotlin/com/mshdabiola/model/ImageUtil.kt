@@ -25,7 +25,7 @@ object ImageUtil {
         fileString: String, // new image
         examId: Long,
 
-        ): String {
+    ): String {
         return withContext(Dispatchers.IO) {
             val oldPath = File(getAppPath("$examId/$oldName").path)
             oldPath.delete()
