@@ -8,7 +8,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -49,7 +47,6 @@ import com.mshdabiola.ui.state.ItemUiState
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
-import kotlin.reflect.KFunction1
 
 // import org.koin.androidx.compose.koinViewModel
 
@@ -115,7 +112,7 @@ internal fun CiScreen(
     onChangeView: (Int) -> Unit = { _ -> },
     onItemClicked: (ItemUiState) -> Unit = {},
 
-    ) {
+) {
     var showConvert by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
@@ -147,7 +144,7 @@ internal fun CiScreen(
                     modifier = Modifier.align(Alignment.End),
                     onClick = onAddInstruction,
                     enabled = instructionUiState.content.any { it.content.text.isNotBlank() },
-                    //enabled = instructionUiState.content.first().content.isNotBlank(),
+                    // enabled = instructionUiState.content.first().content.isNotBlank(),
                 ) {
                     Text("Add Instruction")
                 }
@@ -204,15 +201,10 @@ internal fun CiScreen(
             }
 
             Update.Saving -> {
-
                 Waiting()
             }
 
             else -> {}
         }
-
     }
-
 }
-
-

@@ -19,7 +19,6 @@ private const val INSTRUCTION_ARG = "instruction_arg"
 
 const val COMPOSE_INSTRUCTION_ROUTE = "$CI_ROUTE/{$EXAM_ARG}/{$INSTRUCTION_ARG}"
 
-
 fun NavController.navigateToComposeInstruction(
     examId: Long,
     instructionId: Long,
@@ -32,14 +31,12 @@ fun NavGraphBuilder.composeInstructionScreen(
     onFinish: () -> Unit,
     defaultExamId: Long = -1,
 ) {
-
     composable(
         route = COMPOSE_INSTRUCTION_ROUTE,
         arguments = listOf(
             navArgument(EXAM_ARG) {
                 type = NavType.LongType
                 defaultValue = defaultExamId
-
             },
             navArgument(INSTRUCTION_ARG) {
                 type = NavType.LongType

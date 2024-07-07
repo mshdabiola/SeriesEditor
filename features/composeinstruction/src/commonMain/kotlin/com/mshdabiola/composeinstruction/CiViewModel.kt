@@ -4,7 +4,6 @@
 
 package com.mshdabiola.composeinstruction
 
-
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.runtime.State
@@ -21,7 +20,6 @@ import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.toInstruction
 import com.mshdabiola.ui.toInstructionUiState
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -35,7 +33,7 @@ class CiViewModel(
     private val instructionRepository: IInstructionRepository,
     private val settingRepository: ISettingRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     val instructionInput = TextFieldState()
 
@@ -162,7 +160,6 @@ class CiViewModel(
             index
         }
     }
-
 
     private fun editContentInstruction(
         onItems: suspend (MutableList<ItemUiState>) -> Int?,
