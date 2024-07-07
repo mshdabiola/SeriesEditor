@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
  *        supported. This parameter has no effect if [androidTheme] is `true`.
  */
 
-lateinit var extendedColorScheme :ExtendedColorScheme
+lateinit var extendedColorScheme: ExtendedColorScheme
 
 @Composable
 fun SeriesEditorTheme(
@@ -35,7 +35,7 @@ fun SeriesEditorTheme(
     disableDynamicTheming: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    extendedColorScheme=if (darkTheme) extendedDark else extendedLight
+    extendedColorScheme = if (darkTheme) extendedDark else extendedLight
     val colorScheme = when {
         androidTheme -> if (darkTheme) highContrastDarkColorScheme else highContrastLightColorScheme
         !disableDynamicTheming && supportsDynamicTheming() -> {
@@ -361,7 +361,6 @@ val wrongDarkHighContrast = Color(0xFFFFF9F8)
 val onWrongDarkHighContrast = Color(0xFF000000)
 val wrongContainerDarkHighContrast = Color(0xFFFFBAA9)
 val onWrongContainerDarkHighContrast = Color(0xFF000000)
-
 
 
 @Immutable
@@ -693,11 +692,11 @@ data class ColorFamily(
     val color: Color,
     val onColor: Color,
     val colorContainer: Color,
-    val onColorContainer: Color
+    val onColorContainer: Color,
 )
 
 val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
+    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified,
 )
 
 

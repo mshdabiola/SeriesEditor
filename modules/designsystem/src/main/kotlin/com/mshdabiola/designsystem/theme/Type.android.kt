@@ -16,14 +16,14 @@ val bodyFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Eczar"),
         fontProvider = provider,
-    )
+    ),
 )
 
 val displayFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Rubik"),
         fontProvider = provider,
-    )
+    ),
 )
 
 // Default Material 3 typography values

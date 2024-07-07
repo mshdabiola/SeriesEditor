@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.w3c.dom.CDATASection
 
 /**
  * Now in Android tab. Wraps Material 3 [Tab] and shifts text label down.
@@ -89,13 +88,14 @@ fun SkTabRow(
 
 
 @Composable
-fun Section(modifier: Modifier = Modifier,title:String) {
+fun Section(modifier: Modifier = Modifier, title: String) {
     Text(
         modifier = modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
         text = title,
         style = MaterialTheme.typography.titleMedium,
     )
 }
+
 object SkTabDefaults {
     val TabTopPadding = 7.dp
 }

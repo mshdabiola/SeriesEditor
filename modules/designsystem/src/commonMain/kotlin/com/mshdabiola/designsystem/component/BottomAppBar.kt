@@ -45,7 +45,7 @@ fun SeBottonAppBar(
     showExportDialog: () -> Unit = {},
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
-    updateSubject:(Long)->Unit={},
+    updateSubject: (Long) -> Unit = {},
 ) {
     var showDrop by remember { mutableStateOf(false) }
 
@@ -187,7 +187,6 @@ fun SeBottonAppBar(
                 }
 
             }
-
 
 
         },

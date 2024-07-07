@@ -55,12 +55,12 @@ fun SeriesEditorTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String? = null,
-    label: String?=null,
+    label: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: () -> Unit = {},
-    keyboardType: KeyboardType=KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Text,
     maxNum: TextFieldLineLimits = TextFieldLineLimits.Default,
-    inputTransformation: InputTransformation?=null
+    inputTransformation: InputTransformation? = null,
 ) {
     MyTextField(
         modifier = modifier,
@@ -90,12 +90,12 @@ fun SeriesEditorTextField(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrect = true,
             imeAction = imeAction,
-            keyboardType = keyboardType
+            keyboardType = keyboardType,
         ),
         keyboardActions = KeyboardActions { keyboardAction() },
 
         lineLimits = maxNum,
-        inputTransformation = inputTransformation
+        inputTransformation = inputTransformation,
     )
 }
 
@@ -180,7 +180,7 @@ fun MyTextField(
 
             scrollState = scrollState,
 
-        )
+            )
     }
 }
 
@@ -309,7 +309,7 @@ internal fun TextFieldColors.textColor(
 internal val OutlinedTextFieldTopPadding = 8.dp
 
 @OptIn(ExperimentalFoundationApi::class)
-object DigitOnlyTransformation : InputTransformation{
+object DigitOnlyTransformation : InputTransformation {
     override fun transformInput(
         originalValue: TextFieldCharSequence,
         valueWithChanges: TextFieldBuffer,
@@ -321,6 +321,6 @@ object DigitOnlyTransformation : InputTransformation{
 
 }
 
-fun CharSequence.isDigitOnly():Boolean{
+fun CharSequence.isDigitOnly(): Boolean {
     return all { it.isDigit() }
 }

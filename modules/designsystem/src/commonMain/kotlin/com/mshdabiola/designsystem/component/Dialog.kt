@@ -150,11 +150,11 @@ fun MainExportDialog(
 @Composable
 fun DeleteDialog(
     modifier: Modifier = Modifier,
-    show: Boolean=false,
+    show: Boolean = false,
     onDelete: () -> Unit = {},
-    onDismiss: () -> Unit={}
+    onDismiss: () -> Unit = {},
 ) {
-    if (show){
+    if (show) {
         AlertDialog(
             modifier = modifier,
             onDismissRequest = onDismiss,
@@ -165,9 +165,9 @@ fun DeleteDialog(
             },
             confirmButton = {
                 ElevatedButton(
-                    onClick = onDelete
+                    onClick = onDelete,
 
-                ) {
+                    ) {
                     Text("Delete exam")
                 }
             },

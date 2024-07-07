@@ -70,7 +70,7 @@ class FilterChipScreenshotTests {
             ) {
                 DeviceConfigurationOverride(
                     DeviceConfigurationOverride.FontScale(2f) then
-                        DeviceConfigurationOverride.ForcedSize(DpSize(80.dp, 40.dp)),
+                            DeviceConfigurationOverride.ForcedSize(DpSize(80.dp, 40.dp)),
                 ) {
                     SeriesEditorTheme {
                         SeriesEditorBackground {

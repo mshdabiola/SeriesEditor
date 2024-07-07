@@ -1,6 +1,5 @@
 package com.mshdabiola.designsystem.component
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
@@ -14,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SeNavigationDrawerItem(
-    selected: Boolean=false,
+    selected: Boolean = false,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
