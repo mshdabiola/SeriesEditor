@@ -292,7 +292,11 @@ fun NavigationSheet(
 
     LazyColumn(modifier = modifier) {
         item {
-            Text("Series Editor ")
+            Text(
+                text = "Series Editor ",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge,
+            )
         }
         item {
             Spacer(Modifier.height(16.dp))
