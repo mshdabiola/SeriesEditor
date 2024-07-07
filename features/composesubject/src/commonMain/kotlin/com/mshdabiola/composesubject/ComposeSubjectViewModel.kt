@@ -56,7 +56,6 @@ class ComposeSubjectViewModel (
     fun addSubject(){
         viewModelScope.launch {
             _update.update { Update.Saving }
-            delay(5000)
             subjectRepository.upsert(
                 Subject(
                     id=if (subjectId>0) subjectId else null,
