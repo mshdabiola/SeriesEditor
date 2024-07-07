@@ -28,7 +28,7 @@ fun NavGraphBuilder.mainScreen(
     navigateToQuestion: (Long) -> Unit,
     updateExam: (Long) -> Unit,
 
-    ) {
+) {
     composable(
         route = "$MAIN_ROUTE/{$SUBJECT_ARG}",
         arguments = listOf(

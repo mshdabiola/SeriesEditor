@@ -12,14 +12,12 @@ import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.toUi
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class MainViewModel constructor(
@@ -27,17 +25,16 @@ internal class MainViewModel constructor(
     private val iExamRepository: IExaminationRepository,
     val subjectId: Long,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
 //    private val _mainState = MutableStateFlow(MainState())
 //    val mainState = _mainState.asStateFlow()
-
 
     val isSelectMode = iExamRepository
         .isSelectMode
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    //private val _examUiStates = MutableStateFlow<Result<List<ExamUiState>>>(Result.Loading)
+    // private val _examUiStates = MutableStateFlow<Result<List<ExamUiState>>>(Result.Loading)
 
     val examUiMainState: StateFlow<Result<List<ExamUiState>>> =
         combine(iExamRepository.getAll(), iExamRepository.selectedList) { list, ids ->
@@ -46,16 +43,16 @@ internal class MainViewModel constructor(
             .map { notes ->
                 notes.first
                     .filter {
-                        if (subjectId > 0)
+                        if (subjectId > 0) {
                             it.subject.id == subjectId
-                        else
+                        } else {
                             true
+                        }
                     }
                     .map { it.toUi().copy(isSelected = notes.second.contains(it.id)) }
             }
             .asResult()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Result.Loading)
-
 
     fun onDeleteExam(id: Long) {
         viewModelScope.launch {
@@ -75,19 +72,14 @@ internal class MainViewModel constructor(
                 if (examSelect.isEmpty()) {
                     iExamRepository.updateSelect(false)
                 }
-
             } else {
                 examSelect.add(index)
 
                 iExamRepository.updateSelectedList(examSelect)
                 iExamRepository.updateSelect(true)
             }
-
-
         }
-
 
         //  _examUiStates.value = exams.toImmutableList()
     }
-
 }

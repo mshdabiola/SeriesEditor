@@ -5,12 +5,10 @@
 package com.mshdabiola.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -48,17 +46,16 @@ import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.logNoteOpened
 import com.mshdabiola.ui.state.ExamUiState
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.parameter.parametersOf
 import serieseditor.features.main.generated.resources.Res
 import serieseditor.features.main.generated.resources.features_main_empty_description
 import serieseditor.features.main.generated.resources.features_main_empty_error
 import serieseditor.features.main.generated.resources.features_main_img_empty_bookmarks
 import serieseditor.features.main.generated.resources.features_main_loading
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.parameter.parameterArrayOf
-import org.koin.core.parameter.parametersOf
 
 // import org.koin.androidx.compose.koinViewModel
 
@@ -73,7 +70,6 @@ internal fun MainRoute(
     val viewModel: MainViewModel =
         koinViewModel(parameters = { parametersOf(subjectId) }, key = "test")
 
-
     val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
 
@@ -86,7 +82,7 @@ internal fun MainRoute(
         toggleSelect = viewModel::toggleSelect,
         isSelectMode = isSelect.value,
 
-        )
+    )
 }
 
 @Composable
@@ -106,10 +102,10 @@ internal fun MainScreen(
             .fillMaxSize()
             .testTag("main:screen"),
 
-        ) {
+    ) {
         LazyColumn(
             state = state,
-            //contentPadding = PaddingValues(16.dp),
+            // contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .testTag("main:list"),
@@ -162,8 +158,6 @@ internal fun MainScreen(
             ),
         )
     }
-
-
 }
 
 @Composable
@@ -224,7 +218,6 @@ private fun examUiStateItemsSize(
     is Result.Success -> topicUiState.data.size + 2
 }
 
-
 fun LazyListScope.examItems(
     items: List<ExamUiState>,
     onExamClick: (Long) -> Unit,
@@ -253,4 +246,3 @@ fun LazyListScope.examItems(
         )
     },
 )
-
