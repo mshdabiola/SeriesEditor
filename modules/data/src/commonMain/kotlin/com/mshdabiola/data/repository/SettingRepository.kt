@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 internal class SettingRepository(
     private val settings: Store,
 
-) : ISettingRepository {
+    ) : ISettingRepository {
     override val instructions: Flow<Map<Long, Instruction>>
         get() = settings
             .instructions

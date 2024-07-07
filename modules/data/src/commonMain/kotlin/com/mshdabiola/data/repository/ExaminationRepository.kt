@@ -77,15 +77,15 @@ internal class ExaminationRepository constructor(
         exportImport.import(path, key)
     }
 
-    override  fun updateSelect(isSelect: Boolean) {
+    override fun updateSelect(isSelect: Boolean) {
         _isSelectMode.update {
             isSelect
         }
     }
 
-    override  fun updateSelectedList(selectedList: List<Long>) {
-       _selectedList.update {
-           selectedList
-       }
+    override fun updateSelectedList(selectedList: List<Long>) {
+        _selectedList.update {
+            selectedList
+        }
     }
 }

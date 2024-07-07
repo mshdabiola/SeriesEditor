@@ -46,9 +46,11 @@ fun SubjectEntity.asSub() = Subject(
 
 fun Subject.asEntity() = SubjectEntity(id, title)
 
-fun Instruction.asEntity() = InstructionEntity(id, examId, title, content.map { it.toSer() }.asString())
+fun Instruction.asEntity() =
+    InstructionEntity(id, examId, title, content.map { it.toSer() }.asString())
 
-fun InstructionEntity.asModel() = Instruction(id, examId, title, content.toContent().map { it.asModel() })
+fun InstructionEntity.asModel() =
+    Instruction(id, examId, title, content.toContent().map { it.asModel() })
 
 fun Topic.asEntity() = TopicEntity(id, subjectId, title)
 fun TopicEntity.asModel() = Topic(id, subjectId, title)
@@ -74,7 +76,15 @@ fun OptionEntity.asModel() = Option(
 )
 
 fun Question.asModel() = QuestionEntity(
-    id, number, examId, title, contents.map { it.toSer() }.asString(), answers.map { it.toSer() }.asString(), isTheory, instruction?.id, topic?.id,
+    id,
+    number,
+    examId,
+    title,
+    contents.map { it.toSer() }.asString(),
+    answers.map { it.toSer() }.asString(),
+    isTheory,
+    instruction?.id,
+    topic?.id,
 )
 
 fun QuestionFull.asModel() = Question(

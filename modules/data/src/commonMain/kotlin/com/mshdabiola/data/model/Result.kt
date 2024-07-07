@@ -16,7 +16,7 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> { Result.Success
     .catch { emit(Result.Error(it)) }
 
 
-enum class Update{
-    Edit,Saving,Success
+enum class Update {
+    Edit, Saving, Success
 }
 
