@@ -71,8 +71,7 @@ internal fun MainRoute(
     subjectId: Long,
 ) {
     val viewModel: MainViewModel = koinViewModel(parameters = { parametersOf(subjectId) }, key = "test")
-    println("main $viewModel")
-    println("main id $subjectId")
+
 
 
     val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()

@@ -43,7 +43,6 @@ fun NavGraphBuilder.composeInstructionScreen(
     ) {
         val examId = it.arguments?.getLong(EXAM_ARG) ?: -1L
         val instructionId = it.arguments?.getLong(INSTRUCTION_ARG) ?: -1L
-        println("examid $examId")
         CiRoute(
             modifier=modifier,
             onShowSnack = onShowSnack,

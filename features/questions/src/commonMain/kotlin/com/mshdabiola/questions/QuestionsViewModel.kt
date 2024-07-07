@@ -66,7 +66,6 @@ class QuestionsViewModel(
     fun onMoveUpQuestion(id: Long) {
         val index = (questions.value as Result.Success)
             .data .indexOfFirst { it.id == id }
-        println("id $id index $index")
         if (index == 0) {
             return
         }

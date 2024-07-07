@@ -28,7 +28,6 @@ object ImageUtil {
         ): String {
         return withContext(Dispatchers.IO) {
             val oldPath = File(getAppPath("$examId/$oldName").path)
-            println("oldPath ${oldPath.path}")
             oldPath.delete()
             val imageFile = File(fileString)
             val newPath = newPath(imageFile.extension, examId)
@@ -37,7 +36,6 @@ object ImageUtil {
 //                imageFile.copyTo(newPath)
 //
 //            } else {
-            println("from ${imageFile.path} to ${newPath.path}")
             imageFile.copyTo(newPath)
 //            }
 

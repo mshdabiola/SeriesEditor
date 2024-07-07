@@ -81,7 +81,6 @@ internal class MainViewModel constructor(
                 iExamRepository.updateSelectedList(examSelect)
                 iExamRepository.updateSelect(true)
             }
-            println(examSelect.joinToString())
 
 
         }

@@ -82,7 +82,6 @@ class MainAppViewModel(
                     ).first()
                 .mapNotNull { it.id }
 
-            println("list ${list.size}")
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

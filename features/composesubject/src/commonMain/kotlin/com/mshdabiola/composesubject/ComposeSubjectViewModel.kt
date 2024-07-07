@@ -34,7 +34,6 @@ class ComposeSubjectViewModel (
 
     init {
         viewModelScope.launch {
-            println("subject id $subjectId")
             if (subjectId>0){
                 val sub=subjectRepository
                     .getOne(subjectId)

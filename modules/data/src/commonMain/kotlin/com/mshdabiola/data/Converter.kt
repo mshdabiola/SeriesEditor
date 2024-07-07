@@ -68,7 +68,6 @@ class Converter {
             s.chunked(2) {
                 Pair(it[0].trim(), it[1])
             }
-                .onEach { println(it) }
                 .forEachIndexed { _, pair ->
                     when (pair.first) {
                         "q" -> {
