@@ -123,14 +123,14 @@ internal fun QuestionsScreen(
         ) {
         LazyColumn(
             state = state,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(32.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .testTag("main:list"),
         ) {
             item {
                 // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
             }
+
             when (mainState) {
                 is Result.Loading -> item {
                     LoadingState()
@@ -338,7 +338,6 @@ fun QuestionUi(
 //            Spacer(modifier = Modifier.height(4.dp))
 
         if (questionUiState.instructionUiState != null) {
-            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = "Instruction", color = MaterialTheme.colorScheme.secondary,

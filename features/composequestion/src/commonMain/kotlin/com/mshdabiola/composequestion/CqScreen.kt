@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.MyTextField
+import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
@@ -201,7 +202,7 @@ internal fun CqScreen(
         ) {
         when (update) {
             Update.Edit -> {
-
+                Section(title = "Question Section")
                 Row(Modifier.fillMaxWidth()) {
                     ExposedDropdownMenuBox(
                         modifier = Modifier.weight(0.5f),
@@ -476,11 +477,12 @@ internal fun CqScreen(
                 Row(
                     Modifier
                         .clickable(onClick = { showConvert = !showConvert })
+                        .padding(horizontal = 16.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text("Convert text to exams")
+                    Text("Convert text to Questions")
                     IconButton(modifier = Modifier, onClick = { showConvert = !showConvert }) {
                         Icon(
                             if (!showConvert) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
@@ -492,6 +494,7 @@ internal fun CqScreen(
                 if (showConvert) {
                     SeriesEditorTextField(
                         state = state,
+                        label = "Exam Input",
                         // isError = examInputUiState.isError,
                         modifier = Modifier.fillMaxWidth().height(300.dp),
                     )
