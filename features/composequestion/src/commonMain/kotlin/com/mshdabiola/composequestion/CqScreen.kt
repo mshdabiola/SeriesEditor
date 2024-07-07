@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -56,6 +55,7 @@ import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.QuestionDialog
+import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.image.ContentView
@@ -124,7 +124,7 @@ internal fun CqRoute(
     QuestionDialog(
         itemUiState = itemUiState,
         onDismiss = { itemUiState = null },
-       examId =  examId,
+        examId = examId,
     )
 }
 
@@ -516,9 +516,7 @@ internal fun CqScreen(
             }
 
             Update.Saving -> {
-
-                CircularProgressIndicator()
-                Text("Saving")
+                Waiting()
 
 
             }
