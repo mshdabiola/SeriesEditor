@@ -25,6 +25,11 @@ import androidx.compose.ui.unit.dp
  * @param disableDynamicTheming If `true`, disables the use of dynamic theming, even when it is
  *        supported. This parameter has no effect if [androidTheme] is `true`.
  */
+
+@Composable
+fun getExtendedColor(darkTheme: Boolean= isSystemInDarkTheme()): ExtendedColorScheme {
+    return if (darkTheme) extendedDark else extendedLight
+}
 @Composable
 fun SeriesEditorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

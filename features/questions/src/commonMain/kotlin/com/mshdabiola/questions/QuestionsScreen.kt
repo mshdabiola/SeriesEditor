@@ -61,6 +61,7 @@ import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
 import com.mshdabiola.designsystem.theme.LocalTintTheme
+import com.mshdabiola.designsystem.theme.getExtendedColor
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.ContentView
 import com.mshdabiola.ui.state.QuestionUiState
@@ -380,7 +381,7 @@ fun QuestionUi(
                                 },
                             ),
                         color = if (optionsUiState.isAnswer) {
-                            Color.Green.copy(alpha = 0.5f)
+                            getExtendedColor().wrong.colorContainer
                         } else {
                             Color.Transparent
                         },
