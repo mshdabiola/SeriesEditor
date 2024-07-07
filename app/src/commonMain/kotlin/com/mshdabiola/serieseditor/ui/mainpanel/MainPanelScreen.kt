@@ -3,6 +3,7 @@ package com.mshdabiola.serieseditor.ui.mainpanel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,8 @@ fun MainPaneScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
 ) {
 
+    val screenModifier=modifier.fillMaxSize().padding(8.dp)
+
     Row(modifier) {
         NavHost(
             modifier = modifier.weight(0.6f),
@@ -38,7 +41,7 @@ fun MainPaneScreen(
             navController = appState.mainNavController,
         ) {
             mainScreen(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 navigateToQuestion = appState.navController::navigateToExamPanel,
                 updateExam = appState.examNavHostController::navigateToComposeExamination,
@@ -46,20 +49,14 @@ fun MainPaneScreen(
 
         }
         Column(Modifier.weight(0.4f)) {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Examination Section ",
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Spacer(Modifier.heightIn(8.dp))
+
             NavHost(
                 navController = appState.examNavHostController,
                 startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
                 modifier = Modifier,
             ) {
                 composeExaminationScreen(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.padding(8.dp),
                     onShowSnack = onShowSnackbar,
                     onBack = {
                         appState.examNavHostController.popBackStack()
@@ -70,13 +67,6 @@ fun MainPaneScreen(
                 )
 
             }
-            Spacer(Modifier.heightIn(16.dp))
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Subject Section ",
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Spacer(Modifier.heightIn(8.dp))
 
             NavHost(
                 navController = appState.subjectNavHostController,
@@ -84,8 +74,7 @@ fun MainPaneScreen(
                 modifier = Modifier,
             ) {
                 composeSubjectScreen(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.padding(8.dp),
                     onShowSnack = onShowSnackbar,
                     onFinish = {
                         appState.subjectNavHostController.popBackStack()

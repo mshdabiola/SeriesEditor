@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.DigitOnlyTransformation
 import com.mshdabiola.designsystem.component.MyTextField
+import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.ui.Waiting
@@ -98,14 +99,13 @@ internal fun ComposeExaminationScreen(
     Column(
         modifier = modifier
             .testTag("main:screen"),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
     ) {
         when (update) {
             Update.Edit -> {
 
                 var expanded by remember { mutableStateOf(false) }
 
+                Section(title = "Examination Section")
 
                 ExposedDropdownMenuBox(
                     modifier = Modifier,

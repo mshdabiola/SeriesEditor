@@ -51,6 +51,7 @@ fun ExamPaneScreen(
     val cmNavHostController = rememberNavController()
     val instructionNavHostController = rememberNavController()
     val ciNavHostController = rememberNavController()
+    val screenModifier=modifier.fillMaxSize().padding(8.dp)
 
 
     Column(modifier) {
@@ -91,7 +92,7 @@ fun ExamPaneScreen(
                             navController = questionNavHostController,
                         ) {
                             questionScreen(
-                                modifier = Modifier.padding(horizontal = 16.dp).fillMaxSize(),
+                                modifier = screenModifier,
                                 onShowSnack = onShowSnackbar,
                                 defaultExamId = examId,
                                 navigateToComposeQuestion = cmNavHostController::navigateToComposeQuestion,
@@ -105,7 +106,7 @@ fun ExamPaneScreen(
 
                                 ) {
                                 composeQuestionScreen(
-                                    modifier = Modifier,
+                                    modifier = screenModifier,
                                     onShowSnack = onShowSnackbar,
                                     onFinish = {
                                         cmNavHostController.popBackStack()
@@ -140,7 +141,7 @@ fun ExamPaneScreen(
                             navController = instructionNavHostController,
                         ) {
                             instructionScreen(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = screenModifier,
                                 onShowSnack = onShowSnackbar,
                                 navigateToComposeInstruction = ciNavHostController::navigateToComposeInstruction,
                                 defaultExamId = examId,
@@ -154,7 +155,7 @@ fun ExamPaneScreen(
                                 modifier = Modifier,
                             ) {
                                 composeInstructionScreen(
-                                    modifier = Modifier,
+                                    modifier = screenModifier,
                                     onShowSnack = onShowSnackbar,
                                     onFinish = {
                                         ciNavHostController.popBackStack()

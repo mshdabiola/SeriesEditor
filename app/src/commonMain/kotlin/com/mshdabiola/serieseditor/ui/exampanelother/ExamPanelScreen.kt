@@ -3,6 +3,7 @@ package com.mshdabiola.serieseditor.ui.exampanelother
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Tab
@@ -15,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
@@ -39,6 +41,7 @@ fun ExamPaneScreen(
     var state by remember {
         mutableStateOf(0)
     }
+    val screenModifier=modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
 
 
     val coroutineScope = rememberCoroutineScope()
@@ -84,7 +87,7 @@ fun ExamPaneScreen(
                             navController = questionNavHostController,
                         ) {
                             questionScreen(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = screenModifier,
                                 onShowSnack = onShowSnackbar,
                                 defaultExamId = examId,
                                 navigateToComposeQuestion = appState.navController::navigateToComposeQuestion,
@@ -101,7 +104,7 @@ fun ExamPaneScreen(
                             navController = instructionNavHostController,
                         ) {
                             instructionScreen(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = screenModifier,
                                 onShowSnack = onShowSnackbar,
                                 navigateToComposeInstruction = appState.navController::navigateToComposeInstruction,
                                 defaultExamId = examId,

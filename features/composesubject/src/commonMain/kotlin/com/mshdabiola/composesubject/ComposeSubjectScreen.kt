@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.data.model.Update
+import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.ui.Waiting
@@ -74,13 +75,13 @@ internal fun SubjectScreen(
         modifier = modifier
 
             .testTag("composesubject:screen"),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
 
         ) {
 
         when (update) {
             Update.Edit -> {
+                Section(title = "Subject Section")
+
                 SeriesEditorTextField(
                     modifier = Modifier
                         .fillMaxWidth()

@@ -26,6 +26,8 @@ fun TopicPaneScreen(
 
     val topicNav = rememberNavController()
     val ctNav = rememberNavController()
+    val screenModifier=modifier.fillMaxSize().padding(8.dp)
+
 
     Row(Modifier.fillMaxSize()) {
         NavHost(
@@ -34,9 +36,7 @@ fun TopicPaneScreen(
             navController = topicNav,
         ) {
             topicScreen(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxSize(),
+                modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 subjectId = subjectId,
                 navigateToComposeTopic = ctNav::navigateToComposeTopic,
@@ -50,7 +50,7 @@ fun TopicPaneScreen(
 
                 ) {
                 composeTopicScreen(
-                    modifier = Modifier,
+                    modifier = screenModifier,
                     onShowSnack = onShowSnackbar,
                     onFinish = {
                         ctNav.popBackStack()
