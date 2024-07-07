@@ -37,7 +37,7 @@ fun NavGraphBuilder.topicScreen(
                 defaultValue = subjectId
             },
         ),
-    ) { //stackEntry ->
+    ) { // stackEntry ->
         // val subjectId = stackEntry.arguments?.getLong(SUBJECT_ARG) ?: -1L
         TopicsRoute(
             modifier = modifier,
