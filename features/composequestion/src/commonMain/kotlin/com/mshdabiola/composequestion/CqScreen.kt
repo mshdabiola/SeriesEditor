@@ -16,9 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.foundation.text2.input.rememberTextFieldState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cancel
@@ -54,6 +55,7 @@ import com.mshdabiola.designsystem.component.MyTextField
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.ui.QuestionDialog
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.image.ContentView
@@ -117,9 +119,13 @@ internal fun CqRoute(
         navigateToInstruction = navigateToInstruction,
         onTopicChange = viewModel::onTopicChange,
         onInstructionChange = viewModel::onInstructionChange,
-        onItemClicked = { itemUiState=it}
+        onItemClicked = { itemUiState = it },
     )
-    QuestionDialog(itemUiState = itemUiState, onDismiss = {itemUiState=null})
+    QuestionDialog(
+        itemUiState = itemUiState,
+        onDismiss = { itemUiState = null },
+       examId =  examId,
+    )
 }
 
 @OptIn(
@@ -189,6 +195,7 @@ internal fun CqScreen(
 
     Column(
         modifier = modifier
+            .verticalScroll(state = rememberScrollState())
             .testTag("cq:screen"),
 
         ) {
@@ -367,7 +374,7 @@ internal fun CqScreen(
                     moveDown = { moveDown(-1, it) },
                     changeView = { changeView(-1, it) },
                     changeType = { i, t -> changeType(-1, i, t) },
-                    onItemClicked = onItemClicked
+                    onItemClicked = onItemClicked,
                     // onTextChange = { i, s -> onTextChange(-1, i, s) },
 
                 )
@@ -395,7 +402,7 @@ internal fun CqScreen(
                             moveDown = { moveDown(i, it) },
                             changeView = { changeView(i, it) },
                             changeType = { ii, t -> changeType(i, ii, t) },
-                            onItemClicked=onItemClicked
+                            onItemClicked = onItemClicked,
                             // onTextChange = { idn, s -> onTextChange(i, idn, s) },
 
                         )

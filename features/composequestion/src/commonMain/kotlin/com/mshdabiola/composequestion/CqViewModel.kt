@@ -17,9 +17,8 @@ import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.Type
-import com.mshdabiola.model.ImageUtil.getGeneralDir
+import com.mshdabiola.model.ImageUtil.getAppPath
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.state.OptionUiState
@@ -290,7 +289,7 @@ class CqViewModel(
         editContent(questionIndex) {
             val oldItem = it[index]
             if (oldItem.type == Type.IMAGE) {
-                getGeneralDir(oldItem.content.text.toString(), examId).deleteOnExit()
+                getAppPath("$examId/${oldItem.content.text}").deleteOnExit()
 
 //                FileManager.delete(
 //                    oldItem.content,
@@ -333,7 +332,7 @@ class CqViewModel(
         editContent(questionIndex) {
             val oldItem = it[index]
             if (oldItem.type == Type.IMAGE) {
-                getGeneralDir(oldItem.content.text.toString(), examId).deleteOnExit()
+                getAppPath("$examId/${oldItem.content.text}").deleteOnExit()
             }
             it[index] = ItemUiState(isEditMode = true, type = type)
             index
