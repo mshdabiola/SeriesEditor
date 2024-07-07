@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import com.mshdabiola.designsystem.icon.settingRoute
 import com.mshdabiola.setting.SettingRoute
 import com.mshdabiola.setting.SettingViewModel
-import com.mshdabiola.ui.ScreenSize
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 

@@ -35,7 +35,7 @@ class MainScreenTest {
                         darkThemeConfig = DarkThemeConfig.DARK,
                         useDynamicColor = false,
 
-                        ),
+                    ),
                 ),
             )
         }
