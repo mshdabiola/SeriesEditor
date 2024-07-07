@@ -21,21 +21,21 @@ fun MacrobenchmarkScope.goBack() {
 }
 
 fun MacrobenchmarkScope.addQuestion() {
-    val buttonSelector= By.res("add")
+    val buttonSelector = By.res("add")
 
-    device.wait(Until.hasObject(buttonSelector),5000)
+    device.wait(Until.hasObject(buttonSelector), 5000)
 
     device.findObject(buttonSelector)
         .click()
-    val question= listOf("what is your name","abiola","moshood","ade","hammed","jerry")
+    val question = listOf("what is your name", "abiola", "moshood", "ade", "hammed", "jerry")
 
-    val contents=device.findObjects(By.res("main:duration"))
-      contents.forEachIndexed { index, uiObject2 ->
+    val contents = device.findObjects(By.res("main:duration"))
+    contents.forEachIndexed { index, uiObject2 ->
 
-          uiObject2.text= question[index]
-          device.waitForIdle()
+        uiObject2.text = question[index]
+        device.waitForIdle()
 
-      }
+    }
 
     device.findObject(By.res("main:add_question"))
         .click()

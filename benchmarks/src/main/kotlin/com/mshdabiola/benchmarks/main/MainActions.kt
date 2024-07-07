@@ -22,11 +22,11 @@ fun MacrobenchmarkScope.goAddQuestionToDScreen() {
 }
 
 
-fun MacrobenchmarkScope.addSubject(subject:String){
+fun MacrobenchmarkScope.addSubject(subject: String) {
 
-    val buttonSelector= By.res("add")
+    val buttonSelector = By.res("add")
 
-    device.wait(Until.hasObject(buttonSelector),5000)
+    device.wait(Until.hasObject(buttonSelector), 5000)
 
     device.findObject(buttonSelector)
         .click()
@@ -34,7 +34,7 @@ fun MacrobenchmarkScope.addSubject(subject:String){
 
 
     device.findObject(By.res("main:subject"))
-        .text=subject
+        .text = subject
 
     device.findObject(By.res("main:add_subject"))
 
@@ -42,19 +42,19 @@ fun MacrobenchmarkScope.addSubject(subject:String){
         .fling(Direction.DOWN)
 }
 
-fun MacrobenchmarkScope.addExam(){
+fun MacrobenchmarkScope.addExam() {
 
-    val buttonSelector= By.res("add")
+    val buttonSelector = By.res("add")
 
-    device.wait(Until.hasObject(buttonSelector),5000)
+    device.wait(Until.hasObject(buttonSelector), 5000)
 
     device.findObject(buttonSelector)
         .click()
 
     device.findObject(By.res("main:duration"))
-        .text="24"
+        .text = "24"
     device.findObject(By.res("main:year"))
-        .text="2014"
+        .text = "2014"
 
     device.findObject(By.res("main:add_exam"))
         .click()
