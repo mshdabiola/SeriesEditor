@@ -17,20 +17,24 @@ private const val CI_ROUTE = "ci_route"
 private const val EXAM_ARG = "exam_arg"
 private const val INSTRUCTION_ARG = "instruction_arg"
 
-const val COMPOSE_INSTRUCTION_ROUTE="$CI_ROUTE/{$EXAM_ARG}/{$INSTRUCTION_ARG}"
+const val COMPOSE_INSTRUCTION_ROUTE = "$CI_ROUTE/{$EXAM_ARG}/{$INSTRUCTION_ARG}"
 
 
-fun NavController.navigateToComposeInstruction(examId:Long,instructionId:Long,navOptions: NavOptions= androidx.navigation.navOptions {  }) = navigate("$CI_ROUTE/$examId/$instructionId", navOptions)
+fun NavController.navigateToComposeInstruction(
+    examId: Long,
+    instructionId: Long,
+    navOptions: NavOptions = androidx.navigation.navOptions { },
+) = navigate("$CI_ROUTE/$examId/$instructionId", navOptions)
 
 fun NavGraphBuilder.composeInstructionScreen(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
-    onFinish: ()->Unit,
-    defaultExamId:Long=-1
+    onFinish: () -> Unit,
+    defaultExamId: Long = -1,
 ) {
 
     composable(
-        route = COMPOSE_INSTRUCTION_ROUTE ,
+        route = COMPOSE_INSTRUCTION_ROUTE,
         arguments = listOf(
             navArgument(EXAM_ARG) {
                 type = NavType.LongType
@@ -39,16 +43,17 @@ fun NavGraphBuilder.composeInstructionScreen(
             },
             navArgument(INSTRUCTION_ARG) {
                 type = NavType.LongType
-            })
+            },
+        ),
     ) {
         val examId = it.arguments?.getLong(EXAM_ARG) ?: -1L
         val instructionId = it.arguments?.getLong(INSTRUCTION_ARG) ?: -1L
         CiRoute(
-            modifier=modifier,
+            modifier = modifier,
             onShowSnack = onShowSnack,
             onFinish = onFinish,
-            examId=examId,
-            instructionId = instructionId
+            examId = examId,
+            instructionId = instructionId,
         )
     }
 }

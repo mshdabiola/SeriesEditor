@@ -60,9 +60,9 @@ internal fun CiRoute(
     onShowSnack: suspend (String, String?) -> Boolean,
     onFinish: () -> Unit,
     examId: Long,
-    instructionId: Long
+    instructionId: Long,
 ) {
-    val viewModel: CiViewModel = koinViewModel(parameters = { parametersOf(examId,instructionId) })
+    val viewModel: CiViewModel = koinViewModel(parameters = { parametersOf(examId, instructionId) })
     var itemUiState by remember { mutableStateOf<ItemUiState?>(null) }
 
 //    val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
@@ -70,7 +70,7 @@ internal fun CiRoute(
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
             onFinish()
-            onShowSnack("Add Instruction",null)
+            onShowSnack("Add Instruction", null)
         }
     }
 
@@ -85,15 +85,15 @@ internal fun CiRoute(
         moveUp = viewModel::moveUp,
         changeType = viewModel::changeType,
         onAddInstruction = viewModel::onAdd,
-        onChangeView=viewModel::changeView,
+        onChangeView = viewModel::changeView,
         onAddInstructionUiState = viewModel::onAddInstructionInput,
         instructionInput = viewModel.instructionInput,
-        onItemClicked = { itemUiState = it }
+        onItemClicked = { itemUiState = it },
     )
     QuestionDialog(
         itemUiState = itemUiState,
         onDismiss = { itemUiState = null },
-        examId =  examId,
+        examId = examId,
     )
 }
 
@@ -119,8 +119,8 @@ internal fun CiScreen(
     var showConvert by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        when(update){
-            Update.Edit->{
+        when (update) {
+            Update.Edit -> {
                 Section(title = "Instruction Section")
                 SeriesEditorTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -139,18 +139,18 @@ internal fun CiScreen(
                     moveUp = moveUp,
                     moveDown = moveDown,
                     changeType = changeType,
-                    onItemClicked = onItemClicked
+                    onItemClicked = onItemClicked,
                 )
                 Spacer(Modifier.height(4.dp))
 
-                    SeriesEditorButton(
-                        modifier = Modifier.align(Alignment.End),
-                        onClick = onAddInstruction,
-                        enabled = instructionUiState.content.any { it.content.text.isNotBlank() }
-                        //enabled = instructionUiState.content.first().content.isNotBlank(),
-                    ) {
-                        Text("Add Instruction")
-                    }
+                SeriesEditorButton(
+                    modifier = Modifier.align(Alignment.End),
+                    onClick = onAddInstruction,
+                    enabled = instructionUiState.content.any { it.content.text.isNotBlank() },
+                    //enabled = instructionUiState.content.first().content.isNotBlank(),
+                ) {
+                    Text("Add Instruction")
+                }
 
                 Spacer(Modifier.height(16.dp))
                 Row(
@@ -202,11 +202,13 @@ internal fun CiScreen(
                     }
                 }
             }
-            Update.Saving->{
 
-              Waiting()
+            Update.Saving -> {
+
+                Waiting()
             }
-            else->{}
+
+            else -> {}
         }
 
     }

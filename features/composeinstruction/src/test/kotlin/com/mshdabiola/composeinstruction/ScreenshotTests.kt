@@ -59,7 +59,7 @@ class ScreenshotTests {
                 CiScreen(
                     mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
 
-                )
+                    )
             }
         }
     }
@@ -108,7 +108,7 @@ class ScreenshotTests {
             CiScreen(
                 mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
 
-            )
+                )
         }
     }
 
@@ -118,7 +118,7 @@ class ScreenshotTests {
             CiScreen(
                 mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
 
-            )
+                )
         }
     }
 }

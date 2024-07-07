@@ -31,13 +31,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 class CiViewModel(
     private val examId: Long,
-    private val introductionId:Long,
+    private val introductionId: Long,
     private val instructionRepository: IInstructionRepository,
     private val settingRepository: ISettingRepository,
 
     ) : ViewModel() {
 
-    val instructionInput= TextFieldState()
+    val instructionInput = TextFieldState()
 
     private val defaultInstruction = InstructionUiState(
         examId = examId,
@@ -57,7 +57,7 @@ class CiViewModel(
                 .first()
 
             if (instruct != null) {
-                _instructionUiState.value= instruct.toInstructionUiState(isEdit = true)
+                _instructionUiState.value = instruct.toInstructionUiState(isEdit = true)
             }
         }
     }
@@ -65,7 +65,7 @@ class CiViewModel(
     // instruction logic
 
     private val _update = MutableStateFlow(Update.Edit)
-    val update=_update.asStateFlow()
+    val update = _update.asStateFlow()
 
     fun onAdd() {
         viewModelScope.launch {
@@ -162,7 +162,6 @@ class CiViewModel(
             index
         }
     }
-
 
 
     private fun editContentInstruction(
