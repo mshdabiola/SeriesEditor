@@ -14,10 +14,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
+import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.SUBJECT_ARG
 import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -80,6 +82,7 @@ sealed class SeriesEditorAppState(
 
     abstract fun onSubjectClick(id:Long)
     abstract fun onUpdateSubject(id:Long)
+    abstract fun onAddTopic(id:Long)
 
 
 }
@@ -118,6 +121,10 @@ class Extended(
     override fun onUpdateSubject(id: Long) {
         subjectNavHostController.navigateToComposeSubject(id)
     }
+
+    override fun onAddTopic(id: Long) {
+        navController.navigateToTopicPanel(id)
+    }
 }
 
 class Other(
@@ -152,6 +159,9 @@ class Other(
 
     override fun onUpdateSubject(id: Long) {
         navController.navigateToComposeSubject(id)
+    }
+    override fun onAddTopic(id: Long) {
+        navController.navigateToComposeTopic(id,-1)
     }
 }
 

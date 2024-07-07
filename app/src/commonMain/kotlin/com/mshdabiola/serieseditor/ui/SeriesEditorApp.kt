@@ -56,7 +56,6 @@ import com.mshdabiola.designsystem.component.DetailTopAppBar
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
-import com.mshdabiola.designsystem.component.SeriesEditorTopAppBar
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
@@ -96,7 +95,7 @@ fun SeriesEditorApp() {
 
     val subjects = viewModel.subjects.collectAsStateWithLifecycleCommon()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutincope = rememberCoroutineScope()
+    val coroutine = rememberCoroutineScope()
 
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
@@ -130,6 +129,7 @@ fun SeriesEditorApp() {
                                         addSubject = {},
                                         onSubjectClick = appState::onSubjectClick,
                                         checkIfSelected = { currentSubjectId == it },
+                                        onAddTopic = {appState.onAddTopic(currentSubjectId)}
                                     )
 
 
@@ -152,9 +152,10 @@ fun SeriesEditorApp() {
                                             addSubject = {},
                                             onSubjectClick = {
                                                 appState.onSubjectClick(it)
-                                                coroutincope.launch { drawerState.close()}
+                                                coroutine.launch { drawerState.close()}
                                             },
                                             checkIfSelected = { currentSubjectId == it },
+                                            onAddTopic = {appState.onAddTopic(currentSubjectId)}
                                         )
                                     }
                                 }
@@ -181,7 +182,7 @@ fun SeriesEditorApp() {
                                             subjectId = currentSubjectId,
                                             updateSubject = appState::onUpdateSubject,
                                             onNavigationClick = if (!appState.showPermanentDrawer) {
-                                                { coroutincope.launch { drawerState.open() } }
+                                                { coroutine.launch { drawerState.open() } }
                                             } else null,
                                         )
                                     }else{
@@ -249,6 +250,7 @@ fun NavigationSheet(
     addSubject: (() -> Unit)? = null,
     onSubjectClick: (Long) -> Unit = {},
     checkIfSelected: (Long) -> Boolean = { false },
+    onAddTopic :()->Unit={}
 ) {
 
     LazyColumn(modifier = modifier) {
@@ -280,6 +282,18 @@ fun NavigationSheet(
                 label = it.name,
                 onClick = { onSubjectClick(it.id) },
             )
+        }
+        item {
+            if(!checkIfSelected(-1)){
+                Spacer(Modifier.height(16.dp))
+                SeNavigationDrawerItem(
+                    selected = false,
+                    label = "Add Topic",
+                    onClick = onAddTopic,
+                )
+            }
+
+
         }
     }
 

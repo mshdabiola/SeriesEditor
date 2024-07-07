@@ -85,9 +85,6 @@ fun MainPaneScreen(
 
             }
 
-            SeriesEditorButton(onClick = { appState.navController.navigateToTopicPanel(subjectId = 1L) }){
-                Text("Add Topic")
-            }
 
         }
 
