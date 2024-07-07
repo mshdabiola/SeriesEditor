@@ -110,7 +110,7 @@ internal fun MainScreen(
     ) {
         LazyColumn(
             state = state,
-            contentPadding = PaddingValues(16.dp),
+            //contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .testTag("main:list"),

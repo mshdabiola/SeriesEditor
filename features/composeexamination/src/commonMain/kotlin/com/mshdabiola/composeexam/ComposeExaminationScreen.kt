@@ -104,7 +104,6 @@ internal fun ComposeExaminationScreen(
         when (update) {
             Update.Edit -> {
 
-                Text(modifier = Modifier.align(Alignment.Start), text = "Add Examination")
                 var expanded by remember { mutableStateOf(false) }
 
 
