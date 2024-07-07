@@ -26,9 +26,9 @@ class CtViewModel(
     private val subjectId: Long,
     private val topicId: Long,
     private val topicRepository: ITopicRepository,
-    ) : ViewModel() {
+) : ViewModel() {
 
-    val topicInput= TextFieldState()
+    val topicInput = TextFieldState()
 
     private val _update = MutableStateFlow(Update.Edit)
     val update = _update.asStateFlow()
@@ -39,22 +39,22 @@ class CtViewModel(
     init {
         viewModelScope.launch {
 
-                val sub=topicRepository
-                    .getOne(topicId)
-                    .first()
+            val sub = topicRepository
+                .getOne(topicId)
+                .first()
 
-                if (sub != null) {
+            if (sub != null) {
 
-                    state.edit {
-                        append(sub.title)
-                    }
+                state.edit {
+                    append(sub.title)
                 }
+            }
         }
 
     }
 
 
-    fun addTopic(){
+    fun addTopic() {
         viewModelScope.launch {
             _update.update {
                 Update.Saving
@@ -62,13 +62,13 @@ class CtViewModel(
 
             topicRepository.upsert(
                 Topic(
-                    id=if (topicId>0) topicId else null,
+                    id = if (topicId > 0) topicId else null,
                     subjectId = subjectId,
-                    title = state.text.toString()
-                )
+                    title = state.text.toString(),
+                ),
             )
             state.clearText()
-           // delay(500)
+            // delay(500)
             _update.update {
                 Update.Success
             }

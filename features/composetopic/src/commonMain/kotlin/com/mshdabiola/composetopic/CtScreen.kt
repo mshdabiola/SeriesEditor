@@ -122,16 +122,17 @@ internal fun CtScreen(
 
                 Spacer(Modifier.height(4.dp))
                 SeriesEditorButton(
-                    modifier=Modifier.align(Alignment.End),
+                    modifier = Modifier.align(Alignment.End),
                     enabled = name.text.isNotBlank(),
-                    onClick = onAddTopic) {
+                    onClick = onAddTopic,
+                ) {
                     Text(if (topicId < 0) "Add topic" else "Update topic")
                 }
             }
 
             Update.Saving -> {
 
-              Waiting()
+                Waiting()
 
             }
 
