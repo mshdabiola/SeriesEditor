@@ -21,7 +21,6 @@ plugins {
     alias(libs.plugins.conveyor) apply false
 
 
-
 }
 //./gradlew assembleDebug -PenableComposeCompilerReports=true
 // ./gradlew assembleDebug -PenableComposeCompilerMetrics=true

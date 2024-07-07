@@ -11,19 +11,19 @@ pluginManagement {
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-var project :Properties?=null
+var project: Properties? = null
 try {
-      project=  File(rootDir, "local.properties").inputStream().use {
-            java.util.Properties().apply { load(it) }
+    project = File(rootDir, "local.properties").inputStream().use {
+        java.util.Properties().apply { load(it) }
 
-        }
-    println("user ${ project?.getProperty("gpr.user")}")
+    }
+    println("user ${project?.getProperty("gpr.user")}")
 
 
 } catch (e: Exception) {
 
 //        e.printStackTrace()
-    }
+}
 //val user = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
 //val token=  project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
 //println("user $user token $token")
@@ -33,11 +33,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-          mavenLocal()
+        mavenLocal()
         maven {
             url = uri("https://maven.pkg.github.com/mshdabiola/series")
             credentials {
-                username = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
+                username = project?.getProperty("gpr.userid") ?: System.getenv("USERID")
                 password = project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
             }
         }
