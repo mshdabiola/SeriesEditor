@@ -3,7 +3,7 @@ package com.mshdabiola.data.repository
 import com.mshdabiola.data.model.asEntity
 import com.mshdabiola.data.model.asSub
 import com.mshdabiola.database.dao.SubjectDao
-import com.mshdabiola.model.data.Subject
+import com.mshdabiola.generalmodel.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

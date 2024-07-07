@@ -7,13 +7,13 @@ import com.mshdabiola.datastore.model.OptionSer
 import com.mshdabiola.datastore.model.QuestionSer
 import com.mshdabiola.datastore.model.TopicSer
 import com.mshdabiola.datastore.model.UserDataSer
+import com.mshdabiola.generalmodel.Content
+import com.mshdabiola.generalmodel.CurrentExam
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.generalmodel.Topic
 import com.mshdabiola.model.UserData
-import com.mshdabiola.model.data.Content
-import com.mshdabiola.model.data.CurrentExam
-import com.mshdabiola.model.data.Instruction
-import com.mshdabiola.model.data.Option
-import com.mshdabiola.model.data.Question
-import com.mshdabiola.model.data.Topic
 
 fun UserData.toSer() =
     UserDataSer(themeBrand, darkThemeConfig, useDynamicColor, shouldHideOnboarding, contrast)

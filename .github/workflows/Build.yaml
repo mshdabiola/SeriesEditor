@@ -1,4 +1,4 @@
-name: Build
+name: Build all and test
 
 #on:
 #  push:
@@ -99,7 +99,7 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew verifyRoborazziDebug
+        run: ./gradlew verifyRoborazziFossReliantDebug
 
       - name: Prevent pushing new screenshots if this is a fork
         id: checkfork_screenshots
@@ -116,7 +116,7 @@ jobs:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          ./gradlew recordRoborazziDebug
+          ./gradlew recordRoborazziFossReliantDebug
 
       - name: Push new screenshots if available
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -132,7 +132,7 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew testDebug
+        run: ./gradlew testFossReliantDebug
       # Replace task exclusions with `-Pandroidx.baselineprofile.skipgeneration` when
       # https://android-review.googlesource.com/c/platform/frameworks/support/+/2602790 landed in a
       # release build
@@ -141,11 +141,11 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew :seriesEditorApp:assemble :benchmarks:assemble
-          -x pixel6Api33NonMinifiedReleaseAndroidTest
-          -x pixel6Api33NonMinifiedBenchmarkAndroidTest
-          -x collectNonMinifiedReleaseBaselineProfile
-          -x collectNonMinifiedBenchmarkBaselineProfile
+        run: ./gradlew assembleFossReliant :benchmarks:assembleFossReliant
+          -x pixel6Api33FossReliantNonMinifiedReleaseAndroidTest
+          -x pixel6Api33FossReliantNonMinifiedBenchmarkAndroidTest
+          -x collectFossReliantNonMinifiedReleaseBaselineProfile
+          -x collectFossReliantNonMinifiedBenchmarkBaselineProfile
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v4
@@ -164,7 +164,7 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew :seriesEditorApp:lintRelease
+        run: ./gradlew lintFossReliantRelease
 
       - name: Upload lint reports (HTML)
         if: always()
@@ -177,7 +177,7 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew checkReleaseBadging
+        run: ./gradlew checkFossReliantReleaseBadging
 
   androidTest:
     runs-on: ubuntu-latest
@@ -235,7 +235,7 @@ jobs:
           disable-animations: true
           disk-size: 6000M
           heap-size: 600M
-          script: ./gradlew connectedDebugAndroidTest --daemon
+          script: ./gradlew connectedFossReliantDebugAndroidTest --daemon
 
       - name: Run local tests (including Roborazzi) for the combined coverage report (only API 30)
         if: matrix.api-level == 30
@@ -243,7 +243,7 @@ jobs:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
         # There is no need to verify Roborazzi tests to generate coverage.
-        run: ./gradlew testDebugUnitTest -Proborazzi.test.verify=false # Add Prod if we ever add JVM tests for prod
+        run: ./gradlew testFossReliantDebugUnitTest -Proborazzi.test.verify=false # Add Prod if we ever add JVM tests for prod
 
       # Add `createProdDebugUnitTestCoverageReport` if we ever add JVM tests for prod
       - name: Generate coverage reports for Debug variants (only API 30)
@@ -251,7 +251,7 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew createDebugCombinedCoverageReport
+        run: ./gradlew createFossReliantDebugCombinedCoverageReport
 
       - name: Upload test reports
         if: always()

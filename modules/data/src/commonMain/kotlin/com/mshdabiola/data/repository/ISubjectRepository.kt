@@ -1,6 +1,6 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.model.data.Subject
+import com.mshdabiola.generalmodel.Subject
 import kotlinx.coroutines.flow.Flow
 
 interface ISubjectRepository {

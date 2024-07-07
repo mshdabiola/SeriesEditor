@@ -11,19 +11,19 @@ pluginManagement {
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-var project :Properties?=null
+var project: Properties? = null
 try {
-      project=  File(rootDir, "local.properties").inputStream().use {
-            java.util.Properties().apply { load(it) }
+    project = File(rootDir, "local.properties").inputStream().use {
+        java.util.Properties().apply { load(it) }
 
-        }
-    println("user ${ project?.getProperty("gpr.user")}")
+    }
+    println("user ${project?.getProperty("gpr.user")}")
 
 
 } catch (e: Exception) {
 
-        e.printStackTrace()
-    }
+//        e.printStackTrace()
+}
 //val user = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
 //val token=  project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
 //println("user $user token $token")
@@ -33,12 +33,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-          mavenLocal()
+        mavenLocal()
         maven {
             url = uri("https://maven.pkg.github.com/mshdabiola/series")
             credentials {
-                username = project?.getProperty("gpr.user")  ?: System.getenv("USERID")
-                password = project?.getProperty("gpr.key") ?: System.getenv("PASSWORD")
+                username = project?.getProperty("gpr.userid") ?: System.getenv("USERID")
+                password = project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
             }
         }
         maven(url = "https://www.jitpack.io")
@@ -63,6 +63,7 @@ include(":modules:ui")
 //include(":modules:mvvn")
 include(":modules:analytics")
 include(":modules:datastore")
+include(":modules:screenshot-testing")
 
 //include(":modules:app")
 //include(":desktop")
@@ -71,12 +72,25 @@ include(":modules:datastore")
 include(":benchmarks")
 
 
-include(":seriesEditorApp")
+include(":app")
 //include(":shared")
 
 
 include(":features:main")
-include(":features:detail")
+//include(":features:detail")
 include(":features:setting")
+include("features:composesubject")
+include("features:composeexamination")
+include("features:composeinstruction")
+include("features:composequestion")
+include("features:composetopic")
+include("features:instructions")
+include("features:questions")
+include("features:topics")
 
+
+
+
+
+include(":ui-test-hilt-manifest")
 

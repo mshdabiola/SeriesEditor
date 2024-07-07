@@ -4,6 +4,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,20 +35,16 @@ actual fun DragAndDropImage(
 
     val listener = object : DropTargetListener {
         override fun dragEnter(p0: DropTargetDragEvent?) {
-            println("enter")
         }
 
         override fun dragOver(p0: DropTargetDragEvent?) {
-            println("Over")
             isover = true
         }
 
         override fun dropActionChanged(p0: DropTargetDragEvent) {
-            println("drag action change")
         }
 
         override fun dragExit(p0: DropTargetEvent?) {
-            println("drag exit ")
             isover = false
         }
 
@@ -83,13 +81,17 @@ actual fun DragAndDropImage(
                         border = if (isover) {
                             BorderStroke(
                                 width = 4.dp,
-                                color = Color.Blue,
+                                color = Color.Green,
                             )
                         } else {
-                            BorderStroke(width = 2.dp, color = Color.Black)
+                            BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary)
                         },
+                        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                     ) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
                             //  if (File(path).exists()) {
                             ImageUi(
                                 Modifier,

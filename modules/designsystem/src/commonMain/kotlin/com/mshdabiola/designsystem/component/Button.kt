@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,9 +27,9 @@ fun SeriesEditorButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.onBackground,
-        ),
+//        colors = ButtonDefaults.buttonColors(
+//            containerColor = MaterialTheme.colorScheme.onBackground,
+//        ),
         contentPadding = contentPadding,
         content = content,
     )

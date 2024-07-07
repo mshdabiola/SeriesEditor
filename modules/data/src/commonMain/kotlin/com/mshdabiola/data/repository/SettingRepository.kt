@@ -4,9 +4,9 @@ import com.mshdabiola.data.model.asModel
 import com.mshdabiola.data.model.asSer
 import com.mshdabiola.data.model.toSer
 import com.mshdabiola.datastore.Store
-import com.mshdabiola.model.data.CurrentExam
-import com.mshdabiola.model.data.Instruction
-import com.mshdabiola.model.data.Question
+import com.mshdabiola.generalmodel.CurrentExam
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Question
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

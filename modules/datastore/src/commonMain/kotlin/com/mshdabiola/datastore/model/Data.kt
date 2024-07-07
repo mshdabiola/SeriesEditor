@@ -13,7 +13,7 @@ import okio.BufferedSource
 
 val json = Json
 
-internal object QuestionJsonSerializer : OkioSerializer<Map<Long, QuestionSer>> {
+object QuestionJsonSerializer : OkioSerializer<Map<Long, QuestionSer>> {
 
     override val defaultValue: Map<Long, QuestionSer>
         get() = mapOf()
@@ -37,7 +37,7 @@ internal object QuestionJsonSerializer : OkioSerializer<Map<Long, QuestionSer>> 
     }
 }
 
-internal object InstructionJsonSerializer : OkioSerializer<Map<Long, InstructionSer>> {
+object InstructionJsonSerializer : OkioSerializer<Map<Long, InstructionSer>> {
 
     override val defaultValue: Map<Long, InstructionSer>
         get() = mapOf()
@@ -61,7 +61,7 @@ internal object InstructionJsonSerializer : OkioSerializer<Map<Long, Instruction
     }
 }
 
-internal object CurrentExamJsonSerializer : OkioSerializer<CurrentExamSer> {
+object CurrentExamJsonSerializer : OkioSerializer<CurrentExamSer> {
 
     override val defaultValue: CurrentExamSer
         get() = CurrentExamSer(id = -1, choose = listOf())
@@ -77,7 +77,7 @@ internal object CurrentExamJsonSerializer : OkioSerializer<CurrentExamSer> {
     }
 }
 
-internal object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
+object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
 
     override val defaultValue: UserDataSer
         get() = UserDataSer(

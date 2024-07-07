@@ -2,11 +2,12 @@
  *abiola 2022
  */
 import com.mshdabiola.app.BuildType
+import com.mshdabiola.app.configureFlavors
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("mshdabiola.android.test")
-    alias(libs.plugins.androidx.baselineprofile)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -43,13 +44,13 @@ android {
     // Use the same flavor dimensions as the application to allow generating Baseline Profiles on prod,
     // which is more close to what will be shipped to users (no fake data), but has ability to run the
     // benchmarks on demo, so we benchmark on stable data. 
-//    configureFlavors(this) { flavor ->
-//        buildConfigField(
-//            "String",
-//            "APP_FLAVOR_SUFFIX",
-//            "\"${flavor.applicationIdSuffix ?: ""}\""
-//        )
-//    }
+    configureFlavors(this) { flavor ->
+        buildConfigField(
+            "String",
+            "APP_FLAVOR_SUFFIX",
+            "\"${flavor.applicationIdSuffix ?: ""}\"",
+        )
+    }
 
 //    testOptions.managedDevices.devices {
 //        create<ManagedVirtualDevice>("pixel6Api34") {
@@ -66,16 +67,16 @@ android {
         }
     }
 
-    targetProjectPath = ":seriesEditorApp"
+    targetProjectPath = ":app"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
 baselineProfile {
     // This specifies the managed devices to use that you run the tests on.
-    managedDevices += "pixel6Api33"
+//    managedDevices += "pixel6Api33"
 
     // Don't use a connected device but rely on a GMD for consistency between local and CI builds.
-    useConnectedDevices = false
+    useConnectedDevices = true
 
 }
 

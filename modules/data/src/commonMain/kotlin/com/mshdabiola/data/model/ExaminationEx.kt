@@ -14,12 +14,12 @@ import com.mshdabiola.database.model.SubjectEntity
 import com.mshdabiola.database.model.TopicEntity
 import com.mshdabiola.datastore.model.asString
 import com.mshdabiola.datastore.model.toContent
-import com.mshdabiola.model.data.Examination
-import com.mshdabiola.model.data.Instruction
-import com.mshdabiola.model.data.Option
-import com.mshdabiola.model.data.Question
-import com.mshdabiola.model.data.Subject
-import com.mshdabiola.model.data.Topic
+import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.generalmodel.Subject
+import com.mshdabiola.generalmodel.Topic
 
 fun Examination.asExamEntity() = ExaminationEntity(
     id = id,
@@ -46,9 +46,11 @@ fun SubjectEntity.asSub() = Subject(
 
 fun Subject.asEntity() = SubjectEntity(id, title)
 
-fun Instruction.asEntity() = InstructionEntity(id, examId, title, content.map { it.toSer() }.asString())
+fun Instruction.asEntity() =
+    InstructionEntity(id, examId, title, content.map { it.toSer() }.asString())
 
-fun InstructionEntity.asModel() = Instruction(id, examId, title, content.toContent().map { it.asModel() })
+fun InstructionEntity.asModel() =
+    Instruction(id, examId, title, content.toContent().map { it.asModel() })
 
 fun Topic.asEntity() = TopicEntity(id, subjectId, title)
 fun TopicEntity.asModel() = Topic(id, subjectId, title)
@@ -74,7 +76,15 @@ fun OptionEntity.asModel() = Option(
 )
 
 fun Question.asModel() = QuestionEntity(
-    id, number, examId, title, contents.map { it.toSer() }.asString(), answers.map { it.toSer() }.asString(), isTheory, instruction?.id, topic?.id,
+    id,
+    number,
+    examId,
+    title,
+    contents.map { it.toSer() }.asString(),
+    answers.map { it.toSer() }.asString(),
+    isTheory,
+    instruction?.id,
+    topic?.id,
 )
 
 fun QuestionFull.asModel() = Question(

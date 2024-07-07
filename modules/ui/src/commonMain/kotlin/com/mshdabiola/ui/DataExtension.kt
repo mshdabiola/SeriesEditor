@@ -1,12 +1,14 @@
 package com.mshdabiola.ui
 
-import com.mshdabiola.model.data.Content
-import com.mshdabiola.model.data.Examination
-import com.mshdabiola.model.data.Instruction
-import com.mshdabiola.model.data.Option
-import com.mshdabiola.model.data.Question
-import com.mshdabiola.model.data.Subject
-import com.mshdabiola.model.data.Topic
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text2.input.TextFieldState
+import com.mshdabiola.generalmodel.Content
+import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.generalmodel.Subject
+import com.mshdabiola.generalmodel.Topic
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
@@ -68,22 +70,27 @@ fun OptionUiState.toOption(questionId: Long, examId: Long) =
         title = "",
     )
 
-fun ItemUiState.toItem() = Content(content = content, type = type)
-fun Content.toItemUi(isEdit: Boolean = false) =
-    ItemUiState(content = content, type = type, isEditMode = isEdit)
+@OptIn(ExperimentalFoundationApi::class)
+fun ItemUiState.toItem() = Content(content = content.text.toString(), type = type)
 
+@OptIn(ExperimentalFoundationApi::class)
+fun Content.toItemUi(isEdit: Boolean = false) =
+    ItemUiState(content = TextFieldState(content), type = type, isEditMode = isEdit)
+
+@OptIn(ExperimentalFoundationApi::class)
 fun InstructionUiState.toInstruction() = Instruction(
     id = id.check(),
     examId = examId,
-    title = title ?: "",
+    title = title.text.toString(),
     content = content.map { it.toItem() },
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
     InstructionUiState(
         id = id.toDefault(),
         examId = examId,
-        title = title,
+        title = TextFieldState(title),
         content = content.map { it.toItemUi(isEdit = isEdit) }.toImmutableList(),
     )
 
