@@ -289,7 +289,7 @@ fun EquationContent(
     modifier: Modifier = Modifier,
     equation: ItemUiState,
 ) {
-    key(equation.content.text){
+    key(equation.content.text) {
         Latex(modifier = modifier, equation.content.text.toString())
     }
 

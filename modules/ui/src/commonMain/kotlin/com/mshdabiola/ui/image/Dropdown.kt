@@ -20,7 +20,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun DropdownMenu(
     modifier: Modifier = Modifier,
-    textModifier: Modifier=Modifier,
+    textModifier: Modifier = Modifier,
     currentIndex: Int = 0,
     data: ImmutableList<String> = emptyList<String>().toImmutableList(),
     onDataChange: (Int) -> Unit = {},

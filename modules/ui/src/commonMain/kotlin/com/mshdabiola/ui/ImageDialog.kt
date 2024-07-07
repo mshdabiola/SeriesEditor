@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
@@ -50,7 +49,7 @@ import kotlinx.coroutines.launch
 fun QuestionDialog(
     modifier: Modifier = Modifier,
     itemUiState: ItemUiState?,
-    examId:Long,
+    examId: Long,
     onDismiss: () -> Unit = {},
 ) {
 
@@ -63,7 +62,11 @@ fun QuestionDialog(
 
             Type.TEXT -> {}
             Type.IMAGE -> {
-                ImageDialog(textFieldState = itemUiState.content, examId = examId,onDismiss = onDismiss)
+                ImageDialog(
+                    textFieldState = itemUiState.content,
+                    examId = examId,
+                    onDismiss = onDismiss,
+                )
             }
         }
 
@@ -76,7 +79,7 @@ fun QuestionDialog(
 fun ImageDialog(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState,
-    examId:Long,
+    examId: Long,
     onDismiss: () -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -110,7 +113,7 @@ fun ImageDialog(
                                 .saveImage(
                                     textFieldState.text.toString(),//item.content,
                                     path,//text,
-                                    examId//examId,
+                                    examId,//examId,
                                 )
                             textFieldState.clearText()
 
@@ -138,7 +141,7 @@ fun EquationDialog(
     }
     LaunchedEffect(Unit) {
 
-            focusRequester.requestFocus()
+        focusRequester.requestFocus()
 
     }
     val pagerState = rememberPagerState(initialPage = 0) { map.keys.size }
@@ -179,13 +182,13 @@ fun EquationDialog(
                     }
                 }
                 HorizontalPager(state = pagerState, userScrollEnabled = false) {
-                    FlowRow  (
+                    FlowRow(
                         Modifier
                             .fillMaxWidth()
                             .height(120.dp)
                             .padding(vertical = 4.dp)
                             .verticalScroll(state = scrollState),
-                      //  verticalArrangement = Arrangement.spacedBy(4.dp),
+                        //  verticalArrangement = Arrangement.spacedBy(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         map[map.keys.toList()[it]]!!.forEach {
@@ -209,11 +212,14 @@ fun EquationDialog(
                         .fillMaxWidth(),
                     label = "Equations",
                     maxNum = TextFieldLineLimits.SingleLine,
-                    state = textFieldState)
+                    state = textFieldState,
+                )
 
-                key(textFieldState.text){
-                    Latex(modifier = Modifier.fillMaxWidth().height(80.dp),
-                        text = textFieldState.text.toString())
+                key(textFieldState.text) {
+                    Latex(
+                        modifier = Modifier.fillMaxWidth().height(80.dp),
+                        text = textFieldState.text.toString(),
+                    )
                 }
 
 

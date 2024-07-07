@@ -42,22 +42,26 @@ fun CommonScreen(
 
         Scaffold(
             bottomBar = {
-                BottomAppBar(floatingActionButton = {
-                    ExtendedFloatingActionButton(
-                        modifier = Modifier.testTag("add"),
-                        onClick = {
-                        show = true
-                    }) {
-                        Icon(Icons.Default.Add, "add")
-                        Spacer(Modifier.width(8.dp))
-                        Text("Add")
-                    }
-                }, actions = action)
+                BottomAppBar(
+                    floatingActionButton = {
+                        ExtendedFloatingActionButton(
+                            modifier = Modifier.testTag("add"),
+                            onClick = {
+                                show = true
+                            },
+                        ) {
+                            Icon(Icons.Default.Add, "add")
+                            Spacer(Modifier.width(8.dp))
+                            Text("Add")
+                        }
+                    },
+                    actions = action,
+                )
             },
 
-        ) {
+            ) {
             firstScreen(Modifier.padding(it))
-            AnimatedVisibility(show){
+            AnimatedVisibility(show) {
                 ModalBottomSheet(
                     onDismissRequest = { show = false },
                     Modifier.fillMaxSize(),
@@ -95,7 +99,7 @@ fun CommonScreen2(
 ) {
     if (screenSize <= ScreenSize.MEDIUM) {
         firstScreen(Modifier)
-        AnimatedVisibility(show){
+        AnimatedVisibility(show) {
             ModalBottomSheet(
                 onDismissRequest = onDismiss,
                 Modifier.fillMaxSize(),

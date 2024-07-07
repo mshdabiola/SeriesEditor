@@ -72,6 +72,7 @@ fun OptionUiState.toOption(questionId: Long, examId: Long) =
 
 @OptIn(ExperimentalFoundationApi::class)
 fun ItemUiState.toItem() = Content(content = content.text.toString(), type = type)
+
 @OptIn(ExperimentalFoundationApi::class)
 fun Content.toItemUi(isEdit: Boolean = false) =
     ItemUiState(content = TextFieldState(content), type = type, isEditMode = isEdit)

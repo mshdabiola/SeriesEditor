@@ -20,7 +20,7 @@ sealed class Item(open val type: Type) {
 
     data class Text(
         val content: String = "",
-       override val type: Type = Type.TEXT,
+        override val type: Type = Type.TEXT,
     ) : Item(type)
 
 }

@@ -87,9 +87,12 @@ actual fun DragAndDropImage(
                         } else {
                             BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary)
                         },
-                        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                     ) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
                             //  if (File(path).exists()) {
                             ImageUi(
                                 Modifier,
