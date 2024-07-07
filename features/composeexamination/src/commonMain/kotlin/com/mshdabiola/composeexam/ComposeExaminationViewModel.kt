@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-
 class ComposeExaminationViewModel(
     private val examId: Long,
     private val subjectRepository: ISubjectRepository,
@@ -73,10 +72,8 @@ class ComposeExaminationViewModel(
         }
     }
 
-
     fun addExam() {
         viewModelScope.launch {
-
             _update.update { Update.Saving }
             val subject = subjects.value.single { it.name == subject.text.toString() }
             val exam = Examination(
@@ -89,12 +86,7 @@ class ComposeExaminationViewModel(
             )
             examRepository.upsert(exam)
 
-
             _update.update { Update.Success }
-
-
         }
     }
-
-
 }

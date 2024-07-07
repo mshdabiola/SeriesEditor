@@ -44,6 +44,6 @@ fun NavGraphBuilder.composeExaminationScreen(
             onBack = onBack,
             onShowSnack = onShowSnack,
 
-            )
+        )
     }
 }

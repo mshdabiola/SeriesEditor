@@ -14,7 +14,6 @@ import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -58,7 +57,7 @@ internal fun ComposeExaminationRoute(
     onBack: () -> Unit,
     onShowSnack: suspend (String, String?) -> Boolean,
 
-    ) {
+) {
     val viewModel: ComposeExaminationViewModel = koinViewModel(
         parameters = {
             parametersOf(examId)
@@ -102,7 +101,6 @@ internal fun ComposeExaminationScreen(
     ) {
         when (update) {
             Update.Edit -> {
-
                 var expanded by remember { mutableStateOf(false) }
 
                 Section(title = "Examination Section")
@@ -148,8 +146,6 @@ internal fun ComposeExaminationScreen(
                     }
                 }
 
-
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -166,7 +162,7 @@ internal fun ComposeExaminationScreen(
                         keyboardType = KeyboardType.Number,
                         inputTransformation = DigitOnlyTransformation,
 
-                        )
+                    )
                     SeriesEditorTextField(
                         modifier = Modifier
                             .weight(0.5f)
@@ -179,8 +175,7 @@ internal fun ComposeExaminationScreen(
                         keyboardType = KeyboardType.Number,
                         inputTransformation = DigitOnlyTransformation,
 
-                        )
-
+                    )
                 }
 
                 SeriesEditorButton(
@@ -191,26 +186,19 @@ internal fun ComposeExaminationScreen(
                         addExam()
                     },
                     enabled = subject.text.toString().isNotBlank() &&
-                            duration.text.toString().isNotBlank() &&
-                            year.text.toString().isNotBlank(),
+                        duration.text.toString().isNotBlank() &&
+                        year.text.toString().isNotBlank(),
                 ) {
                     Icon(Icons.Default.Add, "add")
                     Text("Add Examination")
                 }
-
             }
 
             Update.Saving -> {
-
                 Waiting()
-
-
             }
 
             else -> {}
         }
     }
-
 }
-
-
