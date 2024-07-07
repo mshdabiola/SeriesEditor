@@ -150,7 +150,7 @@ fun EquationDialog(
         dismissButton = {
             if (textFieldState.text.isNotBlank()) {
                 TextButton(onClick = { textFieldState.clearText() }) {
-                    Text("Remove Image")
+                    Text("Remove Equation")
                 }
             }
 
@@ -159,7 +159,7 @@ fun EquationDialog(
             SeriesEditorButton(
                 onClick = onDismiss,
             ) {
-                Text(if (textFieldState.text.isNotBlank()) "Close " else "Add Image")
+                Text(if (textFieldState.text.isNotBlank()) "Close " else "Add Equation")
             }
         },
         text = {
@@ -213,7 +213,6 @@ fun EquationDialog(
 
                 key(textFieldState.text){
                     Latex(modifier = Modifier.weight(1f).fillMaxWidth(),
-                        backgroundColor = Color.Red,
                         text = textFieldState.text.toString())
                 }
 
