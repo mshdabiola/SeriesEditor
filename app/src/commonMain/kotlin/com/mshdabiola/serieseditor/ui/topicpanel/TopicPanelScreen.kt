@@ -15,19 +15,15 @@ import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import com.mshdabiola.topics.navigation.topicScreen
 
-
 @Composable
 fun TopicPaneScreen(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     subjectId: Long,
 ) {
-
-
     val topicNav = rememberNavController()
     val ctNav = rememberNavController()
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
-
 
     Row(Modifier.fillMaxSize()) {
         NavHost(
@@ -48,7 +44,7 @@ fun TopicPaneScreen(
                 startDestination = COMPOSE_TOPIC_ROUTE,
                 modifier = Modifier,
 
-                ) {
+            ) {
                 composeTopicScreen(
                     modifier = screenModifier,
                     onShowSnack = onShowSnackbar,
@@ -63,11 +59,8 @@ fun TopicPaneScreen(
                     },
                     subjectId = subjectId,
 
-                    )
+                )
             }
         }
-
     }
-
-
 }

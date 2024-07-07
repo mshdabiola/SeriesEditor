@@ -19,14 +19,12 @@ import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.exampanel.navigateToExamPanel
 
-
 @Composable
 fun MainPaneScreen(
     modifier: Modifier = Modifier,
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
 ) {
-
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
 
     Row(modifier) {
@@ -41,10 +39,8 @@ fun MainPaneScreen(
                 navigateToQuestion = appState.navController::navigateToExamPanel,
                 updateExam = appState.examNavHostController::navigateToComposeExamination,
             )
-
         }
         Column(Modifier.weight(0.4f)) {
-
             NavHost(
                 navController = appState.examNavHostController,
                 startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
@@ -60,7 +56,6 @@ fun MainPaneScreen(
                         }
                     },
                 )
-
             }
 
             NavHost(
@@ -78,12 +73,7 @@ fun MainPaneScreen(
                         }
                     },
                 )
-
             }
-
-
         }
-
     }
-
 }

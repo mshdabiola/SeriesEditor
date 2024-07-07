@@ -32,7 +32,6 @@ import com.mshdabiola.questions.navigation.QUESTIONS_ROUTE
 import com.mshdabiola.questions.navigation.questionScreen
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExamPaneScreen(
@@ -53,19 +52,17 @@ fun ExamPaneScreen(
     val ciNavHostController = rememberNavController()
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
 
-
     Column(modifier) {
         TabRow(
             selectedTabIndex = pagerState.currentPage,
             modifier = Modifier,
 
-            ) {
+        ) {
             Tab(
                 selected = state == 0,
                 onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(0)
-
                     }
                 },
                 text = { Text("Question") },
@@ -75,12 +72,10 @@ fun ExamPaneScreen(
                 onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(1)
-
                     }
                 },
                 text = { Text("Instruction") },
             )
-
         }
         HorizontalPager(state = pagerState) {
             when (it) {
@@ -104,7 +99,7 @@ fun ExamPaneScreen(
                                 startDestination = COMPOSE_QUESTION_ROUTE,
                                 modifier = Modifier,
 
-                                ) {
+                            ) {
                                 composeQuestionScreen(
                                     modifier = screenModifier,
                                     onShowSnack = onShowSnackbar,
@@ -127,10 +122,9 @@ fun ExamPaneScreen(
                                         navigateToTopicPanel(id)
                                     },
 
-                                    )
+                                )
                             }
                         }
-
                     }
                 }
 
@@ -147,7 +141,7 @@ fun ExamPaneScreen(
                                 navigateToComposeInstruction = ciNavHostController::navigateToComposeInstruction,
                                 defaultExamId = examId,
 
-                                )
+                            )
                         }
                         Column(Modifier.weight(0.4f)) {
                             NavHost(
@@ -169,20 +163,14 @@ fun ExamPaneScreen(
                                     },
                                     defaultExamId = examId,
 
-                                    )
+                                )
                             }
                         }
-
                     }
-
                 }
 
                 else -> {}
             }
         }
-
-
     }
-
-
 }

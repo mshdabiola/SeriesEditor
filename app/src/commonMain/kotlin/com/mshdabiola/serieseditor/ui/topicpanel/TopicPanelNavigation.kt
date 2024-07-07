@@ -8,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
-
 const val TOPIC_PANEL_ROUTE = "topic_panel_route"
 const val SUBJECT_ARG = "subject_arg"
 

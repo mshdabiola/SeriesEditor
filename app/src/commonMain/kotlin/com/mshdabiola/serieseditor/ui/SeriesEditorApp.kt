@@ -78,8 +78,10 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(
-    ExperimentalMaterial3WindowSizeClassApi::class, KoinExperimentalAPI::class,
-    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalMaterial3WindowSizeClassApi::class,
+    KoinExperimentalAPI::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
 )
 @Composable
 fun SeriesEditorApp() {
@@ -105,8 +107,6 @@ fun SeriesEditorApp() {
             darkTheme = darkTheme,
             disableDynamicTheming = shouldDisableDynamicTheming(uiState),
         ) {
-
-
             SeriesEditorBackground {
                 SeriesEditorGradientBackground(
                     gradientColors = if (shouldShowGradientBackground) {
@@ -134,8 +134,6 @@ fun SeriesEditorApp() {
                                         checkIfSelected = { currentSubjectId == it },
                                         onAddTopic = { appState.onAddTopic(currentSubjectId) },
                                     )
-
-
                                 }
                             }
                         },
@@ -176,8 +174,6 @@ fun SeriesEditorApp() {
                                 snackbarHost = { SnackbarHost(snackbarHostState) },
                                 bottomBar = {
                                     if (appState is Other) {
-
-
                                         MainBottomBarSection(
                                             modifier = Modifier,
                                             onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
@@ -188,7 +184,6 @@ fun SeriesEditorApp() {
                                             subjectId = currentSubjectId,
                                             appState = appState,
                                         )
-
                                     }
 //                                if (appState.shouldShowBottomBar) {
 //                                    CommonBar(
@@ -206,19 +201,19 @@ fun SeriesEditorApp() {
                                                 updateSubject = appState::onUpdateSubject,
                                                 onNavigationClick = if (!appState.showPermanentDrawer) {
                                                     { coroutine.launch { drawerState.open() } }
-                                                } else null,
+                                                } else {
+                                                    null
+                                                },
                                             )
                                         } else {
                                             DetailTopAppBar(
                                                 onNavigationClick = appState.navController::popBackStack,
                                             )
-
                                         }
                                     }
-
                                 },
 
-                                ) { padding ->
+                            ) { padding ->
 
                                 Column(
                                     Modifier
@@ -256,11 +251,9 @@ fun SeriesEditorApp() {
                                             )
                                         }
                                     }
-
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -277,7 +270,6 @@ fun NavigationSheet(
     checkIfSelected: (Long) -> Boolean = { false },
     onAddTopic: () -> Unit = {},
 ) {
-
     LazyColumn(modifier = modifier) {
         item {
             Text(
@@ -295,7 +287,6 @@ fun NavigationSheet(
                         Icon(Icons.Default.Add, "add")
                     }
                 }
-
             }
         }
         item {
@@ -321,11 +312,8 @@ fun NavigationSheet(
                     onClick = onAddTopic,
                 )
             }
-
-
         }
     }
-
 }
 
 @Composable

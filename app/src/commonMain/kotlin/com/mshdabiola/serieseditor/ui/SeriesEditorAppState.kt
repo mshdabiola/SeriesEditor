@@ -49,7 +49,6 @@ fun rememberExtend(
         subjectNavHostController,
         examNavHostController,
     ) {
-
         Extended(
             navController,
             coroutineScope,
@@ -75,9 +74,11 @@ fun rememberOther(
         coroutineScope,
         windowSizeClass,
     ) {
-
         Other(
-            navController, coroutineScope, windowSizeClass, pagerState,
+            navController,
+            coroutineScope,
+            windowSizeClass,
+            pagerState,
         )
     }
 }
@@ -99,8 +100,6 @@ sealed class SeriesEditorAppState(
     abstract fun onSubjectClick(id: Long)
     abstract fun onUpdateSubject(id: Long)
     abstract fun onAddTopic(id: Long)
-
-
 }
 
 class Extended(
@@ -111,7 +110,7 @@ class Extended(
     val subjectNavHostController: NavHostController,
     val examNavHostController: NavHostController,
 
-    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -143,7 +142,8 @@ class Extended(
     }
 }
 
-class Other @OptIn(ExperimentalFoundationApi::class) constructor(
+@OptIn(ExperimentalFoundationApi::class)
+class Other(
     override val navController: NavHostController,
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
@@ -166,7 +166,6 @@ class Other @OptIn(ExperimentalFoundationApi::class) constructor(
 
     override val showPermanentDrawer: Boolean
         @Composable get() = isMain && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium
-
 
     override fun onSubjectClick(id: Long) {
         navController.navigateToMain(id)
@@ -208,7 +207,6 @@ class Other @OptIn(ExperimentalFoundationApi::class) constructor(
                 } else {
                     navController.navigateToComposeInstruction(exam, -1)
                 }
-
             }
 
             navController.currentDestination?.route?.contains(TOPIC_ROUTE) == true -> {
@@ -220,9 +218,5 @@ class Other @OptIn(ExperimentalFoundationApi::class) constructor(
 
             else -> {}
         }
-
     }
-
-
 }
-

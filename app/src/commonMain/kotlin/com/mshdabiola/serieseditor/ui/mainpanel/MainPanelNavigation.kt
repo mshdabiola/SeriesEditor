@@ -7,7 +7,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.mshdabiola.serieseditor.ui.Extended
 
-
 const val MAIN_PANEL_ROUTE = "main_panel_route"
 
 fun NavController.navigateToMainPanel(navOptions: NavOptions = androidx.navigation.navOptions { }) =

@@ -25,14 +25,12 @@ fun MainTopBarSection(
     updateSubject: (Long) -> Unit,
     onNavigationClick: (() -> Unit)? = null,
 
-
-    ) {
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
-
 
     MainTopBar(
         modifier = modifier,
@@ -60,13 +58,10 @@ fun MainTopBarSection(
             showDeleteDialog = false
         },
         onDelete = {
-
             viewModel.deleteSelected()
             showDeleteDialog = false
         },
     )
-
-
 }
 
 @OptIn(KoinExperimentalAPI::class)
@@ -77,13 +72,12 @@ fun MainBottomBarSection(
     subjectId: Long,
     onNavigationClick: (() -> Unit)?,
 
-    ) {
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
-
 
     SeBottonAppBar(
         modifier = modifier,
@@ -127,20 +121,13 @@ fun MainBottomBarSection(
             showDeleteDialog = false
         },
         onDelete = {
-
             viewModel.deleteSelected()
             showDeleteDialog = false
         },
     )
-
-
 }
-
 
 sealed class DeleteState {
     data object All : DeleteState()
     data class Id(val id: Long) : DeleteState()
 }
-
-
-

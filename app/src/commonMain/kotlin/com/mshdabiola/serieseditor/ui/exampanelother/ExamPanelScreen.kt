@@ -35,7 +35,6 @@ import com.mshdabiola.questions.navigation.questionScreen
 import com.mshdabiola.serieseditor.ui.Other
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExamPaneScreen(
@@ -48,7 +47,6 @@ fun ExamPaneScreen(
         mutableStateOf(0)
     }
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
-
 
     val coroutineScope = rememberCoroutineScope()
     val questionNavHostController = rememberNavController()
@@ -67,13 +65,12 @@ fun ExamPaneScreen(
                 selectedTabIndex = appState.pagerState.currentPage,
                 modifier = Modifier.statusBarsPadding(),
 
-                ) {
+            ) {
                 Tab(
                     selected = state == 0,
                     onClick = {
                         coroutineScope.launch {
                             appState.pagerState.animateScrollToPage(0)
-
                         }
                     },
                     text = { Text("Question") },
@@ -83,12 +80,10 @@ fun ExamPaneScreen(
                     onClick = {
                         coroutineScope.launch {
                             appState.pagerState.animateScrollToPage(1)
-
                         }
                     },
                     text = { Text("Instruction") },
                 )
-
             }
         }
 
@@ -124,18 +119,13 @@ fun ExamPaneScreen(
                                 navigateToComposeInstruction = appState.navController::navigateToComposeInstruction,
                                 defaultExamId = examId,
 
-                                )
+                            )
                         }
                     }
-
                 }
 
                 else -> {}
             }
         }
-
-
     }
-
-
 }

@@ -60,19 +60,18 @@ fun ExtendNavHost(
             onShowSnack = onShowSnackbar,
             navigateToTopicPanel = navController::navigateToTopicPanel,
 
-            )
+        )
         topicPanelScreen(
-            modifier, onShowSnackbar,
+            modifier,
+            onShowSnackbar,
         )
         settingScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
         )
-
     }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -145,7 +144,6 @@ fun OtherNavHost(
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
 
-            )
-
+        )
     }
 }

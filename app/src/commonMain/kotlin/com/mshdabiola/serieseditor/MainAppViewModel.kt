@@ -37,7 +37,6 @@ class MainAppViewModel(
         .isSelectMode
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-
     val subjects = subjectRepository
         .getAll()
         .map { subjectList -> subjectList.map { it.toUi() } }
@@ -48,7 +47,6 @@ class MainAppViewModel(
             initialValue = emptyList(),
         )
 
-
     fun onExport(path: String, name: String, key: String, version: Int) {
         viewModelScope.launch {
             val ids = iExamRepository.selectedList.first()
@@ -58,39 +56,29 @@ class MainAppViewModel(
         }
     }
 
-
     fun deselectAll() {
         viewModelScope.launch {
-
             iExamRepository.updateSelectedList(emptyList())
             iExamRepository.updateSelect(false)
-
-
         }
     }
 
     fun selectAll(subjectId: Long) {
         viewModelScope.launch {
-
-
             val list = (
-                    if (subjectId < 0)
-                        iExamRepository.getAll()
-                    else
-                        iExamRepository
-                            .getAllBuSubjectId(subjectId)
-                    ).first()
+                if (subjectId < 0) {
+                    iExamRepository.getAll()
+                } else {
+                    iExamRepository
+                        .getAllBuSubjectId(subjectId)
+                }
+                ).first()
                 .mapNotNull { it.id }
-
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
-
-
         }
-
     }
-
 
     fun deleteSelected() {
         viewModelScope.launch {
