@@ -40,6 +40,7 @@ import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.ui.QuestionDialog
+import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.state.InstructionUiState
@@ -67,8 +68,8 @@ internal fun CiRoute(
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
-            onShowSnack("Add Instruction",null)
             onFinish()
+            onShowSnack("Add Instruction",null)
         }
     }
 
@@ -143,6 +144,7 @@ internal fun CiScreen(
                     SeriesEditorButton(
                         modifier = Modifier.align(Alignment.End),
                         onClick = onAddInstruction,
+                        enabled = instructionUiState.content.any { it.content.text.isNotBlank() }
                         //enabled = instructionUiState.content.first().content.isNotBlank(),
                     ) {
                         Text("Add Instruction")
@@ -197,8 +199,7 @@ internal fun CiScreen(
             }
             Update.Saving->{
 
-                CircularProgressIndicator()
-                Text("Saving")
+              Waiting()
             }
             else->{}
         }

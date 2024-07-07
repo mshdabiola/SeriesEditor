@@ -72,7 +72,6 @@ class CiViewModel(
             _update.update {
                 Update.Saving
             }
-            delay(5000)
             instructionRepository.upsert(
                 instructionUiState.value.toInstruction(),
             )
