@@ -41,9 +41,9 @@ fun ExamCard(
     var showDrop by remember { mutableStateOf(false) }
     ListItem(
         modifier = modifier.clickable {
-            if (isSelectMode){
+            if (isSelectMode) {
                 toggleSelect(examUiState.id)
-            }else{
+            } else {
                 onExamClick(examUiState.id)
             }
         },

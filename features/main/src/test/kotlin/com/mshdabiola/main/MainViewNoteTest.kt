@@ -26,7 +26,7 @@ class MainViewNoteTest {
             userDataRepository = userDataRepository,
             modelRepository = FakeNoteRepository(),
 
-        )
+            )
     }
 
     @Test

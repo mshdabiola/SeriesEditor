@@ -40,11 +40,11 @@ internal class MainViewModel constructor(
     //private val _examUiStates = MutableStateFlow<Result<List<ExamUiState>>>(Result.Loading)
 
     val examUiMainState: StateFlow<Result<List<ExamUiState>>> =
-        combine(iExamRepository.getAll(),iExamRepository.selectedList){
-            list,ids->Pair(list,ids)
+        combine(iExamRepository.getAll(), iExamRepository.selectedList) { list, ids ->
+            Pair(list, ids)
         }
             .map { notes ->
-               notes.first
+                notes.first
                     .filter {
                         if (subjectId > 0)
                             it.subject.id == subjectId
@@ -62,6 +62,7 @@ internal class MainViewModel constructor(
             iExamRepository.delete(id)
         }
     }
+
     fun toggleSelect(index: Long) {
         viewModelScope.launch {
             val examSelect = iExamRepository.selectedList
