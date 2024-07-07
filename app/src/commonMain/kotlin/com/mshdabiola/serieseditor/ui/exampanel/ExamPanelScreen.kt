@@ -115,12 +115,13 @@ fun ExamPaneScreen(
                                         }
                                     },
                                     defaultExamId = examId,
-                                    navigateToInstruction = {
+                                    navigateToInstruction = { _, _ ->
                                         coroutineScope.launch {
                                             pagerState.animateScrollToPage(1)
                                         }
                                     },
-                                    navigateToTopic = navigateToTopicPanel
+                                    navigateToTopic = {id,_->
+                                        navigateToTopicPanel(id) },
 
                                     )
                             }

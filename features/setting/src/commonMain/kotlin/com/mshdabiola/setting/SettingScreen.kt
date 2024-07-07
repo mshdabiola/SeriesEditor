@@ -44,7 +44,6 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun SettingRoute(
     onBack: () -> Unit,
-    screenSize: ScreenSize,
     onShowSnack: suspend (String, String?) -> Boolean,
     viewModel: SettingViewModel,
 ) {
@@ -53,7 +52,6 @@ internal fun SettingRoute(
     SettingScreen(
         settingState = settingState.value,
         onBack = onBack,
-        screenSize = screenSize,
         setThemeBrand = viewModel::setThemeBrand,
         setContrast = viewModel::setThemeContrast,
         setDarkThemeConfig = viewModel::setDarkThemeConfig,
@@ -65,7 +63,6 @@ internal fun SettingRoute(
 internal fun SettingScreen(
     settingState: SettingState,
     onBack: () -> Unit = {},
-    screenSize: ScreenSize = ScreenSize.COMPACT,
     setThemeBrand: (ThemeBrand) -> Unit = {},
     setDarkThemeConfig: (DarkThemeConfig) -> Unit = {},
     setContrast: (Contrast) -> Unit = {},

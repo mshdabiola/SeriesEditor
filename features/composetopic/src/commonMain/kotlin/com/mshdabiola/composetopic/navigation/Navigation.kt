@@ -13,8 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mshdabiola.composetopic.CtRoute
 
-private const val ROUTE = "cq_route"
-private const val SUBJECT_ARG = "subject_arg"
+private const val ROUTE = "ct_route"
+ const val SUBJECT_ARG = "subject_arg"
 private const val TOPIC_ARG = "topic_arg"
 const val COMPOSE_TOPIC_ROUTE="$ROUTE/{$SUBJECT_ARG}/{$TOPIC_ARG}"
 
@@ -39,13 +39,14 @@ fun NavGraphBuilder.composeTopicScreen(
             }
         )
     ) {
-        //val subjectId = it.arguments?.getLong(SUBJECT_ARG) ?: -1L
+        val subjectId2 = it.arguments?.getLong(SUBJECT_ARG) ?: -1L
         val topicId = it.arguments?.getLong(TOPIC_ARG) ?: -1L
+        println("subj $subjectId2 $topicId")
         CtRoute(
             modifier=modifier,
             onShowSnack = onShowSnack,
             onFinish = onFinish,
-            subjectId = subjectId,
+            subjectId = subjectId2,
             topicId = topicId
         )
     }

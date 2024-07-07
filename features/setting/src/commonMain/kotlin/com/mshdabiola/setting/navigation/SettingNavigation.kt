@@ -20,7 +20,6 @@ fun NavController.navigateToSetting() = navigate(SETTING_ROUTE)
 
 @OptIn(KoinExperimentalAPI::class)
 fun NavGraphBuilder.settingScreen(
-    screenSize: ScreenSize,
     onShowSnack: suspend (String, String?) -> Boolean,
     onBack: () -> Unit,
 ) {
@@ -28,7 +27,6 @@ fun NavGraphBuilder.settingScreen(
         val viewModel: SettingViewModel = koinViewModel()
 
         SettingRoute(
-            screenSize = screenSize,
             onBack = onBack,
             onShowSnack = onShowSnack,
             viewModel = viewModel,

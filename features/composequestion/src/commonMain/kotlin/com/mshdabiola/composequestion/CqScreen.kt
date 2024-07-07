@@ -79,8 +79,8 @@ internal fun CqRoute(
     questionId: Long,
     onShowSnack: suspend (String, String?) -> Boolean,
     onFinish: () -> Unit,
-    navigateToTopic: (Long) -> Unit,
-    navigateToInstruction: () -> Unit,
+    navigateToTopic: (Long,Long) -> Unit,
+    navigateToInstruction: (Long,Long) -> Unit,
 ) {
     val viewModel: CqViewModel = koinViewModel(parameters = { parametersOf(examId, questionId) })
 
@@ -115,8 +115,8 @@ internal fun CqRoute(
         // onAddAnswer = viewModel::onAddAnswer,
         isTheory = viewModel::isTheory,
         changeView = viewModel::changeView,
-        navigateToTopic = { navigateToTopic(viewModel.subjectId) },
-        navigateToInstruction = navigateToInstruction,
+        navigateToTopic = { navigateToTopic(viewModel.subjectId,-1) },
+        navigateToInstruction = { navigateToInstruction(examId,-1) },
         onTopicChange = viewModel::onTopicChange,
         onInstructionChange = viewModel::onInstructionChange,
         onItemClicked = { itemUiState = it },

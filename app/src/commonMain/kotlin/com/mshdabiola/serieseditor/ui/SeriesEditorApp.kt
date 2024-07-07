@@ -4,6 +4,7 @@
 
 package com.mshdabiola.serieseditor.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.designsystem.component.DetailTopAppBar
+import com.mshdabiola.designsystem.component.SeButtonAppBar
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
@@ -75,8 +77,9 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, KoinExperimentalAPI::class,
-    ExperimentalMaterial3Api::class
+@OptIn(
+    ExperimentalMaterial3WindowSizeClassApi::class, KoinExperimentalAPI::class,
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
 )
 @Composable
 fun SeriesEditorApp() {
@@ -129,7 +132,7 @@ fun SeriesEditorApp() {
                                         addSubject = {},
                                         onSubjectClick = appState::onSubjectClick,
                                         checkIfSelected = { currentSubjectId == it },
-                                        onAddTopic = {appState.onAddTopic(currentSubjectId)}
+                                        onAddTopic = { appState.onAddTopic(currentSubjectId) },
                                     )
 
 
@@ -152,10 +155,10 @@ fun SeriesEditorApp() {
                                             addSubject = {},
                                             onSubjectClick = {
                                                 appState.onSubjectClick(it)
-                                                coroutine.launch { drawerState.close()}
+                                                coroutine.launch { drawerState.close() }
                                             },
                                             checkIfSelected = { currentSubjectId == it },
-                                            onAddTopic = {appState.onAddTopic(currentSubjectId)}
+                                            onAddTopic = { appState.onAddTopic(currentSubjectId) },
                                         )
                                     }
                                 }
@@ -168,6 +171,37 @@ fun SeriesEditorApp() {
                                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                 snackbarHost = { SnackbarHost(snackbarHostState) },
                                 bottomBar = {
+                                    if (appState is Other) {
+
+
+                                        SeButtonAppBar(
+                                            modifier = Modifier,
+                                            onFabClick =
+                                            if (appState.isList) {
+                                                {
+                                                    appState.onAdd()
+                                                }
+                                            } else {
+                                                null
+                                            },
+                                            onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
+                                                { coroutine.launch { drawerState.open() } }
+                                            } else {
+                                                null
+                                            },
+                                            onSettingsClick = if (appState.isMain) {
+                                                appState.navController::navigateToSetting
+                                            } else {
+                                                null
+                                            },
+                                            onBackClick = if (!appState.isMain) {
+                                                { appState.navController.popBackStack() }
+                                            } else {
+                                                null
+                                            },
+                                        )
+
+                                    }
 //                                if (appState.shouldShowBottomBar) {
 //                                    CommonBar(
 //                                        currentNavigation = appState.currentDestination?.route
@@ -176,21 +210,24 @@ fun SeriesEditorApp() {
 //                                }
                                 },
                                 topBar = {
-                                    if (appState.showMainTopBar) {
-                                        MainTopBarSection(
-                                            navigateToSetting = appState.navController::navigateToSetting,
-                                            subjectId = currentSubjectId,
-                                            updateSubject = appState::onUpdateSubject,
-                                            onNavigationClick = if (!appState.showPermanentDrawer) {
-                                                { coroutine.launch { drawerState.open() } }
-                                            } else null,
-                                        )
-                                    }else{
-                                        DetailTopAppBar(
-                                           onNavigationClick = appState.navController::popBackStack
-                                        )
+                                    if (appState is Extended) {
+                                        if (appState.showMainTopBar) {
+                                            MainTopBarSection(
+                                                navigateToSetting = appState.navController::navigateToSetting,
+                                                subjectId = currentSubjectId,
+                                                updateSubject = appState::onUpdateSubject,
+                                                onNavigationClick = if (!appState.showPermanentDrawer) {
+                                                    { coroutine.launch { drawerState.open() } }
+                                                } else null,
+                                            )
+                                        } else {
+                                            DetailTopAppBar(
+                                                onNavigationClick = appState.navController::popBackStack,
+                                            )
 
+                                        }
                                     }
+
                                 },
 
                                 ) { padding ->
@@ -250,7 +287,7 @@ fun NavigationSheet(
     addSubject: (() -> Unit)? = null,
     onSubjectClick: (Long) -> Unit = {},
     checkIfSelected: (Long) -> Boolean = { false },
-    onAddTopic :()->Unit={}
+    onAddTopic: () -> Unit = {},
 ) {
 
     LazyColumn(modifier = modifier) {
@@ -284,7 +321,7 @@ fun NavigationSheet(
             )
         }
         item {
-            if(!checkIfSelected(-1)){
+            if (!checkIfSelected(-1)) {
                 Spacer(Modifier.height(16.dp))
                 SeNavigationDrawerItem(
                     selected = false,
