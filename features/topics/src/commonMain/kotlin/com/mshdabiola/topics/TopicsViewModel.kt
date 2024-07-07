@@ -38,14 +38,14 @@ class TopicsViewModel(
     ) : ViewModel() {
 
 
-    val topics =topicRepository
+    val topics = topicRepository
         .getAllBySubject(subjectId)
         .map { topicList -> topicList.map { it.toUi() } }
         .asResult()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Result.Loading
+            initialValue = Result.Loading,
         )
 
     fun onDelete(id: Long) {

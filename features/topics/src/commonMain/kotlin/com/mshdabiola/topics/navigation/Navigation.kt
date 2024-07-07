@@ -15,19 +15,22 @@ import com.mshdabiola.topics.TopicsRoute
 
 private const val ROUTE = "topic_route"
 private const val SUBJECT_ARG = "subject_arg"
-const val TOPIC_ROUTE="$ROUTE/{$SUBJECT_ARG}"
+const val TOPIC_ROUTE = "$ROUTE/{$SUBJECT_ARG}"
 
-fun NavController.navigateToTopic(subjectId: Long, navOptions: NavOptions= androidx.navigation.navOptions {  }) =
+fun NavController.navigateToTopic(
+    subjectId: Long,
+    navOptions: NavOptions = androidx.navigation.navOptions { },
+) =
     navigate("$ROUTE/$subjectId", navOptions)
 
 fun NavGraphBuilder.topicScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
-    navigateToComposeTopic: (Long,Long) -> Unit,
+    navigateToComposeTopic: (Long, Long) -> Unit,
     subjectId: Long,
 ) {
     composable(
-        route = TOPIC_ROUTE ,
+        route = TOPIC_ROUTE,
         arguments = listOf(
             navArgument(SUBJECT_ARG) {
                 type = NavType.LongType
@@ -35,10 +38,11 @@ fun NavGraphBuilder.topicScreen(
             },
         ),
     ) { //stackEntry ->
-       // val subjectId = stackEntry.arguments?.getLong(SUBJECT_ARG) ?: -1L
+        // val subjectId = stackEntry.arguments?.getLong(SUBJECT_ARG) ?: -1L
         TopicsRoute(
             modifier = modifier,
-            navigateToComposeTopic = {navigateToComposeTopic(subjectId,it) },
-            subjectId = subjectId)
+            navigateToComposeTopic = { navigateToComposeTopic(subjectId, it) },
+            subjectId = subjectId,
+        )
     }
 }

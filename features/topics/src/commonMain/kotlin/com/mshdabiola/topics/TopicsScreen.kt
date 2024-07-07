@@ -78,7 +78,7 @@ fun TopicsRoute(
         },
         onDelete = viewModel::onDelete,
 
-    )
+        )
 }
 
 @Composable
@@ -219,13 +219,13 @@ fun LazyListScope.topicItems(
     itemContent = { topicUiState ->
         val analyticsHelper = LocalAnalyticsHelper.current
 
-      TopicCard(
-          modifier = Modifier,
-          topicUiState = topicUiState,
-          onDelete = onDelete,
-          onUpdate = onUpdate
+        TopicCard(
+            modifier = Modifier,
+            topicUiState = topicUiState,
+            onDelete = onDelete,
+            onUpdate = onUpdate,
 
-      )
+            )
     },
 )
 

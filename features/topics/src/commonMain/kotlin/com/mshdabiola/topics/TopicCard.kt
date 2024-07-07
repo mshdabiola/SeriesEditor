@@ -62,8 +62,8 @@ fun TopicCard(
             }
         },
         colors = ListItemDefaults.colors(
-           containerColor = Color.Transparent
+            containerColor = Color.Transparent,
         ),
 
-    )
+        )
 }
