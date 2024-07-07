@@ -14,20 +14,20 @@ val provider = GoogleFont.Provider(
 
 val bodyFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Glegoo"),
+        googleFont = GoogleFont("Eczar"),
         fontProvider = provider,
-    ),
+    )
 )
 
 val displayFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Montserrat"),
+        googleFont = GoogleFont("Rubik"),
         fontProvider = provider,
-    ),
+    )
 )
 
 // Default Material 3 typography values
-val baseline = androidx.compose.material3.Typography()
+val baseline = Typography()
 
 internal actual val SkTypography: Typography
     get() = androidx.compose.material3.Typography(
