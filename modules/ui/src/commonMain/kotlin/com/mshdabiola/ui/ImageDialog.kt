@@ -163,7 +163,7 @@ fun EquationDialog(
             }
         },
         text = {
-            Column(modifier.aspectRatio(16f / 9f)) {
+            Column(modifier) {
                 ScrollableTabRow(selectedTabIndex = pagerState.currentPage) {
                     map.keys.forEachIndexed { index, s ->
 
@@ -212,7 +212,7 @@ fun EquationDialog(
                     state = textFieldState)
 
                 key(textFieldState.text){
-                    Latex(modifier = Modifier.weight(1f).fillMaxWidth(),
+                    Latex(modifier = Modifier.fillMaxWidth().height(80.dp),
                         text = textFieldState.text.toString())
                 }
 
