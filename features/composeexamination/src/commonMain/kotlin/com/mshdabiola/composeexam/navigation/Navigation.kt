@@ -17,13 +17,16 @@ const val COMPOSE_EXAMINATION_ROUTE = "compose_examination_route"
 const val EXAM_ARG = "exam_arg"
 const val FULL_COMPOSE_EXAMINATION_ROUTE = "$COMPOSE_EXAMINATION_ROUTE/{$EXAM_ARG}"
 
-fun NavController.navigateToComposeExamination(examId: Long, navOptions: NavOptions= androidx.navigation.navOptions {  }) =
+fun NavController.navigateToComposeExamination(
+    examId: Long,
+    navOptions: NavOptions = androidx.navigation.navOptions { },
+) =
     navigate("$COMPOSE_EXAMINATION_ROUTE/$examId", navOptions)
 
 fun NavGraphBuilder.composeExaminationScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
-    onBack:()->Unit
+    onBack: () -> Unit,
 ) {
     composable(
         route = "$COMPOSE_EXAMINATION_ROUTE/{$EXAM_ARG}",
@@ -39,8 +42,8 @@ fun NavGraphBuilder.composeExaminationScreen(
             modifier = modifier,
             examId = examId,
             onBack = onBack,
-            onShowSnack = onShowSnack
+            onShowSnack = onShowSnack,
 
-        )
+            )
     }
 }

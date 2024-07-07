@@ -193,7 +193,7 @@ internal fun ComposeExaminationScreen(
                     enabled = subject.text.toString().isNotBlank() &&
                             duration.text.toString().isNotBlank() &&
                             year.text.toString().isNotBlank(),
-                    ) {
+                ) {
                     Icon(Icons.Default.Add, "add")
                     Text("Add Examination")
                 }
@@ -202,7 +202,7 @@ internal fun ComposeExaminationScreen(
 
             Update.Saving -> {
 
-              Waiting()
+                Waiting()
 
 
             }

@@ -41,7 +41,7 @@ class ComposeExaminationViewModel(
             initialValue = listOf(),
         )
 
-    private val _update =MutableStateFlow(Update.Edit)
+    private val _update = MutableStateFlow(Update.Edit)
     val update = _update.asStateFlow()
 
     val duration = TextFieldState("15")
