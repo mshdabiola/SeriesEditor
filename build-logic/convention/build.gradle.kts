@@ -23,7 +23,6 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
 
 
-
 }
 
 gradlePlugin {

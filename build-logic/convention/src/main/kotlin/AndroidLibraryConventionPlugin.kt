@@ -41,13 +41,20 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("kotlin-multiplatform")
                 apply("com.android.library")
                 apply("mshdabiola.android.lint")
-                apply( "org.jetbrains.kotlin.plugin.power-assert")
+                apply("org.jetbrains.kotlin.plugin.power-assert")
 
 
             }
 
             extensions.configure<PowerAssertGradleExtension> {
-                functions.set(listOf("kotlin.assert", "kotlin.test.assertTrue", "kotlin.test.assertEquals", "kotlin.test.assertNull"))
+                functions.set(
+                    listOf(
+                        "kotlin.assert",
+                        "kotlin.test.assertTrue",
+                        "kotlin.test.assertEquals",
+                        "kotlin.test.assertNull",
+                    ),
+                )
 
             }
             extensions.configure<LibraryExtension> {

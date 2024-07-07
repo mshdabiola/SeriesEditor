@@ -53,7 +53,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("testImplementation", project(":modules:screenshot-testing"))
 
 
-                add("androidTestImplementation", libs.findLibrary("androidx.lifecycle.runtimeTesting").get())
+                add(
+                    "androidTestImplementation",
+                    libs.findLibrary("androidx.lifecycle.runtimeTesting").get(),
+                )
                 add("androidTestImplementation", project(":modules:testing"))
 
 
