@@ -13,6 +13,7 @@ class TestNoteRepository {
     private val data = MutableList(4) { index ->
         Note(index.toLong(), "title", "Content")
     }
+
     suspend fun upsert(note: Note): Long {
         val id = data.size.toLong()
         data.add(note.copy(id = id))
