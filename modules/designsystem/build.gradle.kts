@@ -81,6 +81,8 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
+                implementation(libs.calf.filepicker)
+
                 api(compose.preview)
                 api(libs.kotlinx.coroutines.swing)
             }
