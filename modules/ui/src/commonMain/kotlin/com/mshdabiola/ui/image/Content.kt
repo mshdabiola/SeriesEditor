@@ -47,7 +47,6 @@ import com.mshdabiola.retex.Latex
 import com.mshdabiola.retex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
-import org.koin.core.qualifier.qualifier
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -80,7 +79,7 @@ fun ContentView(
                             Box(childModifier, contentAlignment = Alignment.Center) {
                                 ImageUi(
                                     Modifier.fillMaxWidth().aspectRatio(16f / 9f),
-                                    path = item.content.text.toString(),
+                                    path = ImageUtil.getAppPath(item.content.text.toString()).path,
                                     contentDescription = "",
                                 )
                             }
@@ -306,7 +305,7 @@ fun ImageContent(
         //  if (File(path).exists()) {
         ImageUi(
             Modifier,
-            path = image.content.text.toString(),
+            path = ImageUtil.getAppPath(image.content.text.toString()).path,
             contentDescription = "",
         )
 

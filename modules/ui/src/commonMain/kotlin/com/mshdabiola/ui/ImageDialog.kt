@@ -1,12 +1,10 @@
-package com.mshdabiola.composequestion
+package com.mshdabiola.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.model.ImageUtil
 import com.mshdabiola.retex.Latex
 import com.mshdabiola.ui.image.DragAndDropImage
 import com.mshdabiola.ui.state.ItemUiState
@@ -51,6 +50,7 @@ import kotlinx.coroutines.launch
 fun QuestionDialog(
     modifier: Modifier = Modifier,
     itemUiState: ItemUiState?,
+    examId:Long,
     onDismiss: () -> Unit = {},
 ) {
 
@@ -63,7 +63,7 @@ fun QuestionDialog(
 
             Type.TEXT -> {}
             Type.IMAGE -> {
-                ImageDialog(textFieldState = itemUiState.content, onDismiss = onDismiss)
+                ImageDialog(textFieldState = itemUiState.content, examId = examId,onDismiss = onDismiss)
             }
         }
 
@@ -76,8 +76,10 @@ fun QuestionDialog(
 fun ImageDialog(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState,
+    examId:Long,
     onDismiss: () -> Unit = {},
 ) {
+    val coroutineScope = rememberCoroutineScope()
     AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
@@ -100,13 +102,23 @@ fun ImageDialog(
             Box(modifier.aspectRatio(16f / 9f), contentAlignment = Alignment.Center) {
                 DragAndDropImage(
                     modifier = modifier.fillMaxSize(),
-                    path = textFieldState.text.toString(),
+                    path = ImageUtil.getAppPath(textFieldState.text.toString()).path,
+//,
                     onPathChange = { path ->
-                        textFieldState.clearText()
+                        coroutineScope.launch {
+                            val name = ImageUtil
+                                .saveImage(
+                                    textFieldState.text.toString(),//item.content,
+                                    path,//text,
+                                    examId//examId,
+                                )
+                            textFieldState.clearText()
 
-                        textFieldState.edit {
-                            append(path)
+                            textFieldState.edit {
+                                append("$examId/$name")
+                            }
                         }
+
                     },
                 )
             }
