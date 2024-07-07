@@ -20,10 +20,10 @@ import kotlinx.coroutines.launch
 
 class InstructionsViewModel(
     private val examId: Long,
-   private val instructionRepository: IInstructionRepository
+    private val instructionRepository: IInstructionRepository,
 ) : ViewModel() {
 
-    val questions= MutableStateFlow<Result<List<InstructionUiState>>> (Result.Loading)
+    val questions = MutableStateFlow<Result<List<InstructionUiState>>>(Result.Loading)
 //    val questions = mutableStateOf(emptyList<QuestionUiState>().toImmutableList())
 
 
@@ -36,14 +36,14 @@ class InstructionsViewModel(
                         .map { it.toInstructionUiState() }
                 }
                 .asResult()
-                .collectLatest { result->
+                .collectLatest { result ->
                     questions.update { result }
                 }
 
         }
     }
 
-    fun onDelete(id:Long){
+    fun onDelete(id: Long) {
 
         viewModelScope.launch {
             instructionRepository.delete(id)

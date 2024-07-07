@@ -16,16 +16,19 @@ import kotlin.reflect.KFunction3
 
 private const val ROUTE = "instruction_route"
 private const val EXAM_ARG = "exam_arg"
-const val INSTRUCTION_ROUTE="$ROUTE/{$EXAM_ARG}"
+const val INSTRUCTION_ROUTE = "$ROUTE/{$EXAM_ARG}"
 
-fun NavController.navigateToInstructions(examId: Long, navOptions: NavOptions= androidx.navigation.navOptions {  }) =
+fun NavController.navigateToInstructions(
+    examId: Long,
+    navOptions: NavOptions = androidx.navigation.navOptions { },
+) =
     navigate("$ROUTE/$examId", navOptions)
 
 fun NavGraphBuilder.instructionScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     defaultExamId: Long = -1,
-    navigateToComposeInstruction: (Long,Long)->Unit
+    navigateToComposeInstruction: (Long, Long) -> Unit,
 ) {
     composable(
         route = INSTRUCTION_ROUTE,
@@ -39,7 +42,8 @@ fun NavGraphBuilder.instructionScreen(
         val examId = stackEntry.arguments?.getLong(EXAM_ARG) ?: -1L
         InstructionsRoute(
             modifier = modifier,
-            navigateToComposeInstruction = {navigateToComposeInstruction(examId,it) },
-            examId = examId)
+            navigateToComposeInstruction = { navigateToComposeInstruction(examId, it) },
+            examId = examId,
+        )
     }
 }
