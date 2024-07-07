@@ -147,11 +147,11 @@ fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.c
                 this.onRoot()
                     .captureRoboImage(
                         "src/test/screenshots/" +
-                                "$name/$filename" +
-                                "_$darkModeDesc" +
-                                "_$androidThemeDesc" +
-                                "_$dynamicThemingDesc" +
-                                ".png",
+                            "$name/$filename" +
+                            "_$darkModeDesc" +
+                            "_$androidThemeDesc" +
+                            "_$dynamicThemingDesc" +
+                            ".png",
                         roborazziOptions = DefaultRoborazziOptions,
                     )
             }
@@ -169,21 +169,21 @@ private fun generateDescription(
     dynamicTheming: Boolean,
 ): String {
     val description = "" +
-            if (shouldCompareDarkMode) {
-                if (darkMode) "Dark" else "Light"
-            } else {
-                ""
-            } +
-            if (shouldCompareAndroidTheme) {
-                if (androidTheme) " Android" else " Default"
-            } else {
-                ""
-            } +
-            if (shouldCompareDynamicColor) {
-                if (dynamicTheming) " Dynamic" else ""
-            } else {
-                ""
-            }
+        if (shouldCompareDarkMode) {
+            if (darkMode) "Dark" else "Light"
+        } else {
+            ""
+        } +
+        if (shouldCompareAndroidTheme) {
+            if (androidTheme) " Android" else " Default"
+        } else {
+            ""
+        } +
+        if (shouldCompareDynamicColor) {
+            if (dynamicTheming) " Dynamic" else ""
+        } else {
+            ""
+        }
 
     return description.trim()
 }
