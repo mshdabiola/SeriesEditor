@@ -79,7 +79,7 @@ class CqViewModel(
             emptyList<InstructionUiState>().toImmutableList(),
         )
 
-    var subjectId =-1L
+    var subjectId = -1L
 
     init {
 
@@ -88,7 +88,7 @@ class CqViewModel(
                 .getOne(examId)
                 .first()
 
-            subjectId=examtem?.subject?.id ?: -1L
+            subjectId = examtem?.subject?.id ?: -1L
 
             examtem?.subject?.id?.let {
                 topicRepository
@@ -448,12 +448,12 @@ class CqViewModel(
     }
 
     fun onTopicChange(index: Int) {
-        _question.value= question.value.copy(topicUiState = topic.value.getOrNull(index))
+        _question.value = question.value.copy(topicUiState = topic.value.getOrNull(index))
 
     }
 
     fun onInstructionChange(index: Int) {
-        _question.value= question.value.copy(instructionUiState = instructs.value.getOrNull(index))
+        _question.value = question.value.copy(instructionUiState = instructs.value.getOrNull(index))
     }
 
 }

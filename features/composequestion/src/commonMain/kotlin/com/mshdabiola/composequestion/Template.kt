@@ -131,15 +131,15 @@ fun TemplateUi() {
                 "\\mbox{~and~} ",
                 "\\left[ \\begin{array}{cc|r} 3 & 4 & 5 \\\\ 1 & 3 & 729 \\end{array} \\right]",
                 "\\begin{eqnarray}\n" +
-                    "\\cos 2\\theta & = & \\cos^2 \\theta - \\sin^2 \\theta \\\\\n" +
-                    "& = & 2 \\cos^2 \\theta - 1.\n" +
-                    "\\end{eqnarray}",
+                        "\\cos 2\\theta & = & \\cos^2 \\theta - \\sin^2 \\theta \\\\\n" +
+                        "& = & 2 \\cos^2 \\theta - 1.\n" +
+                        "\\end{eqnarray}",
                 "\\begin{tabular}{|l|l|l|}\\hline\n" +
-                    "Chicago&U.S.A.&1893\\\\\n" +
-                    "Z\\\"{u}rich&Switzerland&1897\\\\\n" +
-                    "Paris&France&1900\\\\\n" +
-                    "Heidelberg&Germany&1904\\\\\n" +
-                    "Rome&Italy&1908\\hline\\end{tabular}",
+                        "Chicago&U.S.A.&1893\\\\\n" +
+                        "Z\\\"{u}rich&Switzerland&1897\\\\\n" +
+                        "Paris&France&1900\\\\\n" +
+                        "Heidelberg&Germany&1904\\\\\n" +
+                        "Rome&Italy&1908\\hline\\end{tabular}",
             ),
         ), // equation
         mapOf(
@@ -155,7 +155,7 @@ fun TemplateUi() {
                 "\\hat{a}",
                 "\\vec{a}",
 
-            ),
+                ),
             "Font" to listOf(
                 " \\mathcal{A}",
                 " \\mathbb{A}",
@@ -519,7 +519,7 @@ fun TemplateUi() {
                 "\\wp",
                 "\\|",
 
-            ),
+                ),
         ), // symbol
 
     )
@@ -527,18 +527,34 @@ fun TemplateUi() {
 //    "surd"
     val clipboard = LocalClipboardManager.current
     ScrollableTabRow(selectedTabIndex = state) {
-        Tab(selected = false, onClick = {
-            state = 0
-        }, text = { Text("Mark up") })
-        Tab(selected = false, onClick = {
-            state = 1
-        }, text = { Text("Equation") })
-        Tab(selected = false, onClick = {
-            state = 2
-        }, text = { Text("Letters") })
-        Tab(selected = false, onClick = {
-            state = 3
-        }, text = { Text("Symbols") })
+        Tab(
+            selected = false,
+            onClick = {
+                state = 0
+            },
+            text = { Text("Mark up") },
+        )
+        Tab(
+            selected = false,
+            onClick = {
+                state = 1
+            },
+            text = { Text("Equation") },
+        )
+        Tab(
+            selected = false,
+            onClick = {
+                state = 2
+            },
+            text = { Text("Letters") },
+        )
+        Tab(
+            selected = false,
+            onClick = {
+                state = 3
+            },
+            text = { Text("Symbols") },
+        )
     }
     // HorizontalPager(state = state, userScrollEnabled = false) {
 
@@ -548,15 +564,18 @@ fun TemplateUi() {
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             MarkUpEngine.list.keys.toList().forEach {
-                SuggestionChip(onClick = {
-                    clipboard.setText(
-                        buildAnnotatedString {
-                            append("*")
-                            append(it)
-                            append("*content*e*")
-                        },
-                    )
-                }, label = { MarkUpText("*$it*key-$it*e*") })
+                SuggestionChip(
+                    onClick = {
+                        clipboard.setText(
+                            buildAnnotatedString {
+                                append("*")
+                                append(it)
+                                append("*content*e*")
+                            },
+                        )
+                    },
+                    label = { MarkUpText("*$it*key-$it*e*") },
+                )
             }
         }
     } else {
@@ -615,13 +634,16 @@ internal fun TemplateContent(name: String, list: List<String>) {
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 list.forEach {
-                    SuggestionChip(onClick = {
-                        clipboard.setText(
-                            buildAnnotatedString {
-                                append(it)
-                            },
-                        )
-                    }, label = { Latex(text = it) })
+                    SuggestionChip(
+                        onClick = {
+                            clipboard.setText(
+                                buildAnnotatedString {
+                                    append(it)
+                                },
+                            )
+                        },
+                        label = { Latex(text = it) },
+                    )
                 }
             }
         }

@@ -14,7 +14,7 @@ import androidx.navigation.navArgument
 import com.mshdabiola.composequestion.CqRoute
 
 private const val ROUTE = "cq_route"
- const val EXAM_ARG = "exam_arg"
+const val EXAM_ARG = "exam_arg"
 private const val QUESTION_ARG = "question_arg"
 const val COMPOSE_QUESTION_ROUTE = "$ROUTE/{$EXAM_ARG}/{$QUESTION_ARG}"
 
@@ -29,8 +29,8 @@ fun NavGraphBuilder.composeQuestionScreen(
     modifier: Modifier = Modifier,
     defaultExamId: Long = -1,
     onShowSnack: suspend (String, String?) -> Boolean,
-    navigateToTopic: (Long,Long) -> Unit,
-    navigateToInstruction: (Long,Long) -> Unit,
+    navigateToTopic: (Long, Long) -> Unit,
+    navigateToInstruction: (Long, Long) -> Unit,
     onFinish: () -> Unit,
 
 
