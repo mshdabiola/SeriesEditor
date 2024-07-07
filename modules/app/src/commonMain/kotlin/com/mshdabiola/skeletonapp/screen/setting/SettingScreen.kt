@@ -59,7 +59,7 @@ internal fun SettingScreen(
     setDarkThemeConfig: (DarkThemeConfig) -> Unit = {},
     setContrast: (Contrast) -> Unit = {},
 
-) {
+    ) {
     Scaffold(
         modifier = Modifier, // .semantics { this.testTagsAsResourceId = true },
         topBar = {

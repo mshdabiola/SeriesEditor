@@ -57,7 +57,7 @@ import com.mshdabiola.skeletonapp.MainAppViewModel
 fun SkeletonApp(
     context: DefaultComponentContext,
 
-) {
+    ) {
     val rootComp = remember { RootComponent(context) }
     val windowSizeClass = calculateWindowSizeClass()
     val appState = rememberSkAppState(
@@ -126,7 +126,7 @@ fun SkeletonApp(
                             }
                         },
 
-                    ) { padding ->
+                        ) { padding ->
 
                         Column(
                             Modifier
