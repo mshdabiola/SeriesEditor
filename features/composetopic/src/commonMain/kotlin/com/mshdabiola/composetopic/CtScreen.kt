@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
+import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
@@ -126,8 +127,7 @@ internal fun CtScreen(
 
             Update.Saving -> {
 
-                CircularProgressIndicator()
-                Text("Saving")
+              Waiting()
 
             }
 
