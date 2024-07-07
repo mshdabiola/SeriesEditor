@@ -12,7 +12,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mshdabiola.instructions.InstructionsRoute
-import kotlin.reflect.KFunction3
 
 private const val ROUTE = "instruction_route"
 private const val EXAM_ARG = "exam_arg"

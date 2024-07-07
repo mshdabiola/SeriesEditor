@@ -92,7 +92,7 @@ fun InstructionsRoute(
         },
         onDelete = viewModel::onDelete,
 
-        )
+    )
 }
 
 @Composable
@@ -108,7 +108,7 @@ internal fun InstructionScreen(
         modifier = modifier
             .testTag("instruction:screen"),
 
-        ) {
+    ) {
         LazyColumn(
             state = state,
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -159,8 +159,6 @@ internal fun InstructionScreen(
             ),
         )
     }
-
-
 }
 
 @Composable
@@ -221,7 +219,6 @@ private fun instructionsItemsSize(
     is Result.Success -> topicUiState.data.size + 2
 }
 
-
 fun LazyListScope.instructionItems(
     items: List<InstructionUiState>,
     onUpdate: (Long) -> Unit = {},
@@ -241,7 +238,6 @@ fun LazyListScope.instructionItems(
     },
 )
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InstructionUi(
@@ -258,14 +254,12 @@ fun InstructionUi(
         ) {
             Column(Modifier.weight(1f)) {
                 Text(text = instructionUiState.title.text.toString())
-
             }
             Box {
                 IconButton(onClick = { showDrop = true }) {
                     Icon(Icons.Default.MoreVert, "more")
                 }
-                DropdownMenu(expanded = showDrop, onDismissRequest = { showDrop = false })
-                {
+                DropdownMenu(expanded = showDrop, onDismissRequest = { showDrop = false }) {
                     DropdownMenuItem(
                         leadingIcon = { Icon(Icons.Default.Update, "update") },
                         text = { Text("Update") },
@@ -292,6 +286,4 @@ fun InstructionUi(
             color = Color.Transparent,
         )
     }
-
-
 }
