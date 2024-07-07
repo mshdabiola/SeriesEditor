@@ -8,6 +8,6 @@ import com.mshdabiola.data.model.Result
 @Composable
 private fun QuestionPreview() {
     QuestionsScreen(
-        mainState = Result.Success(listOf())
+        mainState = Result.Success(listOf()),
     )
 }

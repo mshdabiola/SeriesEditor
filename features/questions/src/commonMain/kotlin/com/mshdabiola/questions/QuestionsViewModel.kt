@@ -26,7 +26,7 @@ class QuestionsViewModel(
     private val questionRepository: IQuestionRepository,
 ) : ViewModel() {
 
-    val questions= MutableStateFlow<Result<List<QuestionUiState>>> (Result.Loading)
+    val questions = MutableStateFlow<Result<List<QuestionUiState>>>(Result.Loading)
 
 //    val questions = mutableStateOf(emptyList<QuestionUiState>().toImmutableList())
 
@@ -43,15 +43,13 @@ class QuestionsViewModel(
 
                 }
                 .asResult()
-                .collectLatest { result->
-                  //
+                .collectLatest { result ->
+                    //
                     questions.update { result }
                 }
 
         }
     }
-
-
 
 
     // question logic
@@ -65,7 +63,7 @@ class QuestionsViewModel(
 
     fun onMoveUpQuestion(id: Long) {
         val index = (questions.value as Result.Success)
-            .data .indexOfFirst { it.id == id }
+            .data.indexOfFirst { it.id == id }
         if (index == 0) {
             return
         }
@@ -143,7 +141,6 @@ class QuestionsViewModel(
             job = null
         }
     }
-
 
 
 }
