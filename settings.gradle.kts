@@ -72,7 +72,7 @@ include(":modules:screenshot-testing")
 include(":benchmarks")
 
 
-include(":seriesEditorApp")
+include(":app")
 //include(":shared")
 
 
