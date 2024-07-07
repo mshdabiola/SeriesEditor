@@ -35,7 +35,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import java.io.File
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainExportDialog(
@@ -106,7 +105,6 @@ fun MainExportDialog(
                         maxNum = TextFieldLineLimits.SingleLine,
                     )
 
-
                     Row(
                         modifier = Modifier.align(Alignment.End),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -167,7 +165,7 @@ fun DeleteDialog(
                 ElevatedButton(
                     onClick = onDelete,
 
-                    ) {
+                ) {
                     Text("Delete exam")
                 }
             },
@@ -178,7 +176,6 @@ fun DeleteDialog(
             },
         )
     }
-
 }
 
 @Composable

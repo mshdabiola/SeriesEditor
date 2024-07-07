@@ -86,7 +86,6 @@ fun SkTabRow(
     )
 }
 
-
 @Composable
 fun Section(modifier: Modifier = Modifier, title: String) {
     Text(

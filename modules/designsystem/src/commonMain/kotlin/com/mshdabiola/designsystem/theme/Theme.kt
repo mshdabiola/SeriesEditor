@@ -91,7 +91,6 @@ expect fun supportsDynamicTheming(): Boolean
 @Composable
 expect fun getDynamicColor(darkTheme: Boolean): ColorScheme
 
-
 val primaryLight = Color(0xFF3D5F90)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFD5E3FF)
@@ -362,14 +361,13 @@ val onWrongDarkHighContrast = Color(0xFF000000)
 val wrongContainerDarkHighContrast = Color(0xFFFFBAA9)
 val onWrongContainerDarkHighContrast = Color(0xFF000000)
 
-
 @Immutable
 data class ExtendedColorScheme(
     val right: ColorFamily,
     val wrong: ColorFamily,
 )
 
-private val lightScheme = lightColorScheme(
+val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -407,7 +405,7 @@ private val lightScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
-private val darkScheme = darkColorScheme(
+val darkScheme = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
     primaryContainer = primaryContainerDark,
@@ -483,7 +481,7 @@ private val mediumContrastLightColorScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLightMediumContrast,
 )
 
-private val highContrastLightColorScheme = lightColorScheme(
+val highContrastLightColorScheme = lightColorScheme(
     primary = primaryLightHighContrast,
     onPrimary = onPrimaryLightHighContrast,
     primaryContainer = primaryContainerLightHighContrast,
@@ -559,7 +557,7 @@ private val mediumContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkMediumContrast,
 )
 
-private val highContrastDarkColorScheme = darkColorScheme(
+val highContrastDarkColorScheme = darkColorScheme(
     primary = primaryDarkHighContrast,
     onPrimary = onPrimaryDarkHighContrast,
     primaryContainer = primaryContainerDarkHighContrast,
@@ -696,9 +694,11 @@ data class ColorFamily(
 )
 
 val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified,
+    Color.Unspecified,
+    Color.Unspecified,
+    Color.Unspecified,
+    Color.Unspecified,
 )
-
 
 val LightAndroidGradientColors = GradientColors(container = primaryContainerLight)
 

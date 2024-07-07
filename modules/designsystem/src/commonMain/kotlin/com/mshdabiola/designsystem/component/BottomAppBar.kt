@@ -61,7 +61,6 @@ fun SeBottonAppBar(
                     Spacer(Modifier.width(8.dp))
                     Text("Add")
                 }
-
             }
         },
         actions = {
@@ -185,10 +184,7 @@ fun SeBottonAppBar(
                 IconButton(onClick = onBackClick) {
                     Icon(Icons.Default.ArrowBackIosNew, "back")
                 }
-
             }
-
-
         },
     )
 }

@@ -96,13 +96,11 @@ fun DetailTopAppBar(
                     )
                 }
             }
-
         },
         colors = colors,
         modifier = modifier.testTag("detailTopAppBar"),
     )
 }
-
 
 @Composable
 fun MainTopBar(
@@ -118,7 +116,7 @@ fun MainTopBar(
     updateSubject: (Long) -> Unit = {},
     onNavigationClick: (() -> Unit)? = null,
 
-    ) {
+) {
     var showDrop by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -246,5 +244,4 @@ fun MainTopBar(
             }
         },
     )
-
 }
