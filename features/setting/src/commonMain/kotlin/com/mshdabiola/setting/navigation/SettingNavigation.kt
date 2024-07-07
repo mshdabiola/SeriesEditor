@@ -29,7 +29,7 @@ fun NavGraphBuilder.settingScreen(
         val viewModel: SettingViewModel = koinViewModel()
 
         SettingRoute(
-            modifier=modifier,
+            modifier = modifier,
             onBack = onBack,
             onShowSnack = onShowSnack,
             viewModel = viewModel,

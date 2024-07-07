@@ -51,7 +51,7 @@ internal fun SettingRoute(
     val settingState = viewModel.uiState.collectAsStateWithLifecycleCommon()
 
     SettingScreen(
-        modifier=modifier,
+        modifier = modifier,
         settingState = settingState.value,
         onBack = onBack,
         setThemeBrand = viewModel::setThemeBrand,
@@ -70,9 +70,9 @@ internal fun SettingScreen(
     setDarkThemeConfig: (DarkThemeConfig) -> Unit = {},
     setContrast: (Contrast) -> Unit = {},
 
-) {
+    ) {
     Column(
-       modifier,
+        modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(

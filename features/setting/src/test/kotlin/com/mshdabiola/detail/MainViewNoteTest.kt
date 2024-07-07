@@ -25,7 +25,7 @@ class MainViewNoteTest {
         viewModel = SettingViewModel(
             userDataRepository = userDataRepository,
 
-        )
+            )
     }
 
     @Test
