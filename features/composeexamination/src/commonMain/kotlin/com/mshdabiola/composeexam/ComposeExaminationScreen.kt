@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.clearText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -37,6 +40,7 @@ import com.mshdabiola.designsystem.component.DigitOnlyTransformation
 import com.mshdabiola.designsystem.component.MyTextField
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
+import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.state.SubjectUiState
 import org.koin.compose.viewmodel.koinViewModel
@@ -64,10 +68,8 @@ internal fun ComposeExaminationRoute(
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
-            onShowSnack("Add subject",null)
             onBack()
-
-
+            onShowSnack("Add Examination", null)
         }
     }
 
@@ -189,16 +191,19 @@ internal fun ComposeExaminationScreen(
                     onClick = {
                         addExam()
                     },
-                ) {
-                    Text("Add Exam")
+                    enabled = subject.text.toString().isNotBlank() &&
+                            duration.text.toString().isNotBlank() &&
+                            year.text.toString().isNotBlank(),
+                    ) {
+                    Icon(Icons.Default.Add, "add")
+                    Text("Add Examination")
                 }
 
             }
 
             Update.Saving -> {
 
-                CircularProgressIndicator()
-                Text("Saving")
+              Waiting()
 
 
             }

@@ -41,11 +41,11 @@ class ComposeExaminationViewModel(
             initialValue = listOf(),
         )
 
-    private val _update =MutableStateFlow<Update>(Update.Edit)
+    private val _update =MutableStateFlow(Update.Edit)
     val update = _update.asStateFlow()
 
-    val duration = TextFieldState()
-    val year = TextFieldState()
+    val duration = TextFieldState("15")
+    val year = TextFieldState("2015")
     val subject = TextFieldState()
 
     init {
@@ -78,7 +78,6 @@ class ComposeExaminationViewModel(
         viewModelScope.launch {
 
             _update.update { Update.Saving }
-            delay(5000)
             val subject = subjects.value.single { it.name == subject.text.toString() }
             val exam = Examination(
                 id = if (examId > 0) examId else null,
