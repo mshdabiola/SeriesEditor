@@ -11,14 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.generalmodel.Subject
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalFoundationApi::class)
 class ComposeSubjectViewModel(
@@ -45,12 +42,9 @@ class ComposeSubjectViewModel(
                         append(sub.title)
                     }
                 }
-
             }
         }
-
     }
-
 
     fun addSubject() {
         viewModelScope.launch {
@@ -64,6 +58,4 @@ class ComposeSubjectViewModel(
             _update.update { Update.Success }
         }
     }
-
-
 }

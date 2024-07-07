@@ -1,7 +1,6 @@
 package com.mshdabiola.composesubject
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -9,5 +8,4 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @Composable
 private fun ComposeSubjectPreview() {
-
 }

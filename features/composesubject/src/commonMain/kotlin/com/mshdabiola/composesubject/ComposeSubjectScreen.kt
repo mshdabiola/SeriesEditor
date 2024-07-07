@@ -5,7 +5,6 @@
 package com.mshdabiola.composesubject
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,14 +41,13 @@ internal fun SubjectRoute(
     onFinish: () -> Unit,
     onShowSnack: suspend (String, String?) -> Boolean,
 
-    ) {
+) {
     val viewModel: ComposeSubjectViewModel = koinViewModel(parameters = { parametersOf(subjectId) })
 
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
 
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
-
             onFinish()
             onShowSnack("Add Subject", null)
         }
@@ -70,14 +68,11 @@ internal fun SubjectScreen(
     update: Update,
     addSubject: () -> Unit = {},
 ) {
-
     Column(
         modifier = modifier
-
             .testTag("composesubject:screen"),
 
-        ) {
-
+    ) {
         when (update) {
             Update.Edit -> {
                 Section(title = "Subject Section")
@@ -92,7 +87,7 @@ internal fun SubjectScreen(
                     keyboardAction = { addSubject() },
                     maxNum = TextFieldLineLimits.SingleLine,
 
-                    )
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 SeriesEditorButton(
                     modifier = Modifier.align(Alignment.End),
@@ -105,18 +100,10 @@ internal fun SubjectScreen(
             }
 
             Update.Saving -> {
-
                 Waiting()
-
-
             }
 
             else -> {}
         }
-
     }
-
-
 }
-
-

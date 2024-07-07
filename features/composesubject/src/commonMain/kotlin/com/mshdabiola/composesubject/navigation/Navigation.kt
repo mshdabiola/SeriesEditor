@@ -17,7 +17,6 @@ const val CS_ROUTE = "cs_route"
 const val SUBJECT_ID = "subject_id"
 const val FULL_CS_ROUTE = "$CS_ROUTE/{$SUBJECT_ID}"
 
-
 fun NavController.navigateToComposeSubject(
     subjectId: Long,
     navOptions: NavOptions = androidx.navigation.navOptions { },
