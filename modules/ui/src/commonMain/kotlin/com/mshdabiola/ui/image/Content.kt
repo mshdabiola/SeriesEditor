@@ -47,6 +47,8 @@ import com.mshdabiola.retex.Latex
 import com.mshdabiola.retex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -324,9 +326,13 @@ fun TextContent(
         FocusRequester()
     }
     LaunchedEffect(text.focus) {
-        if (text.focus) {
-            focusRequester.requestFocus()
+        launch {
+            if (text.focus) {
+                delay(1000)
+                focusRequester.requestFocus()
+            }
         }
+
     }
     if (text.isEditMode) {
         SeriesEditorTextField(
