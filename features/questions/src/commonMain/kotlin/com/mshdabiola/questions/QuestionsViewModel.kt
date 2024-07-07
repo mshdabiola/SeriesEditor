@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class QuestionsViewModel(
     private val examId: Long,
     private val questionRepository: IQuestionRepository,
@@ -29,7 +28,6 @@ class QuestionsViewModel(
     val questions = MutableStateFlow<Result<List<QuestionUiState>>>(Result.Loading)
 
 //    val questions = mutableStateOf(emptyList<QuestionUiState>().toImmutableList())
-
 
     init {
         viewModelScope.launch {
@@ -40,17 +38,14 @@ class QuestionsViewModel(
                         .map { it.toQuestionUiState() }
                         .sortedBy { it.number }
                         .sortedBy { it.isTheory }
-
                 }
                 .asResult()
                 .collectLatest { result ->
                     //
                     questions.update { result }
                 }
-
         }
     }
-
 
     // question logic
     fun onDeleteQuestion(id: Long) {
@@ -114,7 +109,6 @@ class QuestionsViewModel(
         }
     }
 
-
     private var job: Job? = null
     private fun rearrangeAndSave(onEdit: suspend (MutableList<QuestionUiState>) -> Unit) {
         if (job != null) {
@@ -141,6 +135,4 @@ class QuestionsViewModel(
             job = null
         }
     }
-
-
 }

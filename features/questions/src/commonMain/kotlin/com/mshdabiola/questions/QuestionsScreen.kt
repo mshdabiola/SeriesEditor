@@ -99,7 +99,7 @@ fun QuestionsRoute(
         onDelete = viewModel::onDeleteQuestion,
         onAnswer = viewModel::onAnswerClick,
 
-        )
+    )
 }
 
 @Composable
@@ -114,13 +114,12 @@ internal fun QuestionsScreen(
 ) {
     val state = rememberLazyListState()
 
-
     Box(
         modifier = modifier
             .fillMaxSize()
             .testTag("main:screen"),
 
-        ) {
+    ) {
         LazyColumn(
             state = state,
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -175,8 +174,6 @@ internal fun QuestionsScreen(
             ),
         )
     }
-
-
 }
 
 @Composable
@@ -237,7 +234,6 @@ private fun questionsItemsSize(
     is Result.Success -> topicUiState.data.size + 2
 }
 
-
 fun LazyListScope.questionItems(
     items: List<QuestionUiState>,
     onUpdate: (Long) -> Unit = {},
@@ -262,7 +258,6 @@ fun LazyListScope.questionItems(
     },
 )
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun QuestionUi(
@@ -278,10 +273,7 @@ fun QuestionUi(
         mutableStateOf(false)
     }
 
-    Column(modifier)
-    {
-
-
+    Column(modifier) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -341,7 +333,8 @@ fun QuestionUi(
         if (questionUiState.instructionUiState != null) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Instruction", color = MaterialTheme.colorScheme.secondary,
+                text = "Instruction",
+                color = MaterialTheme.colorScheme.secondary,
             )
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -401,11 +394,7 @@ fun QuestionUi(
                 examId = questionUiState.examId,
                 color = Color.Transparent,
 
-
-                )
+            )
         }
-
-
     }
-
 }

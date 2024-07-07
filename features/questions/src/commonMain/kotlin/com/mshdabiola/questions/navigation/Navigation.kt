@@ -29,7 +29,7 @@ fun NavGraphBuilder.questionScreen(
     defaultExamId: Long = -1,
     navigateToComposeQuestion: (Long, Long) -> Unit,
 
-    ) {
+) {
     composable(
         route = QUESTIONS_ROUTE,
         arguments = listOf(
