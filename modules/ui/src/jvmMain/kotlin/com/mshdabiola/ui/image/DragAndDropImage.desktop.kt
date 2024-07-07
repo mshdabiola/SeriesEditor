@@ -35,7 +35,6 @@ actual fun DragAndDropImage(
 
     val listener = object : DropTargetListener {
         override fun dragEnter(p0: DropTargetDragEvent?) {
-
         }
 
         override fun dragOver(p0: DropTargetDragEvent?) {

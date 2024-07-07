@@ -88,7 +88,7 @@ fun ContentView(
                     }
                 },
 
-                )
+            )
         }
     }
 }
@@ -108,8 +108,7 @@ fun Content(
     changeType: (Int, Type) -> Unit = { _, _ -> },
     onItemClicked: (ItemUiState) -> Unit = {},
 
-
-    ) {
+) {
     Column(modifier) {
         items.forEachIndexed { index, item ->
             var showContext by remember { mutableStateOf(false) }
@@ -130,7 +129,6 @@ fun Content(
                                     Text("Add Equation")
                                 }
                             }
-
                         } else {
                             EquationContent(
                                 childModifier
@@ -150,7 +148,6 @@ fun Content(
                                     Text("Add Image")
                                 }
                             }
-
                         } else {
                             ImageContent(
                                 childModifier
@@ -159,7 +156,6 @@ fun Content(
                                 item,
                             )
                         }
-
                     }
                 }
                 Box {
@@ -292,8 +288,6 @@ fun EquationContent(
     key(equation.content.text) {
         Latex(modifier = modifier, equation.content.text.toString())
     }
-
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -302,7 +296,6 @@ fun ImageContent(
     modifier: Modifier = Modifier,
     image: ItemUiState,
 ) {
-
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         //  if (File(path).exists()) {
         ImageUi(
@@ -310,9 +303,7 @@ fun ImageContent(
             path = ImageUtil.getAppPath(image.content.text.toString()).path,
             contentDescription = "",
         )
-
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -332,7 +323,6 @@ fun TextContent(
                 focusRequester.requestFocus()
             }
         }
-
     }
     if (text.isEditMode) {
         SeriesEditorTextField(
@@ -342,8 +332,6 @@ fun TextContent(
             state = text.content,
             imeAction = ImeAction.Next,
         )
-
-
     } else {
         MarkUpText(modifier = modifier, text = text.content.text.toString())
     }

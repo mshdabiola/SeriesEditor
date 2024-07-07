@@ -52,12 +52,10 @@ fun QuestionDialog(
     examId: Long,
     onDismiss: () -> Unit = {},
 ) {
-
     if (itemUiState != null) {
         when (itemUiState.type) {
             Type.EQUATION -> {
                 EquationDialog(textFieldState = itemUiState.content, onDismiss = onDismiss)
-
             }
 
             Type.TEXT -> {}
@@ -69,9 +67,7 @@ fun QuestionDialog(
                 )
             }
         }
-
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -92,7 +88,6 @@ fun ImageDialog(
                     Text("Remove Image")
                 }
             }
-
         },
         confirmButton = {
             SeriesEditorButton(
@@ -106,14 +101,14 @@ fun ImageDialog(
                 DragAndDropImage(
                     modifier = modifier.fillMaxSize(),
                     path = ImageUtil.getAppPath(textFieldState.text.toString()).path,
-//,
+// ,
                     onPathChange = { path ->
                         coroutineScope.launch {
                             val name = ImageUtil
                                 .saveImage(
-                                    textFieldState.text.toString(),//item.content,
-                                    path,//text,
-                                    examId,//examId,
+                                    textFieldState.text.toString(), // item.content,
+                                    path, // text,
+                                    examId, // examId,
                                 )
                             textFieldState.clearText()
 
@@ -121,7 +116,6 @@ fun ImageDialog(
                                 append("$examId/$name")
                             }
                         }
-
                     },
                 )
             }
@@ -140,9 +134,7 @@ fun EquationDialog(
         FocusRequester()
     }
     LaunchedEffect(Unit) {
-
         focusRequester.requestFocus()
-
     }
     val pagerState = rememberPagerState(initialPage = 0) { map.keys.size }
     val coroutineScope = rememberCoroutineScope()
@@ -156,7 +148,6 @@ fun EquationDialog(
                     Text("Remove Equation")
                 }
             }
-
         },
         confirmButton = {
             SeriesEditorButton(
@@ -194,12 +185,10 @@ fun EquationDialog(
                         map[map.keys.toList()[it]]!!.forEach {
                             SuggestionChip(
                                 onClick = {
-
                                     textFieldState.edit {
                                         append(it)
                                     }
                                     focusRequester.requestFocus()
-
                                 },
                                 label = { Latex(text = it) },
                             )
@@ -221,13 +210,10 @@ fun EquationDialog(
                         text = textFieldState.text.toString(),
                     )
                 }
-
-
             }
         },
     )
 }
-
 
 val map = mapOf(
     "Binary" to listOf(
@@ -369,15 +355,15 @@ val map = mapOf(
         "\\mbox{~and~} ",
         "\\left[ \\begin{array}{cc|r} 3 & 4 & 5 \\\\ 1 & 3 & 729 \\end{array} \\right]",
         "\\begin{eqnarray}\n" +
-                "\\cos 2\\theta & = & \\cos^2 \\theta - \\sin^2 \\theta \\\\\n" +
-                "& = & 2 \\cos^2 \\theta - 1.\n" +
-                "\\end{eqnarray}",
+            "\\cos 2\\theta & = & \\cos^2 \\theta - \\sin^2 \\theta \\\\\n" +
+            "& = & 2 \\cos^2 \\theta - 1.\n" +
+            "\\end{eqnarray}",
         "\\begin{tabular}{|l|l|l|}\\hline\n" +
-                "Chicago&U.S.A.&1893\\\\\n" +
-                "Z\\\"{u}rich&Switzerland&1897\\\\\n" +
-                "Paris&France&1900\\\\\n" +
-                "Heidelberg&Germany&1904\\\\\n" +
-                "Rome&Italy&1908\\hline\\end{tabular}",
+            "Chicago&U.S.A.&1893\\\\\n" +
+            "Z\\\"{u}rich&Switzerland&1897\\\\\n" +
+            "Paris&France&1900\\\\\n" +
+            "Heidelberg&Germany&1904\\\\\n" +
+            "Rome&Italy&1908\\hline\\end{tabular}",
     ),
     "Miscellaneous" to listOf(
         "\\aleph",
@@ -438,7 +424,7 @@ val map = mapOf(
         "\\wp",
         "\\|",
 
-        ),
+    ),
     "Variable Symbol" to listOf(
         "\\sum_0",
         "\\bigcap_0",
@@ -673,7 +659,7 @@ val map = mapOf(
         "\\hat{a}",
         "\\vec{a}",
 
-        ),
+    ),
     "Font" to listOf(
         " \\mathcal{A}",
         " \\mathbb{A}",

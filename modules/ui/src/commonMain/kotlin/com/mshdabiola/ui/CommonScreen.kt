@@ -59,7 +59,7 @@ fun CommonScreen(
                 )
             },
 
-            ) {
+        ) {
             firstScreen(Modifier.padding(it))
             AnimatedVisibility(show) {
                 ModalBottomSheet(

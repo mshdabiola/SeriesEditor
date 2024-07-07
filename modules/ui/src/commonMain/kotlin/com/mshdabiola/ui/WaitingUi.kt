@@ -16,7 +16,6 @@ fun Waiting(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         CircularProgressIndicator()
         Text("Saving")
     }
