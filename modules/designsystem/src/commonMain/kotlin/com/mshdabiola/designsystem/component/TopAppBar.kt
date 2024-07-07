@@ -111,7 +111,7 @@ fun MainTopBar(
     modifier: Modifier = Modifier,
     isSelectMode: Boolean = false,
     currentSubjectId: Long = 0,
-    selectAll: () -> Unit = {},
+    selectAll: (Long) -> Unit = {},
     deselectAll: () -> Unit = {},
     navigateToSetting: () -> Unit = {},
     showExportDialog: () -> Unit = {},
@@ -162,7 +162,7 @@ fun MainTopBar(
                                 },
                                 text = { Text("Select All") },
                                 onClick = {
-                                    selectAll()
+                                    selectAll(currentSubjectId)
                                 },
                             )
 

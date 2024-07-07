@@ -39,8 +39,8 @@ fun SeBottonAppBar(
     onSettingsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     isSelectMode: Boolean = false,
-    currentSubjectId: Long = 0,
-    selectAll: () -> Unit = {},
+    currentSubjectId: Long = -1,
+    selectAll: (Long) -> Unit = {},
     deselectAll: () -> Unit = {},
     showExportDialog: () -> Unit = {},
     toggleSelectMode: () -> Unit = {},
@@ -96,7 +96,7 @@ fun SeBottonAppBar(
                                 },
                                 text = { Text("Select All") },
                                 onClick = {
-                                    selectAll()
+                                    selectAll(currentSubjectId)
                                 },
                             )
 
