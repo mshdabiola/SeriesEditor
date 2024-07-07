@@ -41,7 +41,6 @@ fun NavGraphBuilder.composeTopicScreen(
     ) {
         val subjectId2 = it.arguments?.getLong(SUBJECT_ARG) ?: -1L
         val topicId = it.arguments?.getLong(TOPIC_ARG) ?: -1L
-        println("subj $subjectId2 $topicId")
         CtRoute(
             modifier=modifier,
             onShowSnack = onShowSnack,

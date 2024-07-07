@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.text2.input.TextFieldState
@@ -37,6 +38,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.data.model.Update
+import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.ui.Waiting
@@ -99,6 +101,8 @@ internal fun CtScreen(
     ) {
         when (update) {
             Update.Edit -> {
+
+                Section(title = "Topic Section")
                 val focusRequester = remember {
                     FocusRequester()
                 }
@@ -140,6 +144,7 @@ internal fun CtScreen(
         Row(
             Modifier
                 .clickable(onClick = { showConvert = !showConvert })
+                .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

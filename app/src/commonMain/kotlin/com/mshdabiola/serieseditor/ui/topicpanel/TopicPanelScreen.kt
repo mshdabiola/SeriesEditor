@@ -3,8 +3,10 @@ package com.mshdabiola.serieseditor.ui.topicpanel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composetopic.navigation.COMPOSE_TOPIC_ROUTE
@@ -32,7 +34,9 @@ fun TopicPaneScreen(
             navController = topicNav,
         ) {
             topicScreen(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxSize(),
                 onShowSnack = onShowSnackbar,
                 subjectId = subjectId,
                 navigateToComposeTopic = ctNav::navigateToComposeTopic,

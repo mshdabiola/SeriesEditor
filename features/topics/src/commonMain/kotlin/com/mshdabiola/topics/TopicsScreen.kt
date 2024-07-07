@@ -98,8 +98,7 @@ internal fun TopicScreen(
         ) {
         LazyColumn(
             state = state,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .testTag("main:list"),
         ) {
