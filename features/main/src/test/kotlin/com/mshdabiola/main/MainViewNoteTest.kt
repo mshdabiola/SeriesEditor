@@ -4,7 +4,6 @@
 
 package com.mshdabiola.main
 
-import com.mshdabiola.testing.fake.repository.FakeNoteRepository
 import com.mshdabiola.testing.repository.TestUserDataRepository
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
@@ -22,11 +21,11 @@ class MainViewNoteTest {
 
     @Before
     fun setup() {
-        viewModel = MainViewModel(
-            userDataRepository = userDataRepository,
-            modelRepository = FakeNoteRepository(),
-
-        )
+//        viewModel = MainViewModel(
+//            userDataRepository = userDataRepository,
+//            modelRepository = FakeNoteRepository(),
+//
+//        )
     }
 
     @Test

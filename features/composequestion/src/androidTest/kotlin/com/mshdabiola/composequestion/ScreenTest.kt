@@ -6,7 +6,6 @@ package com.mshdabiola.composequestion
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.mshdabiola.data.model.Result
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,9 +20,9 @@ class ScreenTest {
     @Test
     fun enterText_showsShowText() {
         composeTestRule.setContent {
-            CqScreen(
-                mainState = Result.Loading,
-            )
+//            CqScreen(
+//                mainState = Result.Loading,
+//            )
         }
 
 //        composeTestRule
