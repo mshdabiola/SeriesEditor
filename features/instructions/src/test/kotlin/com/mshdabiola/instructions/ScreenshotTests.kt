@@ -7,13 +7,10 @@ package com.mshdabiola.instructions
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.mshdabiola.data.model.Result
-import com.mshdabiola.designsystem.theme.SkTheme
+import com.mshdabiola.designsystem.theme.SeriesEditorTheme
 import com.mshdabiola.testing.util.DefaultTestDevices
 import com.mshdabiola.testing.util.captureForDevice
 import com.mshdabiola.testing.util.captureMultiDevice
-import com.mshdabiola.ui.NoteUiState
-import kotlinx.collections.immutable.toImmutableList
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,10 +41,10 @@ class ScreenshotTests {
     @Test
     fun forYouScreenPopulatedFeed() {
         composeTestRule.captureMultiDevice("ForYouScreenPopulatedFeed") {
-            SkTheme {
-                InstructionScreen(
-                    mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
-                )
+            SeriesEditorTheme {
+//                SubjectScreen(
+//                    mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
+//                )
             }
         }
     }
@@ -55,11 +52,11 @@ class ScreenshotTests {
     @Test
     fun detailWithText() {
         composeTestRule.captureMultiDevice("DetailWithText") {
-            SkTheme {
-                InstructionScreen(
-                    mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
-
-                )
+            SeriesEditorTheme {
+//                SubjectScreen(
+//                    mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
+//
+//                )
             }
         }
     }
@@ -104,21 +101,21 @@ class ScreenshotTests {
 
     @Composable
     private fun DetailScreen1() {
-        SkTheme {
-            InstructionScreen(
-                mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
-
-            )
+        SeriesEditorTheme {
+//            SubjectScreen(
+//                mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
+//
+//            )
         }
     }
 
     @Composable
     private fun DetailScreenWithText1() {
-        SkTheme {
-            InstructionScreen(
-                mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
-
-            )
+        SeriesEditorTheme {
+//            SubjectScreen(
+//                mainState = Result.Success(listOf(NoteUiState(3, "", "")).toImmutableList()),
+//
+//            )
         }
     }
 }

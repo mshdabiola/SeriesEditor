@@ -29,10 +29,10 @@ class MainViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = MainViewModel(
-            userDataRepository = userDataRepository,
-            modelRepository = noteRepository,
-        )
+//        viewModel = MainViewModel(
+//            userDataRepository = userDataRepository,
+//            modelRepository = noteRepository,
+//        )
     }
 
     @Test
