@@ -57,7 +57,7 @@ class CtViewModel(
 
             topicRepository.upsert(
                 Topic(
-                    id = if (topicId > 0) topicId else null,
+                    id = topicId,
                     subjectId = subjectId,
                     title = state.text.toString(),
                 ),

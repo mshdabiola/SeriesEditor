@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 class ComposeSubjectViewModel(
+    private val seriesId: Long,
     private val subjectId: Long,
     private val subjectRepository: ISubjectRepository,
 ) : ViewModel() {
@@ -51,7 +52,8 @@ class ComposeSubjectViewModel(
             _update.update { Update.Saving }
             subjectRepository.upsert(
                 Subject(
-                    id = if (subjectId > 0) subjectId else null,
+                    id = subjectId,
+                    seriesId = seriesId,
                     title = state.text.toString(),
                 ),
             )

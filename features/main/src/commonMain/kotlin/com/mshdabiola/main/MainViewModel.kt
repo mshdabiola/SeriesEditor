@@ -44,7 +44,7 @@ internal class MainViewModel constructor(
                 notes.first
                     .filter {
                         if (subjectId > 0) {
-                            it.subject.id == subjectId
+                            it.id == subjectId
                         } else {
                             true
                         }

@@ -53,15 +53,16 @@ class ComposeExaminationViewModel(
                 .getOne(examId)
                 .first()
 
+
             if (initExam != null) {
                 subject.edit {
                     append(initExam.subject.title)
                 }
                 year.edit {
-                    append(initExam.year.toString())
+                    append(initExam.examination .year.toString())
                 }
                 duration.edit {
-                    append(initExam.duration.toString())
+                    append(initExam.examination .duration.toString())
                 }
             } else {
                 delay(2000)
@@ -77,12 +78,10 @@ class ComposeExaminationViewModel(
             _update.update { Update.Saving }
             val subject = subjects.value.single { it.name == subject.text.toString() }
             val exam = Examination(
-                id = if (examId > 0) examId else null,
+                id = examId,
                 duration = duration.text.toString().toLong(),
                 year = year.text.toString().toLong(),
-                subject = subject.toSubject(),
-                isObjectiveOnly = true,
-                updateTime = System.currentTimeMillis(),
+                subjectId = subject.id,
             )
             examRepository.upsert(exam)
 
