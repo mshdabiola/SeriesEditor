@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -65,15 +66,16 @@ class MainAppViewModel(
 
     fun selectAll(subjectId: Long) {
         viewModelScope.launch {
-            val list = (
-                if (subjectId < 0) {
+            val list =
+               ( if (subjectId < 0) {
                     iExamRepository.getAll()
+                        .mapNotNull { it.map { it.id }}
                 } else {
                     iExamRepository
                         .getAllBuSubjectId(subjectId)
-                }
-                ).first()
-                .mapNotNull { it.id }
+                        .mapNotNull { it.map { it.examination.id }}
+                }).first()
+
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
