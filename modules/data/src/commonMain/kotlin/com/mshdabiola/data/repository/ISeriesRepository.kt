@@ -5,14 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ISeriesRepository {
 
+    fun getAll(): Flow<List<Series>>
 
-    fun getAll() :Flow<List<Series>>
-
-    fun getOne(id:Long) :Flow<Series?>
-
+    fun getOne(id: Long): Flow<Series?>
 
     suspend fun upsert(series: Series)
 
-    suspend fun delete(id:Long)
-
+    suspend fun delete(id: Long)
 }

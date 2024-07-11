@@ -8,7 +8,5 @@ interface IUserRepository {
 
     suspend fun setUser(user: User)
 
-    suspend fun deleteUser(id:Long)
-
-
+    suspend fun deleteUser(id: Long)
 }

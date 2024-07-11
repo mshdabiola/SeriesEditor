@@ -11,8 +11,8 @@ import kotlinx.coroutines.withContext
 
 class SeriesRepository(
     private val seriesDao: SeriesDao,
-    private val ioDispatcher: CoroutineDispatcher
-) :ISeriesRepository{
+    private val ioDispatcher: CoroutineDispatcher,
+) : ISeriesRepository {
     override fun getAll(): Flow<List<Series>> {
         return seriesDao.getAll()
             .map { entities -> entities.map { it.asModel() } }

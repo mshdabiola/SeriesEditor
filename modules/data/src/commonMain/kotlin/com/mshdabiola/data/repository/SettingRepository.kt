@@ -1,9 +1,9 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.datastore.Store
-import com.mshdabiola.model.data.CurrentExam
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.model.data.CurrentExam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -19,10 +19,6 @@ internal class SettingRepository(
         get() = settings
             .questions
 
-    override val currentExam: Flow<CurrentExam>
-        get() = settings
-            .currentExam
-            .map { it.asModel() }
 
     override suspend fun setCurrentInstruction(instruction: Map<Long, Instruction>) {
         settings.updateInstruction { instruction.mapValues { it.value } }
@@ -32,7 +28,5 @@ internal class SettingRepository(
         settings.updateQuestion { question.mapValues { it.value } }
     }
 
-    override suspend fun setCurrentExam(currentExam: CurrentExam) {
-        settings.updateCurrentQuestion { currentExam }
-    }
+
 }

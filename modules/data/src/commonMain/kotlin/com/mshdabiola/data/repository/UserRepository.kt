@@ -11,16 +11,13 @@ import kotlinx.coroutines.withContext
 
 class UserRepository(
     private val userDao: UserDao,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : IUserRepository {
     override fun getUser(): Flow<User?> {
-       return userDao.getUserById(1)
-           .map{
-              it?.asModel()
-
-           }
-
-
+        return userDao.getUserById(1)
+            .map {
+                it?.asModel()
+            }
     }
 
     override suspend fun setUser(user: User) {
@@ -29,11 +26,9 @@ class UserRepository(
         }
     }
 
-    override suspend fun deleteUser(id:Long) {
-        withContext(ioDispatcher){
+    override suspend fun deleteUser(id: Long) {
+        withContext(ioDispatcher) {
             userDao.deleteUser(id)
         }
     }
-
-
 }
