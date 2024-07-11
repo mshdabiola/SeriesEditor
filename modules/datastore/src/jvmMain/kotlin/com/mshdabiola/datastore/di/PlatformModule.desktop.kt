@@ -23,6 +23,4 @@ actual val datastoreModule: Module
         single(qualifier = qualifier("instruction")) {
             createDataStoreInstruction { "$generalPath/instructions" }
         }
-
-
     }

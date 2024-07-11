@@ -1,7 +1,6 @@
 package com.mshdabiola.datastore.model
 
 import androidx.datastore.core.okio.OkioSerializer
-import com.mshdabiola.model.data.CurrentExam
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.model.Contrast

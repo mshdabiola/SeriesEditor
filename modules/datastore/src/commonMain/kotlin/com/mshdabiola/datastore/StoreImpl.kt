@@ -2,7 +2,6 @@ package com.mshdabiola.datastore
 
 import androidx.datastore.core.DataStore
 import com.mshdabiola.datastore.model.UserDataSer
-import com.mshdabiola.model.data.CurrentExam
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,7 +29,6 @@ class StoreImpl(
             .data
             .flowOn(coroutineDispatcher)
 
-
     override suspend fun updateUserData(transform: suspend (UserDataSer) -> UserDataSer): UserDataSer {
         return withContext(coroutineDispatcher) {
             userdata.updateData(transform)
@@ -48,6 +46,4 @@ class StoreImpl(
             instruction.updateData(transform)
         }
     }
-
-
 }
