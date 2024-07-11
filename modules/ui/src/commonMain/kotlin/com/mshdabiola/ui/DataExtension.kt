@@ -6,6 +6,7 @@ import com.mshdabiola.generalmodel.Content
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.generalmodel.Subject
 import com.mshdabiola.generalmodel.Topic
@@ -19,7 +20,7 @@ import com.mshdabiola.ui.state.TopicUiState
 import kotlinx.collections.immutable.toImmutableList
 
 fun Question.toQuestionUiState(isEdit: Boolean = false) = QuestionUiState(
-    id = id.toDefault(),
+    id = id,
     number = number,
     examId = examId,
     contents = contents.map {
@@ -28,7 +29,7 @@ fun Question.toQuestionUiState(isEdit: Boolean = false) = QuestionUiState(
     options = options?.map {
         it.toOptionUi(isEdit)
     }?.toImmutableList(),
-    isTheory = isTheory,
+    isTheory =type==QUESTION_TYPE.ESSAY,
     answers = answers.map {
         it.toItemUi(isEdit)
     }?.toImmutableList(),
@@ -37,14 +38,14 @@ fun Question.toQuestionUiState(isEdit: Boolean = false) = QuestionUiState(
 )
 
 fun QuestionUiState.toQuestionWithOptions(examId: Long) = Question(
-    id = id.check(),
+    id = id,
     number = number,
     examId = examId,
     contents = contents.map { it.toItem() },
     options = options?.map {
         it.toOption(questionId = id, examId)
     },
-    isTheory = isTheory,
+    type = if(isTheory)QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
     answers = answers?.map { it.toItem() } ?: emptyList(),
     instruction = instructionUiState?.toInstruction(),
     topic = topicUiState?.toTopic(),
@@ -53,7 +54,7 @@ fun QuestionUiState.toQuestionWithOptions(examId: Long) = Question(
 
 fun Option.toOptionUi(isEdit: Boolean = false) =
     OptionUiState(
-        id = id.toDefault(),
+        id = id,
         nos = number,
         content = contents.map { it.toItemUi(isEdit) }.toImmutableList(),
         isAnswer = isAnswer,
@@ -61,10 +62,9 @@ fun Option.toOptionUi(isEdit: Boolean = false) =
 
 fun OptionUiState.toOption(questionId: Long, examId: Long) =
     Option(
-        id = id.check(),
+        id = id,
         number = nos,
         questionId = questionId,
-        examId = examId,
         contents = content.map { it.toItem() },
         isAnswer = isAnswer,
         title = "",
@@ -79,7 +79,7 @@ fun Content.toItemUi(isEdit: Boolean = false) =
 
 @OptIn(ExperimentalFoundationApi::class)
 fun InstructionUiState.toInstruction() = Instruction(
-    id = id.check(),
+    id = id,
     examId = examId,
     title = title.text.toString(),
     content = content.map { it.toItem() },
@@ -88,36 +88,29 @@ fun InstructionUiState.toInstruction() = Instruction(
 @OptIn(ExperimentalFoundationApi::class)
 fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
     InstructionUiState(
-        id = id.toDefault(),
+        id = id,
         examId = examId,
         title = TextFieldState(title),
         content = content.map { it.toItemUi(isEdit = isEdit) }.toImmutableList(),
     )
 
-fun Topic.toUi() = TopicUiState(id = id.toDefault(), subjectId = subjectId, name = title)
-fun TopicUiState.toTopic() = Topic(id = id.check(), subjectId = subjectId, title = name)
+fun Topic.toUi() = TopicUiState(id = id, subjectId = subjectId, name = title)
+fun TopicUiState.toTopic() = Topic(id = id, subjectId = subjectId, title = name)
 
-fun Subject.toUi() = SubjectUiState(id.toDefault(), title)
-fun SubjectUiState.toSubject() = Subject(id.check(), name)
+fun Subject.toUi() = SubjectUiState(id,seriesId, title)
+fun SubjectUiState.toSubject() = Subject(id,seriesId, name)
 
 fun Examination.toUi() = ExamUiState(
-    id = id.toDefault(),
+    id = id,
     year,
-    isObjectiveOnly = isObjectiveOnly,
+    isObjectiveOnly = true,
     duration = duration,
-    updateTime = updateTime,
-    subject = subject.toUi(),
 )
 
 fun ExamUiState.toExam() =
     Examination(
-        id = id.check(),
-        year = year,
-        isObjectiveOnly = isObjectiveOnly,
+        id = id,
+        subjectId = subject.id,
+        year=year,
         duration = duration,
-        updateTime = updateTime,
-        subject = subject.toSubject(),
     )
-
-fun Long.check() = if (this == -1L) null else this
-fun Long?.toDefault() = this ?: -1

@@ -1,10 +1,12 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.data.model.asExam
-import com.mshdabiola.data.model.asExamEntity
 import com.mshdabiola.database.DatabaseExportImport
-import com.mshdabiola.database.dao.ExaminationDao
+import com.mshdabiola.database.dao.exam.ExaminationDao
+import com.mshdabiola.database.model.asEntity
+import com.mshdabiola.database.model.asExam
+import com.mshdabiola.database.model.asModel
 import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.generalmodel.ExaminationWithSubject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +30,7 @@ internal class ExaminationRepository constructor(
 
     override suspend fun upsert(examination: Examination): Long {
         return withContext(ioDispatcher) {
-            examinationDao.upsert(examination.asExamEntity())
+            examinationDao.upsert(examination.asEntity())
         }
     }
 
@@ -36,23 +38,23 @@ internal class ExaminationRepository constructor(
         return examinationDao
             .getAll()
             .map { fullList ->
-                fullList.map { it.asExam() }
+                fullList.map { it.asModel() }
             }
             .flowOn(ioDispatcher)
     }
 
-    override fun getAllBuSubjectId(subjectId: Long): Flow<List<Examination>> {
+    override fun getAllBuSubjectId(subjectId: Long): Flow<List<ExaminationWithSubject>> {
         return examinationDao
-            .getAllBySubjectId(subjectId)
+            .getAllBySubjectIdWithSubject(subjectId)
             .map { fullList ->
                 fullList.map { it.asExam() }
             }
             .flowOn(ioDispatcher)
     }
 
-    override fun getOne(id: Long): Flow<Examination?> {
+    override fun getOne(id: Long): Flow<ExaminationWithSubject?> {
         return examinationDao
-            .getOne(id)
+            .getOneWithSubject(id)
             .map { it?.asExam() }
             .flowOn(ioDispatcher)
     }

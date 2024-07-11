@@ -5,7 +5,6 @@ data class ExamUiState(
     val year: Long = 2012,
     val isObjectiveOnly: Boolean = false,
     val duration: Long = 15,
-    val updateTime: Long = 56,
-    val subject: SubjectUiState = SubjectUiState(name = ""),
+    val subject: SubjectUiState = SubjectUiState(name = "", seriesId = 4),
     val isSelected: Boolean = false,
 )

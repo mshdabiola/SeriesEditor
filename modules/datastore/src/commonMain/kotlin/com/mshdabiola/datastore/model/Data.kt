@@ -1,10 +1,12 @@
 package com.mshdabiola.datastore.model
 
 import androidx.datastore.core.okio.OkioSerializer
+import com.mshdabiola.model.data.CurrentExam
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
@@ -13,22 +15,22 @@ import okio.BufferedSource
 
 val json = Json
 
-object QuestionJsonSerializer : OkioSerializer<Map<Long, QuestionSer>> {
+object QuestionJsonSerializer : OkioSerializer<Map<Long, Question>> {
 
-    override val defaultValue: Map<Long, QuestionSer>
+    override val defaultValue: Map<Long, Question>
         get() = mapOf()
 
-    override suspend fun readFrom(source: BufferedSource): Map<Long, QuestionSer> {
-        return json.decodeFromString<Map<Long, QuestionSer>>(source.readUtf8())
+    override suspend fun readFrom(source: BufferedSource): Map<Long, Question> {
+        return json.decodeFromString<Map<Long, Question>>(source.readUtf8())
     }
 
-    override suspend fun writeTo(t: Map<Long, QuestionSer>, sink: BufferedSink) {
+    override suspend fun writeTo(t: Map<Long, Question>, sink: BufferedSink) {
         sink.use {
             it.writeUtf8(
                 json.encodeToString(
                     MapSerializer(
                         Long.serializer(),
-                        QuestionSer.serializer(),
+                        Question.serializer(),
                     ),
                     t,
                 ),
@@ -37,42 +39,26 @@ object QuestionJsonSerializer : OkioSerializer<Map<Long, QuestionSer>> {
     }
 }
 
-object InstructionJsonSerializer : OkioSerializer<Map<Long, InstructionSer>> {
+object InstructionJsonSerializer : OkioSerializer<Map<Long, Instruction>> {
 
-    override val defaultValue: Map<Long, InstructionSer>
+    override val defaultValue: Map<Long, Instruction>
         get() = mapOf()
 
-    override suspend fun readFrom(source: BufferedSource): Map<Long, InstructionSer> {
-        return json.decodeFromString<Map<Long, InstructionSer>>(source.readUtf8())
+    override suspend fun readFrom(source: BufferedSource): Map<Long, Instruction> {
+        return json.decodeFromString<Map<Long, Instruction>>(source.readUtf8())
     }
 
-    override suspend fun writeTo(t: Map<Long, InstructionSer>, sink: BufferedSink) {
+    override suspend fun writeTo(t: Map<Long, Instruction>, sink: BufferedSink) {
         sink.use {
             it.writeUtf8(
                 json.encodeToString(
                     MapSerializer(
                         Long.serializer(),
-                        InstructionSer.serializer(),
+                        Instruction.serializer(),
                     ),
                     t,
                 ),
             )
-        }
-    }
-}
-
-object CurrentExamJsonSerializer : OkioSerializer<CurrentExamSer> {
-
-    override val defaultValue: CurrentExamSer
-        get() = CurrentExamSer(id = -1, choose = listOf())
-
-    override suspend fun readFrom(source: BufferedSource): CurrentExamSer {
-        return json.decodeFromString<CurrentExamSer>(source.readUtf8())
-    }
-
-    override suspend fun writeTo(t: CurrentExamSer, sink: BufferedSink) {
-        sink.use {
-            it.writeUtf8(json.encodeToString(CurrentExamSer.serializer(), t))
         }
     }
 }
@@ -97,12 +83,4 @@ object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
             it.writeUtf8(json.encodeToString(UserDataSer.serializer(), t))
         }
     }
-}
-
-fun String.toContent(): List<ContentSer> {
-    return json.decodeFromString(this)
-}
-
-fun List<ContentSer>.asString(): String {
-    return json.encodeToString(ListSerializer(ContentSer.serializer()), this)
 }

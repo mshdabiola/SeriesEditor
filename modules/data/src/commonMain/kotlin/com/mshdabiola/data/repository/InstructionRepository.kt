@@ -1,8 +1,8 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.data.model.asEntity
-import com.mshdabiola.data.model.asModel
-import com.mshdabiola.database.dao.InstructionDao
+import com.mshdabiola.database.dao.exam.InstructionDao
+import com.mshdabiola.database.model.asEntity
+import com.mshdabiola.database.model.asModel
 import com.mshdabiola.generalmodel.Instruction
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

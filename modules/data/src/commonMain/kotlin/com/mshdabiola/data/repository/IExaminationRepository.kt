@@ -1,6 +1,7 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.generalmodel.ExaminationWithSubject
 import kotlinx.coroutines.flow.Flow
 
 interface IExaminationRepository {
@@ -11,9 +12,9 @@ interface IExaminationRepository {
     suspend fun upsert(examination: Examination): Long
     fun getAll(): Flow<List<Examination>>
 
-    fun getAllBuSubjectId(subjectId: Long): Flow<List<Examination>>
+    fun getAllBuSubjectId(subjectId: Long): Flow<List<ExaminationWithSubject>>
 
-    fun getOne(id: Long): Flow<Examination?>
+    fun getOne(id: Long): Flow<ExaminationWithSubject?>
 
     suspend fun delete(id: Long)
 

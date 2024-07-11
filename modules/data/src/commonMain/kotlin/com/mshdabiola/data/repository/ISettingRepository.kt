@@ -1,6 +1,6 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.generalmodel.CurrentExam
+import com.mshdabiola.model.data.CurrentExam
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
 import kotlinx.coroutines.flow.Flow

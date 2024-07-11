@@ -1,10 +1,7 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.data.model.asModel
-import com.mshdabiola.data.model.asSer
-import com.mshdabiola.data.model.toSer
 import com.mshdabiola.datastore.Store
-import com.mshdabiola.generalmodel.CurrentExam
+import com.mshdabiola.model.data.CurrentExam
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
 import kotlinx.coroutines.flow.Flow
@@ -17,29 +14,25 @@ internal class SettingRepository(
     override val instructions: Flow<Map<Long, Instruction>>
         get() = settings
             .instructions
-            .map { instructionSers ->
-                instructionSers.mapValues { it.value.asModel() }
-            }
+
     override val questions: Flow<Map<Long, Question>>
         get() = settings
             .questions
-            .map { instructionSers ->
-                instructionSers.mapValues { it.value.asModel() }
-            }
+
     override val currentExam: Flow<CurrentExam>
         get() = settings
             .currentExam
             .map { it.asModel() }
 
     override suspend fun setCurrentInstruction(instruction: Map<Long, Instruction>) {
-        settings.updateInstruction { instruction.mapValues { it.value.toSer() } }
+        settings.updateInstruction { instruction.mapValues { it.value } }
     }
 
     override suspend fun setCurrentQuestion(question: Map<Long, Question>) {
-        settings.updateQuestion { question.mapValues { it.value.asSer() } }
+        settings.updateQuestion { question.mapValues { it.value } }
     }
 
     override suspend fun setCurrentExam(currentExam: CurrentExam) {
-        settings.updateCurrentQuestion { currentExam.toSer() }
+        settings.updateCurrentQuestion { currentExam }
     }
 }

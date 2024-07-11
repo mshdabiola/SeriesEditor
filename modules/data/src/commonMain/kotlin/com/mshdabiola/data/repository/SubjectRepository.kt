@@ -1,8 +1,8 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.data.model.asEntity
-import com.mshdabiola.data.model.asSub
-import com.mshdabiola.database.dao.SubjectDao
+import com.mshdabiola.database.dao.exam.SubjectDao
+import com.mshdabiola.database.model.asEntity
+import com.mshdabiola.database.model.asModel
 import com.mshdabiola.generalmodel.Subject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +25,7 @@ internal class SubjectRepository constructor(
             .getAll()
             .map { noteEntities ->
                 noteEntities.map {
-                    it.asSub()
+                    it.asModel()
                 }
             }
             .flowOn(ioDispatcher)
@@ -34,7 +34,7 @@ internal class SubjectRepository constructor(
     override fun getOne(id: Long): Flow<Subject?> {
         return subjectDao
             .getOne(id)
-            .map { it?.asSub() }
+            .map { it?.asModel() }
             .flowOn(ioDispatcher)
     }
 
