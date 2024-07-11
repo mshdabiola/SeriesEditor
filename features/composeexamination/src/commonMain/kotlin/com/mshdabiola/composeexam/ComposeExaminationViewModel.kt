@@ -12,7 +12,6 @@ import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.ui.toSubject
 import com.mshdabiola.ui.toUi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,16 +52,15 @@ class ComposeExaminationViewModel(
                 .getOne(examId)
                 .first()
 
-
             if (initExam != null) {
                 subject.edit {
                     append(initExam.subject.title)
                 }
                 year.edit {
-                    append(initExam.examination .year.toString())
+                    append(initExam.examination.year.toString())
                 }
                 duration.edit {
-                    append(initExam.examination .duration.toString())
+                    append(initExam.examination.duration.toString())
                 }
             } else {
                 delay(2000)
