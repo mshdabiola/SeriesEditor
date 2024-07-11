@@ -407,10 +407,10 @@ class CqViewModel(
                 .first()
 
             val number =
-                if (question2.number == -1L) questions.filter {( it.type==QUESTION_TYPE.ESSAY) == question2.isTheory }.size.toLong() + 1 else question2.number
+                if (question2.number == -1L) questions.filter { (it.type == QUESTION_TYPE.ESSAY) == question2.isTheory }.size.toLong() + 1 else question2.number
             question2 = question2.copy(number = number)
 
-            val allIsObj = questions.all { ( it.type==QUESTION_TYPE.ESSAY).not() } && question2.isTheory.not()
+            val allIsObj = questions.all { (it.type == QUESTION_TYPE.ESSAY).not() } && question2.isTheory.not()
             questionRepository.upsert(question2.toQuestionWithOptions(examId = examId))
             updateExamType(isObjOnly = allIsObj)
 
