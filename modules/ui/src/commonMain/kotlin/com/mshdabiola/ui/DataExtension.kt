@@ -29,7 +29,7 @@ fun Question.toQuestionUiState(isEdit: Boolean = false) = QuestionUiState(
     options = options?.map {
         it.toOptionUi(isEdit)
     }?.toImmutableList(),
-    isTheory =type==QUESTION_TYPE.ESSAY,
+    isTheory = type == QUESTION_TYPE.ESSAY,
     answers = answers.map {
         it.toItemUi(isEdit)
     }?.toImmutableList(),
@@ -45,7 +45,7 @@ fun QuestionUiState.toQuestionWithOptions(examId: Long) = Question(
     options = options?.map {
         it.toOption(questionId = id, examId)
     },
-    type = if(isTheory)QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
+    type = if (isTheory)QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
     answers = answers?.map { it.toItem() } ?: emptyList(),
     instruction = instructionUiState?.toInstruction(),
     topic = topicUiState?.toTopic(),
@@ -97,8 +97,8 @@ fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
 fun Topic.toUi() = TopicUiState(id = id, subjectId = subjectId, name = title)
 fun TopicUiState.toTopic() = Topic(id = id, subjectId = subjectId, title = name)
 
-fun Subject.toUi() = SubjectUiState(id,seriesId, title)
-fun SubjectUiState.toSubject() = Subject(id,seriesId, name)
+fun Subject.toUi() = SubjectUiState(id, seriesId, title)
+fun SubjectUiState.toSubject() = Subject(id, seriesId, name)
 
 fun Examination.toUi() = ExamUiState(
     id = id,
@@ -111,6 +111,6 @@ fun ExamUiState.toExam() =
     Examination(
         id = id,
         subjectId = subject.id,
-        year=year,
+        year = year,
         duration = duration,
     )
