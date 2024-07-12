@@ -67,8 +67,8 @@ fun ExamCard(
                 Text(examUiState.year.toString())
                 Text("✦")
                 Text("${examUiState.duration} Minutes")
-                Text("✦")
-                Text(if (examUiState.isObjectiveOnly) "Objective" else "Objective and Theory")
+//                Text("✦")
+//                Text(if (examUiState.isObjectiveOnly) "Objective" else "Objective and Theory")
             }
         },
         trailingContent = {

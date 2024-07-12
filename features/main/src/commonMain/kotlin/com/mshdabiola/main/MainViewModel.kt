@@ -10,6 +10,7 @@ import com.mshdabiola.data.model.Result
 import com.mshdabiola.data.model.asResult
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.toUi
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,12 +18,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class MainViewModel constructor(
     private val iSubjectRepository: ISubjectRepository,
     private val iExamRepository: IExaminationRepository,
+    private val userDataRepository: UserDataRepository,
     val subjectId: Long,
 
 ) : ViewModel() {
@@ -37,19 +40,25 @@ internal class MainViewModel constructor(
     // private val _examUiStates = MutableStateFlow<Result<List<ExamUiState>>>(Result.Loading)
 
     val examUiMainState: StateFlow<Result<List<ExamUiState>>> =
-        combine(iExamRepository.getAll(), iExamRepository.selectedList) { list, ids ->
-            Pair(list, ids)
+        combine(
+            iExamRepository.getAllWithSubject(),
+            iExamRepository.selectedList,
+            userDataRepository.userData.map { it.userId }
+        ) { list, ids,userId ->
+            Triple(list, ids,userId)
         }
-            .map { notes ->
-                notes.first
+            .onEach { println(it) }
+            .map { triple ->
+                triple.first
+                    .filter { it.series.userId==triple.third }
                     .filter {
                         if (subjectId > 0) {
-                            it.id == subjectId
+                            it.subject.id == subjectId
                         } else {
                             true
                         }
                     }
-                    .map { it.toUi().copy(isSelected = notes.second.contains(it.id)) }
+                    .map { it.toUi().copy(isSelected = triple.second.contains(it.examination.id)) }
             }
             .asResult()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Result.Loading)
