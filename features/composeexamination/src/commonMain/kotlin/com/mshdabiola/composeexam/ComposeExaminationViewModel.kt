@@ -31,7 +31,7 @@ class ComposeExaminationViewModel(
 ) : ViewModel() {
 
     val subjects = subjectRepository
-        .getAll()
+        .getAllWithSeries()
         .map { subjectList -> subjectList.map { it.toUi() } }
         .stateIn(
             scope = viewModelScope,
