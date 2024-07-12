@@ -58,4 +58,10 @@ internal class OfflineFirstUserDataRepository(
         }
         analyticsHelper.logOnboardingStateChanged(shouldHideOnboarding)
     }
+
+    override suspend fun setUserId(id: Long) {
+        settings.updateUserData {
+            it.copy(userId = id)
+        }
+    }
 }
