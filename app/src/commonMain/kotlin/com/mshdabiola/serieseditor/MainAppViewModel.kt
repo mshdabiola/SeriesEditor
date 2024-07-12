@@ -33,7 +33,7 @@ class MainAppViewModel(
     subjectRepository: ISubjectRepository,
     userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
-    private val seriesRepository: SeriesRepository
+    private val seriesRepository: SeriesRepository,
 ) : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -42,32 +42,26 @@ class MainAppViewModel(
     init {
 
         viewModelScope.launch {
-            val id =userDataRepository.userData
-                .first()
-                .userId
-
-            _user.value = userRepository.getUser().first()
 
 
+            _user.value = userRepository.getUser(1).first()
 
-
-            if(user.value==null){
-                val userr= User(
+            if (user.value == null) {
+                val userr = User(
                     id = -1,
                     name = "Abiola",
                     type = UserType.TEACHER,
                     password = "cheatmobi",
                     imagePath = "",
-                    points = 1
+                    points = 1,
                 )
-                _user.value=userr
-                userRepository.setUser(userr)
+                _user.value = userr
+                val id = userRepository.setUser(userr)
+                userDataRepository.setUserId(id)
 
-                seriesRepository.upsert(Series(-1, userId = userr.id, "Default"))
+                seriesRepository.upsert(Series(-1, userId = id, "Default"))
 
             }
-
-
 
 
         }
@@ -115,13 +109,13 @@ class MainAppViewModel(
     fun selectAll(subjectId: Long) {
         viewModelScope.launch {
             val list =
-               ( if (subjectId < 0) {
+                (if (subjectId < 0) {
                     iExamRepository.getAll()
-                        .mapNotNull { it.map { it.id }}
+                        .mapNotNull { it.map { it.id } }
                 } else {
                     iExamRepository
                         .getAllBuSubjectId(subjectId)
-                        .mapNotNull { it.map { it.examination.id }}
+                        .mapNotNull { it.map { it.examination.id } }
                 }).first()
 
 

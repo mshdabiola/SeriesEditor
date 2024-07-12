@@ -40,10 +40,10 @@ class ComposeSubjectViewModel(
 
     val seriesState = TextFieldState()
 
-    private val userId = userDataRepository
-        .userData
-        .map { it.userId }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), -1L)
+//    private val userId = userDataRepository
+//        .userData
+//        .map { it.userId }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), -1L)
 
     val series = seriesRepository
         .getAll()
@@ -117,10 +117,14 @@ class ComposeSubjectViewModel(
     fun addSeries() {
         viewModelScope.launch {
             val id = if (currentSeriesId.value == 1L) -1 else currentSeriesId.value
+            val userId = userDataRepository
+                .userData.first()
+                .userId
+
             val newId = seriesRepository.upsert(
                 series = Series(
                     id = id,
-                    userId = userId.value,
+                    userId = userId,
                     name = seriesState.text.toString(),
                 ),
             )
