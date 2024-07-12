@@ -2,6 +2,7 @@ package com.mshdabiola.designsystem.component
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
@@ -17,11 +18,17 @@ fun SeNavigationDrawerItem(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     label: String,
+    series: String? = null,
 ) {
     NavigationDrawerItem(
         shape = RoundedCornerShape(4.dp),
         selected = selected,
         onClick = onClick,
+        badge = {
+            if (series != null) {
+                Text(series, style = MaterialTheme.typography.bodySmall)
+            }
+        },
         icon = {
             if (icon != null) {
                 Icon(imageVector = icon, label)
