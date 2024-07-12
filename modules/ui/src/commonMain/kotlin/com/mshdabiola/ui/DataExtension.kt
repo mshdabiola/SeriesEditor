@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import com.mshdabiola.generalmodel.Content
 import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.generalmodel.ExaminationWithSubject
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Option
 import com.mshdabiola.generalmodel.QUESTION_TYPE
@@ -102,8 +103,14 @@ fun SubjectWithSeries.toUi() = SubjectUiState(subject.id, series.name, subject.t
 fun Examination.toUi() = ExamUiState(
     id = id,
     year,
-    isObjectiveOnly = true,
     duration = duration,
+)
+
+fun ExaminationWithSubject.toUi() = ExamUiState(
+    id = examination.id,
+    year = examination.year,
+    duration = examination.duration,
+    subject = SubjectUiState(subject.id,series.name,subject.title)
 )
 
 fun ExamUiState.toExam() =
