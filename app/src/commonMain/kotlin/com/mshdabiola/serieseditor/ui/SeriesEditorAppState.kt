@@ -134,6 +134,7 @@ class Extended(
     }
 
     override fun onUpdateSubject(id: Long) {
+        subjectNavHostController.popBackStack()
         subjectNavHostController.navigateToComposeSubject(id)
     }
 

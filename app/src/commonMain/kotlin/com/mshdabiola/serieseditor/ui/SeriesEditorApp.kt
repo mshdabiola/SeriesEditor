@@ -332,6 +332,7 @@ fun NavigationSheet(
                 selected = checkIfSelected(it.id),
                 label = it.name,
                 onClick = { onSubjectClick(it.id) },
+                series = it.seriesLabel
             )
         }
         item {

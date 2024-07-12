@@ -8,8 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
+import com.mshdabiola.generalmodel.Series
 import com.mshdabiola.generalmodel.User
 import com.mshdabiola.generalmodel.UserType
 import com.mshdabiola.model.UserData
@@ -31,6 +33,7 @@ class MainAppViewModel(
     subjectRepository: ISubjectRepository,
     userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
+    private val seriesRepository: SeriesRepository
 ) : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -45,6 +48,9 @@ class MainAppViewModel(
 
             _user.value = userRepository.getUser().first()
 
+
+
+
             if(user.value==null){
                 val userr= User(
                     id = -1,
@@ -56,6 +62,9 @@ class MainAppViewModel(
                 )
                 _user.value=userr
                 userRepository.setUser(userr)
+
+                seriesRepository.upsert(Series(-1, userId = userr.id, "Default"))
+
             }
 
 
@@ -78,7 +87,7 @@ class MainAppViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     val subjects = subjectRepository
-        .getAll()
+        .getAllWithSeries()
         .map { subjectList -> subjectList.map { it.toUi() } }
         // .asResult()
         .stateIn(
