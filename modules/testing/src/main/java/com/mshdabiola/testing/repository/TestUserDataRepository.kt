@@ -60,6 +60,10 @@ class TestUserDataRepository : UserDataRepository {
         }
     }
 
+    override suspend fun setUserId(id: Long) {
+        TODO("Not yet implemented")
+    }
+
     /**
      * A test-only API to allow setting of user data directly.
      */
