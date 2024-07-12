@@ -49,34 +49,34 @@ class ComposeSubjectViewModel(
         .getAll()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    val currentSeriesId = mutableStateOf(0L)
+    val currentSeriesId = mutableStateOf(1L)
 
     private val _update = MutableStateFlow(Update.Edit)
     val update = _update.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val series = seriesRepository
-                .getOne(1)
-                .first()
-            val user = userDataRepository
-                .userData
-                .first()
-            if (series == null) {
-                seriesRepository.upsert(Series(-1, userId = user.userId, "General"))
-            }
-            currentSeriesId.value = 1
-        }
+
         viewModelScope.launch {
             if (subjectId > 0) {
                 val sub = subjectRepository
-                    .getOne(subjectId)
+                    .getOneWithSeries(subjectId)
                     .first()
 
                 if (sub != null) {
 
+
                     subjectState.edit {
-                        append(sub.title)
+                        append(sub.subject.title)
+                    }
+
+                    kotlinx.coroutines.delay(1500)
+                    currentSeriesId.value = sub.series.id
+                    if (sub.series.id > 1) {
+
+                        seriesState.edit {
+                            append(sub.series.name)
+                        }
+
                     }
                 }
             }
