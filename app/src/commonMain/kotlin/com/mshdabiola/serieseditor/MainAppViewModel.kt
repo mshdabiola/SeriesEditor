@@ -9,12 +9,17 @@ import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.data.repository.UserRepository
+import com.mshdabiola.generalmodel.User
+import com.mshdabiola.generalmodel.UserType
 import com.mshdabiola.model.UserData
 import com.mshdabiola.serieseditor.MainActivityUiState.Loading
 import com.mshdabiola.serieseditor.MainActivityUiState.Success
 import com.mshdabiola.ui.toUi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -24,8 +29,42 @@ import kotlinx.coroutines.launch
 class MainAppViewModel(
     userDataRepository: UserDataRepository,
     subjectRepository: ISubjectRepository,
+    userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
 ) : ViewModel() {
+
+    private val _user = MutableStateFlow<User?>(null)
+    val user = _user.asStateFlow()
+
+    init {
+
+        viewModelScope.launch {
+            val id =userDataRepository.userData
+                .first()
+                .userId
+
+            _user.value = userRepository.getUser().first()
+
+            if(user.value==null){
+                val userr= User(
+                    id = -1,
+                    name = "Abiola",
+                    type = UserType.TEACHER,
+                    password = "cheatmobi",
+                    imagePath = "",
+                    points = 1
+                )
+                _user.value=userr
+                userRepository.setUser(userr)
+            }
+
+
+
+
+        }
+    }
+
+
     val uiState: StateFlow<MainActivityUiState> = userDataRepository.userData.map {
         Success(it)
     }.stateIn(
