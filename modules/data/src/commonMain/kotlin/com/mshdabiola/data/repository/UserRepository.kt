@@ -13,15 +13,15 @@ class UserRepository(
     private val userDao: UserDao,
     private val ioDispatcher: CoroutineDispatcher,
 ) : IUserRepository {
-    override fun getUser(): Flow<User?> {
+    override fun getUser(id: Long): Flow<User?> {
         return userDao.getUserById(1)
             .map {
                 it?.asModel()
             }
     }
 
-    override suspend fun setUser(user: User) {
-        withContext(ioDispatcher) {
+    override suspend fun setUser(user: User): Long {
+      return  withContext(ioDispatcher) {
             userDao.insertUser(user.asEntity())
         }
     }

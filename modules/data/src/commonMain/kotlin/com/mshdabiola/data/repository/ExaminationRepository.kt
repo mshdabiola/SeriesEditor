@@ -43,6 +43,15 @@ internal class ExaminationRepository constructor(
             .flowOn(ioDispatcher)
     }
 
+    override fun getAllWithSubject(): Flow<List<ExaminationWithSubject>> {
+        return examinationDao
+            .getAllWithSubject()
+            .map { fullList ->
+                fullList.map { it.asExam()}
+            }
+            .flowOn(ioDispatcher)
+    }
+
     override fun getAllBuSubjectId(subjectId: Long): Flow<List<ExaminationWithSubject>> {
         return examinationDao
             .getAllBySubjectIdWithSubject(subjectId)
