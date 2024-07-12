@@ -8,7 +8,7 @@ import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Option
 import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Question
-import com.mshdabiola.generalmodel.Subject
+import com.mshdabiola.generalmodel.SubjectWithSeries
 import com.mshdabiola.generalmodel.Topic
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.state.InstructionUiState
@@ -45,7 +45,7 @@ fun QuestionUiState.toQuestionWithOptions(examId: Long) = Question(
     options = options?.map {
         it.toOption(questionId = id, examId)
     },
-    type = if (isTheory)QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
+    type = if (isTheory) QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
     answers = answers?.map { it.toItem() } ?: emptyList(),
     instruction = instructionUiState?.toInstruction(),
     topic = topicUiState?.toTopic(),
@@ -97,8 +97,7 @@ fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
 fun Topic.toUi() = TopicUiState(id = id, subjectId = subjectId, name = title)
 fun TopicUiState.toTopic() = Topic(id = id, subjectId = subjectId, title = name)
 
-fun Subject.toUi() = SubjectUiState(id, seriesId, title)
-fun SubjectUiState.toSubject() = Subject(id, seriesId, name)
+fun SubjectWithSeries.toUi() = SubjectUiState(subject.id, series.name, subject.title)
 
 fun Examination.toUi() = ExamUiState(
     id = id,
