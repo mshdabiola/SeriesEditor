@@ -71,6 +71,7 @@ object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
             useDynamicColor = false,
             shouldHideOnboarding = false,
             contrast = Contrast.Normal,
+            userId = 0
         )
 
     override suspend fun readFrom(source: BufferedSource): UserDataSer {

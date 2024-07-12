@@ -19,4 +19,5 @@ data class UserDataSer(
     val useDynamicColor: Boolean,
     val shouldHideOnboarding: Boolean,
     val contrast: Contrast,
+    val userId :Long,
 )

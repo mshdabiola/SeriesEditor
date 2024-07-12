@@ -20,6 +20,7 @@ val emptyUserData = UserData(
     useDynamicColor = false,
     shouldHideOnboarding = false,
     contrast = Contrast.Normal,
+    userId = 0,
 )
 
 class TestUserDataRepository : UserDataRepository {
