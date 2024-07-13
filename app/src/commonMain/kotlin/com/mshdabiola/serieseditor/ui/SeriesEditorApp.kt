@@ -221,7 +221,7 @@ fun SeriesEditorApp() {
                                     }
                                 },
 
-                                ) { padding ->
+                            ) { padding ->
 
                                 Column(
                                     Modifier
@@ -286,14 +286,16 @@ fun NavigationSheet(
             ) {
                 Icon(
                     modifier = Modifier.size(60.dp),
-                    imageVector = Icons.Default.Person, contentDescription = "Person",
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Person",
                 )
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
-                        "${user?.name}", style = MaterialTheme.typography.headlineSmall,
+                        "${user?.name}",
+                        style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Text(
@@ -332,7 +334,7 @@ fun NavigationSheet(
                 selected = checkIfSelected(it.id),
                 label = it.name,
                 onClick = { onSubjectClick(it.id) },
-                series = it.seriesLabel
+                series = it.seriesLabel,
             )
         }
         item {

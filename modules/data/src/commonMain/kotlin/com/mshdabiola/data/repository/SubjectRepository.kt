@@ -1,8 +1,8 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.database.dao.SubjectDao
 import com.mshdabiola.database.asEntity
 import com.mshdabiola.database.asModel
+import com.mshdabiola.database.dao.SubjectDao
 import com.mshdabiola.generalmodel.Subject
 import com.mshdabiola.generalmodel.SubjectWithSeries
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,7 +22,6 @@ internal class SubjectRepository constructor(
     }
 
     override fun getAll(): Flow<List<Subject>> {
-
         return subjectDao
             .getAll()
             .map { noteEntities ->

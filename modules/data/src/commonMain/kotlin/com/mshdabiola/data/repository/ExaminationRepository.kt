@@ -47,7 +47,7 @@ internal class ExaminationRepository constructor(
         return examinationDao
             .getAllWithSubject()
             .map { fullList ->
-                fullList.map { it.asExam()}
+                fullList.map { it.asExam() }
             }
             .flowOn(ioDispatcher)
     }

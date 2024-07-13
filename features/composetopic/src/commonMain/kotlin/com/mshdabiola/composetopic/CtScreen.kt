@@ -96,14 +96,14 @@ internal fun CtRoute(
         update = update.value,
         categoryState = viewModel.categoryState,
         currentCategory = viewModel.currentCategoryId.value,
-        categories =categories.value,
+        categories = categories.value,
         name = viewModel.state,
         topicInput = viewModel.topicInput,
         onAddTopic = viewModel::addTopic,
         onAddTopicInput = viewModel::addTopicInput,
         onCategoryChange = viewModel::onCurrentSeriesChange,
         addCategory = viewModel::addCategory,
-        onDeleteCategory = viewModel::onDeleteCategory
+        onDeleteCategory = viewModel::onDeleteCategory,
     )
 }
 
@@ -178,7 +178,6 @@ internal fun CtScreen(
                                 },
                                 selected = currentCategory == it.id,
                                 onClick = {
-
                                     onCategoryChange(it.id)
                                 },
                                 label = { Text(it.name) },
@@ -202,8 +201,6 @@ internal fun CtScreen(
                             Icon(Icons.AutoMirrored.Outlined.NavigateNext, "next")
                         }
                     }
-
-
                 }
 
                 SeriesEditorTextField(
@@ -240,8 +237,7 @@ internal fun CtScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                )
-                {
+                ) {
                     AnimatedVisibility(currentCategory > 1) {
                         TextButton(onClick = onDeleteCategory) {
                             Text("Delete")
@@ -259,20 +255,15 @@ internal fun CtScreen(
                                     Icon(Icons.Default.Update, "update")
                                     Text("Update Category")
                                 }
-
                             } else {
                                 Row {
                                     Icon(Icons.Default.Add, "Add")
                                     Text("Add Category")
                                 }
-
                             }
-
                         }
-
                     }
                 }
-
             }
 
             Update.Saving -> {

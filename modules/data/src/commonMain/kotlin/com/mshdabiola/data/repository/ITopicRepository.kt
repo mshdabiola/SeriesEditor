@@ -15,6 +15,5 @@ interface ITopicRepository {
 
     fun getOneWithCategory(id: Long): Flow<TopicWithCategory?>
 
-
     suspend fun delete(id: Long)
 }

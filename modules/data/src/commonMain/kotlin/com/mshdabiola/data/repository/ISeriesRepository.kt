@@ -9,7 +9,7 @@ interface ISeriesRepository {
 
     fun getOne(id: Long): Flow<Series?>
 
-    suspend fun upsert(series: Series) :Long
+    suspend fun upsert(series: Series): Long
 
     suspend fun delete(id: Long)
 }

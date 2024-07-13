@@ -24,8 +24,6 @@ import androidx.compose.material.icons.automirrored.outlined.NavigateNext
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.NavigateNext
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -66,12 +64,11 @@ internal fun SubjectRoute(
     onFinish: () -> Unit,
     onShowSnack: suspend (String, String?) -> Boolean,
 
-    ) {
+) {
     val viewModel: ComposeSubjectViewModel = koinViewModel(parameters = { parametersOf(subjectId) })
 
     val update = viewModel.update.collectAsStateWithLifecycleCommon()
     val series = viewModel.series.collectAsStateWithLifecycleCommon()
-
 
     LaunchedEffect(update.value) {
         if (update.value == Update.Success) {
@@ -107,7 +104,6 @@ internal fun SubjectScreen(
     onSeriesChange: (Long) -> Unit = {},
     onDeleteSeries: () -> Unit = {},
 ) {
-
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -115,7 +111,7 @@ internal fun SubjectScreen(
         modifier = modifier
             .testTag("composesubject:screen"),
 
-        ) {
+    ) {
         when (update) {
             Update.Edit -> {
                 Section(title = "Subject Section")
@@ -154,7 +150,6 @@ internal fun SubjectScreen(
                                 },
                                 selected = currentSeries == it.id,
                                 onClick = {
-
                                     onSeriesChange(it.id)
                                 },
                                 label = { Text(it.name) },
@@ -178,8 +173,6 @@ internal fun SubjectScreen(
                             Icon(Icons.AutoMirrored.Outlined.NavigateNext, "next")
                         }
                     }
-
-
                 }
 
                 SeriesEditorTextField(
@@ -218,8 +211,7 @@ internal fun SubjectScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                )
-                {
+                ) {
                     AnimatedVisibility(currentSeries > 1) {
                         TextButton(onClick = onDeleteSeries) {
                             Text("Delete")
@@ -237,21 +229,15 @@ internal fun SubjectScreen(
                                     Icon(Icons.Default.Update, "update")
                                     Text("Update Series")
                                 }
-
                             } else {
                                 Row {
                                     Icon(Icons.Default.Add, "Add")
                                     Text("Add Series")
                                 }
-
                             }
-
                         }
-
                     }
                 }
-
-
             }
 
             Update.Saving -> {

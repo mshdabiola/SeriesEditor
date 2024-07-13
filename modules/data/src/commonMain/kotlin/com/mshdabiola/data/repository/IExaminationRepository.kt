@@ -14,7 +14,7 @@ interface IExaminationRepository {
 
     fun getAllBuSubjectId(subjectId: Long): Flow<List<ExaminationWithSubject>>
 
-     fun getAllWithSubject(): Flow<List<ExaminationWithSubject>>
+    fun getAllWithSubject(): Flow<List<ExaminationWithSubject>>
     fun getOne(id: Long): Flow<ExaminationWithSubject?>
 
     suspend fun delete(id: Long)

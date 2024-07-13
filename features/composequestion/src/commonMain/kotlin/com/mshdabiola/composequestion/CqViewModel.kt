@@ -16,8 +16,6 @@ import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ITopicCategory
-import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.data.repository.TopicCategoryRepository
 import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil.getAppPath

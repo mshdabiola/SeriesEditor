@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -64,7 +63,6 @@ class ComposeSubjectViewModel(
 
                 if (sub != null) {
 
-
                     subjectState.edit {
                         append(sub.subject.title)
                     }
@@ -76,12 +74,10 @@ class ComposeSubjectViewModel(
                         seriesState.edit {
                             append(sub.series.name)
                         }
-
                     }
                 }
             }
         }
-
     }
 
     fun addSubject() {
@@ -99,9 +95,7 @@ class ComposeSubjectViewModel(
     }
 
     fun onCurrentSeriesChange(id: Long) {
-
         currentSeriesId.value = id
-
 
         seriesState.clearText()
 
@@ -110,8 +104,6 @@ class ComposeSubjectViewModel(
                 append(series.value.find { it.id == id }?.name)
             }
         }
-
-
     }
 
     fun addSeries() {
@@ -139,7 +131,6 @@ class ComposeSubjectViewModel(
             seriesRepository.delete(currentSeriesId.value)
             seriesState.clearText()
             currentSeriesId.value = 1
-
         }
     }
 }

@@ -43,7 +43,6 @@ class MainAppViewModel(
 
         viewModelScope.launch {
 
-
             _user.value = userRepository.getUser(1).first()
 
             if (user.value == null) {
@@ -60,13 +59,9 @@ class MainAppViewModel(
                 userDataRepository.setUserId(id)
 
                 seriesRepository.upsert(Series(-1, userId = id, "Default"))
-
             }
-
-
         }
     }
-
 
     val uiState: StateFlow<MainActivityUiState> = userDataRepository.userData.map {
         Success(it)
@@ -109,15 +104,16 @@ class MainAppViewModel(
     fun selectAll(subjectId: Long) {
         viewModelScope.launch {
             val list =
-                (if (subjectId < 0) {
-                    iExamRepository.getAll()
-                        .mapNotNull { it.map { it.id } }
-                } else {
-                    iExamRepository
-                        .getAllBuSubjectId(subjectId)
-                        .mapNotNull { it.map { it.examination.id } }
-                }).first()
-
+                (
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

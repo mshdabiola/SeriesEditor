@@ -109,7 +109,7 @@ fun ExaminationWithSubject.toUi() = ExamUiState(
     id = examination.id,
     year = examination.year,
     duration = examination.duration,
-    subject = SubjectUiState(subject.id,series.name,subject.title)
+    subject = SubjectUiState(subject.id, series.name, subject.title),
 )
 
 fun ExamUiState.toExam() =

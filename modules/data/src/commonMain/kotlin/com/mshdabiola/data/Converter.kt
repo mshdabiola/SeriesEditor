@@ -21,7 +21,7 @@ class Converter {
                 .filter { it.isNotBlank() }
                 .map {
                     Topic(
-                        categoryId = subjectId, //Todo: get category id
+                        categoryId = subjectId, // Todo: get category id
                         title = it,
                     )
                 }

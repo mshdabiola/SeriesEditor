@@ -1,8 +1,8 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.database.dao.SeriesDao
 import com.mshdabiola.database.asEntity
 import com.mshdabiola.database.asModel
+import com.mshdabiola.database.dao.SeriesDao
 import com.mshdabiola.generalmodel.Series
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -23,8 +23,8 @@ class SeriesRepository(
             .map { it?.asModel() }
     }
 
-    override suspend fun upsert(series: Series):Long {
-       return withContext(ioDispatcher) {
+    override suspend fun upsert(series: Series): Long {
+        return withContext(ioDispatcher) {
             seriesDao.upsert(series.asEntity())
         }
     }

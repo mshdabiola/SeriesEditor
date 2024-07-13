@@ -33,19 +33,19 @@ class TopicCategoryRepository(
     override fun getTopicBySubject(subjectId: Long): Flow<List<TopicWithCategory>> {
         return topicCategoryDao
             .getAllWithTopicsBySubjectId(subjectId)
-            .map { withTopics -> withTopics.map { it.asModel() }.flatten()}
+            .map { withTopics -> withTopics.map { it.asModel() }.flatten() }
             .flowOn(ioDispatcher)
     }
 
     override fun getCategories(subjectId: Long): Flow<List<TopicCategory>> {
-       return topicCategoryDao
-           .getAllBySubjectId(subjectId)
-           .map { entities -> entities.map { it.asModel() } }
-           .flowOn(ioDispatcher)
+        return topicCategoryDao
+            .getAllBySubjectId(subjectId)
+            .map { entities -> entities.map { it.asModel() } }
+            .flowOn(ioDispatcher)
     }
 
     override suspend fun upsert(topicCategory: TopicCategory): Long {
-        return withContext(ioDispatcher){
+        return withContext(ioDispatcher) {
             topicCategoryDao.upsert(topicCategory.asEntity())
         }
     }

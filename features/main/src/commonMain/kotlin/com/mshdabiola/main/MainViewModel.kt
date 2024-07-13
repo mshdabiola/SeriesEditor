@@ -43,14 +43,14 @@ internal class MainViewModel constructor(
         combine(
             iExamRepository.getAllWithSubject(),
             iExamRepository.selectedList,
-            userDataRepository.userData.map { it.userId }
-        ) { list, ids,userId ->
-            Triple(list, ids,userId)
+            userDataRepository.userData.map { it.userId },
+        ) { list, ids, userId ->
+            Triple(list, ids, userId)
         }
             .onEach { println(it) }
             .map { triple ->
                 triple.first
-                    .filter { it.series.userId==triple.third }
+                    .filter { it.series.userId == triple.third }
                     .filter {
                         if (subjectId > 0) {
                             it.subject.id == subjectId
