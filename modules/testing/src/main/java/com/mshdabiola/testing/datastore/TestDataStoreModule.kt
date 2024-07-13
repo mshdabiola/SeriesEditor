@@ -8,7 +8,6 @@ import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
 import com.mshdabiola.datastore.Store
 import com.mshdabiola.datastore.StoreImpl
-import com.mshdabiola.datastore.model.CurrentExamJsonSerializer
 import com.mshdabiola.datastore.model.InstructionJsonSerializer
 import com.mshdabiola.datastore.model.QuestionJsonSerializer
 import com.mshdabiola.datastore.model.UserDataJsonSerializer
@@ -46,19 +45,13 @@ val dataStoreModule = module {
         )
     }
 
-    single(qualifier = qualifier("current")) {
-        val tmpFolder: TemporaryFolder = get()
-        tmpFolder.testCurrentPreferencesDataStore(
-            coroutineScope = get(),
-        )
-    }
+
 
     single {
         StoreImpl(
             userdata = get(qualifier = qualifier("userdata")),
             question = get(qualifier = qualifier("question")),
             instruction = get(qualifier = qualifier("instruction")),
-            current = get(qualifier = qualifier("current")),
             coroutineDispatcher = get(),
         )
     } bind Store::class
@@ -80,21 +73,6 @@ fun TemporaryFolder.testUserPreferencesDataStore(
     ),
 )
 
-fun TemporaryFolder.testCurrentPreferencesDataStore(
-    coroutineScope: CoroutineScope,
-) = DataStoreFactory.create(
-    storage = OkioStorage(
-        fileSystem = FileSystem.SYSTEM,
-        serializer = CurrentExamJsonSerializer,
-        producePath = {
-            val path = File(newFolder(), "current")
-            if (!path.parentFile.exists()) {
-                path.mkdirs()
-            }
-            path.toOkioPath()
-        },
-    ),
-)
 
 fun TemporaryFolder.testQuestionPreferencesDataStore(
     coroutineScope: CoroutineScope,

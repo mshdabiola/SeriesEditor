@@ -1,7 +1,6 @@
 package com.mshdabiola.datastore.di
 
 import android.content.Context
-import com.mshdabiola.datastore.createDataStoreCurrentExam
 import com.mshdabiola.datastore.createDataStoreInstruction
 import com.mshdabiola.datastore.createDataStoreQuestion
 import com.mshdabiola.datastore.createDataStoreUserData
@@ -32,9 +31,5 @@ actual val datastoreModule: Module
             createDataStoreInstruction { context.filesDir.resolve("instruction").absolutePath }
         }
 
-        single(qualifier = qualifier("current")) {
-            val context: Context = get()
 
-            createDataStoreCurrentExam { context.filesDir.resolve("current").absolutePath }
-        }
     }
