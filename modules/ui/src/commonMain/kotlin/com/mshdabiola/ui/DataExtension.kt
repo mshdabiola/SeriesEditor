@@ -10,7 +10,7 @@ import com.mshdabiola.generalmodel.Option
 import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.generalmodel.SubjectWithSeries
-import com.mshdabiola.generalmodel.Topic
+import com.mshdabiola.generalmodel.TopicWithCategory
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
@@ -94,9 +94,8 @@ fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
         title = TextFieldState(title),
         content = content.map { it.toItemUi(isEdit = isEdit) }.toImmutableList(),
     )
-
-fun Topic.toUi() = TopicUiState(id = id, subjectId = subjectId, name = title)
-fun TopicUiState.toTopic() = Topic(id = id, subjectId = subjectId, title = name)
+fun TopicWithCategory.toUi() = TopicUiState(id = id, topicCategory = topicCategory, name = title)
+fun TopicUiState.toTopic() = TopicWithCategory(id = id, topicCategory = topicCategory, title = name)
 
 fun SubjectWithSeries.toUi() = SubjectUiState(subject.id, series.name, subject.title)
 
