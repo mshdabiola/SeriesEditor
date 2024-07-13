@@ -4,6 +4,7 @@ import com.mshdabiola.database.dao.TopicDao
 import com.mshdabiola.database.asEntity
 import com.mshdabiola.database.asModel
 import com.mshdabiola.generalmodel.Topic
+import com.mshdabiola.generalmodel.TopicWithCategory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -39,7 +40,7 @@ internal class TopicRepository(
 
     override fun getAllBySubject(subjectID: Long): Flow<List<Topic>> {
         return topicDao
-            .getAllBySubject(subjectID)
+            .getAllByCategory(subjectID)
             .map { noteEntities ->
                 noteEntities.map {
                     it.asModel()
@@ -51,6 +52,13 @@ internal class TopicRepository(
     override fun getOne(id: Long): Flow<Topic?> {
         return topicDao
             .getOne(id)
+            .map { it?.asModel() }
+            .flowOn(ioDispatcher)
+    }
+
+    override fun getOneWithCategory(id: Long): Flow<TopicWithCategory?> {
+        return topicDao
+            .getOneWithCategory(id)
             .map { it?.asModel() }
             .flowOn(ioDispatcher)
     }

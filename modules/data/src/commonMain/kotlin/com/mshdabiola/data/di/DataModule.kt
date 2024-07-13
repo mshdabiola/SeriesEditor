@@ -9,6 +9,7 @@ import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
 import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.data.repository.InstructionRepository
@@ -18,6 +19,7 @@ import com.mshdabiola.data.repository.RealINetworkRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.SettingRepository
 import com.mshdabiola.data.repository.SubjectRepository
+import com.mshdabiola.data.repository.TopicCategoryRepository
 import com.mshdabiola.data.repository.TopicRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
@@ -49,4 +51,5 @@ val dataModule = module {
     singleOf(::QuestionRepository) bind IQuestionRepository::class
     singleOf(::SeriesRepository) bind ISeriesRepository::class
     singleOf(::UserRepository) bind IUserRepository::class
+    singleOf(::TopicCategoryRepository) bind ITopicCategory::class
 }
