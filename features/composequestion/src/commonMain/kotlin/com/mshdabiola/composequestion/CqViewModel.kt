@@ -15,7 +15,9 @@ import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
+import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
+import com.mshdabiola.data.repository.TopicCategoryRepository
 import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil.getAppPath
@@ -49,7 +51,7 @@ class CqViewModel(
     private val instructionRepository: IInstructionRepository,
     private val examRepository: IExaminationRepository,
     private val settingRepository: ISettingRepository,
-    private val topicRepository: ITopicRepository,
+    private val topicCategory: ITopicCategory,
 
 ) : ViewModel() {
 
@@ -91,8 +93,8 @@ class CqViewModel(
             subjectId = examtem?.subject?.id ?: -1L
 
             examtem?.subject?.id?.let {
-                topicRepository
-                    .getAllBySubject(it)
+                topicCategory
+                    .getTopicBySubject(it)
                     .map { it.map { it.toUi() } }
                     .collectLatest { topics ->
                         _topics.update {
