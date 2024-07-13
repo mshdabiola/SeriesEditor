@@ -1,8 +1,8 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.database.dao.TopicDao
-import com.mshdabiola.database.model.asEntity
-import com.mshdabiola.database.model.asModel
+import com.mshdabiola.database.asEntity
+import com.mshdabiola.database.asModel
 import com.mshdabiola.generalmodel.Topic
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-internal class TopicRepository constructor(
+internal class TopicRepository(
     private val topicDao: TopicDao,
     private val ioDispatcher: CoroutineDispatcher,
 ) : ITopicRepository {

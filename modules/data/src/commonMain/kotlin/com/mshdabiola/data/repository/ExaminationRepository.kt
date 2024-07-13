@@ -1,10 +1,10 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.database.DatabaseExportImport
-import com.mshdabiola.database.dao.exam.ExaminationDao
-import com.mshdabiola.database.model.asEntity
-import com.mshdabiola.database.model.asExam
-import com.mshdabiola.database.model.asModel
+import com.mshdabiola.database.asEntity
+import com.mshdabiola.database.asExam
+import com.mshdabiola.database.asModel
+import com.mshdabiola.database.dao.ExaminationDao
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.ExaminationWithSubject
 import kotlinx.coroutines.CoroutineDispatcher

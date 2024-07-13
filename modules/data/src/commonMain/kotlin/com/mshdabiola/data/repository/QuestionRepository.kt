@@ -1,10 +1,10 @@
 package com.mshdabiola.data.repository
 
 import co.touchlab.kermit.Logger
-import com.mshdabiola.database.dao.exam.OptionDao
-import com.mshdabiola.database.dao.exam.QuestionDao
-import com.mshdabiola.database.model.asEntity
-import com.mshdabiola.database.model.asModel
+import com.mshdabiola.database.dao.OptionDao
+import com.mshdabiola.database.dao.QuestionDao
+import com.mshdabiola.database.asEntity
+import com.mshdabiola.database.asModel
 import com.mshdabiola.generalmodel.Question
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
