@@ -86,7 +86,7 @@ class MainAppViewModel(
             initialValue = emptyList(),
         )
 
-    fun onExport( outputStream: OutputStream, key: String) {
+    fun onExport(outputStream: OutputStream, key: String) {
         viewModelScope.launch {
             val ids = iExamRepository.selectedList.first().toSet()
 

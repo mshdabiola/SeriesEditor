@@ -45,8 +45,6 @@ val dataStoreModule = module {
         )
     }
 
-
-
     single {
         StoreImpl(
             userdata = get(qualifier = qualifier("userdata")),
@@ -72,7 +70,6 @@ fun TemporaryFolder.testUserPreferencesDataStore(
         },
     ),
 )
-
 
 fun TemporaryFolder.testQuestionPreferencesDataStore(
     coroutineScope: CoroutineScope,

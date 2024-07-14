@@ -1,6 +1,5 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.database.DatabaseExportImport
 import com.mshdabiola.database.ExportImport
 import com.mshdabiola.database.asEntity
 import com.mshdabiola.database.asExam
@@ -84,7 +83,6 @@ internal class ExaminationRepository constructor(
     override suspend fun import(inputStream: InputStream, password: String) {
         exportImport.import(inputStream, password)
     }
-
 
     override fun updateSelect(isSelect: Boolean) {
         _isSelectMode.update {

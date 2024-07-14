@@ -1,7 +1,6 @@
 package com.mshdabiola.designsystem.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -79,8 +78,6 @@ fun MainExportDialog(
                         maxNum = TextFieldLineLimits.SingleLine,
                     )
 
-
-
                     Row(
                         modifier = Modifier.align(Alignment.End),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -91,9 +88,9 @@ fun MainExportDialog(
 
                         Button(
                             onClick = {
-                                val file = File(path.text.toString(),"data.se")
-                                if(file.parentFile?.exists() == false){
-                                 file.parentFile?.mkdirs()
+                                val file = File(path.text.toString(), "data.se")
+                                if (file.parentFile?.exists() == false) {
+                                    file.parentFile?.mkdirs()
                                 }
                                 if (!file.exists()) {
                                     file.createNewFile()
@@ -144,7 +141,7 @@ fun DeleteDialog(
                 ElevatedButton(
                     onClick = onDelete,
 
-                    ) {
+                ) {
                     Text("Delete exam")
                 }
             },
