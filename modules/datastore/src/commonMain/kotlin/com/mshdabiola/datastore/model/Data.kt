@@ -75,7 +75,13 @@ object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
         )
 
     override suspend fun readFrom(source: BufferedSource): UserDataSer {
-        return json.decodeFromString<UserDataSer>(source.readUtf8())
+        return try {
+            json.decodeFromString<UserDataSer>(source.readUtf8())
+        }catch (e:Exception){
+            e.printStackTrace()
+            defaultValue
+        }
+
     }
 
     override suspend fun writeTo(t: UserDataSer, sink: BufferedSink) {

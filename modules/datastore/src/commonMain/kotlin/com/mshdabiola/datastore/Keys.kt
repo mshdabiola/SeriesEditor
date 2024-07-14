@@ -1,5 +1,6 @@
 package com.mshdabiola.datastore
 
+import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
