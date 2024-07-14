@@ -1,6 +1,7 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.database.DatabaseExportImport
+import com.mshdabiola.database.ExportImport
 import com.mshdabiola.database.asEntity
 import com.mshdabiola.database.asExam
 import com.mshdabiola.database.asModel
@@ -15,11 +16,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import java.io.InputStream
+import java.io.OutputStream
 
 internal class ExaminationRepository constructor(
     private val examinationDao: ExaminationDao,
     private val ioDispatcher: CoroutineDispatcher,
-    private val exportImport: DatabaseExportImport,
+    private val exportImport: ExportImport,
 ) : IExaminationRepository {
 
     private val _isSelectMode = MutableStateFlow(false)
@@ -74,19 +77,14 @@ internal class ExaminationRepository constructor(
         }
     }
 
-    override suspend fun export(
-        examsId: List<Long>,
-        path: String,
-        name: String,
-        version: Int,
-        key: String,
-    ) {
-        exportImport.export(examsId.toSet(), path, name, version, key)
+    override suspend fun export(examsId: Set<Long>, outputStream: OutputStream, password: String) {
+        exportImport.export(examsId, outputStream, password)
     }
 
-    override suspend fun import(path: String, key: String) {
-        exportImport.import(path, key)
+    override suspend fun import(inputStream: InputStream, password: String) {
+        exportImport.import(inputStream, password)
     }
+
 
     override fun updateSelect(isSelect: Boolean) {
         _isSelectMode.update {

@@ -3,6 +3,8 @@ package com.mshdabiola.data.repository
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.ExaminationWithSubject
 import kotlinx.coroutines.flow.Flow
+import java.io.InputStream
+import java.io.OutputStream
 
 interface IExaminationRepository {
 
@@ -20,16 +22,14 @@ interface IExaminationRepository {
     suspend fun delete(id: Long)
 
     suspend fun export(
-        examsId: List<Long>,
-        path: String,
-        name: String,
-        version: Int,
-        key: String,
+        examsId: Set<Long>,
+        outputStream: OutputStream,
+        password: String,
     )
 
     suspend fun import(
-        path: String,
-        key: String,
+        inputStream: InputStream,
+        password: String,
     )
 
     fun updateSelect(isSelect: Boolean)
