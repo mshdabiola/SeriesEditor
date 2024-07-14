@@ -20,6 +20,7 @@ val emptyUserData = UserData(
     useDynamicColor = false,
     shouldHideOnboarding = false,
     contrast = Contrast.Normal,
+    userId = 0,
 )
 
 class TestUserDataRepository : UserDataRepository {
@@ -57,6 +58,10 @@ class TestUserDataRepository : UserDataRepository {
         currentUserData.let { current ->
             _userData.tryEmit(current.copy(shouldHideOnboarding = shouldHideOnboarding))
         }
+    }
+
+    override suspend fun setUserId(id: Long) {
+        TODO("Not yet implemented")
     }
 
     /**

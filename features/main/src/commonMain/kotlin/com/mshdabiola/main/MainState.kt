@@ -16,7 +16,7 @@ data class MainState(
     val name: String = "abiola",
     val currentSubjectId: Long = -1,
     val examination: ExamUiState = ExamUiState(),
-    val subject: SubjectUiState = SubjectUiState(name = ""),
+    val subject: SubjectUiState = SubjectUiState(name = "", seriesLabel = "Jamb"),
     val dateError: Boolean = false,
     val isSelectMode: Boolean = false,
     val examinations: ImmutableList<ExamUiState> = emptyList<ExamUiState>().toImmutableList(),

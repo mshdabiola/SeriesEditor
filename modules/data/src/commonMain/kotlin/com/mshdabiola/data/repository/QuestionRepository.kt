@@ -1,8 +1,8 @@
 package com.mshdabiola.data.repository
 
 import co.touchlab.kermit.Logger
-import com.mshdabiola.data.model.asEntity
-import com.mshdabiola.data.model.asModel
+import com.mshdabiola.database.asEntity
+import com.mshdabiola.database.asModel
 import com.mshdabiola.database.dao.OptionDao
 import com.mshdabiola.database.dao.QuestionDao
 import com.mshdabiola.generalmodel.Question
@@ -42,7 +42,7 @@ internal class QuestionRepository constructor(
 
     override fun getAll(): Flow<List<Question>> {
         return questionDao
-            .getAll()
+            .getAllWithOptsInstTop()
             .map { noteEntities ->
                 noteEntities.map {
                     it.asModel()
@@ -53,7 +53,7 @@ internal class QuestionRepository constructor(
 
     override fun getOne(id: Long): Flow<Question?> {
         return questionDao
-            .getOne(id)
+            .getOneWithOptsInstTop(id)
             .map { it?.asModel() }
             .flowOn(ioDispatcher)
     }
@@ -70,14 +70,15 @@ internal class QuestionRepository constructor(
     }
 
     override fun getByRandom(number: Long): Flow<List<Question>> {
-        return questionDao
-            .getByRandom(number)
-            .map { noteEntities ->
-                noteEntities.map {
-                    it.asModel()
-                }
-            }
-            .flowOn(ioDispatcher)
+        TODO("Not yet implemented")
+//        return questionDao
+//            .getByRandom(number)
+//            .map { noteEntities ->
+//                noteEntities.map {
+//                    it.asModel()
+//                }
+//            }
+//            .flowOn(ioDispatcher)
     }
 
     override suspend fun delete(id: Long) {

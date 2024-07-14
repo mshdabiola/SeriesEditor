@@ -19,7 +19,9 @@ const val FULL_CS_ROUTE = "$CS_ROUTE/{$SUBJECT_ID}"
 
 fun NavController.navigateToComposeSubject(
     subjectId: Long,
-    navOptions: NavOptions = androidx.navigation.navOptions { },
+    navOptions: NavOptions = androidx.navigation.navOptions {
+        this.launchSingleTop
+    },
 ) = navigate("$CS_ROUTE/$subjectId", navOptions)
 
 fun NavGraphBuilder.composeSubjectScreen(

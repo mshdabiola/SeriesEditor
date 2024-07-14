@@ -21,11 +21,12 @@ class SettingViewModel constructor(
     private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
     private val default = UserData(
-        useDynamicColor = false,
         themeBrand = ThemeBrand.DEFAULT,
-        contrast = Contrast.Normal,
         darkThemeConfig = DarkThemeConfig.LIGHT,
+        useDynamicColor = false,
         shouldHideOnboarding = true,
+        contrast = Contrast.Normal,
+        userId = 0,
     )
     val uiState: StateFlow<SettingState> = userDataRepository.userData.map {
         SettingState(it)

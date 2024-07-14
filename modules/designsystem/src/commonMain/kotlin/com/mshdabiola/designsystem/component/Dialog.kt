@@ -1,7 +1,6 @@
 package com.mshdabiola.designsystem.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,21 +33,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import java.io.File
+import java.io.OutputStream
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainExportDialog(
     show: Boolean,
-    export: (String, String, String, Int) -> Unit = { _, _, _, _ -> },
+    export: (OutputStream, String) -> Unit = { _, _ -> },
     onClose: () -> Unit = {},
 ) {
     var showDir by remember {
         mutableStateOf(false)
     }
     var path = rememberTextFieldState()
-    var name = rememberTextFieldState()
-    var key = rememberTextFieldState()
-    var version = rememberTextFieldState()
+
+    val key = rememberTextFieldState()
 
     if (show) {
         Dialog(onDismissRequest = onClose, properties = DialogProperties()) {
@@ -62,45 +61,19 @@ fun MainExportDialog(
                         text = "Export Examination",
                         style = MaterialTheme.typography.titleMedium,
                     )
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Text(modifier = Modifier.weight(0.3f), text = "Directory")
-                        Text(
-                            modifier = Modifier.weight(0.6f).basicMarquee(),
-                            text = path.text.toString(),
-                            maxLines = 1,
+                    IconButton(onClick = { showDir = true }) {
+                        Icon(
+                            modifier = Modifier.weight(0.1f),
+                            imageVector = Icons.Default.MoreHoriz,
+                            contentDescription = "select",
                         )
-                        IconButton(onClick = { showDir = true }) {
-                            Icon(
-                                modifier = Modifier.weight(0.1f),
-                                imageVector = Icons.Default.MoreHoriz,
-                                contentDescription = "select",
-                            )
-                        }
                     }
-
-                    SeriesEditorTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        state = name,
-                        label = "Name",
-                        placeholder = "data",
-                        imeAction = ImeAction.Next,
-                        maxNum = TextFieldLineLimits.SingleLine,
-                    )
 
                     SeriesEditorTextField(
                         modifier = Modifier.fillMaxWidth(),
                         state = key,
                         label = "key",
                         placeholder = "SwordFish",
-                        imeAction = ImeAction.Next,
-                        maxNum = TextFieldLineLimits.SingleLine,
-                    )
-
-                    SeriesEditorTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        state = version,
-                        label = "Data version",
-                        placeholder = "1",
                         imeAction = ImeAction.Next,
                         maxNum = TextFieldLineLimits.SingleLine,
                     )
@@ -115,16 +88,19 @@ fun MainExportDialog(
 
                         Button(
                             onClick = {
+                                val file = File(path.text.toString(), "data.se")
+                                if (file.parentFile?.exists() == false) {
+                                    file.parentFile?.mkdirs()
+                                }
+                                if (!file.exists()) {
+                                    file.createNewFile()
+                                }
                                 export(
-                                    path.text.toString(),
-                                    name.text.toString().ifBlank { "data" },
+                                    file.outputStream(),
                                     key.text.toString().ifBlank { "SwordFish" },
-                                    version.text.toString().toIntOrNull() ?: 0,
                                 )
-                                path.clearText()
-                                name.clearText()
+
                                 key.clearText()
-                                version.clearText()
                                 onClose()
                             },
                             enabled = path.text.isNotBlank(),

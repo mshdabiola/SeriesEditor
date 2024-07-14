@@ -3,14 +3,12 @@ package com.mshdabiola.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
-import com.mshdabiola.datastore.model.CurrentExamJsonSerializer
-import com.mshdabiola.datastore.model.CurrentExamSer
 import com.mshdabiola.datastore.model.InstructionJsonSerializer
-import com.mshdabiola.datastore.model.InstructionSer
 import com.mshdabiola.datastore.model.QuestionJsonSerializer
-import com.mshdabiola.datastore.model.QuestionSer
 import com.mshdabiola.datastore.model.UserDataJsonSerializer
 import com.mshdabiola.datastore.model.UserDataSer
+import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.generalmodel.Question
 import okio.FileSystem
 import okio.Path.Companion.toPath
 
@@ -28,7 +26,7 @@ fun createDataStoreUserData(
 
 fun createDataStoreInstruction(
     producePath: () -> String,
-): DataStore<Map<Long, InstructionSer>> = DataStoreFactory.create(
+): DataStore<Map<Long, Instruction>> = DataStoreFactory.create(
     storage = OkioStorage(
         fileSystem = FileSystem.SYSTEM,
         serializer = InstructionJsonSerializer,
@@ -40,22 +38,10 @@ fun createDataStoreInstruction(
 
 fun createDataStoreQuestion(
     producePath: () -> String,
-): DataStore<Map<Long, QuestionSer>> = DataStoreFactory.create(
+): DataStore<Map<Long, Question>> = DataStoreFactory.create(
     storage = OkioStorage(
         fileSystem = FileSystem.SYSTEM,
         serializer = QuestionJsonSerializer,
-        producePath = {
-            producePath().toPath()
-        },
-    ),
-)
-
-fun createDataStoreCurrentExam(
-    producePath: () -> String,
-): DataStore<CurrentExamSer> = DataStoreFactory.create(
-    storage = OkioStorage(
-        fileSystem = FileSystem.SYSTEM,
-        serializer = CurrentExamJsonSerializer,
         producePath = {
             producePath().toPath()
         },

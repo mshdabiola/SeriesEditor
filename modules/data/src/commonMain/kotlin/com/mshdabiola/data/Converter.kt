@@ -3,6 +3,7 @@ package com.mshdabiola.data
 import com.mshdabiola.generalmodel.Content
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Option
+import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.generalmodel.Topic
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ class Converter {
                 .filter { it.isNotBlank() }
                 .map {
                     Topic(
-                        subjectId = subjectId,
+                        categoryId = subjectId, // Todo: get category id
                         title = it,
                     )
                 }
@@ -152,11 +153,10 @@ class Converter {
                 Option(
                     number = index + 1L,
                     questionId = questionNos,
-                    examId = examId,
                     contents = listOf(itemise(s)),
                     isAnswer = false,
                     title = "",
-                    id = null,
+                    id = -1,
                 )
             }
 
@@ -165,7 +165,7 @@ class Converter {
             examId = examId,
             contents = listOf(itemise(content)),
             options = opti,
-            isTheory = opti.isEmpty(),
+            type = QUESTION_TYPE.ESSAY,
             answers = emptyList(),
             instruction = null,
             topic = null,
@@ -183,7 +183,7 @@ class Converter {
             examId = examId,
             contents = listOf(itemise(content)),
             options = emptyList(),
-            isTheory = true,
+            type = QUESTION_TYPE.ESSAY,
             answers = listOf(itemise(answer)),
             instruction = null,
             topic = null,

@@ -1,9 +1,10 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.data.model.asEntity
-import com.mshdabiola.data.model.asSub
+import com.mshdabiola.database.asEntity
+import com.mshdabiola.database.asModel
 import com.mshdabiola.database.dao.SubjectDao
 import com.mshdabiola.generalmodel.Subject
+import com.mshdabiola.generalmodel.SubjectWithSeries
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -25,7 +26,7 @@ internal class SubjectRepository constructor(
             .getAll()
             .map { noteEntities ->
                 noteEntities.map {
-                    it.asSub()
+                    it.asModel()
                 }
             }
             .flowOn(ioDispatcher)
@@ -34,7 +35,25 @@ internal class SubjectRepository constructor(
     override fun getOne(id: Long): Flow<Subject?> {
         return subjectDao
             .getOne(id)
-            .map { it?.asSub() }
+            .map { it?.asModel() }
+            .flowOn(ioDispatcher)
+    }
+
+    override fun getAllWithSeries(): Flow<List<SubjectWithSeries>> {
+        return subjectDao
+            .getAllWithSeries()
+            .map { noteEntities ->
+                noteEntities.map {
+                    it.asModel()
+                }
+            }
+            .flowOn(ioDispatcher)
+    }
+
+    override fun getOneWithSeries(id: Long): Flow<SubjectWithSeries?> {
+        return subjectDao
+            .getOneWithSeries(id)
+            .map { it?.asModel() }
             .flowOn(ioDispatcher)
     }
 

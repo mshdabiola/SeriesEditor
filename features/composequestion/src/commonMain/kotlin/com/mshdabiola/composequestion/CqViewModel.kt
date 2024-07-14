@@ -15,7 +15,8 @@ import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
-import com.mshdabiola.data.repository.ITopicRepository
+import com.mshdabiola.data.repository.ITopicCategory
+import com.mshdabiola.generalmodel.QUESTION_TYPE
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil.getAppPath
 import com.mshdabiola.ui.state.InstructionUiState
@@ -48,7 +49,7 @@ class CqViewModel(
     private val instructionRepository: IInstructionRepository,
     private val examRepository: IExaminationRepository,
     private val settingRepository: ISettingRepository,
-    private val topicRepository: ITopicRepository,
+    private val topicCategory: ITopicCategory,
 
 ) : ViewModel() {
 
@@ -90,8 +91,8 @@ class CqViewModel(
             subjectId = examtem?.subject?.id ?: -1L
 
             examtem?.subject?.id?.let {
-                topicRepository
-                    .getAllBySubject(it)
+                topicCategory
+                    .getTopicBySubject(it)
                     .map { it.map { it.toUi() } }
                     .collectLatest { topics ->
                         _topics.update {
@@ -148,9 +149,10 @@ class CqViewModel(
         viewModelScope.launch {
             val exam = examRepository.getOne(examId).firstOrNull() ?: return@launch
 
-            if (exam.isObjectiveOnly != isObjOnly) {
-                examRepository.upsert(exam.copy(isObjectiveOnly = isObjOnly))
-            }
+//
+//            if (exam.isObjectiveOnly != isObjOnly) {
+//                examRepository.upsert(exam.copy(isObjectiveOnly = isObjOnly))
+//            }
         }
     }
 
@@ -405,10 +407,10 @@ class CqViewModel(
                 .first()
 
             val number =
-                if (question2.number == -1L) questions.filter { it.isTheory == question2.isTheory }.size.toLong() + 1 else question2.number
+                if (question2.number == -1L) questions.filter { (it.type == QUESTION_TYPE.ESSAY) == question2.isTheory }.size.toLong() + 1 else question2.number
             question2 = question2.copy(number = number)
 
-            val allIsObj = questions.all { it.isTheory.not() } && question2.isTheory.not()
+            val allIsObj = questions.all { (it.type == QUESTION_TYPE.ESSAY).not() } && question2.isTheory.not()
             questionRepository.upsert(question2.toQuestionWithOptions(examId = examId))
             updateExamType(isObjOnly = allIsObj)
 

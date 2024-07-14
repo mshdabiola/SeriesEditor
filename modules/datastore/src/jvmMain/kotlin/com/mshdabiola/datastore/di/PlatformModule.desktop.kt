@@ -1,6 +1,5 @@
 package com.mshdabiola.datastore.di
 
-import com.mshdabiola.datastore.createDataStoreCurrentExam
 import com.mshdabiola.datastore.createDataStoreInstruction
 import com.mshdabiola.datastore.createDataStoreQuestion
 import com.mshdabiola.datastore.createDataStoreUserData
@@ -23,9 +22,5 @@ actual val datastoreModule: Module
 
         single(qualifier = qualifier("instruction")) {
             createDataStoreInstruction { "$generalPath/instructions" }
-        }
-
-        single(qualifier = qualifier("current")) {
-            createDataStoreCurrentExam { "$generalPath/current" }
         }
     }

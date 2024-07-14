@@ -14,7 +14,6 @@ internal val commonModule = module {
             userdata = get(qualifier = qualifier("userdata")),
             question = get(qualifier = qualifier("question")),
             instruction = get(qualifier = qualifier("instruction")),
-            current = get(qualifier = qualifier("current")),
             coroutineDispatcher = get(),
         )
     } bind Store::class

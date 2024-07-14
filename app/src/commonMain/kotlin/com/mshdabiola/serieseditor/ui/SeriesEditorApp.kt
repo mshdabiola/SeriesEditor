@@ -6,6 +6,7 @@ package com.mshdabiola.serieseditor.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,12 +19,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -61,6 +64,7 @@ import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
+import com.mshdabiola.generalmodel.User
 import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
@@ -102,6 +106,8 @@ fun SeriesEditorApp() {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutine = rememberCoroutineScope()
 
+    val user = viewModel.user.collectAsStateWithLifecycleCommon()
+
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
             darkTheme = darkTheme,
@@ -133,6 +139,7 @@ fun SeriesEditorApp() {
                                         onSubjectClick = appState::onSubjectClick,
                                         checkIfSelected = { currentSubjectId == it },
                                         onAddTopic = { appState.onAddTopic(currentSubjectId) },
+                                        user = user.value,
                                     )
                                 }
                             }
@@ -161,6 +168,7 @@ fun SeriesEditorApp() {
                                             },
                                             checkIfSelected = { currentSubjectId == it },
                                             onAddTopic = { appState.onAddTopic(currentSubjectId) },
+                                            user = user.value,
                                         )
                                     }
                                 }
@@ -264,6 +272,7 @@ fun SeriesEditorApp() {
 @Composable
 fun NavigationSheet(
     modifier: Modifier,
+    user: User?,
     subjects: List<SubjectUiState>,
     addSubject: (() -> Unit)? = null,
     onSubjectClick: (Long) -> Unit = {},
@@ -272,12 +281,36 @@ fun NavigationSheet(
 ) {
     LazyColumn(modifier = modifier) {
         item {
-            Text(
-                text = "Series Editor ",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleLarge,
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Icon(
+                    modifier = Modifier.size(60.dp),
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Person",
+                )
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        "${user?.name}",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Text(
+                        "${user?.type?.name?.lowercase()?.replaceFirstChar { it.uppercaseChar() }}",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+//            Text(
+//                text = "Series Editor ",
+//                color = MaterialTheme.colorScheme.primary,
+//                style = MaterialTheme.typography.titleLarge,
+//            )
         }
+
         item {
             Spacer(Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -301,6 +334,7 @@ fun NavigationSheet(
                 selected = checkIfSelected(it.id),
                 label = it.name,
                 onClick = { onSubjectClick(it.id) },
+                series = it.seriesLabel,
             )
         }
         item {

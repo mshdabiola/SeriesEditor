@@ -43,4 +43,8 @@ class FakeUserDataRepository constructor(
     override suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean) {
         skPreferencesDataSource.setShouldHideOnboarding(shouldHideOnboarding)
     }
+
+    override suspend fun setUserId(id: Long) {
+        TODO("Not yet implemented")
+    }
 }

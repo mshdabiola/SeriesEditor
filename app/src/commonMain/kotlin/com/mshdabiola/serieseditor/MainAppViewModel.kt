@@ -8,23 +8,62 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.data.repository.UserRepository
+import com.mshdabiola.generalmodel.Series
+import com.mshdabiola.generalmodel.User
+import com.mshdabiola.generalmodel.UserType
 import com.mshdabiola.model.UserData
 import com.mshdabiola.serieseditor.MainActivityUiState.Loading
 import com.mshdabiola.serieseditor.MainActivityUiState.Success
 import com.mshdabiola.ui.toUi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.OutputStream
 
 class MainAppViewModel(
     userDataRepository: UserDataRepository,
     subjectRepository: ISubjectRepository,
+    userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
+    private val seriesRepository: SeriesRepository,
 ) : ViewModel() {
+
+    private val _user = MutableStateFlow<User?>(null)
+    val user = _user.asStateFlow()
+
+    init {
+
+        viewModelScope.launch {
+
+            _user.value = userRepository.getUser(1).first()
+
+            if (user.value == null) {
+                val userr = User(
+                    id = -1,
+                    name = "Abiola",
+                    type = UserType.TEACHER,
+                    password = "cheatmobi",
+                    imagePath = "",
+                    points = 1,
+                )
+                _user.value = userr
+                val id = userRepository.setUser(userr)
+                userDataRepository.setUserId(id)
+
+                seriesRepository.upsert(Series(-1, userId = id, "Default"))
+            }
+        }
+    }
+
     val uiState: StateFlow<MainActivityUiState> = userDataRepository.userData.map {
         Success(it)
     }.stateIn(
@@ -38,7 +77,7 @@ class MainAppViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     val subjects = subjectRepository
-        .getAll()
+        .getAllWithSeries()
         .map { subjectList -> subjectList.map { it.toUi() } }
         // .asResult()
         .stateIn(
@@ -47,11 +86,11 @@ class MainAppViewModel(
             initialValue = emptyList(),
         )
 
-    fun onExport(path: String, name: String, key: String, version: Int) {
+    fun onExport(outputStream: OutputStream, key: String) {
         viewModelScope.launch {
-            val ids = iExamRepository.selectedList.first()
+            val ids = iExamRepository.selectedList.first().toSet()
 
-            iExamRepository.export(ids, path, name, version, key)
+            iExamRepository.export(ids, outputStream, key)
             deselectAll()
         }
     }
@@ -65,15 +104,17 @@ class MainAppViewModel(
 
     fun selectAll(subjectId: Long) {
         viewModelScope.launch {
-            val list = (
-                if (subjectId < 0) {
-                    iExamRepository.getAll()
-                } else {
-                    iExamRepository
-                        .getAllBuSubjectId(subjectId)
-                }
-                ).first()
-                .mapNotNull { it.id }
+            val list =
+                (
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
