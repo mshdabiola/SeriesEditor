@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.OutputStream
 
 class MainAppViewModel(
     userDataRepository: UserDataRepository,
@@ -85,11 +86,11 @@ class MainAppViewModel(
             initialValue = emptyList(),
         )
 
-    fun onExport(path: String, name: String, key: String, version: Int) {
+    fun onExport( outputStream: OutputStream, key: String) {
         viewModelScope.launch {
-            val ids = iExamRepository.selectedList.first()
+            val ids = iExamRepository.selectedList.first().toSet()
 
-            iExamRepository.export(ids, path, name, version, key)
+            iExamRepository.export(ids, outputStream, key)
             deselectAll()
         }
     }
