@@ -50,9 +50,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "SeriesEditor"
-//include(":app")
-//include(":app:baselineprofile")
-//include(":modules:database")
 include(":modules:designsystem")
 include(":modules:model")
 include(":modules:network")
@@ -60,14 +57,8 @@ include(":modules:data")
 include(":modules:domain")
 include(":modules:testing")
 include(":modules:ui")
-//include(":modules:mvvn")
 include(":modules:analytics")
 include(":modules:datastore")
-include(":modules:screenshot-testing")
-
-//include(":modules:app")
-//include(":desktop")
-//include(":modules:setting")
 
 include(":benchmarks")
 
@@ -87,10 +78,4 @@ include("features:composetopic")
 include("features:instructions")
 include("features:questions")
 include("features:topics")
-
-
-
-
-
-include(":ui-test-hilt-manifest")
 
