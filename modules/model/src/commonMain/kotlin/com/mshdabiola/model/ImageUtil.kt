@@ -1,7 +1,5 @@
 package com.mshdabiola.model
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.File
 
 object ImageUtil {
@@ -26,7 +24,7 @@ object ImageUtil {
         examId: Long,
 
     ): String {
-        return withContext(Dispatchers.IO) {
+
             val oldPath = File(getAppPath("$examId/$oldName").path)
             oldPath.delete()
             val imageFile = File(fileString)
@@ -39,7 +37,7 @@ object ImageUtil {
             imageFile.copyTo(newPath)
 //            }
 
-            newPath.name
-        }
+        return    newPath.name
+
     }
 }
