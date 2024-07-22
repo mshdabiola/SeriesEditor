@@ -148,7 +148,7 @@ fun SeriesEditorApp() {
                         ModalNavigationDrawer(
                             drawerState = drawerState,
                             drawerContent = {
-                                if (!appState.showPermanentDrawer) {
+                                if (appState.showDrawer) {
                                     ModalDrawerSheet(
                                         modifier = Modifier.widthIn(max = 300.dp),
                                     ) {

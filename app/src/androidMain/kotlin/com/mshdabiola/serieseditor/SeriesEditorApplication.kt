@@ -9,7 +9,7 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.mshdabiola.model.Writer
+import com.mshdabiola.serieseditor.Writer
 import com.mshdabiola.model.parentPath
 import com.mshdabiola.serieseditor.di.appModule
 import com.mshdabiola.serieseditor.di.jankStatsModule
@@ -23,7 +23,7 @@ class SeriesEditorApplication : Application() {
         super.onCreate()
 
         val logger = Logger(
-            loggerConfigInit(platformLogWriter(), Writer(this.filesDir)),
+            loggerConfigInit(platformLogWriter(), com.mshdabiola.serieseditor.Writer(this.filesDir)),
             "AndroidLogger",
         )
         val logModule = module {

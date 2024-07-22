@@ -1,4 +1,4 @@
-package com.mshdabiola.model
+package com.mshdabiola.serieseditor
 
 import co.touchlab.kermit.DefaultFormatter
 import co.touchlab.kermit.LogWriter
