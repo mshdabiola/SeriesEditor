@@ -4,14 +4,13 @@
 
 package com.mshdabiola.composeexam
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
-import androidx.compose.foundation.text2.input.TextFieldState
-import androidx.compose.foundation.text2.input.clearText
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DropdownMenuItem
@@ -49,7 +48,7 @@ import org.koin.core.parameter.parametersOf
 
 // import org.koin.androidx.compose.koinViewModel
 
-@OptIn(KoinExperimentalAPI::class, ExperimentalFoundationApi::class)
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun ComposeExaminationRoute(
     modifier: Modifier = Modifier,
@@ -84,7 +83,7 @@ internal fun ComposeExaminationRoute(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ComposeExaminationScreen(
     modifier: Modifier = Modifier,
