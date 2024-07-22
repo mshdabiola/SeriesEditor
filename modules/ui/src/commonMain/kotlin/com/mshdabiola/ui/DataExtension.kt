@@ -1,7 +1,7 @@
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import com.mshdabiola.generalmodel.Content
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.ExaminationWithSubject

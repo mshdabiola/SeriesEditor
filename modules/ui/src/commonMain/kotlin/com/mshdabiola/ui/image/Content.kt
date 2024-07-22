@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChangeCircle
@@ -50,7 +51,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentView(
     modifier: Modifier = Modifier,
@@ -93,7 +93,6 @@ fun ContentView(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     modifier: Modifier = Modifier,
@@ -279,7 +278,6 @@ fun Content(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EquationContent(
     modifier: Modifier = Modifier,
@@ -306,7 +304,6 @@ fun ImageContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TextContent(
     modifier: Modifier = Modifier,
@@ -328,7 +325,7 @@ fun TextContent(
         SeriesEditorTextField(
             modifier = modifier.focusRequester(focusRequester),
             label = label,
-            maxNum = androidx.compose.foundation.text2.input.TextFieldLineLimits.SingleLine,
+            maxNum = TextFieldLineLimits.SingleLine,
             state = text.content,
             imeAction = ImeAction.Next,
         )
