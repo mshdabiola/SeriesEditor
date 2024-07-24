@@ -1,5 +1,8 @@
 package com.mshdabiola.data.di
 
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.loggerConfigInit
+import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.analytics.di.analyticsModule
 import com.mshdabiola.data.repository.ExaminationRepository
 import com.mshdabiola.data.repository.IExaminationRepository
@@ -28,6 +31,7 @@ import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -39,6 +43,19 @@ val dataModule = module {
         // sync path together
         Dispatchers.IO
     } bind CoroutineDispatcher::class
+    dataModule()
+
+}
+
+fun Module.dataModule() {
+
+//    logger(
+//        KermitKoinLogger(Logger.withTag("koin")),
+//    )
+    single {Logger(
+        loggerConfigInit(platformLogWriter()),
+        "SeriesEditorLogger,",
+    )  }
     singleOf(::RealINetworkRepository) bind INetworkRepository::class
     singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
 
