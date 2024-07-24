@@ -93,13 +93,13 @@ jobs:
           disable_globbing: true
           commit_message: "🤖 Updates baselines for Dependency Guard"
 
-      - name: Run all local screenshot tests (Roborazzi)
+      - name: Run all local screenshot tests
         id: screenshotsverify
         continue-on-error: true
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew verifyRoborazziFossReliantDebug
+        run: ./gradlew validateFossReliantDebugScreenshotTest
 
       - name: Prevent pushing new screenshots if this is a fork
         id: checkfork_screenshots
@@ -116,7 +116,7 @@ jobs:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          ./gradlew recordRoborazziFossReliantDebug
+          ./gradlew updateFossReliantDebugScreenshotTest
 
       - name: Push new screenshots if available
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -132,7 +132,7 @@ jobs:
         env:
           USERID: ${{ secrets.USERID }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: ./gradlew testFossReliantDebug
+        run: ./gradlew jvmTest
       # Replace task exclusions with `-Pandroidx.baselineprofile.skipgeneration` when
       # https://android-review.googlesource.com/c/platform/frameworks/support/+/2602790 landed in a
       # release build
@@ -153,12 +153,12 @@ jobs:
           name: APKs
           path: '**/build/outputs/apk/**/*.apk'
 
-      - name: Upload JVM local results (XML)
+      - name: Upload JVM local results (HTML)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: local-test-results
-          path: '**/build/test-results/test*UnitTest/**.xml'
+          path: '**/build/reports/tests/jvmTest'
 
       - name: Check lint
         env:
