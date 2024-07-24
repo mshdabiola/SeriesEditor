@@ -1,11 +1,11 @@
-package com.mshdabiola.datastore.model
+package com.mshdabiola.datastore
 
 import androidx.datastore.core.okio.OkioSerializer
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
-import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
+import com.mshdabiola.model.UserData
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
@@ -62,30 +62,29 @@ object InstructionJsonSerializer : OkioSerializer<Map<Long, Instruction>> {
     }
 }
 
-object UserDataJsonSerializer : OkioSerializer<UserDataSer> {
+object UserDataJsonSerializer : OkioSerializer<UserData> {
 
-    override val defaultValue: UserDataSer
-        get() = UserDataSer(
+    override val defaultValue: UserData
+        get() = UserData(
             themeBrand = ThemeBrand.DEFAULT,
             darkThemeConfig = DarkThemeConfig.LIGHT,
             useDynamicColor = false,
             shouldHideOnboarding = false,
-            contrast = Contrast.Normal,
             userId = 0,
         )
 
-    override suspend fun readFrom(source: BufferedSource): UserDataSer {
+    override suspend fun readFrom(source: BufferedSource): UserData{
         return try {
-            json.decodeFromString<UserDataSer>(source.readUtf8())
+            json.decodeFromString<UserData>(source.readUtf8())
         } catch (e: Exception) {
             e.printStackTrace()
             defaultValue
         }
     }
 
-    override suspend fun writeTo(t: UserDataSer, sink: BufferedSink) {
+    override suspend fun writeTo(t: UserData, sink: BufferedSink) {
         sink.use {
-            it.writeUtf8(json.encodeToString(UserDataSer.serializer(), t))
+            it.writeUtf8(json.encodeToString(UserData.serializer(), t))
         }
     }
 }

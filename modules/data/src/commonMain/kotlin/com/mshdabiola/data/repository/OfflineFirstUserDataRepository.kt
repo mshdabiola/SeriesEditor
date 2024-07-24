@@ -5,9 +5,7 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.analytics.AnalyticsHelper
-import com.mshdabiola.data.model.toData
 import com.mshdabiola.datastore.Store
-import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.model.UserData
@@ -22,7 +20,6 @@ internal class OfflineFirstUserDataRepository(
     override val userData: Flow<UserData> =
         settings
             .userData
-            .map { it.toData() }
 
     override suspend fun setThemeBrand(themeBrand: ThemeBrand) {
         settings.updateUserData {
@@ -31,12 +28,7 @@ internal class OfflineFirstUserDataRepository(
         analyticsHelper.logThemeChanged(themeBrand.name)
     }
 
-    override suspend fun setThemeContrast(contrast: Contrast) {
-        settings.updateUserData {
-            it.copy(contrast = contrast)
-        }
-        analyticsHelper.logContrastChanged(contrast.name)
-    }
+
 
     override suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
         settings.updateUserData {

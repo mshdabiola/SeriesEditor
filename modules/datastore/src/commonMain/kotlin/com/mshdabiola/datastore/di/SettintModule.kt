@@ -7,8 +7,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val commonModule = module {
-    // single { Dispatchers.IO }
-
     single {
         StoreImpl(
             userdata = get(qualifier = qualifier("userdata")),
@@ -17,5 +15,4 @@ val commonModule = module {
             coroutineDispatcher = get(),
         )
     } bind Store::class
-    // singleOf(::StoreImpl) bind Store::class
 }

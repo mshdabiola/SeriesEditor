@@ -8,19 +8,20 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 
+var storePath= generalPath
 actual val datastoreModule: Module
     get() = module {
         includes(commonModule)
 
         single(qualifier = qualifier("userdata")) {
-            createDataStoreUserData { "$generalPath/userdataE" }
+            createDataStoreUserData { "$storePath/userdataE" }
         }
 
         single(qualifier = qualifier("question")) {
-            createDataStoreQuestion { "$generalPath/questions" }
+            createDataStoreQuestion { "$storePath/questions" }
         }
 
         single(qualifier = qualifier("instruction")) {
-            createDataStoreInstruction { "$generalPath/instructions" }
+            createDataStoreInstruction { "$storePath/instructions" }
         }
     }

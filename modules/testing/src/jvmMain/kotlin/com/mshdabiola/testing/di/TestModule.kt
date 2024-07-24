@@ -10,6 +10,8 @@ import com.mshdabiola.datastore.createDataStoreInstruction
 import com.mshdabiola.datastore.createDataStoreQuestion
 import com.mshdabiola.datastore.createDataStoreUserData
 import com.mshdabiola.datastore.di.commonModule
+import com.mshdabiola.datastore.di.datastoreModule
+import com.mshdabiola.datastore.di.storePath
 import com.mshdabiola.model.generalPath
 import com.mshdabiola.testing.databaseTestModule
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,28 +20,16 @@ import org.koin.core.qualifier.qualifier
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-private val testDispatcherModule =
+ val testDispatcherModule =
     module {
-        single { UnconfinedTestDispatcher() } bind CoroutineDispatcher::class
-    }
-val userPath = "$generalPath/userdata"
+        single {
+            storePath = "$generalPath/testing"
 
-private val dataStoreTest = module {
-    includes(commonModule)
-
-    single(qualifier = qualifier("userdata")) {
-        createDataStoreUserData { "$userPath/userdataE" }
+            UnconfinedTestDispatcher() } bind CoroutineDispatcher::class
     }
 
-    single(qualifier = qualifier("question")) {
-        createDataStoreQuestion { "$userPath/questions" }
-    }
 
-    single(qualifier = qualifier("instruction")) {
-        createDataStoreInstruction { "$userPath/instructions" }
-    }
-}
 val dataTestModule = module {
-    includes(dataStoreTest, databaseTestModule, testDispatcherModule, analyticsModule)
+    includes(datastoreModule, databaseTestModule, testDispatcherModule, analyticsModule)
     dataModule()
 }

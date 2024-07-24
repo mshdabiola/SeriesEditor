@@ -4,18 +4,15 @@ import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
-import com.mshdabiola.datastore.model.InstructionJsonSerializer
-import com.mshdabiola.datastore.model.QuestionJsonSerializer
-import com.mshdabiola.datastore.model.UserDataJsonSerializer
-import com.mshdabiola.datastore.model.UserDataSer
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.model.UserData
 import okio.FileSystem
 import okio.Path.Companion.toPath
 
 fun createDataStoreUserData(
     producePath: () -> String,
-): DataStore<UserDataSer> = DataStoreFactory.create(
+): DataStore<UserData> = DataStoreFactory.create(
     storage = OkioStorage(
         fileSystem = FileSystem.SYSTEM,
         serializer = UserDataJsonSerializer,
@@ -27,18 +24,18 @@ fun createDataStoreUserData(
 //    Migration(path = producePath())
     ),
 )
-class Migration(val path: String) : DataMigration<UserDataSer> {
+class Migration(val path: String) : DataMigration<UserData> {
     val file = path.toPath()
     override suspend fun cleanUp() {
         println("clean up")
     }
 
-    override suspend fun shouldMigrate(currentData: UserDataSer): Boolean {
+    override suspend fun shouldMigrate(currentData: UserData): Boolean {
         println("should migrate")
         return !currentData.shouldHideOnboarding
     }
 
-    override suspend fun migrate(currentData: UserDataSer): UserDataSer {
+    override suspend fun migrate(currentData: UserData): UserData {
         println("migrate")
         return currentData.copy(
             userId = 90,
