@@ -44,18 +44,18 @@ val dataModule = module {
         Dispatchers.IO
     } bind CoroutineDispatcher::class
     dataModule()
-
 }
 
 fun Module.dataModule() {
-
 //    logger(
 //        KermitKoinLogger(Logger.withTag("koin")),
 //    )
-    single {Logger(
-        loggerConfigInit(platformLogWriter()),
-        "SeriesEditorLogger,",
-    )  }
+    single {
+        Logger(
+            loggerConfigInit(platformLogWriter()),
+            "SeriesEditorLogger,",
+        )
+    }
     singleOf(::RealINetworkRepository) bind INetworkRepository::class
     singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
 

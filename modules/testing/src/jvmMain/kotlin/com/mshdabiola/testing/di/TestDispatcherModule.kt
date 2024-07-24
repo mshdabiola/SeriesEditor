@@ -20,11 +20,11 @@ import org.koin.dsl.module
 
 private val testDispatcherModule =
     module {
-    single { UnconfinedTestDispatcher() } bind CoroutineDispatcher::class
-}
-val userPath="$generalPath/userdata"
+        single { UnconfinedTestDispatcher() } bind CoroutineDispatcher::class
+    }
+val userPath = "$generalPath/userdata"
 
-private val dataStoreTest=module {
+private val dataStoreTest = module {
     includes(commonModule)
 
     single(qualifier = qualifier("userdata")) {
@@ -39,7 +39,7 @@ private val dataStoreTest=module {
         createDataStoreInstruction { "$userPath/instructions" }
     }
 }
-val dataTestModule= module {
-    includes(dataStoreTest, databaseTestModule, testDispatcherModule , analyticsModule)
+val dataTestModule = module {
+    includes(dataStoreTest, databaseTestModule, testDispatcherModule, analyticsModule)
     dataModule()
 }

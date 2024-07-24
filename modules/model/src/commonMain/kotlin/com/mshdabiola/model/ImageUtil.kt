@@ -24,20 +24,18 @@ object ImageUtil {
         examId: Long,
 
     ): String {
-
-            val oldPath = File(getAppPath("$examId/$oldName").path)
-            oldPath.delete()
-            val imageFile = File(fileString)
-            val newPath = newPath(imageFile.extension, examId)
+        val oldPath = File(getAppPath("$examId/$oldName").path)
+        oldPath.delete()
+        val imageFile = File(fileString)
+        val newPath = newPath(imageFile.extension, examId)
 
 //            if (imageFile.extension == "svg") {
 //                imageFile.copyTo(newPath)
 //
 //            } else {
-            imageFile.copyTo(newPath)
+        imageFile.copyTo(newPath)
 //            }
 
-        return    newPath.name
-
+        return newPath.name
     }
 }

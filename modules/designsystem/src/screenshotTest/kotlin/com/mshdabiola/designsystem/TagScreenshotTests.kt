@@ -15,12 +15,11 @@ class TagScreenshotTests {
     @Preview
     @Composable
     fun Tag() {
-        CaptureMultiTheme{
+        CaptureMultiTheme {
             SkTopicTag(followed = true, onClick = {}) {
                 Text("TOPIC")
             }
         }
-
     }
 
     @Preview

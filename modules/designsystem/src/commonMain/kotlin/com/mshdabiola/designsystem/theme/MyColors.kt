@@ -154,7 +154,6 @@ sealed class MyColors {
 
     data object Default : MyColors() {
 
-
         override val primaryLight = Color(0xFF3D5F90)
         override val onPrimaryLight = Color(0xFFFFFFFF)
         override val primaryContainerLight = Color(0xFFD5E3FF)
@@ -262,7 +261,6 @@ val extendedLight = ExtendedColorScheme(
     ),
 )
 
-
 val extendedDark = ExtendedColorScheme(
     right = ColorFamily(
         rightDark,
@@ -277,7 +275,6 @@ val extendedDark = ExtendedColorScheme(
         onWrongContainerDark,
     ),
 )
-
 
 @Immutable
 data class ColorFamily(

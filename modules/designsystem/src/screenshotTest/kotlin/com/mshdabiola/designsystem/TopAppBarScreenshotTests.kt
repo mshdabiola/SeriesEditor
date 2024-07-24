@@ -16,9 +16,8 @@ class TopAppBarScreenshotTests() {
     @Preview
     @Composable
     fun TopAppBar() {
-        CaptureMultiTheme{
+        CaptureMultiTheme {
             NiaTopAppBarExample()
-
         }
     }
 

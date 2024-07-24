@@ -17,10 +17,9 @@ class TabsScreenshotTests {
     @Preview
     @Composable
     fun Tabs() {
-        CaptureMultiTheme{
+        CaptureMultiTheme {
             NiaTabsExample()
         }
-
     }
 
     @Preview

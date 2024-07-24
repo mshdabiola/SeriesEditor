@@ -17,7 +17,7 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
 
-class StoreTest :KoinTest {
+class StoreTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
@@ -25,36 +25,34 @@ class StoreTest :KoinTest {
     @get:Rule(order = 2)
     val mainDispatcherRule = MainDispatcherRule()
 
-    val userPath="$generalPath/temp/userdata"
+    val userPath = "$generalPath/temp/userdata"
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        val modules= module {
+        val modules = module {
             single { UnconfinedTestDispatcher() } bind CoroutineDispatcher::class
 
             single(qualifier = qualifier("userdata")) {
-                    createDataStoreUserData { userPath}
-                }
-
-                single(qualifier = qualifier("question")) {
-                    createDataStoreQuestion { "$generalPath/questions" }
-                }
-
-                single(qualifier = qualifier("instruction")) {
-                    createDataStoreInstruction { "$generalPath/instructions" }
-                }
+                createDataStoreUserData { userPath }
             }
 
+            single(qualifier = qualifier("question")) {
+                createDataStoreQuestion { "$generalPath/questions" }
+            }
 
-        this.modules(modules,commonModule,)
+            single(qualifier = qualifier("instruction")) {
+                createDataStoreInstruction { "$generalPath/instructions" }
+            }
+        }
+
+        this.modules(modules, commonModule)
     }
 
     @Test
-    fun userdata()=runTest{
+    fun userdata() = runTest {
         val store: Store by inject<Store>()
         println(generalPath)
-      //  store.updateUserData { it.copy(userId = 2897) }
-        println( store.userData.first())
-
+        //  store.updateUserData { it.copy(userId = 2897) }
+        println(store.userData.first())
     }
 }

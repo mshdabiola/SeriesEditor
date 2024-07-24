@@ -10,5 +10,4 @@ actual fun ProfileCardPreview() {
     CaptureMultiTheme {
         ProfileCard()
     }
-
 }

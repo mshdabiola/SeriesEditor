@@ -37,10 +37,9 @@ class FilterChipScreenshotTests {
     @Composable
     fun HugeFontFilterChip() {
         CaptureMultiTheme {
-                SkFilterChip(selected = true, onSelectedChange = {}) {
-                    Text("Chip")
-                }
-
+            SkFilterChip(selected = true, onSelectedChange = {}) {
+                Text("Chip")
+            }
         }
     }
 }

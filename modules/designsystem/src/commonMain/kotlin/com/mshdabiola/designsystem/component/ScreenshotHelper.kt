@@ -72,21 +72,18 @@ fun CaptureMultiTheme(
                         description = description,
                         content = content,
                     )
-
-
                 }
             }
         }
-
     }
 }
 
 @Composable
 fun Capture(
-    darkMode: Boolean=false,
-    androidTheme: Boolean=false,
-    dynamicTheming: Boolean=false,
-    description: String="",
+    darkMode: Boolean = false,
+    androidTheme: Boolean = false,
+    dynamicTheming: Boolean = false,
+    description: String = "",
     content: @Composable () -> Unit,
 ) {
     SeriesEditorTheme(
@@ -94,8 +91,6 @@ fun Capture(
         darkTheme = darkMode,
         disableDynamicTheming = !dynamicTheming,
     ) {
-
-
         Surface(modifier = Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(description)
@@ -104,10 +99,7 @@ fun Capture(
                 content()
             }
         }
-
-
     }
-
 }
 
 @Composable
@@ -120,21 +112,21 @@ private fun generateDescription(
     dynamicTheming: Boolean,
 ): String {
     val description = "" +
-            if (shouldCompareDarkMode) {
-                if (darkMode) "Dark" else "Light"
-            } else {
-                ""
-            } +
-            if (shouldCompareAndroidTheme) {
-                if (androidTheme) " Android" else " Default"
-            } else {
-                ""
-            } +
-            if (shouldCompareDynamicColor) {
-                if (dynamicTheming) " Dynamic" else ""
-            } else {
-                ""
-            }
+        if (shouldCompareDarkMode) {
+            if (darkMode) "Dark" else "Light"
+        } else {
+            ""
+        } +
+        if (shouldCompareAndroidTheme) {
+            if (androidTheme) " Android" else " Default"
+        } else {
+            ""
+        } +
+        if (shouldCompareDynamicColor) {
+            if (dynamicTheming) " Dynamic" else ""
+        } else {
+            ""
+        }
 
     return description.trim()
 }

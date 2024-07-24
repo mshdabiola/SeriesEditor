@@ -28,10 +28,9 @@ fun createDataStoreUserData(
     ),
 )
 class Migration(val path: String) : DataMigration<UserDataSer> {
-    val file=path.toPath()
+    val file = path.toPath()
     override suspend fun cleanUp() {
-        println("clean up" )
-
+        println("clean up")
     }
 
     override suspend fun shouldMigrate(currentData: UserDataSer): Boolean {
@@ -41,12 +40,11 @@ class Migration(val path: String) : DataMigration<UserDataSer> {
 
     override suspend fun migrate(currentData: UserDataSer): UserDataSer {
         println("migrate")
-      return  currentData.copy(
+        return currentData.copy(
             userId = 90,
-          shouldHideOnboarding = true
+            shouldHideOnboarding = true,
         )
     }
-
 }
 
 fun createDataStoreInstruction(

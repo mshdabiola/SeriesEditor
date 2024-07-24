@@ -18,12 +18,11 @@ class BackgroundScreenshotTests {
     @Preview
     @Composable
     fun Background() {
-        Capture{
+        Capture {
             SeriesEditorBackground(Modifier.size(100.dp)) {
                 Text("background")
             }
         }
-
     }
 
     @Preview

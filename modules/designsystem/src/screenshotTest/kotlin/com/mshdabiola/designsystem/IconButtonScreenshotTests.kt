@@ -16,7 +16,7 @@ class IconButtonScreenshotTests {
     @Preview
     @Composable
     fun ToggleButton() {
-        CaptureMultiTheme{
+        CaptureMultiTheme {
             SkIconToggleButton(
                 checked = true,
                 onCheckedChange = { },
@@ -34,13 +34,12 @@ class IconButtonScreenshotTests {
                 },
             )
         }
-
     }
 
     @Preview
     @Composable
     fun UnToggleButton() {
-        CaptureMultiTheme{
+        CaptureMultiTheme {
             SkIconToggleButton(
                 checked = false,
                 onCheckedChange = { },
@@ -58,6 +57,5 @@ class IconButtonScreenshotTests {
                 },
             )
         }
-
     }
 }

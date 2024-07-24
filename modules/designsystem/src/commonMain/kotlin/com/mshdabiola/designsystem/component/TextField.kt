@@ -126,7 +126,7 @@ fun MyTextField(
     // codepointTransformation: CodepointTransformation? = null,
     scrollState: ScrollState = rememberScrollState(),
 
-    ) {
+) {
     // If color is not provided via the text style, use content color as a default
     val textColor = textStyle.color.takeOrElse {
         colors.textColor(enabled, isError, interactionSource).value
@@ -178,7 +178,7 @@ fun MyTextField(
 
             scrollState = scrollState,
 
-            )
+        )
     }
 }
 
