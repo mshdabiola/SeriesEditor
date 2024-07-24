@@ -1,5 +1,6 @@
 package com.mshdabiola.datastore
 
+import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
@@ -22,7 +23,31 @@ fun createDataStoreUserData(
             producePath().toPath()
         },
     ),
+    migrations = listOf(
+//    Migration(path = producePath())
+    ),
 )
+class Migration(val path: String) : DataMigration<UserDataSer> {
+    val file=path.toPath()
+    override suspend fun cleanUp() {
+        println("clean up" )
+
+    }
+
+    override suspend fun shouldMigrate(currentData: UserDataSer): Boolean {
+        println("should migrate")
+        return !currentData.shouldHideOnboarding
+    }
+
+    override suspend fun migrate(currentData: UserDataSer): UserDataSer {
+        println("migrate")
+      return  currentData.copy(
+            userId = 90,
+          shouldHideOnboarding = true
+        )
+    }
+
+}
 
 fun createDataStoreInstruction(
     producePath: () -> String,

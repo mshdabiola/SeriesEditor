@@ -6,7 +6,7 @@ import org.koin.core.qualifier.qualifier
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-internal val commonModule = module {
+val commonModule = module {
     // single { Dispatchers.IO }
 
     single {
