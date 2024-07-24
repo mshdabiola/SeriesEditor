@@ -70,11 +70,7 @@ fun main() {
         loggerConfigInit(platformLogWriter(), Writer(path)),
         "DesktopLogger,",
     )
-    val logModule = module {
-        single {
-            logger
-        }
-    }
+
 
     try {
         startKoin {
@@ -83,7 +79,6 @@ fun main() {
             )
             modules(
                 appModule,
-                logModule,
             )
         }
 

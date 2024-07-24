@@ -14,7 +14,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.metrics.performance.JankStats
 import com.mshdabiola.serieseditor.ui.SeriesEditorApp
 import com.mshdabiola.serieseditor.ui.shouldUseDarkTheme
 import kotlinx.coroutines.flow.collect
@@ -25,7 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val lazyStats by inject<JankStats>()
 
 //    @Inject
 //    lateinit var networkMonitor: NetworkMonitor

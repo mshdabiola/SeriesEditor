@@ -9,10 +9,8 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.mshdabiola.serieseditor.Writer
 import com.mshdabiola.model.parentPath
 import com.mshdabiola.serieseditor.di.appModule
-import com.mshdabiola.serieseditor.di.jankStatsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
@@ -22,15 +20,8 @@ class SeriesEditorApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val logger = Logger(
-            loggerConfigInit(platformLogWriter(), com.mshdabiola.serieseditor.Writer(this.filesDir)),
-            "AndroidLogger",
-        )
-        val logModule = module {
-            single {
-                logger
-            }
-        }
+
+
         parentPath = this.applicationContext.filesDir.path
 
         startKoin {
@@ -38,7 +29,7 @@ class SeriesEditorApplication : Application() {
                 KermitKoinLogger(Logger.withTag("koin")),
             )
             androidContext(this@SeriesEditorApplication)
-            modules(appModule, jankStatsModule, logModule)
+            modules(appModule)
         }
 
 //        if (packageName.contains("debug")) {
