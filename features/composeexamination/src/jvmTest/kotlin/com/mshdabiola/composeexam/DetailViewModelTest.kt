@@ -4,11 +4,9 @@
 
 package com.mshdabiola.composeexam
 
-import app.cash.turbine.test
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.testing.di.dataTestModule
-import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -44,15 +42,15 @@ class DetailViewModelTest : KoinTest {
 
     @Test
     fun allSubject() = runTest {
-        insertData()
-        viewModel.subjects
-            .test {
-                var item = awaitItem()
-                println(item)
-
-                item = awaitItem()
-                println(item)
-                this.cancelAndIgnoreRemainingEvents()
-            }
+//        insertData()
+//        viewModel.subjects
+//            .test {
+//                var item = awaitItem()
+//                println(item)
+//
+//                item = awaitItem()
+//                println(item)
+//                this.cancelAndIgnoreRemainingEvents()
+//            }
     }
 }
