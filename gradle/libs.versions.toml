@@ -209,6 +209,8 @@ sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sql
 #
 retex = { module = "com.mshdabiola.series:retex", version.ref = "series" }
 model = { module = "com.mshdabiola.series:model", version.ref = "series" }
+testing = { module = "com.mshdabiola.series:testing", version.ref = "series" }
+
 database = { module = "com.mshdabiola.series:database", version.ref = "series" }
 calf-filepicker = { module = "com.mohamedrejeb.calf:calf-file-picker", version.ref = "calf" }
 
