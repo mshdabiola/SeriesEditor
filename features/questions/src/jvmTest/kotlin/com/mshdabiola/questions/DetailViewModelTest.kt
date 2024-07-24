@@ -4,13 +4,7 @@
 
 package com.mshdabiola.questions
 
-import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
-import com.mshdabiola.data.repository.ISettingRepository
-import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.ITopicCategory
-import com.mshdabiola.testing.databaseTestModule
 import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
@@ -35,7 +29,6 @@ class DetailViewModelTest : KoinTest {
         this.modules(dataTestModule)
     }
 
-
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
     private lateinit var viewModel: QuestionsViewModel
 
@@ -43,7 +36,8 @@ class DetailViewModelTest : KoinTest {
     fun setup() {
         val questionRepository by inject<IQuestionRepository>()
         viewModel = QuestionsViewModel(
-            0,questionRepository
+            0,
+            questionRepository,
         )
     }
 
