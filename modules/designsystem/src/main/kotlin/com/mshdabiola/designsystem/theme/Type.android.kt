@@ -30,7 +30,8 @@ val displayFontFamily = FontFamily(
 val baseline = Typography()
 
 internal actual val SkTypography: Typography
-    get() = androidx.compose.material3.Typography(
+    get() = baseline
+    val e=   Typography(
         displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),
         displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily),
         displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily),
