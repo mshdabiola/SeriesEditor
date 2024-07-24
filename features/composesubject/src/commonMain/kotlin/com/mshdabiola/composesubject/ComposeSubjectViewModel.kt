@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.model.Update
+import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 class ComposeSubjectViewModel(
     private val subjectId: Long,
-    private val seriesRepository: SeriesRepository,
+    private val seriesRepository: ISeriesRepository,
     private val subjectRepository: ISubjectRepository,
     private val userDataRepository: UserDataRepository,
     private val logger: Logger,
