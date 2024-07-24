@@ -124,8 +124,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
 
         }
-        commonTest.dependencies {
-
+        jvmTest.dependencies {
+            implementation(projects.modules.testing)
         }
 //        targets.all {
 //            compilations.all {
@@ -153,7 +153,7 @@ android {
         versionName = System.getenv("VERSION_NAME") ?: libs.versions.versionName.get()
 
         // Custom test runner to set up Hilt dependency graph
-        testInstrumentationRunner = "com.mshdabiola.testing.TestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }

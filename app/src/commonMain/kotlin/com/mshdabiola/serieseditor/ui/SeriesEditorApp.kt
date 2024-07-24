@@ -48,6 +48,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -105,8 +106,14 @@ fun SeriesEditorApp() {
     val subjects = viewModel.subjects.collectAsStateWithLifecycleCommon()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutine = rememberCoroutineScope()
+    val open :()->Unit = { coroutine.launch { drawerState.open() } }
+
 
     val user = viewModel.user.collectAsStateWithLifecycleCommon()
+//    LaunchedEffect(drawerState.currentValue) {
+//        println(drawerState.currentValue)
+//
+//    }
 
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
@@ -148,7 +155,7 @@ fun SeriesEditorApp() {
                         ModalNavigationDrawer(
                             drawerState = drawerState,
                             drawerContent = {
-                                if (appState.showDrawer) {
+                               // if (appState.showDrawer) {
                                     ModalDrawerSheet(
                                         modifier = Modifier.widthIn(max = 300.dp),
                                     ) {
@@ -171,7 +178,7 @@ fun SeriesEditorApp() {
                                             user = user.value,
                                         )
                                     }
-                                }
+                                //}
                             },
                         ) {
                             Scaffold(
@@ -185,7 +192,7 @@ fun SeriesEditorApp() {
                                         MainBottomBarSection(
                                             modifier = Modifier,
                                             onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
-                                                { coroutine.launch { drawerState.open() } }
+                                               open
                                             } else {
                                                 null
                                             },
@@ -208,7 +215,7 @@ fun SeriesEditorApp() {
                                                 subjectId = currentSubjectId,
                                                 updateSubject = appState::onUpdateSubject,
                                                 onNavigationClick = if (!appState.showPermanentDrawer) {
-                                                    { coroutine.launch { drawerState.open() } }
+                                                   open
                                                 } else {
                                                     null
                                                 },
