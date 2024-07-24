@@ -5,16 +5,9 @@
 package com.mshdabiola.composesubject
 
 import co.touchlab.kermit.Logger
-import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
-import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.ITopicCategory
-import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.testing.databaseTestModule
 import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
@@ -39,7 +32,6 @@ class DetailViewModelTest : KoinTest {
         this.modules(dataTestModule)
     }
 
-
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
     private lateinit var viewModel: ComposeSubjectViewModel
 
@@ -48,13 +40,13 @@ class DetailViewModelTest : KoinTest {
         val seriesRepository by inject<ISeriesRepository>()
         val userdataRepository by inject<UserDataRepository>()
         val subjectRepository by inject<ISubjectRepository>()
-        val logger= Logger
+        val logger = Logger
         viewModel = ComposeSubjectViewModel(
             0,
             seriesRepository,
             subjectRepository,
             userdataRepository,
-            logger
+            logger,
 
         )
     }

@@ -14,7 +14,6 @@ import co.touchlab.kermit.Logger
 import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.generalmodel.Series
 import com.mshdabiola.generalmodel.Subject
