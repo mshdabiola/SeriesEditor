@@ -4,11 +4,8 @@
 
 package com.mshdabiola.composeinstruction
 
-import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.ISettingRepository
-import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.testing.databaseTestModule
 import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
@@ -20,7 +17,7 @@ import org.koin.test.inject
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class DetailViewModelTest :KoinTest{
+class DetailViewModelTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
@@ -29,11 +26,9 @@ class DetailViewModelTest :KoinTest{
     val mainDispatcherRule = MainDispatcherRule()
 
     @get:Rule(order = 3)
-    val koinTestRule=KoinTestRule.create {
+    val koinTestRule = KoinTestRule.create {
         this.modules(dataTestModule)
     }
-
-
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
     private lateinit var viewModel: CiViewModel
@@ -42,7 +37,7 @@ class DetailViewModelTest :KoinTest{
     fun setup() {
         val instructionRepository by inject<IInstructionRepository>()
         val settingRepository by inject<ISettingRepository>()
-        viewModel =CiViewModel(0,0,instructionRepository,settingRepository)
+        viewModel = CiViewModel(0, 0, instructionRepository, settingRepository)
     }
 
     @Test

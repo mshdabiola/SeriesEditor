@@ -7,7 +7,6 @@ package com.mshdabiola.main
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.testing.databaseTestModule
 import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
@@ -31,7 +30,6 @@ class DetailViewModelTest : KoinTest {
     val koinTestRule = KoinTestRule.create {
         this.modules(dataTestModule)
     }
-
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
     private lateinit var viewModel: MainViewModel

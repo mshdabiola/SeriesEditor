@@ -7,7 +7,6 @@ package com.mshdabiola.composetopic
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.testing.databaseTestModule
 import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
@@ -32,7 +31,6 @@ class DetailViewModelTest : KoinTest {
         this.modules(dataTestModule)
     }
 
-
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
     private lateinit var viewModel: CtViewModel
 
@@ -45,7 +43,7 @@ class DetailViewModelTest : KoinTest {
             0,
             topicRepository,
             categoryRepository,
-            Logger
+            Logger,
 
         )
     }
