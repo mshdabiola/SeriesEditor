@@ -26,7 +26,6 @@ import com.mshdabiola.serieseditor.ui.SeriesEditorApp
 import com.mshdabiola.ui.SplashScreen
 import kotlinx.coroutines.delay
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.module
 import java.io.File
 
 fun mainApp() {
@@ -70,7 +69,6 @@ fun main() {
         loggerConfigInit(platformLogWriter(), Writer(path)),
         "DesktopLogger,",
     )
-
 
     try {
         startKoin {

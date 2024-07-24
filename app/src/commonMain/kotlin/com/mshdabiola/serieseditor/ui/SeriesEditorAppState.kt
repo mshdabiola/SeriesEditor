@@ -8,7 +8,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -125,7 +124,7 @@ class Extended(
     override val showPermanentDrawer: Boolean
         @Composable get() = currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true
     override val showDrawer: Boolean
-       @Composable get() = false
+        @Composable get() = false
 
     override val currentSubjectId: Long
         @Composable get() = mainNavController

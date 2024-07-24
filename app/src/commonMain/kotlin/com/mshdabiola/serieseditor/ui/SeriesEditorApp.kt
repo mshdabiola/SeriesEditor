@@ -48,7 +48,6 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -106,8 +105,7 @@ fun SeriesEditorApp() {
     val subjects = viewModel.subjects.collectAsStateWithLifecycleCommon()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutine = rememberCoroutineScope()
-    val open :()->Unit = { coroutine.launch { drawerState.open() } }
-
+    val open: () -> Unit = { coroutine.launch { drawerState.open() } }
 
     val user = viewModel.user.collectAsStateWithLifecycleCommon()
 //    LaunchedEffect(drawerState.currentValue) {
@@ -155,30 +153,30 @@ fun SeriesEditorApp() {
                         ModalNavigationDrawer(
                             drawerState = drawerState,
                             drawerContent = {
-                               // if (appState.showDrawer) {
-                                    ModalDrawerSheet(
-                                        modifier = Modifier.widthIn(max = 300.dp),
-                                    ) {
-                                        NavigationSheet(
-                                            modifier = Modifier
-                                                .padding(top = 16.dp, start = 16.dp, end = 8.dp),
-                                            subjects = subjects.value,
+                                // if (appState.showDrawer) {
+                                ModalDrawerSheet(
+                                    modifier = Modifier.widthIn(max = 300.dp),
+                                ) {
+                                    NavigationSheet(
+                                        modifier = Modifier
+                                            .padding(top = 16.dp, start = 16.dp, end = 8.dp),
+                                        subjects = subjects.value,
 
-                                            addSubject = {
-                                                appState.navController.navigateToComposeSubject(
-                                                    -1,
-                                                )
-                                            },
-                                            onSubjectClick = {
-                                                appState.onSubjectClick(it)
-                                                coroutine.launch { drawerState.close() }
-                                            },
-                                            checkIfSelected = { currentSubjectId == it },
-                                            onAddTopic = { appState.onAddTopic(currentSubjectId) },
-                                            user = user.value,
-                                        )
-                                    }
-                                //}
+                                        addSubject = {
+                                            appState.navController.navigateToComposeSubject(
+                                                -1,
+                                            )
+                                        },
+                                        onSubjectClick = {
+                                            appState.onSubjectClick(it)
+                                            coroutine.launch { drawerState.close() }
+                                        },
+                                        checkIfSelected = { currentSubjectId == it },
+                                        onAddTopic = { appState.onAddTopic(currentSubjectId) },
+                                        user = user.value,
+                                    )
+                                }
+                                // }
                             },
                         ) {
                             Scaffold(
@@ -192,7 +190,7 @@ fun SeriesEditorApp() {
                                         MainBottomBarSection(
                                             modifier = Modifier,
                                             onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
-                                               open
+                                                open
                                             } else {
                                                 null
                                             },
@@ -215,7 +213,7 @@ fun SeriesEditorApp() {
                                                 subjectId = currentSubjectId,
                                                 updateSubject = appState::onUpdateSubject,
                                                 onNavigationClick = if (!appState.showPermanentDrawer) {
-                                                   open
+                                                    open
                                                 } else {
                                                     null
                                                 },

@@ -48,7 +48,7 @@ class SkAppState {
                     subjectNavHostController = subjectNav,
                     examNavHostController = examNav,
 
-                    )
+                )
             }
 
             // Update currentDestination whenever it changes
@@ -56,7 +56,7 @@ class SkAppState {
 
             // Navigate to destination b once
             LaunchedEffect(Unit) {
-                 navController.navigate("b")
+                navController.navigate("b")
             }
         }
 
