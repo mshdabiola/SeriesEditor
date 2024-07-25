@@ -7,7 +7,6 @@ package com.mshdabiola.setting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.model.UserData
@@ -25,7 +24,6 @@ class SettingViewModel constructor(
         darkThemeConfig = DarkThemeConfig.LIGHT,
         useDynamicColor = false,
         shouldHideOnboarding = true,
-        contrast = Contrast.Normal,
         userId = 0,
     )
     val uiState: StateFlow<SettingState> = userDataRepository.userData.map {
@@ -44,11 +42,6 @@ class SettingViewModel constructor(
         }
     }
 
-    fun setThemeContrast(contrast: Contrast) {
-        viewModelScope.launch {
-            userDataRepository.setThemeContrast(contrast)
-        }
-    }
 
     /**
      * Sets the desired dark theme config.
