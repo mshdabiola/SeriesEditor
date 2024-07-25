@@ -65,7 +65,6 @@ import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
 import com.mshdabiola.generalmodel.User
-import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
@@ -153,7 +152,7 @@ fun SeriesEditorApp() {
                         ModalNavigationDrawer(
                             drawerState = drawerState,
                             drawerContent = {
-                                // if (appState.showDrawer) {
+                                 if (appState.showDrawer) {
                                 ModalDrawerSheet(
                                     modifier = Modifier.widthIn(max = 300.dp),
                                 ) {
@@ -176,7 +175,7 @@ fun SeriesEditorApp() {
                                         user = user.value,
                                     )
                                 }
-                                // }
+                                 }
                             },
                         ) {
                             Scaffold(
@@ -374,13 +373,6 @@ private fun shouldUseAndroidTheme(
     }
 }
 
-@Composable
-private fun chooseContrast(
-    uiState: MainActivityUiState,
-): Contrast = when (uiState) {
-    MainActivityUiState.Loading -> Contrast.Normal
-    is MainActivityUiState.Success -> uiState.userData.contrast
-}
 
 @Composable
 private fun shouldDisableDynamicTheming(
