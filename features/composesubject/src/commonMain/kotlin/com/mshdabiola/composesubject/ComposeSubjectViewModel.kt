@@ -7,7 +7,6 @@ package com.mshdabiola.composesubject
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
@@ -18,10 +17,9 @@ import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.generalmodel.Series
 import com.mshdabiola.generalmodel.Subject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -39,76 +37,86 @@ class ComposeSubjectViewModel(
 
     val seriesState = TextFieldState()
 
-//    private val userId = userDataRepository
-//        .userData
-//        .map { it.userId }
-//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), -1L)
 
-    val series = seriesRepository
-        .getAll()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-    val currentSeriesId = mutableStateOf(1L)
-
-    private val _update = MutableStateFlow(Update.Edit)
-    val update = _update.asStateFlow()
+    private val _csState = MutableStateFlow<CsState>(CsState.Loading())
+    val csState = _csState.asStateFlow()
 
     init {
 
         viewModelScope.launch {
-            if (subjectId > 0) {
-                val sub = subjectRepository
-                    .getOneWithSeries(subjectId)
-                    .first()
 
-                if (sub != null) {
+            val sub = subjectRepository
+                .getOneWithSeries(subjectId)
+                .first()
 
-                    subjectState.edit {
-                        append(sub.subject.title)
-                    }
+            if (sub != null) {
 
-                    kotlinx.coroutines.delay(1500)
-                    currentSeriesId.value = sub.series.id
-                    if (sub.series.id > 1) {
+                subjectState.edit {
+                    append(sub.subject.title)
+                }
 
-                        seriesState.edit {
-                            append(sub.series.name)
-                        }
+                if (sub.series.id > 1) {
+
+                    seriesState.edit {
+                        append(sub.series.name)
                     }
                 }
             }
+            _csState.update {
+                CsState.Success(
+                    currentSeries = sub?.series?.id ?: 1,
+                )
+            }
+
+
+            seriesRepository
+                .getAll()
+                .collectLatest { list ->
+                    _csState.update {
+                        if (it is CsState.Success) {
+                            it.copy(series = list)
+                        } else it
+                    }
+
+                }
+
         }
     }
 
     fun addSubject() {
         viewModelScope.launch {
-            _update.update { Update.Saving }
-            subjectRepository.upsert(
-                Subject(
-                    id = subjectId,
-                    seriesId = currentSeriesId.value,
-                    title = subjectState.text.toString(),
-                ),
+            val subject= Subject(
+                id = subjectId,
+                seriesId = (csState.value as CsState.Success).currentSeries,
+                title = subjectState.text.toString(),
             )
-            _update.update { Update.Success }
+            _csState.update { CsState.Loading() }
+            subjectRepository.upsert(
+               subject
+            )
+            _csState.update { CsState.Loading(true) }
         }
     }
 
     fun onCurrentSeriesChange(id: Long) {
-        currentSeriesId.value = id
-
+        _csState.update {
+            if (it is CsState.Success) {
+                it.copy(currentSeries = id)
+            } else it
+        }
         seriesState.clearText()
 
         if (id > 1) {
             seriesState.edit {
-                append(series.value.find { it.id == id }?.name)
+                append((csState.value as CsState.Success).series .find { it.id == id }?.name)
             }
         }
     }
 
     fun addSeries() {
         viewModelScope.launch {
-            val id = if (currentSeriesId.value == 1L) -1 else currentSeriesId.value
+            val currentSeriesId = (csState.value as CsState.Success).currentSeries
+            val id = if (currentSeriesId == 1L) -1 else currentSeriesId
             val userId = userDataRepository
                 .userData.first()
                 .userId
@@ -121,16 +129,25 @@ class ComposeSubjectViewModel(
                 ),
             )
             if (newId > 0) {
-                currentSeriesId.value = newId
+                _csState.update {
+                    if (it is CsState.Success) {
+                        it.copy(currentSeries = newId)
+                    } else it
+                }
             }
         }
     }
 
     fun onDeleteCurrentSeries() {
         viewModelScope.launch {
-            seriesRepository.delete(currentSeriesId.value)
+            val currentSeriesId = (csState.value as CsState.Success).currentSeries
+            seriesRepository.delete(currentSeriesId)
             seriesState.clearText()
-            currentSeriesId.value = 1
+            _csState.update { state ->
+                state.getSuccess {
+                    it.copy(currentSeries = 1)
+                }
+            }
         }
     }
 }
