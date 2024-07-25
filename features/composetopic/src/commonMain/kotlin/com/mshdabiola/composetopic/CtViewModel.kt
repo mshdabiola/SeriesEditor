@@ -4,29 +4,23 @@
 
 package com.mshdabiola.composetopic
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
 import com.mshdabiola.generalmodel.Topic
 import com.mshdabiola.generalmodel.TopicCategory
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 class CtViewModel(
     private val subjectId: Long,
     private val topicId: Long,
@@ -39,18 +33,13 @@ class CtViewModel(
 
     val categoryState = TextFieldState()
 
-    val categories = topicCategory
-        .getAll()
-        .map { it.filter { it.subjectId == subjectId } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    val currentCategoryId = mutableStateOf(1L)
+    private val _ctState = MutableStateFlow<CtState>(CtState.Loading())
+    val ctState = _ctState.asStateFlow()
 
-    private val _update = MutableStateFlow(Update.Edit)
-    val update = _update.asStateFlow()
-
-    @OptIn(ExperimentalFoundationApi::class)
     val state = TextFieldState()
+
+    private val defaultName = "UnCategorized"
 
     init {
         viewModelScope.launch {
@@ -59,7 +48,7 @@ class CtViewModel(
                 .map { categories1 -> categories1.filter { it.subjectId == subjectId } }
                 .first()
             if (list.isEmpty()) {
-                topicCategory.upsert(TopicCategory(-1, "UnCategorized", subjectId))
+                topicCategory.upsert(TopicCategory(-1, defaultName, subjectId))
             }
         }
         viewModelScope.launch {
@@ -68,13 +57,14 @@ class CtViewModel(
                 .getOneWithCategory(topicId)
                 .first()
 
+
+
             if (sub != null) {
 
                 state.edit {
                     append(sub.title)
                 }
-                kotlinx.coroutines.delay(1500)
-                currentCategoryId.value = sub.topicCategory.id
+
                 if (sub.topicCategory.id > 1) {
 
                     categoryState.edit {
@@ -82,66 +72,110 @@ class CtViewModel(
                     }
                 }
             }
+            _ctState.update {
+                CtState.Success(
+                    topicId = topicId,
+                )
+            }
+
+            topicCategory
+                .getAll()
+                .map { it.filter { it.subjectId == subjectId } }
+                .collectLatest { list ->
+
+                    _ctState.update { state1 ->
+                        state1.getSuccess {
+                            it.copy(categories = list)
+                        }
+                    }
+                }
+
         }
     }
 
     fun addTopic() {
         viewModelScope.launch {
-            _update.update {
-                Update.Saving
+            val success = (ctState.value as CtState.Success)
+            val topic = Topic(
+                id = topicId,
+                categoryId = success.categories[success.currentCategoryIndex].id,
+                title = state.text.toString(),
+            )
+            _ctState.update {
+                CtState.Loading()
             }
 
             topicRepository.upsert(
-                Topic(
-                    id = topicId,
-                    categoryId = currentCategoryId.value,
-                    title = state.text.toString(),
-                ),
+                topic = topic,
             )
             state.clearText()
             // delay(500)
-            _update.update {
-                Update.Success
+            _ctState.update {
+                CtState.Loading(true)
             }
         }
     }
 
-    fun onCurrentSeriesChange(id: Long) {
-        currentCategoryId.value = id
+    fun onCurrentSeriesChange(index: Int) {
+        _ctState.update { state1 ->
+            state1.getSuccess {
+                it.copy(currentCategoryIndex = index)
+            }
+        }
+        logger.d { "categories id $index" }
+        val name = (ctState.value as CtState.Success).categories.getOrNull(index)?.name
 
         categoryState.clearText()
-
-        if (id > 1) {
+        if (name.equals(defaultName).not()) {
             categoryState.edit {
-                append(categories.value.find { it.id == id }?.name)
+                append(name)
             }
         }
     }
 
     fun addCategory() {
         viewModelScope.launch {
-            val id = if (currentCategoryId.value == 1L) -1 else currentCategoryId.value
+            val success = (ctState.value as CtState.Success)
 
-            topicCategory.upsert(TopicCategory(-1, "Testing", subjectId))
+            val index = success.currentCategoryIndex
 
-            val newId = topicCategory.upsert(
+            val id = success.categories[success.currentCategoryIndex].id
+            val size= success.categories.size
+
+           topicCategory.upsert(
                 TopicCategory(
-                    id = id,
+                    id = if (index==0)-1 else id,
                     subjectId = subjectId,
                     name = categoryState.text.toString(),
                 ),
             )
-            if (newId > 0) {
-                currentCategoryId.value = newId
+            if (index > 0) {
+                _ctState.update {
+                    it.getSuccess {
+                        it.copy(currentCategoryIndex = index)
+                    }
+                }
+            }else{
+                _ctState.update {
+                    it.getSuccess {
+                        it.copy(currentCategoryIndex = size)
+                    }
+                }
             }
         }
     }
 
     fun onDeleteCategory() {
         viewModelScope.launch {
-            topicCategory.delete(currentCategoryId.value)
+            val success = (ctState.value as CtState.Success)
+
+            topicCategory.delete(success.categories[success.currentCategoryIndex].id)
             categoryState.clearText()
-            currentCategoryId.value = 1
+            _ctState.update {
+                it.getSuccess {
+                    it.copy(currentCategoryIndex = 0)
+                }
+            }
         }
     }
 

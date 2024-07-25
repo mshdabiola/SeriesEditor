@@ -6,7 +6,6 @@ package com.mshdabiola.composetopic
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -54,11 +53,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.TopicCategory
 import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import kotlinx.coroutines.delay
@@ -69,7 +66,7 @@ import org.koin.core.parameter.parametersOf
 
 // import org.koin.androidx.compose.koinViewModel
 
-@OptIn(KoinExperimentalAPI::class, ExperimentalFoundationApi::class)
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun CtRoute(
     modifier: Modifier,
@@ -80,11 +77,10 @@ internal fun CtRoute(
 ) {
     val viewModel: CtViewModel = koinViewModel(parameters = { parametersOf(subjectId, topicId) })
 
-    val categories = viewModel.categories.collectAsStateWithLifecycleCommon()
-    val update = viewModel.update.collectAsStateWithLifecycleCommon()
+    val update = viewModel.ctState.collectAsStateWithLifecycleCommon()
 
     LaunchedEffect(update.value) {
-        if (update.value == Update.Success) {
+        if (update.value is CtState.Loading && (update.value as CtState.Loading).isLoading) {
             onFinish()
             onShowSnack("Add Topic", null)
         }
@@ -92,11 +88,8 @@ internal fun CtRoute(
 
     CtScreen(
         modifier = modifier,
-        topicId = topicId,
-        update = update.value,
+        cqState = update.value,
         categoryState = viewModel.categoryState,
-        currentCategory = viewModel.currentCategoryId.value,
-        categories = categories.value,
         name = viewModel.state,
         topicInput = viewModel.topicInput,
         onAddTopic = viewModel::addTopic,
@@ -107,170 +100,202 @@ internal fun CtRoute(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun CtScreen(
     modifier: Modifier = Modifier,
-    topicId: Long,
+    cqState: CtState,
     name: TextFieldState,
     categoryState: TextFieldState,
-    currentCategory: Long,
-    categories: List<TopicCategory>,
     topicInput: TextFieldState,
     onAddTopic: () -> Unit = {},
     onAddTopicInput: () -> Unit = {},
-    update: Update,
     addCategory: () -> Unit = {},
-    onCategoryChange: (Long) -> Unit = {},
+    onCategoryChange: (Int) -> Unit = {},
     onDeleteCategory: () -> Unit = {},
 ) {
-    var showConvert by remember { mutableStateOf(false) }
-    val scrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
 
-    Column(
+    AnimatedContent(
+        targetState = cqState,
         modifier = modifier.imePadding()
             .verticalScroll(rememberScrollState()),
     ) {
-        when (update) {
-            Update.Edit -> {
-                Section(title = "Topic Section")
-                val focusRequester = remember {
-                    FocusRequester()
-                }
-                LaunchedEffect(Unit) {
-                    delay(1000)
-                    focusRequester.requestFocus()
-                }
+        when (it) {
+            is CtState.Success -> MainContent(
+                modifier = modifier,
+                state = it,
+                name = name,
+                categoryState = categoryState,
+                topicInput = topicInput,
+                onAddTopic = onAddTopic,
+                onAddTopicInput = onAddTopicInput,
+                addCategory = addCategory,
+                onCategoryChange = onCategoryChange,
+                onDeleteCategory = onDeleteCategory,
 
-                Row(Modifier.fillMaxWidth()) {
-                    TooltipBox(
-                        tooltip = { Text("Scroll to the next") },
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    scrollState.animateScrollTo(scrollState.value - 40)
-                                }
-                            },
-                            enabled = scrollState.canScrollBackward,
-                        ) {
-                            Icon(Icons.AutoMirrored.Outlined.NavigateBefore, "previous")
-                        }
-                    }
+            )
 
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.weight(1f).horizontalScroll(scrollState),
-                    ) {
-                        categories.forEach {
-                            FilterChip(
-                                leadingIcon = {
-                                    if (it.id == currentCategory) {
-                                        Icon(
-                                            modifier = Modifier.size(FilterChipDefaults.IconSize),
-                                            imageVector = Icons.Default.Done,
-                                            contentDescription = "done",
-                                        )
-                                    }
-                                },
-                                selected = currentCategory == it.id,
-                                onClick = {
-                                    onCategoryChange(it.id)
-                                },
-                                label = { Text(it.name) },
-                            )
-                        }
-                    }
-
-                    TooltipBox(
-                        tooltip = { Text("Scroll to the next") },
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    scrollState.animateScrollTo(scrollState.value + 40)
-                                }
-                            },
-                            enabled = scrollState.canScrollForward,
-                        ) {
-                            Icon(Icons.AutoMirrored.Outlined.NavigateNext, "next")
-                        }
-                    }
-                }
-
-                SeriesEditorTextField(
-                    modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .fillMaxWidth(),
-                    state = name,
-                    label = "Topic",
-                    maxNum = TextFieldLineLimits.SingleLine,
-                )
-
-                Spacer(Modifier.height(4.dp))
-                SeriesEditorButton(
-                    modifier = Modifier.align(Alignment.End),
-                    enabled = name.text.isNotBlank(),
-                    onClick = onAddTopic,
-                ) {
-                    Text(if (topicId < 0) "Add topic" else "Update topic")
-                }
-
-                Section(title = "Type Section")
-
-                SeriesEditorTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("composesubject:category"),
-                    state = categoryState,
-                    label = "Category",
-                    placeholder = "Algebra",
-                    keyboardAction = { addCategory() },
-                    maxNum = TextFieldLineLimits.SingleLine,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                ) {
-                    AnimatedVisibility(currentCategory > 1) {
-                        TextButton(onClick = onDeleteCategory) {
-                            Text("Delete")
-                        }
-                    }
-
-                    SeriesEditorButton(
-                        modifier = Modifier,
-                        enabled = categoryState.text.isNotBlank(),
-                        onClick = addCategory,
-                    ) {
-                        AnimatedContent(currentCategory) {
-                            if (it > 1) {
-                                Row {
-                                    Icon(Icons.Default.Update, "update")
-                                    Text("Update Category")
-                                }
-                            } else {
-                                Row {
-                                    Icon(Icons.Default.Add, "Add")
-                                    Text("Add Category")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Update.Saving -> {
+            is CtState.Loading -> {
                 Waiting()
             }
 
             else -> {
+            }
+        }
+
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun MainContent(
+    modifier: Modifier = Modifier,
+    state : CtState.Success,
+    name: TextFieldState,
+    categoryState: TextFieldState,
+    topicInput: TextFieldState,
+    onAddTopic: () -> Unit = {},
+    onAddTopicInput: () -> Unit = {},
+    addCategory: () -> Unit = {},
+    onCategoryChange: (Int) -> Unit = {},
+    onDeleteCategory: () -> Unit = {},
+) {
+
+    var showConvert by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(modifier = modifier) {
+
+
+        Section(title = "Topic Section")
+        val focusRequester = remember {
+            FocusRequester()
+        }
+        LaunchedEffect(Unit) {
+            delay(1000)
+            focusRequester.requestFocus()
+        }
+
+        Row(Modifier.fillMaxWidth()) {
+            TooltipBox(
+                tooltip = { Text("Scroll to the next") },
+                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                state = rememberTooltipState(),
+            ) {
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            scrollState.animateScrollTo(scrollState.value - 40)
+                        }
+                    },
+                    enabled = scrollState.canScrollBackward,
+                ) {
+                    Icon(Icons.AutoMirrored.Outlined.NavigateBefore, "previous")
+                }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.weight(1f).horizontalScroll(scrollState),
+            ) {
+                state.categories.forEachIndexed { index, topicCategory ->
+                    FilterChip(
+                        leadingIcon = {
+                            if (index == state.currentCategoryIndex) {
+                                Icon(
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                                    imageVector = Icons.Default.Done,
+                                    contentDescription = "done",
+                                )
+                            }
+                        },
+                        selected = index==state.currentCategoryIndex,
+                        onClick = {
+                            onCategoryChange(index)
+                        },
+                        label = { Text(topicCategory.name) },
+                    )
+                }
+            }
+
+            TooltipBox(
+                tooltip = { Text("Scroll to the next") },
+                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                state = rememberTooltipState(),
+            ) {
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            scrollState.animateScrollTo(scrollState.value + 40)
+                        }
+                    },
+                    enabled = scrollState.canScrollForward,
+                ) {
+                    Icon(Icons.AutoMirrored.Outlined.NavigateNext, "next")
+                }
+            }
+        }
+
+        SeriesEditorTextField(
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .fillMaxWidth(),
+            state = name,
+            label = "Topic",
+            maxNum = TextFieldLineLimits.SingleLine,
+        )
+
+        Spacer(Modifier.height(4.dp))
+        SeriesEditorButton(
+            modifier = Modifier.align(Alignment.End),
+            enabled = name.text.isNotBlank(),
+            onClick = onAddTopic,
+        ) {
+            Text(if (state.topicId < 0) "Add topic" else "Update topic")
+        }
+
+        Section(title = "Type Section")
+
+        SeriesEditorTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("composesubject:category"),
+            state = categoryState,
+            label = "Category",
+            placeholder = "Algebra",
+            keyboardAction = { addCategory() },
+            maxNum = TextFieldLineLimits.SingleLine,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+        ) {
+            AnimatedVisibility(state.currentCategoryIndex > 0) {
+                TextButton(onClick = onDeleteCategory) {
+                    Text("Delete")
+                }
+            }
+
+            SeriesEditorButton(
+                modifier = Modifier,
+                enabled = categoryState.text.isNotBlank(),
+                onClick = addCategory,
+            ) {
+                AnimatedContent(state.currentCategoryIndex) {
+                    if (it > 0) {
+                        Row {
+                            Icon(Icons.Default.Update, "update")
+                            Text("Update Category")
+                        }
+                    } else {
+                        Row {
+                            Icon(Icons.Default.Add, "Add")
+                            Text("Add Category")
+                        }
+                    }
+                }
             }
         }
 
@@ -322,4 +347,5 @@ internal fun CtScreen(
             }
         }
     }
+
 }
