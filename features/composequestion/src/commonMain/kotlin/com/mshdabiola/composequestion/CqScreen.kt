@@ -35,6 +35,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -211,7 +212,6 @@ internal fun MainContent(
     onInstructionChange: (Int) -> Unit = {},
     onItemClicked: (ItemUiState) -> Unit = {},
 ) {
-    var showTopiDropdown by remember { mutableStateOf(false) }
     var showConvert by remember { mutableStateOf(false) }
     val state = rememberTextFieldState()
 
@@ -250,7 +250,11 @@ internal fun MainContent(
                 onExpandedChange = { topicExpanded = it },
             ) {
                 MyTextField(
-                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(MenuAnchorType.PrimaryEditable)
+                        .testTag("ci:topic")
+                    ,
                     state = topicState,
                     label = { Text("Topic") },
                     readOnly = true,
@@ -315,7 +319,9 @@ internal fun MainContent(
                 onExpandedChange = { instrucExpanded = it },
             ) {
                 MyTextField(
-                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+                    modifier = Modifier.fillMaxWidth()
+                        .menuAnchor(MenuAnchorType.PrimaryEditable)
+                        .testTag("ci:instruction"),
                     state = instructState,
                     label = { Text("Instruction") },
                     readOnly = true,
@@ -403,6 +409,7 @@ internal fun MainContent(
             Spacer(modifier = Modifier.height(4.dp))
         }
         Content(
+            modifier = Modifier.testTag("cq:content"),
             items = cqState.questionUiState.contents,
             label = "Question",
             addUp = { addUp(-1, it) },
@@ -480,7 +487,7 @@ internal fun MainContent(
             }
 
             SeriesEditorButton(
-                modifier = Modifier.testTag("question:add_question"),
+                modifier = Modifier.testTag("cq:add_question"),
                 onClick = onAddQuestion,
             ) {
                 Icon(Icons.Default.Add, "add")
@@ -500,6 +507,7 @@ internal fun MainContent(
 
             // TODO("fix answer not null")
             SuggestionChip(
+                modifier = Modifier.testTag("cq:add_answer"),
                 onClick = { onAddAnswer(cqState.questionUiState.answers == null) },
                 label = {
                     Text(
