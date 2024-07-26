@@ -5,6 +5,7 @@
 package com.mshdabiola.composeexam
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
@@ -26,8 +27,7 @@ class ComposeExaminationViewModel(
 ) : ViewModel() {
 
 
-
-    private val _ceState = MutableStateFlow<CeState>(CeState.Success())
+    private val _ceState = MutableStateFlow<CeState>(CeState.Loading())
     val ceState = _ceState.asStateFlow()
     val duration = TextFieldState("15")
     val year = TextFieldState("2015")
@@ -40,6 +40,9 @@ class ComposeExaminationViewModel(
                 .first()
 
             val isUpdate = if (initExam != null) {
+                subject.clearText()
+                year.clearText()
+                duration.clearText()
                 subject.edit {
                     append(initExam.subject.title)
                 }
@@ -49,24 +52,17 @@ class ComposeExaminationViewModel(
                 duration.edit {
                     append(initExam.examination.duration.toString())
                 }
-
-
                 true
 
-            }
-            else {
-//                delay(2000)
-//                subject.edit {
-//                    append(subjects.value.firstOrNull()?.name ?: "")
-//                }
+            } else {
                 false
             }
             subjectRepository
                 .getAllWithSeries()
                 .map { subjectList -> subjectList.map { it.toUi() } }
-                .collectLatest { list->
+                .collectLatest { list ->
                     _ceState.update {
-                        if(subject.text.isBlank()){
+                        if (subject.text.isBlank()) {
                             subject.edit {
                                 append(list.firstOrNull()?.name ?: "")
                             }
@@ -81,7 +77,7 @@ class ComposeExaminationViewModel(
 
     fun addExam() {
         viewModelScope.launch {
-            val subjects =(ceState.value as CeState.Success).subjects
+            val subjects = (ceState.value as CeState.Success).subjects
             _ceState.update { CeState.Loading() }
             val subject = subjects.single { it.name == subject.text.toString() }
             val exam = Examination(

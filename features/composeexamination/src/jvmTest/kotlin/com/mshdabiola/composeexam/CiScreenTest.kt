@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Rule
 import kotlin.test.Test
 
-class CeScreenTest {
+class CiScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()
