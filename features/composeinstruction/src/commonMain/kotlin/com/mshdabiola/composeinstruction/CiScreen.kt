@@ -33,8 +33,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
@@ -43,7 +43,6 @@ import com.mshdabiola.ui.QuestionDialog
 import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
-import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -95,7 +94,6 @@ internal fun CiRoute(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun CiScreen(
     modifier: Modifier = Modifier,
@@ -115,11 +113,11 @@ internal fun CiScreen(
 
 ) {
 
-   AnimatedContent(ciState) {
+   AnimatedContent(modifier=modifier.testTag("ci:screen"), targetState = ciState) {
         when (it) {
           is CiState.Loading -> Waiting()
             is CiState.Success -> MainContent(
-                modifier = modifier,
+                modifier = Modifier,
                 title = title,
                 instructionInput = instructionInput,
                 success = it,
@@ -163,13 +161,14 @@ internal fun MainContent(
     Column(modifier = modifier.verticalScroll(rememberScrollState())){
         Section(title = "Instruction Section")
         SeriesEditorTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("ci:title"),
             state = title,
             maxNum = TextFieldLineLimits.SingleLine,
             label = "Title",
         )
         Spacer(Modifier.height(4.dp))
         Content(
+            modifier = Modifier.testTag("ci:content"),
             items = success.content,
             label = "Instruction",
             addUp = addUp,
@@ -184,7 +183,7 @@ internal fun MainContent(
         Spacer(Modifier.height(4.dp))
 
         SeriesEditorButton(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier.align(Alignment.End).testTag("ci:add_instruction"),
             onClick = onAddInstruction,
             enabled = success.content.any { it.content.text.isNotBlank() },
             // enabled = instructionUiState.content.first().content.isNotBlank(),

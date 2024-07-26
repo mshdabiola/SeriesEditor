@@ -28,17 +28,14 @@ class CiViewModel(
     private val instructionRepository: IInstructionRepository,
     private val settingRepository: ISettingRepository,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     val instructionInput = TextFieldState()
 
-    private val _ciState = MutableStateFlow<CiState>(CiState.Success(
-        id = introductionId,
-        examId = examId,
-        content = listOf(ItemUiState(isEditMode = true)).toImmutableList(),
-    ))
+    private val _ciState = MutableStateFlow<CiState>(CiState.Loading())
     val ciState = _ciState.asStateFlow()
     val title = TextFieldState()
+
     init {
 
         viewModelScope.launch {
@@ -58,19 +55,33 @@ class CiViewModel(
                         content = instruct.content.map { it.toItemUi() }.toImmutableList(),
                     )
                 }
+            } else {
+                _ciState.update {
+                    CiState.Success(
+                        id = introductionId,
+                        examId = examId,
+                        content = listOf(ItemUiState(isEditMode = true)).toImmutableList(),
+                    )
+                }
+
             }
         }
     }
 
     fun onAdd() {
         viewModelScope.launch {
-            val success=_ciState.value as CiState.Success
+            val success = _ciState.value as CiState.Success
             _ciState.update {
                 CiState.Loading(false)
             }
 
             instructionRepository.upsert(
-               Instruction(success.id,examId,title.text.toString(),success.content.map { it.toItem() })
+                Instruction(
+                    success.id,
+                    examId,
+                    title.text.toString(),
+                    success.content.map { it.toItem() },
+                ),
             )
 
             _ciState.update {
