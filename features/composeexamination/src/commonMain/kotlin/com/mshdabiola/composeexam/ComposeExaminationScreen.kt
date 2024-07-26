@@ -28,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -103,7 +104,7 @@ internal fun ComposeExaminationScreen(
 
     AnimatedContent(
         modifier = modifier
-            .testTag("main:screen"),
+            .testTag("ce:screen"),
         targetState = ceState,
         transitionSpec ={
             (slideInHorizontally (animationSpec = tween(220, delayMillis = 90)) +
@@ -147,12 +148,12 @@ internal fun MainContent(
         Section(title = "Examination Section")
 
         ExposedDropdownMenuBox(
-            modifier = Modifier,
+            modifier = Modifier.testTag("ce:subject"),
             expanded = expanded,
             onExpandedChange = { expanded = it },
         ) {
             MyTextField(
-                modifier = Modifier.fillMaxWidth().menuAnchor(),
+                modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryEditable),
                 state = subject,
                 label = { Text("Subject") },
                 readOnly = true,
