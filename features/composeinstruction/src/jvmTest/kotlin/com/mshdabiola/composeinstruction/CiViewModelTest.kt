@@ -13,6 +13,7 @@ import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -29,8 +30,9 @@ class CiViewModelTest : KoinTest {
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
+    private val testDispatcher = StandardTestDispatcher()
     @get:Rule(order = 2)
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
@@ -40,13 +42,13 @@ class CiViewModelTest : KoinTest {
     private val settingRepository by inject<ISettingRepository>()
 
     @BeforeTest
-    fun setup() = runTest {
+    fun setup() = runTest (mainDispatcherRule.testDispatcher){
         insertData()
 
     }
 
     @Test
-    fun init_update() = runTest {
+    fun init_update() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = CiViewModel(1, 1, instructionRepository, settingRepository)
 
         viewModel
@@ -75,7 +77,7 @@ class CiViewModelTest : KoinTest {
     }
 
     @Test
-    fun update() = runTest {
+    fun update() = runTest(mainDispatcherRule.testDispatcher) {
 
         val viewModel = CiViewModel(2, 2, instructionRepository, settingRepository)
 
@@ -99,8 +101,11 @@ class CiViewModelTest : KoinTest {
                     }
                 }
 
+
                 viewModel.onAdd()
 
+                awaitItem()
+                awaitItem()
 
                 val instruction = instructionRepository.getOne(2).first()
                 assertEquals(instruction?.title, "New Title")
@@ -118,7 +123,7 @@ class CiViewModelTest : KoinTest {
 
 
     @Test
-    fun init_new() = runTest {
+    fun init_new() = runTest (mainDispatcherRule.testDispatcher){
         val viewModel = CiViewModel(1, -1, instructionRepository, settingRepository)
 
         viewModel
@@ -147,7 +152,7 @@ class CiViewModelTest : KoinTest {
     }
 
     @Test
-    fun addNew() = runTest {
+    fun addNew() = runTest(mainDispatcherRule.testDispatcher) {
 
         val viewModel = CiViewModel(2, -1, instructionRepository, settingRepository)
 
@@ -170,8 +175,12 @@ class CiViewModelTest : KoinTest {
                         append("New Title")
                     }
                 }
-
                 viewModel.onAdd()
+
+                awaitItem()
+                awaitItem()
+
+
 
 
                 val instruction = instructionRepository
