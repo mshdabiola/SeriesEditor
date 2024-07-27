@@ -13,6 +13,7 @@ import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -27,13 +28,14 @@ import kotlin.test.assertTrue
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class CiViewModelTest : KoinTest {
+class CeViewModelTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
+    private val testDispatcher = StandardTestDispatcher()
     @get:Rule(order = 2)
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
@@ -46,13 +48,13 @@ class CiViewModelTest : KoinTest {
     private val examinationRepository by inject<IExaminationRepository>()
 
     @BeforeTest
-    fun setup() = runTest {
+    fun setup() = runTest (mainDispatcherRule.testDispatcher){
         insertData()
         //viewModel = ComposeExaminationViewModel(0, subjectRepository, examinationRepository)
     }
 
     @Test
-    fun updateExam_InitExam() = runTest {
+    fun updateExam_InitExam() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = ComposeExaminationViewModel(1, subjectRepository, examinationRepository)
 
         val state = viewModel.ceState
@@ -75,7 +77,7 @@ class CiViewModelTest : KoinTest {
     }
 
     @Test
-    fun updateExam() = runTest {
+    fun updateExam() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = ComposeExaminationViewModel(1, subjectRepository, examinationRepository)
 
         val state = viewModel.ceState
@@ -92,6 +94,8 @@ class CiViewModelTest : KoinTest {
                 }
 
                 viewModel.addExam()
+                awaitItem()
+                awaitItem()
 
                 val exam = examinationRepository.getOne(1).first()
 
@@ -104,7 +108,7 @@ class CiViewModelTest : KoinTest {
     }
 
     @Test
-    fun enterNewExam() = runTest {
+    fun enterNewExam() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = ComposeExaminationViewModel(-1, subjectRepository, examinationRepository)
         viewModel
             .ceState
@@ -123,7 +127,7 @@ class CiViewModelTest : KoinTest {
     }
 
     @Test
-    fun addNewExam() = runTest {
+    fun addNewExam() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = ComposeExaminationViewModel(-1, subjectRepository, examinationRepository)
         viewModel
             .ceState
@@ -143,6 +147,8 @@ class CiViewModelTest : KoinTest {
                 }
 
                 viewModel.addExam()
+                awaitItem()
+                awaitItem()
 
                 val exam = examinationRepository.getAll().first()
 

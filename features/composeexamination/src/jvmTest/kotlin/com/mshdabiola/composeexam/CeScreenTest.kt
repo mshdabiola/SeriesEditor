@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import org.junit.Rule
 import kotlin.test.Test
 
-class CiScreenTest {
+class CeScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()
