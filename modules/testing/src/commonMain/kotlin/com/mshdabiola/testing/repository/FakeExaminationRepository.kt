@@ -26,18 +26,14 @@ internal class FakeExaminationRepository : IExaminationRepository {
 
     private val _exams = MutableStateFlow(defaultData.examinations)
 
-
     override suspend fun upsert(examination: Examination): Long {
-
         _exams.update {
             it.toMutableList().apply {
                 if (examination.id == -1L) {
                     add(examination)
-
                 } else {
                     val index = this.indexOfFirst { it.id == examination.id }
                     add(index, examination)
-
                 }
             }
         }
@@ -46,7 +42,6 @@ internal class FakeExaminationRepository : IExaminationRepository {
 
     override fun getAll(): Flow<List<Examination>> {
         return _exams
-
     }
 
     override fun getAllBuSubjectId(subjectId: Long): Flow<List<ExaminationWithSubject>> {
@@ -112,5 +107,4 @@ internal class FakeExaminationRepository : IExaminationRepository {
     override fun updateSelectedList(selectedList: List<Long>) {
         _selectedList.value = selectedList
     }
-
 }

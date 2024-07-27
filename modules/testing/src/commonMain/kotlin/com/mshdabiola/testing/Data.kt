@@ -16,7 +16,6 @@ import com.mshdabiola.generalmodel.TopicWithCategory
 import com.mshdabiola.generalmodel.User
 import com.mshdabiola.generalmodel.UserType
 import com.mshdabiola.generalmodel.serial.asString
-import kotlin.random.Random
 
 val users = listOf(
     User(1, "Alice", UserType.STUDENT, "password1", "path/to/image1.jpg", 85),
@@ -310,7 +309,6 @@ val questionsPlain = listOf(
     ),
 )
 
-
 val options = listOf(
     // Question 1 Options
     Option(1, 1, 1, "Paris", listOf(Content(content = "The capital of France.")), true),
@@ -553,8 +551,7 @@ val options = listOf(
     ),
 )
 
-
-val topicWithCategory=
+val topicWithCategory =
     topics.map { topic ->
         TopicWithCategory(
             topic.id,
@@ -563,9 +560,8 @@ val topicWithCategory=
         )
     }
 
-
-val questions = List(10){
-    val id=it.toLong()
+val questions = List(10) {
+    val id = it.toLong()
     Question(
         id = id,
         number = 1,
@@ -580,7 +576,6 @@ val questions = List(10){
     )
 }
 
-
 val exportableData = ExportableData(
     users = users,
     series = series,
@@ -594,6 +589,3 @@ val exportableData = ExportableData(
     questions = questionsPlain,
     options = options,
 )
-
-
-

@@ -46,7 +46,6 @@ class CeViewModelTest : KoinTest {
     private val subjectRepository by inject<ISubjectRepository>()
     private val examinationRepository by inject<IExaminationRepository>()
 
-
     @Test
     fun updateExam_InitExam() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = ComposeExaminationViewModel(1, subjectRepository, examinationRepository)

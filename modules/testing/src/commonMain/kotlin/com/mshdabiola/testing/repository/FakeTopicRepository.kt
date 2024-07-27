@@ -1,19 +1,12 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.database.asEntity
-import com.mshdabiola.database.asModel
-import com.mshdabiola.database.dao.TopicDao
 import com.mshdabiola.generalmodel.Topic
-import com.mshdabiola.generalmodel.TopicCategory
 import com.mshdabiola.generalmodel.TopicWithCategory
 import com.mshdabiola.testing.defaultData
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 internal class FakeTopicRepository : ITopicRepository {
     private val _topic = MutableStateFlow<List<Topic>>(defaultData.topics)
@@ -22,7 +15,7 @@ internal class FakeTopicRepository : ITopicRepository {
         _topic.value = _topic.value.toMutableList().apply {
             if (topic.id == -1L) {
                 add(topic)
-            }else{
+            } else {
                 val index = this.indexOfFirst { it.id == topic.id }
                 add(index, topic)
             }
@@ -37,11 +30,11 @@ internal class FakeTopicRepository : ITopicRepository {
     }
 
     override fun getAll(): Flow<List<Topic>> {
-       return _topic
+        return _topic
     }
 
     override fun getAllBySubject(subjectID: Long): Flow<List<Topic>> {
-       return _topic
+        return _topic
     }
 
     override fun getOne(id: Long): Flow<Topic?> {
@@ -61,9 +54,8 @@ internal class FakeTopicRepository : ITopicRepository {
     }
 
     override suspend fun delete(id: Long) {
-         _topic.value = _topic.value.toMutableList().apply {
+        _topic.value = _topic.value.toMutableList().apply {
             removeIf { it.id == id }
         }
     }
-
 }

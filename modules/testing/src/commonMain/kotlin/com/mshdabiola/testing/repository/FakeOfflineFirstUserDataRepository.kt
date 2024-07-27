@@ -44,5 +44,4 @@ internal class FakeOfflineFirstUserDataRepository : UserDataRepository {
     override suspend fun setUserId(id: Long) {
         _userData.value = _userData.value.copy(userId = id)
     }
-
 }

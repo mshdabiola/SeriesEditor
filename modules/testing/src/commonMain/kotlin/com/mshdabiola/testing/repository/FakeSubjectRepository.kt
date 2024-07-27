@@ -1,38 +1,30 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.database.asEntity
-import com.mshdabiola.database.asModel
-import com.mshdabiola.database.dao.SubjectDao
-import com.mshdabiola.generalmodel.Series
 import com.mshdabiola.generalmodel.Subject
 import com.mshdabiola.generalmodel.SubjectWithSeries
 import com.mshdabiola.testing.defaultData
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
-internal class FakeSubjectRepository: ISubjectRepository {
+internal class FakeSubjectRepository : ISubjectRepository {
     private val _subject = MutableStateFlow<List<Subject>>(defaultData.subjects)
 
-
     override suspend fun upsert(subject: Subject): Long {
-       _subject.value = _subject.value.toMutableList().apply {
-           if (subject.id == -1L) {
-               add(subject)
-           }else{
-               val index = this.indexOfFirst { it.id == subject.id }
-               add(index, subject)
-           }
-       }
+        _subject.value = _subject.value.toMutableList().apply {
+            if (subject.id == -1L) {
+                add(subject)
+            } else {
+                val index = this.indexOfFirst { it.id == subject.id }
+                add(index, subject)
+            }
+        }
         return 1
     }
 
     override fun getAll(): Flow<List<Subject>> {
-       return _subject
+        return _subject
     }
 
     override fun getOne(id: Long): Flow<Subject?> {
@@ -41,13 +33,13 @@ internal class FakeSubjectRepository: ISubjectRepository {
     }
 
     override fun getAllWithSeries(): Flow<List<SubjectWithSeries>> {
-       return _subject
-           .map { subjects ->
-               subjects.map { sub->
-                   val series = defaultData.series.first { sub.seriesId== it.id }
-                   SubjectWithSeries(sub, series)
-               }
-           }
+        return _subject
+            .map { subjects ->
+                subjects.map { sub ->
+                    val series = defaultData.series.first { sub.seriesId == it.id }
+                    SubjectWithSeries(sub, series)
+                }
+            }
     }
 
     override fun getOneWithSeries(id: Long): Flow<SubjectWithSeries?> {
@@ -66,5 +58,4 @@ internal class FakeSubjectRepository: ISubjectRepository {
             removeIf { it.id == id }
         }
     }
-
 }

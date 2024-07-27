@@ -1,17 +1,11 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.database.asEntity
-import com.mshdabiola.database.asModel
-import com.mshdabiola.database.dao.InstructionDao
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.testing.defaultData
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 internal class FakeInstructionRepository : IInstructionRepository {
 
@@ -21,7 +15,7 @@ internal class FakeInstructionRepository : IInstructionRepository {
         _instruction.value = _instruction.value.toMutableList().apply {
             if (instruction.id == -1L) {
                 add(instruction)
-            }else{
+            } else {
                 val index = this.indexOfFirst { it.id == instruction.id }
                 add(index, instruction)
             }
@@ -36,7 +30,7 @@ internal class FakeInstructionRepository : IInstructionRepository {
     }
 
     override fun getAll(): Flow<List<Instruction>> {
-       return _instruction
+        return _instruction
     }
 
     override fun getAllByExamId(examId: Long): Flow<List<Instruction>> {
@@ -54,5 +48,4 @@ internal class FakeInstructionRepository : IInstructionRepository {
             removeIf { it.id == id }
         }
     }
-
 }

@@ -10,5 +10,4 @@ internal class FakeNetworkRepository : INetworkRepository {
     override suspend fun gotoGoogle(): String {
         TODO("Not yet implemented")
     }
-
 }

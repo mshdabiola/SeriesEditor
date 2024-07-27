@@ -19,7 +19,7 @@ class FakeUserRepository : IUserRepository {
         _user.value = _user.value.toMutableList().apply {
             if (user.id == -1L) {
                 add(user)
-            }else{
+            } else {
                 val index = this.indexOfFirst { it.id == user.id }
                 add(index, user)
             }
@@ -32,5 +32,4 @@ class FakeUserRepository : IUserRepository {
             removeIf { it.id == id }
         }
     }
-
 }
