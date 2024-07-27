@@ -84,7 +84,6 @@ internal fun SubjectRoute(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun SubjectScreen(
     modifier: Modifier = Modifier,
@@ -100,7 +99,7 @@ internal fun SubjectScreen(
     AnimatedContent(
         targetState = csState,
         modifier = modifier
-            .testTag("composesubject:screen"),
+            .testTag("cs:screen"),
 
     ) {
         when (it) {
@@ -152,6 +151,7 @@ internal fun MainContent(
                 state = rememberTooltipState(),
             ) {
                 IconButton(
+                    modifier = Modifier.testTag("cs:previous"),
                     onClick = {
                         coroutineScope.launch {
                             scrollState.animateScrollTo(scrollState.value - 40)
@@ -164,8 +164,9 @@ internal fun MainContent(
             }
 
             Row(
+
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.weight(1f).horizontalScroll(scrollState),
+                modifier = Modifier.testTag("cs:list_series").weight(1f).horizontalScroll(scrollState),
             ) {
                 csState.series.forEach {
                     FilterChip(
@@ -193,6 +194,7 @@ internal fun MainContent(
                 state = rememberTooltipState(),
             ) {
                 IconButton(
+                    modifier = Modifier.testTag("cs:next"),
                     onClick = {
                         coroutineScope.launch {
                             scrollState.animateScrollTo(scrollState.value + 40)
@@ -208,7 +210,7 @@ internal fun MainContent(
         SeriesEditorTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag("composesubject:subject"),
+                .testTag("cs:subject"),
             state = subjectState,
             label = "Subject",
             placeholder = "Mathematics",
@@ -217,7 +219,7 @@ internal fun MainContent(
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeriesEditorButton(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier.align(Alignment.End).testTag("cs:add_subject"),
             enabled = subjectState.text.isNotBlank() && csState.currentSeries > 0,
             onClick = addSubject,
         ) {
@@ -230,7 +232,7 @@ internal fun MainContent(
         SeriesEditorTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag("composesubject:series"),
+                .testTag("cs:series"),
             state = seriesState,
             label = "Type",
             placeholder = "NECO",
@@ -243,13 +245,15 @@ internal fun MainContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
         ) {
             AnimatedVisibility(csState.currentSeries > 1) {
-                TextButton(onClick = onDeleteSeries) {
+                TextButton(
+                    modifier = Modifier.testTag("cs:delete_series"),
+                    onClick = onDeleteSeries) {
                     Text("Delete")
                 }
             }
 
             SeriesEditorButton(
-                modifier = Modifier,
+                modifier = Modifier.testTag("cs:add_series"),
                 enabled = seriesState.text.isNotBlank(),
                 onClick = addSeries,
             ) {
