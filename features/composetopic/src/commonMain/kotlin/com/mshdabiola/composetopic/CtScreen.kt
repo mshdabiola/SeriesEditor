@@ -88,7 +88,7 @@ internal fun CtRoute(
 
     CtScreen(
         modifier = modifier,
-        cqState = update.value,
+        ctState = update.value,
         categoryState = viewModel.categoryState,
         name = viewModel.state,
         topicInput = viewModel.topicInput,
@@ -103,7 +103,7 @@ internal fun CtRoute(
 @Composable
 internal fun CtScreen(
     modifier: Modifier = Modifier,
-    cqState: CtState,
+    ctState: CtState,
     name: TextFieldState,
     categoryState: TextFieldState,
     topicInput: TextFieldState,
@@ -115,8 +115,9 @@ internal fun CtScreen(
 ) {
 
     AnimatedContent(
-        targetState = cqState,
+        targetState = ctState,
         modifier = modifier.imePadding()
+            .testTag("ct:screen")
             .verticalScroll(rememberScrollState()),
     ) {
         when (it) {
@@ -184,6 +185,7 @@ internal fun MainContent(
                 state = rememberTooltipState(),
             ) {
                 IconButton(
+                    modifier = Modifier.testTag("ct:previous"),
                     onClick = {
                         coroutineScope.launch {
                             scrollState.animateScrollTo(scrollState.value - 40)
@@ -197,7 +199,7 @@ internal fun MainContent(
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.weight(1f).horizontalScroll(scrollState),
+                modifier = Modifier.weight(1f).horizontalScroll(scrollState).testTag("ct:list_categories"),
             ) {
                 state.categories.forEachIndexed { index, topicCategory ->
                     FilterChip(
@@ -225,6 +227,7 @@ internal fun MainContent(
                 state = rememberTooltipState(),
             ) {
                 IconButton(
+                    modifier = Modifier.testTag("ct:next"),
                     onClick = {
                         coroutineScope.launch {
                             scrollState.animateScrollTo(scrollState.value + 40)
@@ -240,7 +243,8 @@ internal fun MainContent(
         SeriesEditorTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag("ct:topic"),
             state = name,
             label = "Topic",
             maxNum = TextFieldLineLimits.SingleLine,
@@ -248,7 +252,7 @@ internal fun MainContent(
 
         Spacer(Modifier.height(4.dp))
         SeriesEditorButton(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier.align(Alignment.End).testTag("ct:add_topic"),
             enabled = name.text.isNotBlank(),
             onClick = onAddTopic,
         ) {
@@ -260,7 +264,7 @@ internal fun MainContent(
         SeriesEditorTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag("composesubject:category"),
+                .testTag("ct:category"),
             state = categoryState,
             label = "Category",
             placeholder = "Algebra",
@@ -273,13 +277,15 @@ internal fun MainContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
         ) {
             AnimatedVisibility(state.currentCategoryIndex > 0) {
-                TextButton(onClick = onDeleteCategory) {
+                TextButton(
+                    modifier = Modifier.testTag("ct:delete_category"),
+                    onClick = onDeleteCategory) {
                     Text("Delete")
                 }
             }
 
             SeriesEditorButton(
-                modifier = Modifier,
+                modifier = Modifier.testTag("ct:add_category"),
                 enabled = categoryState.text.isNotBlank(),
                 onClick = addCategory,
             ) {
