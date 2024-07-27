@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
@@ -36,7 +35,6 @@ class ComposeSubjectViewModel(
     val subjectState = TextFieldState()
 
     val seriesState = TextFieldState()
-
 
     private val _csState = MutableStateFlow<CsState>(CsState.Loading())
     val csState = _csState.asStateFlow()
@@ -68,31 +66,30 @@ class ComposeSubjectViewModel(
                 )
             }
 
-
             seriesRepository
                 .getAll()
                 .collectLatest { list ->
                     _csState.update {
                         if (it is CsState.Success) {
                             it.copy(series = list)
-                        } else it
+                        } else {
+                            it
+                        }
                     }
-
                 }
-
         }
     }
 
     fun addSubject() {
         viewModelScope.launch {
-            val subject= Subject(
+            val subject = Subject(
                 id = subjectId,
                 seriesId = (csState.value as CsState.Success).currentSeries,
                 title = subjectState.text.toString(),
             )
             _csState.update { CsState.Loading() }
             subjectRepository.upsert(
-               subject
+                subject,
             )
             _csState.update { CsState.Loading(true) }
         }
@@ -102,13 +99,15 @@ class ComposeSubjectViewModel(
         _csState.update {
             if (it is CsState.Success) {
                 it.copy(currentSeries = id)
-            } else it
+            } else {
+                it
+            }
         }
         seriesState.clearText()
 
         if (id > 1) {
             seriesState.edit {
-                append((csState.value as CsState.Success).series .find { it.id == id }?.name)
+                append((csState.value as CsState.Success).series.find { it.id == id }?.name)
             }
         }
     }
@@ -132,7 +131,9 @@ class ComposeSubjectViewModel(
                 _csState.update {
                     if (it is CsState.Success) {
                         it.copy(currentSeries = newId)
-                    } else it
+                    } else {
+                        it
+                    }
                 }
             }
         }

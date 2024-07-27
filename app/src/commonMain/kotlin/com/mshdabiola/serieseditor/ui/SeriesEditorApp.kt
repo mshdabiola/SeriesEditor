@@ -152,30 +152,30 @@ fun SeriesEditorApp() {
                         ModalNavigationDrawer(
                             drawerState = drawerState,
                             drawerContent = {
-                                 if (appState.showDrawer) {
-                                ModalDrawerSheet(
-                                    modifier = Modifier.widthIn(max = 300.dp),
-                                ) {
-                                    NavigationSheet(
-                                        modifier = Modifier
-                                            .padding(top = 16.dp, start = 16.dp, end = 8.dp),
-                                        subjects = subjects.value,
+                                if (appState.showDrawer) {
+                                    ModalDrawerSheet(
+                                        modifier = Modifier.widthIn(max = 300.dp),
+                                    ) {
+                                        NavigationSheet(
+                                            modifier = Modifier
+                                                .padding(top = 16.dp, start = 16.dp, end = 8.dp),
+                                            subjects = subjects.value,
 
-                                        addSubject = {
-                                            appState.navController.navigateToComposeSubject(
-                                                -1,
-                                            )
-                                        },
-                                        onSubjectClick = {
-                                            appState.onSubjectClick(it)
-                                            coroutine.launch { drawerState.close() }
-                                        },
-                                        checkIfSelected = { currentSubjectId == it },
-                                        onAddTopic = { appState.onAddTopic(currentSubjectId) },
-                                        user = user.value,
-                                    )
+                                            addSubject = {
+                                                appState.navController.navigateToComposeSubject(
+                                                    -1,
+                                                )
+                                            },
+                                            onSubjectClick = {
+                                                appState.onSubjectClick(it)
+                                                coroutine.launch { drawerState.close() }
+                                            },
+                                            checkIfSelected = { currentSubjectId == it },
+                                            onAddTopic = { appState.onAddTopic(currentSubjectId) },
+                                            user = user.value,
+                                        )
+                                    }
                                 }
-                                 }
                             },
                         ) {
                             Scaffold(
@@ -372,7 +372,6 @@ private fun shouldUseAndroidTheme(
         ThemeBrand.GREEN -> true
     }
 }
-
 
 @Composable
 private fun shouldDisableDynamicTheming(

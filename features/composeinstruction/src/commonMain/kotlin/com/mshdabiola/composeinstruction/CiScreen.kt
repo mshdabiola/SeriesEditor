@@ -5,7 +5,6 @@
 package com.mshdabiola.composeinstruction
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -112,10 +111,9 @@ internal fun CiScreen(
     onItemClicked: (ItemUiState) -> Unit = {},
 
 ) {
-
-   AnimatedContent(modifier=modifier.testTag("ci:screen"), targetState = ciState) {
+    AnimatedContent(modifier = modifier.testTag("ci:screen"), targetState = ciState) {
         when (it) {
-          is CiState.Loading -> Waiting()
+            is CiState.Loading -> Waiting()
             is CiState.Success -> MainContent(
                 modifier = Modifier,
                 title = title,
@@ -131,7 +129,7 @@ internal fun CiScreen(
                 onAddInstructionUiState = onAddInstructionUiState,
                 onChangeView = onChangeView,
                 onItemClicked = onItemClicked,
-                )
+            )
 
             else -> {}
         }
@@ -157,8 +155,7 @@ internal fun MainContent(
 ) {
     var showConvert by remember { mutableStateOf(false) }
 
-
-    Column(modifier = modifier.verticalScroll(rememberScrollState())){
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         Section(title = "Instruction Section")
         SeriesEditorTextField(
             modifier = Modifier.fillMaxWidth().testTag("ci:title"),
@@ -212,7 +209,7 @@ internal fun MainContent(
         if (showConvert) {
             Column {
                 SeriesEditorTextField(
-                    state =instructionInput ,
+                    state = instructionInput,
 //                    isError = instruInputUiState.isError,
                     modifier = Modifier.fillMaxWidth().height(300.dp),
                 )
@@ -241,5 +238,4 @@ internal fun MainContent(
             }
         }
     }
-
 }

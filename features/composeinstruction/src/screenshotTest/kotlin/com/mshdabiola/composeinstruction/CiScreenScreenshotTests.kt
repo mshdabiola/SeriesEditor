@@ -28,11 +28,9 @@ class CiScreenScreenshotTests {
                     ciState = CiState.Loading(),
                     title = rememberTextFieldState(),
                     instructionInput = rememberTextFieldState(),
-                    )
+                )
             }
-
         }
-
     }
 
     @DevicePreviews
@@ -48,7 +46,6 @@ class CiScreenScreenshotTests {
                 )
             }
         }
-
     }
 
     @DevicePreviews
@@ -56,7 +53,6 @@ class CiScreenScreenshotTests {
     fun MainLight() {
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
-
                 CiScreen(
                     modifier = Modifier.fillMaxSize(),
                     ciState = CiState.Success(
@@ -69,7 +65,6 @@ class CiScreenScreenshotTests {
                 )
             }
         }
-
     }
 
     @DevicePreviews
@@ -77,7 +72,6 @@ class CiScreenScreenshotTests {
     fun MainDark() {
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
-
                 CiScreen(
                     modifier = Modifier.fillMaxSize(),
                     ciState = CiState.Success(
@@ -90,8 +84,5 @@ class CiScreenScreenshotTests {
                 )
             }
         }
-
     }
-
-
 }

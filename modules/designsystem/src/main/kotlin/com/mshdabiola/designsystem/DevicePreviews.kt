@@ -16,20 +16,20 @@ import androidx.compose.ui.tooling.preview.Preview
     group = "screen",
     name = "phone",
     device = "spec:width=411dp,height=891dp",
-    showSystemUi = true
+    showSystemUi = true,
 )
 @Preview(
     group = "screen",
     name = "landscape",
     device = "spec:width=411dp,height=891dp,orientation=landscape",
-    showSystemUi = true
+    showSystemUi = true,
 
 )
 @Preview(
     group = "screen",
     name = "foldable",
     device = "spec:width=673dp,height=841dp",
-    showSystemUi = true
+    showSystemUi = true,
 
 )
 @Preview(

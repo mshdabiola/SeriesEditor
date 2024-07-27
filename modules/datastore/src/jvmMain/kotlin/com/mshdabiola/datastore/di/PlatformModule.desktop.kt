@@ -8,7 +8,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 
-var storePath= generalPath
+var storePath = generalPath
 actual val datastoreModule: Module
     get() = module {
         includes(commonModule)

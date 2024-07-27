@@ -14,13 +14,6 @@ import com.mshdabiola.designsystem.DevicePreviews
 import com.mshdabiola.designsystem.theme.darkDefaultScheme
 import com.mshdabiola.designsystem.theme.lightDefaultScheme
 import com.mshdabiola.generalmodel.Series
-import com.mshdabiola.generalmodel.TopicCategory
-import com.mshdabiola.ui.state.InstructionUiState
-import com.mshdabiola.ui.state.ItemUiState
-import com.mshdabiola.ui.state.OptionUiState
-import com.mshdabiola.ui.state.QuestionUiState
-import com.mshdabiola.ui.state.TopicUiState
-import kotlinx.collections.immutable.toImmutableList
 
 class CtScreenScreenshotTests {
 
@@ -36,9 +29,7 @@ class CtScreenScreenshotTests {
                     seriesState = rememberTextFieldState("series"),
                 )
             }
-
         }
-
     }
 
     @DevicePreviews
@@ -54,7 +45,6 @@ class CtScreenScreenshotTests {
                 )
             }
         }
-
     }
 
     @DevicePreviews
@@ -62,11 +52,10 @@ class CtScreenScreenshotTests {
     fun MainLight() {
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
-
                 SubjectScreen(
                     modifier = Modifier.fillMaxSize(),
                     csState = CsState.Success(
-                        series = listOf(Series(1,6,"ask")),
+                        series = listOf(Series(1, 6, "ask")),
                         currentSeries = 1,
                     ),
                     subjectState = rememberTextFieldState("subject"),
@@ -74,7 +63,6 @@ class CtScreenScreenshotTests {
                 )
             }
         }
-
     }
 
     @DevicePreviews
@@ -82,11 +70,10 @@ class CtScreenScreenshotTests {
     fun MainDark() {
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
-
                 SubjectScreen(
                     modifier = Modifier.fillMaxSize(),
                     csState = CsState.Success(
-                        series = listOf(Series(1,6,"ask")),
+                        series = listOf(Series(1, 6, "ask")),
                         currentSeries = 1,
                     ),
                     subjectState = rememberTextFieldState("subject"),
@@ -94,8 +81,5 @@ class CtScreenScreenshotTests {
                 )
             }
         }
-
     }
-
-
 }

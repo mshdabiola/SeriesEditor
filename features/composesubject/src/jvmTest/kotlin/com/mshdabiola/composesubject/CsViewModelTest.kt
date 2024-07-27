@@ -6,25 +6,16 @@ package com.mshdabiola.composesubject
 
 import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
-import app.cash.turbine.turbineScope
 import co.touchlab.kermit.Logger
-import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
-import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.defaultData
 import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.selects.whileSelect
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -35,8 +26,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 class CsViewModelTest : KoinTest {
 
@@ -44,6 +33,7 @@ class CsViewModelTest : KoinTest {
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
     private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule(order = 2)
     val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
@@ -56,61 +46,17 @@ class CsViewModelTest : KoinTest {
     private val subjectRepository by inject<ISubjectRepository>()
     private val logger = Logger
 
-
     @BeforeTest
-    fun setup() =runTest(testDispatcher)  {
+    fun setup() = runTest(testDispatcher) {
         insertData()
     }
 
     @Test
-    fun init_update() = runTest(testDispatcher)  {
+    fun init_update() = runTest(testDispatcher) {
         val default = defaultData
-        val subject=default.subjects[0]
+        val subject = default.subjects[0]
 
-
-
-        val  viewModel = ComposeSubjectViewModel(
-            subject.id,
-            seriesRepository,
-            subjectRepository,
-            userdataRepository,
-            logger,
-            )
-
-        viewModel
-            .csState
-            .test((10).toDuration(DurationUnit.SECONDS)) {
-
-
-                var state = awaitItem()
-
-                assertTrue(state is CsState.Loading)
-
-                state = awaitItem()
-
-                assertTrue(state is CsState.Success)
-
-                state = awaitItem()
-
-                assertTrue(state is CsState.Success)
-
-                assertEquals(subject.seriesId,state.currentSeries)
-                assertEquals(subject.title,viewModel.subjectState.text)
-
-                cancelAndIgnoreRemainingEvents()
-
-            }
-
-
-    }
-
-    @Test
-    fun update() =runTest(testDispatcher) {
-        val default = defaultData
-        val subject=default.subjects[2]
-
-
-        val  viewModel = ComposeSubjectViewModel(
+        val viewModel = ComposeSubjectViewModel(
             subject.id,
             seriesRepository,
             subjectRepository,
@@ -133,7 +79,42 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Success)
 
-                with(viewModel.subjectState){
+                assertEquals(subject.seriesId, state.currentSeries)
+                assertEquals(subject.title, viewModel.subjectState.text)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+    }
+
+    @Test
+    fun update() = runTest(testDispatcher) {
+        val default = defaultData
+        val subject = default.subjects[2]
+
+        val viewModel = ComposeSubjectViewModel(
+            subject.id,
+            seriesRepository,
+            subjectRepository,
+            userdataRepository,
+            logger,
+        )
+
+        viewModel
+            .csState
+            .test {
+                var state = awaitItem()
+
+                assertTrue(state is CsState.Loading)
+
+                state = awaitItem()
+
+                assertTrue(state is CsState.Success)
+
+                state = awaitItem()
+
+                assertTrue(state is CsState.Success)
+
+                with(viewModel.subjectState) {
                     clearText()
                     edit {
                         append("English Language")
@@ -142,30 +123,23 @@ class CsViewModelTest : KoinTest {
 
                 viewModel.addSubject()
 
-
-                state=awaitItem()
+                state = awaitItem()
                 assertTrue(state is CsState.Loading)
-                state=awaitItem()
+                state = awaitItem()
                 assertTrue(state is CsState.Loading)
 
-                val newSubject=subjectRepository.getOneWithSeries(subject.id).first()
+                val newSubject = subjectRepository.getOneWithSeries(subject.id).first()
 
-
-                assertEquals(subject.id,newSubject?.subject?.id)
-                assertEquals("English Language",newSubject?.subject?.title)
-                assertEquals(subject.seriesId,newSubject?.series?.id)
+                assertEquals(subject.id, newSubject?.subject?.id)
+                assertEquals("English Language", newSubject?.subject?.title)
+                assertEquals(subject.seriesId, newSubject?.series?.id)
 
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
 
-
     @Test
-    fun init_new() = runTest(testDispatcher)  {
+    fun init_new() = runTest(testDispatcher) {
         val viewModel = ComposeSubjectViewModel(
             -1,
             seriesRepository,
@@ -189,22 +163,17 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Success)
 
-                assertEquals(1,state.currentSeries)
-                assertEquals("",viewModel.subjectState.text)
+                assertEquals(1, state.currentSeries)
+                assertEquals("", viewModel.subjectState.text)
 
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
 
     @Test
     fun addNew() = runTest(testDispatcher) {
-
         val viewModel = ComposeSubjectViewModel(
-           -1,
+            -1,
             seriesRepository,
             subjectRepository,
             userdataRepository,
@@ -226,7 +195,7 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Success)
 
-                with(viewModel.subjectState){
+                with(viewModel.subjectState) {
                     clearText()
                     edit {
                         append("Physics")
@@ -235,22 +204,17 @@ class CsViewModelTest : KoinTest {
 
                 viewModel.addSubject()
 
-
-                state=awaitItem()
+                state = awaitItem()
                 assertTrue(state is CsState.Loading)
-                state=awaitItem()
+                state = awaitItem()
                 assertTrue(state is CsState.Loading)
 
-                val newSubject=subjectRepository.getAll().first().last()
-
+                val newSubject = subjectRepository.getAll().first().last()
 
                 assertEquals("Physics", newSubject.title)
                 assertEquals(1, newSubject.seriesId)
 
                 cancelAndIgnoreRemainingEvents()
-
             }
-
-
     }
 }

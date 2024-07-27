@@ -27,8 +27,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 class CqViewModelTest : KoinTest {
 
@@ -36,6 +34,7 @@ class CqViewModelTest : KoinTest {
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
     private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule(order = 2)
     val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
@@ -52,14 +51,12 @@ class CqViewModelTest : KoinTest {
     @BeforeTest
     fun setup() = runTest(mainDispatcherRule.testDispatcher) {
         insertData()
-
-
     }
 
     @Test
     fun init_update() = runTest(mainDispatcherRule.testDispatcher) {
         val default = defaultData
-        val question=default.questions[0]
+        val question = default.questions[0]
 
         val viewModel = CqViewModel(
             question.examId,
@@ -73,7 +70,7 @@ class CqViewModelTest : KoinTest {
 
         viewModel
             .cqState
-            .test((10).toDuration(DurationUnit.SECONDS)) {
+            .test {
                 var state = awaitItem()
 
                 assertTrue(state is CqState.Loading)
@@ -82,25 +79,20 @@ class CqViewModelTest : KoinTest {
 
                 assertTrue(state is CqState.Success)
 
-
-
-                assertEquals(question.id,state.questionUiState.id)
-                assertEquals(question.number,state.questionUiState.number)
+                assertEquals(question.id, state.questionUiState.id)
+                assertEquals(question.number, state.questionUiState.number)
 //                assertEquals(question.title,state.questionUiState.title)
-                assertEquals(question.topicId,state.questionUiState.topicUiState?.id)
-                assertEquals(question.instructionId,state.questionUiState.instructionUiState?.id)
+                assertEquals(question.topicId, state.questionUiState.topicUiState?.id)
+                assertEquals(question.instructionId, state.questionUiState.instructionUiState?.id)
 
                 cancelAndIgnoreRemainingEvents()
-
             }
-
-
     }
 
     @Test
-    fun update() = runTest (mainDispatcherRule.testDispatcher){
+    fun update() = runTest(mainDispatcherRule.testDispatcher) {
         val default = defaultData
-        val question=default.questions[0]
+        val question = default.questions[0]
 
         val viewModel = CqViewModel(
             question.examId,
@@ -134,26 +126,18 @@ class CqViewModelTest : KoinTest {
                     }
                 }
 
-
-
 //
                 viewModel.onAddQuestion()
                 state = awaitItem()
                 state = awaitItem()
 
                 var questionNew = questionRepository.getOne(question.id).first()
-                assertEquals(question.id,questionNew?.id)
+                assertEquals(question.id, questionNew?.id)
                 assertEquals("What is ur name", questionNew?.contents?.get(0)?.content)
 
-
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
-
 
     @Test
     fun init_new() = runTest(mainDispatcherRule.testDispatcher) {
@@ -178,26 +162,19 @@ class CqViewModelTest : KoinTest {
 
                 assertTrue(state is CqState.Success)
 
-
-                with(state.questionUiState){
-                    assertEquals("",contents[0].content.text)
-                    assertEquals(1,contents.size)
+                with(state.questionUiState) {
+                    assertEquals("", contents[0].content.text)
+                    assertEquals(1, contents.size)
                     assertEquals(id, -1)
                     assertEquals(examId, 1)
                 }
 
-
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
 
     @Test
     fun addNew() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = CqViewModel(
             2,
             -1,
@@ -230,8 +207,6 @@ class CqViewModelTest : KoinTest {
                     }
                 }
 
-
-
 //
                 viewModel.onAddQuestion()
                 state = awaitItem()
@@ -240,13 +215,7 @@ class CqViewModelTest : KoinTest {
                 var questionNew = questionRepository.getByExamId(2).first().last()
                 assertEquals("What is ur name", questionNew.contents[0].content)
 
-
                 cancelAndIgnoreRemainingEvents()
-
-
-
             }
-
-
     }
 }

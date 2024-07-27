@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import org.junit.Rule
 import kotlin.test.Test
 
-class CsScreenTest {
+class CtScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()
@@ -27,10 +27,9 @@ class CsScreenTest {
                 categoryState = rememberTextFieldState("series"),
                 topicInput = rememberTextFieldState("topic"),
 
-                )
-
+            )
         }
-       composeRule.onNodeWithTag("ct:screen").assertExists()
+        composeRule.onNodeWithTag("ct:screen").assertExists()
         composeRule.onNodeWithTag("ct:previous").assertExists()
         composeRule.onNodeWithTag("ct:next").assertExists()
         composeRule.onNodeWithTag("ct:list_categories").assertExists()
@@ -39,8 +38,5 @@ class CsScreenTest {
         composeRule.onNodeWithTag("ct:category").assertExists()
         composeRule.onNodeWithTag("ct:add_category").assertExists()
         composeRule.onNodeWithTag("ct:delete_category").assertExists()
-
-
-
     }
 }

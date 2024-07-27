@@ -33,7 +33,6 @@ class CtViewModel(
 
     val categoryState = TextFieldState()
 
-
     private val _ctState = MutableStateFlow<CtState>(CtState.Loading())
     val ctState = _ctState.asStateFlow()
 
@@ -56,8 +55,6 @@ class CtViewModel(
             val sub = topicRepository
                 .getOneWithCategory(topicId)
                 .first()
-
-
 
             if (sub != null) {
 
@@ -89,7 +86,6 @@ class CtViewModel(
                         }
                     }
                 }
-
         }
     }
 
@@ -140,11 +136,11 @@ class CtViewModel(
             val index = success.currentCategoryIndex
 
             val id = success.categories[success.currentCategoryIndex].id
-            val size= success.categories.size
+            val size = success.categories.size
 
-           topicCategory.upsert(
+            topicCategory.upsert(
                 TopicCategory(
-                    id = if (index==0)-1 else id,
+                    id = if (index == 0)-1 else id,
                     subjectId = subjectId,
                     name = categoryState.text.toString(),
                 ),
@@ -155,7 +151,7 @@ class CtViewModel(
                         it.copy(currentCategoryIndex = index)
                     }
                 }
-            }else{
+            } else {
                 _ctState.update {
                     it.getSuccess {
                         it.copy(currentCategoryIndex = size)

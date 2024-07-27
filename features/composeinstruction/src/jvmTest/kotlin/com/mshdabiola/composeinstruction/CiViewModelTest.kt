@@ -31,6 +31,7 @@ class CiViewModelTest : KoinTest {
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
     private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule(order = 2)
     val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
@@ -42,9 +43,8 @@ class CiViewModelTest : KoinTest {
     private val settingRepository by inject<ISettingRepository>()
 
     @BeforeTest
-    fun setup() = runTest (mainDispatcherRule.testDispatcher){
+    fun setup() = runTest(mainDispatcherRule.testDispatcher) {
         insertData()
-
     }
 
     @Test
@@ -69,16 +69,11 @@ class CiViewModelTest : KoinTest {
                 assertEquals(state.content.size, instruction.content.size)
                 assertEquals(state.id, 1)
                 assertEquals(state.examId, 1)
-
-
             }
-
-
     }
 
     @Test
     fun update() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = CiViewModel(2, 2, instructionRepository, settingRepository)
 
         viewModel
@@ -92,15 +87,12 @@ class CiViewModelTest : KoinTest {
 
                 assertTrue(state is CiState.Success)
 
-
-
                 with(viewModel.title) {
                     clearText()
                     edit {
                         append("New Title")
                     }
                 }
-
 
                 viewModel.onAdd()
 
@@ -114,16 +106,11 @@ class CiViewModelTest : KoinTest {
                 assertEquals(instruction?.examId, 2)
 
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
 
-
     @Test
-    fun init_new() = runTest (mainDispatcherRule.testDispatcher){
+    fun init_new() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = CiViewModel(1, -1, instructionRepository, settingRepository)
 
         viewModel
@@ -137,23 +124,17 @@ class CiViewModelTest : KoinTest {
 
                 assertTrue(state is CiState.Success)
 
-
                 assertEquals(viewModel.title.text.toString(), "")
                 assertEquals(state.content.size, 1)
                 assertEquals(state.id, -1)
                 assertEquals(state.examId, 1)
 
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
 
     @Test
     fun addNew() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = CiViewModel(2, -1, instructionRepository, settingRepository)
 
         viewModel
@@ -167,8 +148,6 @@ class CiViewModelTest : KoinTest {
 
                 assertTrue(state is CiState.Success)
 
-
-
                 with(viewModel.title) {
                     clearText()
                     edit {
@@ -180,9 +159,6 @@ class CiViewModelTest : KoinTest {
                 awaitItem()
                 awaitItem()
 
-
-
-
                 val instruction = instructionRepository
                     .getAllByExamId(examId = 2)
                     .first()
@@ -192,10 +168,6 @@ class CiViewModelTest : KoinTest {
                 assertEquals(instruction.examId, 2)
 
                 cancelAndIgnoreRemainingEvents()
-
-
             }
-
-
     }
 }

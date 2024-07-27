@@ -13,14 +13,6 @@ import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.DevicePreviews
 import com.mshdabiola.designsystem.theme.darkDefaultScheme
 import com.mshdabiola.designsystem.theme.lightDefaultScheme
-import com.mshdabiola.generalmodel.Series
-import com.mshdabiola.generalmodel.TopicCategory
-import com.mshdabiola.ui.state.InstructionUiState
-import com.mshdabiola.ui.state.ItemUiState
-import com.mshdabiola.ui.state.OptionUiState
-import com.mshdabiola.ui.state.QuestionUiState
-import com.mshdabiola.ui.state.TopicUiState
-import kotlinx.collections.immutable.toImmutableList
 
 class CtScreenScreenshotTests {
 
@@ -36,11 +28,9 @@ class CtScreenScreenshotTests {
                     categoryState = rememberTextFieldState("series"),
                     topicInput = rememberTextFieldState("topic"),
 
-                    )
+                )
             }
-
         }
-
     }
 
     @DevicePreviews
@@ -55,10 +45,9 @@ class CtScreenScreenshotTests {
                     categoryState = rememberTextFieldState("series"),
                     topicInput = rememberTextFieldState("topic"),
 
-                    )
+                )
             }
         }
-
     }
 
     @DevicePreviews
@@ -66,7 +55,6 @@ class CtScreenScreenshotTests {
     fun MainLight() {
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
-
                 CtScreen(
                     modifier = Modifier.fillMaxSize(),
                     ctState = CtState.Success(
@@ -78,10 +66,9 @@ class CtScreenScreenshotTests {
                     categoryState = rememberTextFieldState("series"),
                     topicInput = rememberTextFieldState("topic"),
 
-                    )
+                )
             }
         }
-
     }
 
     @DevicePreviews
@@ -89,7 +76,6 @@ class CtScreenScreenshotTests {
     fun MainDark() {
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
-
                 CtScreen(
                     modifier = Modifier.fillMaxSize(),
                     ctState = CtState.Success(
@@ -101,11 +87,8 @@ class CtScreenScreenshotTests {
                     categoryState = rememberTextFieldState("series"),
                     topicInput = rememberTextFieldState("topic"),
 
-                    )
+                )
             }
         }
-
     }
-
-
 }

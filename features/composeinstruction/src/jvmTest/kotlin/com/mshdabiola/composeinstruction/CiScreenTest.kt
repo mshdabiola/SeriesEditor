@@ -28,8 +28,7 @@ class CiScreenTest {
                 instructionInput = rememberTextFieldState(),
                 title = rememberTextFieldState(),
 
-                )
-
+            )
         }
         composeRule.onNodeWithTag("ci:screen").assertExists()
         composeRule.onNodeWithTag("ci:title").assertExists()

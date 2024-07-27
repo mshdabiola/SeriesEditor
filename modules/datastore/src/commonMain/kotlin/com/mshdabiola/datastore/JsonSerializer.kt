@@ -73,7 +73,7 @@ object UserDataJsonSerializer : OkioSerializer<UserData> {
             userId = 0,
         )
 
-    override suspend fun readFrom(source: BufferedSource): UserData{
+    override suspend fun readFrom(source: BufferedSource): UserData {
         return try {
             json.decodeFromString<UserData>(source.readUtf8())
         } catch (e: Exception) {

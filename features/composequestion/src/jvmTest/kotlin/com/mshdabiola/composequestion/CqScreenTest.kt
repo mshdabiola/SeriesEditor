@@ -73,27 +73,25 @@ class CqScreenTest {
                         ).toImmutableList(),
                         title = "title",
                         examId = 1,
-                        topicUiState =  TopicUiState(
+                        topicUiState = TopicUiState(
                             id = 1,
                             topicCategory = TopicCategory(id = 4, name = "name", 4),
                             "title",
                         ),
-                        instructionUiState =  InstructionUiState(
+                        instructionUiState = InstructionUiState(
                             id = 1,
                             title = rememberTextFieldState("tittle"),
                             content = listOf(ItemUiState()).toImmutableList(),
                             examId = 1,
-                        )
+                        ),
                     ),
                     fillIt = false,
                 ),
             )
-
         }
         composeRule.onNodeWithTag("cq:screen").assertExists()
         composeRule.onNodeWithTag("cq:content").assertExists()
         composeRule.onNodeWithTag("cq:add_question").assertExists()
         composeRule.onNodeWithTag("cq:add_answer").assertExists()
-
     }
 }

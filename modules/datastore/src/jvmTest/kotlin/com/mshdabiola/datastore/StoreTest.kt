@@ -20,19 +20,16 @@ class StoreTest : KoinTest {
     @get:Rule(order = 2)
     val mainDispatcherRule = MainDispatcherRule()
 
-
-
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
 
-        this.modules(datastoreModule,testDispatcherModule)
+        this.modules(datastoreModule, testDispatcherModule)
     }
-
 
     @Test
     fun userdata() = runTest {
         val store: Store by inject<Store>()
-          store.updateUserData { it.copy(userId = 2897) }
+        store.updateUserData { it.copy(userId = 2897) }
         println(store.userData.first())
     }
 }

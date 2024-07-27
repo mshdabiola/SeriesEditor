@@ -25,10 +25,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
-class CsViewModelTest : KoinTest {
+class CtViewModelTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
@@ -45,7 +43,6 @@ class CsViewModelTest : KoinTest {
     private val topicRepository by inject<ITopicRepository>()
     private val categoryRepository by inject<ITopicCategory>()
 
-
     @BeforeTest
     fun setup() = runTest(testDispatcher) {
         insertData()
@@ -58,7 +55,6 @@ class CsViewModelTest : KoinTest {
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
 
-
         val viewModel = CtViewModel(
             topicCategory.subjectId,
             topic.id,
@@ -66,13 +62,11 @@ class CsViewModelTest : KoinTest {
             categoryRepository,
             Logger,
 
-            )
+        )
 
         viewModel
             .ctState
-            .test((10).toDuration(DurationUnit.SECONDS)) {
-
-
+            .test {
                 var state = awaitItem()
 
                 assertTrue(state is CtState.Loading)
@@ -90,12 +84,8 @@ class CsViewModelTest : KoinTest {
 
                 assertEquals(viewModel.categoryState.text.toString(), topicCategory.name)
 
-
                 cancelAndIgnoreRemainingEvents()
-
             }
-
-
     }
 
     @Test
@@ -105,7 +95,6 @@ class CsViewModelTest : KoinTest {
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
 
-
         val viewModel = CtViewModel(
             topicCategory.subjectId,
             topic.id,
@@ -113,12 +102,11 @@ class CsViewModelTest : KoinTest {
             categoryRepository,
             Logger,
 
-            )
+        )
 
         viewModel
             .ctState
             .test {
-
                 var state = awaitItem()
 
                 assertTrue(state is CtState.Loading)
@@ -144,18 +132,13 @@ class CsViewModelTest : KoinTest {
 
                 val newTopic = topicRepository.getOne(topic.id).first()
 
-
                 assertEquals("Physics", newTopic?.title)
                 assertEquals(topic.id, newTopic?.id)
                 assertEquals(topicCategory.id, newTopic?.categoryId)
 
                 cancelAndIgnoreRemainingEvents()
-
             }
-
-
     }
-
 
     @Test
     fun init_new() = runTest(testDispatcher) {
@@ -164,7 +147,6 @@ class CsViewModelTest : KoinTest {
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
 
-
         val viewModel = CtViewModel(
             topicCategory.subjectId,
             -1,
@@ -172,13 +154,11 @@ class CsViewModelTest : KoinTest {
             categoryRepository,
             Logger,
 
-            )
+        )
 
         viewModel
             .ctState
-            .test((10).toDuration(DurationUnit.SECONDS)) {
-
-
+            .test {
                 var state = awaitItem()
 
                 assertTrue(state is CtState.Loading)
@@ -196,22 +176,16 @@ class CsViewModelTest : KoinTest {
 
                 assertEquals("", viewModel.categoryState.text.toString())
 
-
                 cancelAndIgnoreRemainingEvents()
-
             }
-
-
     }
 
     @Test
     fun addNew() = runTest(testDispatcher) {
-
         val default = defaultData
         val topic = default.topics[0]
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
-
 
         val viewModel = CtViewModel(
             topicCategory.subjectId,
@@ -220,12 +194,11 @@ class CsViewModelTest : KoinTest {
             categoryRepository,
             Logger,
 
-            )
+        )
 
         viewModel
             .ctState
             .test {
-
                 var state = awaitItem()
 
                 assertTrue(state is CtState.Loading)
@@ -251,12 +224,10 @@ class CsViewModelTest : KoinTest {
 
                 val newTopic = topicRepository.getAllBySubject(topicCategory.subjectId).first().last()
 
-
                 assertEquals("New Subject", newTopic.title)
                 assertEquals(topicCategory.id, newTopic.categoryId)
 
                 cancelAndIgnoreRemainingEvents()
-
             }
     }
 }

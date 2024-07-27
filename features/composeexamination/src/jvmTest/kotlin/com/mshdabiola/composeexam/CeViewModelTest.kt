@@ -34,6 +34,7 @@ class CeViewModelTest : KoinTest {
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
     private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule(order = 2)
     val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
@@ -48,9 +49,9 @@ class CeViewModelTest : KoinTest {
     private val examinationRepository by inject<IExaminationRepository>()
 
     @BeforeTest
-    fun setup() = runTest (mainDispatcherRule.testDispatcher){
+    fun setup() = runTest(mainDispatcherRule.testDispatcher) {
         insertData()
-        //viewModel = ComposeExaminationViewModel(0, subjectRepository, examinationRepository)
+        // viewModel = ComposeExaminationViewModel(0, subjectRepository, examinationRepository)
     }
 
     @Test
@@ -68,12 +69,10 @@ class CeViewModelTest : KoinTest {
 
                 assertTrue((st as CeState.Success).isUpdate)
 
-
                 assertEquals(viewModel.year.text.toString().toLong(), exam.year)
 
                 cancelAndIgnoreRemainingEvents()
             }
-
     }
 
     @Test
@@ -83,7 +82,7 @@ class CeViewModelTest : KoinTest {
         val state = viewModel.ceState
         assert(state.value is CeState.Loading)
         state
-            .test(timeout = (10L).toDuration(DurationUnit.SECONDS)) {
+            .test() {
                 awaitItem()
                 val st = awaitItem()
 
@@ -99,12 +98,10 @@ class CeViewModelTest : KoinTest {
 
                 val exam = examinationRepository.getOne(1).first()
 
-
                 assertEquals(exam?.examination?.year, 4555)
 
                 cancelAndIgnoreRemainingEvents()
             }
-
     }
 
     @Test
@@ -112,13 +109,11 @@ class CeViewModelTest : KoinTest {
         val viewModel = ComposeExaminationViewModel(-1, subjectRepository, examinationRepository)
         viewModel
             .ceState
-
-            .test(timeout = (10L).toDuration(DurationUnit.SECONDS)) {
+            .test() {
                 awaitItem()
                 val st = awaitItem()
 
                 assertFalse((st as CeState.Success).isUpdate)
-
 
                 assertEquals(viewModel.year.text.toString().toLong(), 2015)
 
@@ -131,8 +126,7 @@ class CeViewModelTest : KoinTest {
         val viewModel = ComposeExaminationViewModel(-1, subjectRepository, examinationRepository)
         viewModel
             .ceState
-
-            .test(timeout = (10L).toDuration(DurationUnit.SECONDS)) {
+            .test() {
                 awaitItem()
                 val st = awaitItem()
 
@@ -151,7 +145,6 @@ class CeViewModelTest : KoinTest {
                 awaitItem()
 
                 val exam = examinationRepository.getAll().first()
-
 
                 assertEquals(exam.last().year, 4555)
 

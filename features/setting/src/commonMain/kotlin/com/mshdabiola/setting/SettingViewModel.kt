@@ -42,7 +42,6 @@ class SettingViewModel constructor(
         }
     }
 
-
     /**
      * Sets the desired dark theme config.
      */

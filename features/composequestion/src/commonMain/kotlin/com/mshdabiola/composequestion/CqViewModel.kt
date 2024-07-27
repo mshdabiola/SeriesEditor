@@ -42,7 +42,7 @@ class CqViewModel(
     private val settingRepository: ISettingRepository,
     private val topicCategory: ITopicCategory,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
 //    private var _question =
 //        mutableStateOf(
@@ -106,15 +106,13 @@ class CqViewModel(
                                 instructs = pair.second.map { it.toInstructionUiState() }
                                     .toImmutableList(),
                             )
-
-                        } else
+                        } else {
                             it
-
+                        }
                     }
                 }
         }
     }
-
 
     private fun updateExamType(isObjOnly: Boolean) {
         viewModelScope.launch {
@@ -146,12 +144,14 @@ class CqViewModel(
                 }
                 ?.toImmutableList(),
 
-            )
+        )
 
         _cqState.update {
             if (it is CqState.Success) {
                 it.copy(questionUiState = question)
-            } else it
+            } else {
+                it
+            }
         }
     }
 
@@ -170,7 +170,9 @@ class CqViewModel(
         _cqState.update {
             if (it is CqState.Success) {
                 it.copy(questionUiState = question)
-            } else it
+            } else {
+                it
+            }
         }
     }
 
@@ -191,7 +193,9 @@ class CqViewModel(
         _cqState.update {
             if (it is CqState.Success) {
                 it.copy(questionUiState = question.copy(isTheory = isT))
-            } else it
+            } else {
+                it
+            }
         }
     }
 
@@ -311,9 +315,10 @@ class CqViewModel(
             _cqState.update {
                 if (it is CqState.Success) {
                     it.copy(questionUiState = question.copy(options = options.toImmutableList()))
-                } else it
+                } else {
+                    it
+                }
             }
-
         }
     }
 
@@ -382,7 +387,9 @@ class CqViewModel(
             _cqState.update {
                 if (it is CqState.Success) {
                     it.copy(questionUiState = question)
-                } else it
+                } else {
+                    it
+                }
             }
         }
     }
@@ -421,7 +428,7 @@ class CqViewModel(
 //
 //                _question.value = getEmptyQuestion(question2.options!!.size, question2.isTheory)
 //
-//// remove from save
+// // remove from save
 //                val inst = settingRepository.questions
 //                    .first()
 //                    .toMutableMap()
@@ -453,10 +460,10 @@ class CqViewModel(
         _cqState.update {
             if (it is CqState.Success) {
                 it.copy(questionUiState = question)
-            } else it
+            } else {
+                it
+            }
         }
-
-
     }
 
     fun onInstructionChange(index: Int) {
@@ -469,8 +476,9 @@ class CqViewModel(
         _cqState.update {
             if (it is CqState.Success) {
                 it.copy(questionUiState = question)
-            } else it
+            } else {
+                it
+            }
         }
-
     }
 }

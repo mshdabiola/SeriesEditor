@@ -5,7 +5,6 @@
 package com.mshdabiola.composeexam
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,11 +29,9 @@ class CeScreenScreenshotTests {
                     year = rememberTextFieldState(),
                     addExam = {},
 
-                    )
+                )
             }
-
         }
-
     }
 
     @DevicePreviews
@@ -50,10 +47,9 @@ class CeScreenScreenshotTests {
                     year = rememberTextFieldState(),
                     addExam = {},
 
-                    )
+                )
             }
         }
-
     }
 
     @DevicePreviews
@@ -61,7 +57,6 @@ class CeScreenScreenshotTests {
     fun MainLight() {
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
-
                 ComposeExaminationScreen(
                     modifier = Modifier.fillMaxSize(),
                     ceState = CeState.Success(isUpdate = false, subjects = emptyList()),
@@ -70,10 +65,9 @@ class CeScreenScreenshotTests {
                     year = rememberTextFieldState("1556"),
                     addExam = {},
 
-                    )
+                )
             }
         }
-
     }
 
     @DevicePreviews
@@ -81,7 +75,6 @@ class CeScreenScreenshotTests {
     fun MainDark() {
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
-
                 ComposeExaminationScreen(
                     modifier = Modifier.fillMaxSize(),
                     ceState = CeState.Success(isUpdate = false, subjects = emptyList()),
@@ -90,11 +83,8 @@ class CeScreenScreenshotTests {
                     year = rememberTextFieldState("1556"),
                     addExam = {},
 
-                    )
+                )
             }
         }
-
     }
-
-
 }

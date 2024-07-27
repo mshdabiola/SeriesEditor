@@ -113,7 +113,6 @@ internal fun CtScreen(
     onCategoryChange: (Int) -> Unit = {},
     onDeleteCategory: () -> Unit = {},
 ) {
-
     AnimatedContent(
         targetState = ctState,
         modifier = modifier.imePadding()
@@ -142,8 +141,6 @@ internal fun CtScreen(
             else -> {
             }
         }
-
-
     }
 }
 
@@ -151,7 +148,7 @@ internal fun CtScreen(
 @Composable
 internal fun MainContent(
     modifier: Modifier = Modifier,
-    state : CtState.Success,
+    state: CtState.Success,
     name: TextFieldState,
     categoryState: TextFieldState,
     topicInput: TextFieldState,
@@ -161,14 +158,11 @@ internal fun MainContent(
     onCategoryChange: (Int) -> Unit = {},
     onDeleteCategory: () -> Unit = {},
 ) {
-
     var showConvert by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = modifier) {
-
-
         Section(title = "Topic Section")
         val focusRequester = remember {
             FocusRequester()
@@ -212,7 +206,7 @@ internal fun MainContent(
                                 )
                             }
                         },
-                        selected = index==state.currentCategoryIndex,
+                        selected = index == state.currentCategoryIndex,
                         onClick = {
                             onCategoryChange(index)
                         },
@@ -279,7 +273,8 @@ internal fun MainContent(
             AnimatedVisibility(state.currentCategoryIndex > 0) {
                 TextButton(
                     modifier = Modifier.testTag("ct:delete_category"),
-                    onClick = onDeleteCategory) {
+                    onClick = onDeleteCategory,
+                ) {
                     Text("Delete")
                 }
             }
@@ -353,5 +348,4 @@ internal fun MainContent(
             }
         }
     }
-
 }

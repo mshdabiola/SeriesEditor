@@ -23,9 +23,7 @@ class CeScreenTest {
                 duration = rememberTextFieldState("12"),
                 year = rememberTextFieldState("1556"),
                 addExam = {},
-                )
-
-
+            )
         }
         composeRule.onNodeWithTag("ce:screen").assertExists()
         composeRule.onNodeWithTag("ce:subject").assertExists()

@@ -28,7 +28,7 @@ class CiViewModel(
     private val instructionRepository: IInstructionRepository,
     private val settingRepository: ISettingRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     val instructionInput = TextFieldState()
 
@@ -63,7 +63,6 @@ class CiViewModel(
                         content = listOf(ItemUiState(isEditMode = true)).toImmutableList(),
                     )
                 }
-
             }
         }
     }
@@ -194,7 +193,6 @@ class CiViewModel(
                     content = items.toImmutableList(),
                 )
             }
-
         }
     }
 

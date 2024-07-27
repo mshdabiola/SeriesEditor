@@ -26,7 +26,6 @@ class ComposeExaminationViewModel(
     private val examRepository: IExaminationRepository,
 ) : ViewModel() {
 
-
     private val _ceState = MutableStateFlow<CeState>(CeState.Loading())
     val ceState = _ceState.asStateFlow()
     val duration = TextFieldState("15")
@@ -53,7 +52,6 @@ class ComposeExaminationViewModel(
                     append(initExam.examination.duration.toString())
                 }
                 true
-
             } else {
                 false
             }
@@ -70,8 +68,6 @@ class ComposeExaminationViewModel(
                         CeState.Success(isUpdate, list)
                     }
                 }
-
-
         }
     }
 

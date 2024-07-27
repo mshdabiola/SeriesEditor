@@ -51,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.MyTextField
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
@@ -62,12 +61,7 @@ import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
 import com.mshdabiola.ui.image.ContentView
-import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
-import com.mshdabiola.ui.state.QuestionUiState
-import com.mshdabiola.ui.state.TopicUiState
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
@@ -86,7 +80,6 @@ internal fun CqRoute(
     navigateToInstruction: (Long, Long) -> Unit,
 ) {
     val viewModel: CqViewModel = koinViewModel(parameters = { parametersOf(examId, questionId) })
-
 
     var itemUiState by remember { mutableStateOf<ItemUiState?>(null) }
 
@@ -153,16 +146,15 @@ internal fun CqScreen(
     onItemClicked: (ItemUiState) -> Unit = {},
 
 ) {
-
-
 //    var fillIt =
 //        rememberUpdatedState(screenSize != ScreenSize.EXPANDED)
-    AnimatedContent(targetState = cqState,
-            modifier = modifier
+    AnimatedContent(
+        targetState = cqState,
+        modifier = modifier
             .verticalScroll(state = rememberScrollState())
-        .testTag("cq:screen"),
-    ){
-        when(it){
+            .testTag("cq:screen"),
+    ) {
+        when (it) {
             is CqState.Success -> MainContent(
                 modifier = modifier,
                 cqState = it,
@@ -183,12 +175,11 @@ internal fun CqScreen(
                 onInstructionChange = onInstructionChange,
                 onItemClicked = onItemClicked,
             )
-            is CqState.Loading-> Waiting(modifier)
+            is CqState.Loading -> Waiting(modifier)
             else -> {}
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -241,7 +232,7 @@ internal fun MainContent(
         }
     }
 
-    Column(modifier){
+    Column(modifier) {
         Section(title = "Question Section")
         Row(Modifier.fillMaxWidth()) {
             ExposedDropdownMenuBox(
@@ -253,8 +244,7 @@ internal fun MainContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .menuAnchor(MenuAnchorType.PrimaryEditable)
-                        .testTag("ci:topic")
-                    ,
+                        .testTag("ci:topic"),
                     state = topicState,
                     label = { Text("Topic") },
                     readOnly = true,
@@ -559,5 +549,4 @@ internal fun MainContent(
         Spacer(Modifier.height(16.dp))
         // TemplateUi()
     }
-
 }

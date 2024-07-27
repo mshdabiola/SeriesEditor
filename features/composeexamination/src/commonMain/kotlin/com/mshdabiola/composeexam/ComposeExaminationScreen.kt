@@ -6,17 +6,13 @@ package com.mshdabiola.composeexam
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -43,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.DigitOnlyTransformation
 import com.mshdabiola.designsystem.component.MyTextField
@@ -66,7 +61,7 @@ internal fun ComposeExaminationRoute(
     onBack: () -> Unit,
     onShowSnack: suspend (String, String?) -> Boolean,
 
-    ) {
+) {
     val viewModel: ComposeExaminationViewModel = koinViewModel(
         parameters = {
             parametersOf(examId)
@@ -101,16 +96,17 @@ internal fun ComposeExaminationScreen(
     year: TextFieldState,
     addExam: () -> Unit = {},
 ) {
-
     AnimatedContent(
         modifier = modifier
             .testTag("ce:screen"),
         targetState = ceState,
-        transitionSpec ={
-            (slideInHorizontally (animationSpec = tween(220, delayMillis = 90)) +
-                    scaleIn(initialScale = 0.92f, animationSpec = tween(220, delayMillis = 90)))
+        transitionSpec = {
+            (
+                slideInHorizontally(animationSpec = tween(220, delayMillis = 90)) +
+                    scaleIn(initialScale = 0.92f, animationSpec = tween(220, delayMillis = 90))
+                )
                 .togetherWith(slideOutHorizontally(animationSpec = tween(90)))
-        }
+        },
     ) {
         when (it) {
             is CeState.Loading -> Waiting()
@@ -126,9 +122,7 @@ internal fun ComposeExaminationScreen(
             else -> {}
         }
     }
-
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -204,7 +198,7 @@ internal fun MainContent(
                 keyboardType = KeyboardType.Number,
                 inputTransformation = DigitOnlyTransformation,
 
-                )
+            )
             SeriesEditorTextField(
                 modifier = Modifier
                     .weight(0.5f)
@@ -217,7 +211,7 @@ internal fun MainContent(
                 keyboardType = KeyboardType.Number,
                 inputTransformation = DigitOnlyTransformation,
 
-                )
+            )
         }
 
         SeriesEditorButton(
@@ -228,13 +222,11 @@ internal fun MainContent(
                 addExam()
             },
             enabled = subject.text.toString().isNotBlank() &&
-                    duration.text.toString().isNotBlank() &&
-                    year.text.toString().isNotBlank(),
+                duration.text.toString().isNotBlank() &&
+                year.text.toString().isNotBlank(),
         ) {
             Icon(Icons.Default.Add, "add")
             Text("Add Examination")
         }
-
     }
-
 }

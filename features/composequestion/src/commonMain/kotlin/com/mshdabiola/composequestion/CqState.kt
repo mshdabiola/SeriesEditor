@@ -1,8 +1,6 @@
 package com.mshdabiola.composequestion
 
 import com.mshdabiola.ui.state.InstructionUiState
-import com.mshdabiola.ui.state.ItemUiState
-import com.mshdabiola.ui.state.OptionUiState
 import com.mshdabiola.ui.state.QuestionUiState
 import com.mshdabiola.ui.state.TopicUiState
 import kotlinx.collections.immutable.ImmutableList
@@ -18,8 +16,7 @@ sealed class CqState {
         val instructs: ImmutableList<InstructionUiState> = emptyList<InstructionUiState>().toImmutableList(),
         val fillIt: Boolean = false,
 
-        ) : CqState()
+    ) : CqState()
 
     data class Error(val exception: Throwable) : CqState()
-
 }

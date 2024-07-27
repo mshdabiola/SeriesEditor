@@ -10,7 +10,6 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.model.UserData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 internal class OfflineFirstUserDataRepository(
     private val settings: Store,
@@ -27,8 +26,6 @@ internal class OfflineFirstUserDataRepository(
         }
         analyticsHelper.logThemeChanged(themeBrand.name)
     }
-
-
 
     override suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
         settings.updateUserData {

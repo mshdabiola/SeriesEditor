@@ -31,11 +31,9 @@ class CqScreenScreenshotTests {
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
                     cqState = CqState.Loading(),
-                    )
+                )
             }
-
         }
-
     }
 
     @DevicePreviews
@@ -49,7 +47,6 @@ class CqScreenScreenshotTests {
                 )
             }
         }
-
     }
 
     @DevicePreviews
@@ -57,7 +54,6 @@ class CqScreenScreenshotTests {
     fun MainLight() {
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
-
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
                     cqState = CqState.Success(
@@ -108,24 +104,23 @@ class CqScreenScreenshotTests {
                             ).toImmutableList(),
                             title = "title",
                             examId = 1,
-                            topicUiState =  TopicUiState(
+                            topicUiState = TopicUiState(
                                 id = 1,
                                 topicCategory = TopicCategory(id = 4, name = "name", 4),
                                 "title",
                             ),
-                            instructionUiState =  InstructionUiState(
+                            instructionUiState = InstructionUiState(
                                 id = 1,
                                 title = rememberTextFieldState("tittle"),
                                 content = listOf(ItemUiState()).toImmutableList(),
                                 examId = 1,
-                            )
+                            ),
                         ),
                         fillIt = false,
                     ),
                 )
             }
         }
-
     }
 
     @DevicePreviews
@@ -133,7 +128,6 @@ class CqScreenScreenshotTests {
     fun MainDark() {
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
-
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
                     cqState = CqState.Success(
@@ -184,25 +178,22 @@ class CqScreenScreenshotTests {
                             ).toImmutableList(),
                             title = "title",
                             examId = 1,
-                            topicUiState =  TopicUiState(
+                            topicUiState = TopicUiState(
                                 id = 1,
                                 topicCategory = TopicCategory(id = 4, name = "name", 4),
                                 "title",
                             ),
-                            instructionUiState =  InstructionUiState(
+                            instructionUiState = InstructionUiState(
                                 id = 1,
                                 title = rememberTextFieldState("tittle"),
                                 content = listOf(ItemUiState()).toImmutableList(),
                                 examId = 1,
-                            )
+                            ),
                         ),
                         fillIt = false,
                     ),
                 )
             }
         }
-
     }
-
-
 }

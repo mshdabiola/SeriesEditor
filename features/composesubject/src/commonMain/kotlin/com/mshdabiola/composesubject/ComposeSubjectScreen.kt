@@ -95,7 +95,6 @@ internal fun SubjectScreen(
     onSeriesChange: (Long) -> Unit = {},
     onDeleteSeries: () -> Unit = {},
 ) {
-
     AnimatedContent(
         targetState = csState,
         modifier = modifier
@@ -121,11 +120,8 @@ internal fun SubjectScreen(
             else -> {}
         }
     }
-
-
-
-
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MainContent(
@@ -141,8 +137,7 @@ internal fun MainContent(
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
 
-
-    Column(modifier = modifier){
+    Column(modifier = modifier) {
         Section(title = "Subject Section")
         Row(Modifier.fillMaxWidth()) {
             TooltipBox(
@@ -247,7 +242,8 @@ internal fun MainContent(
             AnimatedVisibility(csState.currentSeries > 1) {
                 TextButton(
                     modifier = Modifier.testTag("cs:delete_series"),
-                    onClick = onDeleteSeries) {
+                    onClick = onDeleteSeries,
+                ) {
                     Text("Delete")
                 }
             }
@@ -273,5 +269,4 @@ internal fun MainContent(
             }
         }
     }
-
 }
