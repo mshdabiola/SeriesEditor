@@ -10,8 +10,8 @@ import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.testing.dataTestModule2
 import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
@@ -39,7 +39,7 @@ class CsViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule)
+        this.modules(dataTestModule2)
     }
     private val seriesRepository by inject<ISeriesRepository>()
     private val userdataRepository by inject<UserDataRepository>()

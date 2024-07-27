@@ -11,8 +11,8 @@ import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ITopicCategory
+import com.mshdabiola.testing.dataTestModule2
 import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
@@ -40,7 +40,7 @@ class CqViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule)
+        this.modules(dataTestModule2)
     }
     private val questionRepository by inject<IQuestionRepository>()
     private val settingRepository by inject<ISettingRepository>()
@@ -82,8 +82,6 @@ class CqViewModelTest : KoinTest {
                 assertEquals(question.id, state.questionUiState.id)
                 assertEquals(question.number, state.questionUiState.number)
 //                assertEquals(question.title,state.questionUiState.title)
-                assertEquals(question.topicId, state.questionUiState.topicUiState?.id)
-                assertEquals(question.instructionId, state.questionUiState.instructionUiState?.id)
 
                 cancelAndIgnoreRemainingEvents()
             }

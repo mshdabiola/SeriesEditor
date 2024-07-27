@@ -8,9 +8,8 @@ import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.testing.dataTestModule2
 import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.di.dataTestModule
-import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -20,7 +19,6 @@ import org.junit.rules.TemporaryFolder
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -40,7 +38,7 @@ class CeViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule)
+        this.modules(dataTestModule2)
     }
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
@@ -48,11 +46,6 @@ class CeViewModelTest : KoinTest {
     private val subjectRepository by inject<ISubjectRepository>()
     private val examinationRepository by inject<IExaminationRepository>()
 
-    @BeforeTest
-    fun setup() = runTest(mainDispatcherRule.testDispatcher) {
-        insertData()
-        // viewModel = ComposeExaminationViewModel(0, subjectRepository, examinationRepository)
-    }
 
     @Test
     fun updateExam_InitExam() = runTest(mainDispatcherRule.testDispatcher) {

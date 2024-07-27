@@ -9,8 +9,8 @@ import app.cash.turbine.test
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
+import com.mshdabiola.testing.dataTestModule2
 import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.di.dataTestModule
 import com.mshdabiola.testing.insertData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
@@ -38,7 +38,7 @@ class CtViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule)
+        this.modules(dataTestModule2)
     }
     private val topicRepository by inject<ITopicRepository>()
     private val categoryRepository by inject<ITopicCategory>()

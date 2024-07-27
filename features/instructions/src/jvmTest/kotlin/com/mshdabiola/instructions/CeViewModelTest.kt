@@ -5,7 +5,7 @@
 package com.mshdabiola.instructions
 
 import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.testing.di.dataTestModule
+import com.mshdabiola.testing.dataTestModule2
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -16,7 +16,7 @@ import org.koin.test.inject
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class DetailViewModelTest : KoinTest {
+class CeViewModelTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
@@ -26,7 +26,7 @@ class DetailViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule)
+        this.modules(dataTestModule2)
     }
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
