@@ -14,7 +14,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(libs.model)
-                api(libs.testing)
                 api(libs.kotlinx.serialization.json)
             }
         }
