@@ -9,9 +9,8 @@ import app.cash.turbine.test
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.testing.dataTestModule2
-import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.insertData
+import com.mshdabiola.testing.dataTestModule
+import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -21,7 +20,6 @@ import org.junit.rules.TemporaryFolder
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -38,19 +36,15 @@ class CtViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule2)
+        this.modules(dataTestModule)
     }
     private val topicRepository by inject<ITopicRepository>()
     private val categoryRepository by inject<ITopicCategory>()
 
-    @BeforeTest
-    fun setup() = runTest(testDispatcher) {
-        insertData()
-    }
 
     @Test
     fun init_update() = runTest(testDispatcher) {
-        val default = defaultData
+        val default = exportableData
         val topic = default.topics[4]
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
@@ -90,7 +84,7 @@ class CtViewModelTest : KoinTest {
 
     @Test
     fun update() = runTest(testDispatcher) {
-        val default = defaultData
+        val default = exportableData
         val topic = default.topics[0]
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
@@ -142,7 +136,7 @@ class CtViewModelTest : KoinTest {
 
     @Test
     fun init_new() = runTest(testDispatcher) {
-        val default = defaultData
+        val default = exportableData
         val topic = default.topics[4]
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
@@ -182,7 +176,7 @@ class CtViewModelTest : KoinTest {
 
     @Test
     fun addNew() = runTest(testDispatcher) {
-        val default = defaultData
+        val default = exportableData
         val topic = default.topics[0]
 
         val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
