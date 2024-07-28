@@ -6,7 +6,7 @@ package com.mshdabiola.detail
 
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.setting.SettingViewModel
-import com.mshdabiola.testing.di.dataTestModule
+import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
