@@ -1,7 +1,7 @@
 package com.mshdabiola.datastore
 
 import com.mshdabiola.datastore.di.datastoreModule
-import com.mshdabiola.testing.di.testDispatcherModule
+import com.mshdabiola.testing.testDispatcherModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
