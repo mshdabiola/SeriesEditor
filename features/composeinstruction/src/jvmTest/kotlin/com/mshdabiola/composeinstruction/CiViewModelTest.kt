@@ -40,7 +40,6 @@ class CiViewModelTest : KoinTest {
     private val instructionRepository by inject<IInstructionRepository>()
     private val settingRepository by inject<ISettingRepository>()
 
-
     @Test
     fun init_update() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = CiViewModel(1, 1, instructionRepository, settingRepository)

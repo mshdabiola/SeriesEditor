@@ -41,7 +41,6 @@ class CtViewModelTest : KoinTest {
     private val topicRepository by inject<ITopicRepository>()
     private val categoryRepository by inject<ITopicCategory>()
 
-
     @Test
     fun init_update() = runTest(testDispatcher) {
         val default = exportableData

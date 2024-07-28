@@ -23,7 +23,6 @@ import org.junit.rules.TemporaryFolder
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -47,8 +46,6 @@ class CqViewModelTest : KoinTest {
     private val instructionRepository by inject<IInstructionRepository>()
     private val examinationRepository by inject<IExaminationRepository>()
     private val topicategoryRepository by inject<ITopicCategory>()
-
-
 
     @Test
     fun init_update() = runTest(mainDispatcherRule.testDispatcher) {

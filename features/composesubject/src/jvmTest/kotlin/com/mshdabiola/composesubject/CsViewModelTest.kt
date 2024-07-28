@@ -44,11 +44,9 @@ class CsViewModelTest : KoinTest {
     private val subjectRepository by inject<ISubjectRepository>()
     private val logger = Logger
 
-
-
     @Test
     fun init_update() = runTest(testDispatcher) {
-        val default =exportableData
+        val default = exportableData
         val subject = default.subjects[0]
 
         val viewModel = ComposeSubjectViewModel(

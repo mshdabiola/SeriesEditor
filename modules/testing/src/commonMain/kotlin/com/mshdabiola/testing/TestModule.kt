@@ -42,7 +42,7 @@ val testDispatcherModule =
     }
 
 val dataTestModule = module {
-    includes( testDispatcherModule)
+    includes(testDispatcherModule)
     singleOf(::FakeNetworkRepository) bind INetworkRepository::class
     singleOf(::FakeOfflineFirstUserDataRepository) bind UserDataRepository::class
 
