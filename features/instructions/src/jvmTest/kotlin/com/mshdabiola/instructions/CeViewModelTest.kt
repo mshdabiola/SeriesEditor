@@ -5,7 +5,7 @@
 package com.mshdabiola.instructions
 
 import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.testing.dataTestModule2
+import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -26,7 +26,7 @@ class CeViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule2)
+        this.modules(dataTestModule)
     }
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
