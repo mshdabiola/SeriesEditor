@@ -2,13 +2,13 @@ package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.generalmodel.User
-import com.mshdabiola.testing.defaultData
+import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 class FakeUserRepository : IUserRepository {
-    private val _user = MutableStateFlow<List<User>>(defaultData.users)
+    private val _user = MutableStateFlow<List<User>>(exportableData.users)
 
     override fun getUser(id: Long): Flow<User?> {
         return _user

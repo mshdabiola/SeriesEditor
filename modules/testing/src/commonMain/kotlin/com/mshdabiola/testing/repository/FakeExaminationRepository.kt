@@ -3,7 +3,7 @@ package com.mshdabiola.testing.repository
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.ExaminationWithSubject
-import com.mshdabiola.testing.defaultData
+import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +24,7 @@ internal class FakeExaminationRepository : IExaminationRepository {
     override val selectedList: Flow<List<Long>>
         get() = _selectedList.asStateFlow()
 
-    private val _exams = MutableStateFlow(defaultData.examinations)
+    private val _exams = MutableStateFlow(exportableData.examinations)
 
     override suspend fun upsert(examination: Examination): Long {
         _exams.update {
@@ -49,8 +49,8 @@ internal class FakeExaminationRepository : IExaminationRepository {
             .map { it.filter { it.subjectId == subjectId } }
             .map {
                 it.map {
-                    val subject = defaultData.subjects.first { it.id == subjectId }
-                    val series = defaultData.series.first { it.id == subject.seriesId }
+                    val subject = exportableData.subjects.first { it.id == subjectId }
+                    val series = exportableData.series.first { it.id == subject.seriesId }
                     ExaminationWithSubject(it, subject, series)
                 }
             }
@@ -60,8 +60,8 @@ internal class FakeExaminationRepository : IExaminationRepository {
         return _exams
             .map {
                 it.map {
-                    val subject = defaultData.subjects.first { it.id == it.id }
-                    val series = defaultData.series.first { it.id == subject.seriesId }
+                    val subject = exportableData.subjects.first { it.id == it.id }
+                    val series = exportableData.series.first { it.id == subject.seriesId }
                     ExaminationWithSubject(it, subject, series)
                 }
             }
@@ -72,8 +72,8 @@ internal class FakeExaminationRepository : IExaminationRepository {
             .map { it.firstOrNull { it.id == id } }
             .map { examinations ->
                 examinations?.let { examination ->
-                    val subject = defaultData.subjects.first { it.id == examination.subjectId }
-                    val series = defaultData.series.first { it.id == subject.seriesId }
+                    val subject = exportableData.subjects.first { it.id == examination.subjectId }
+                    val series = exportableData.series.first { it.id == subject.seriesId }
                     ExaminationWithSubject(examination, subject, series)
                 }
             }

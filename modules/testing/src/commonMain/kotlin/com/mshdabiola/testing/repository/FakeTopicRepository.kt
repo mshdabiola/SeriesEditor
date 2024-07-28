@@ -3,13 +3,13 @@ package com.mshdabiola.testing.repository
 import com.mshdabiola.data.repository.ITopicRepository
 import com.mshdabiola.generalmodel.Topic
 import com.mshdabiola.generalmodel.TopicWithCategory
-import com.mshdabiola.testing.defaultData
+import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 internal class FakeTopicRepository : ITopicRepository {
-    private val _topic = MutableStateFlow<List<Topic>>(defaultData.topics)
+    private val _topic = MutableStateFlow<List<Topic>>(exportableData.topics)
 
     override suspend fun upsert(topic: Topic): Long {
         _topic.value = _topic.value.toMutableList().apply {
@@ -47,7 +47,7 @@ internal class FakeTopicRepository : ITopicRepository {
             .map { it.firstOrNull { it.id == id } }
             .map { topic ->
                 topic?.let {
-                    val category = defaultData.topicCategory.first { it.id == topic.categoryId }
+                    val category = exportableData.topicCategory.first { it.id == topic.categoryId }
                     TopicWithCategory(topic.id, category, topic.title)
                 }
             }

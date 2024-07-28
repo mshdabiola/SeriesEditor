@@ -3,13 +3,13 @@ package com.mshdabiola.testing.repository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.generalmodel.Subject
 import com.mshdabiola.generalmodel.SubjectWithSeries
-import com.mshdabiola.testing.defaultData
+import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 internal class FakeSubjectRepository : ISubjectRepository {
-    private val _subject = MutableStateFlow<List<Subject>>(defaultData.subjects)
+    private val _subject = MutableStateFlow<List<Subject>>(exportableData.subjects)
 
     override suspend fun upsert(subject: Subject): Long {
         _subject.value = _subject.value.toMutableList().apply {
@@ -36,7 +36,7 @@ internal class FakeSubjectRepository : ISubjectRepository {
         return _subject
             .map { subjects ->
                 subjects.map { sub ->
-                    val series = defaultData.series.first { sub.seriesId == it.id }
+                    val series = exportableData.series.first { sub.seriesId == it.id }
                     SubjectWithSeries(sub, series)
                 }
             }
@@ -47,7 +47,7 @@ internal class FakeSubjectRepository : ISubjectRepository {
             .map { it.firstOrNull { it.id == id } }
             .map { subject ->
                 subject?.let {
-                    val series = defaultData.series.first { it.id == subject.seriesId }
+                    val series = exportableData.series.first { it.id == subject.seriesId }
                     SubjectWithSeries(subject, series)
                 }
             }

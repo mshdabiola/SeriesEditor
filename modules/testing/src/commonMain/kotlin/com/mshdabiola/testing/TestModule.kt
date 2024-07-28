@@ -15,7 +15,6 @@ import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
 import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.testing.repository.FakeExaminationRepository
 import com.mshdabiola.testing.repository.FakeInstructionRepository
 import com.mshdabiola.testing.repository.FakeNetworkRepository
@@ -42,8 +41,8 @@ val testDispatcherModule =
         } bind CoroutineDispatcher::class
     }
 
-val dataTestModule2 = module {
-    includes(datastoreModule, databaseTestModule, testDispatcherModule)
+val dataTestModule = module {
+    includes( testDispatcherModule)
     singleOf(::FakeNetworkRepository) bind INetworkRepository::class
     singleOf(::FakeOfflineFirstUserDataRepository) bind UserDataRepository::class
 

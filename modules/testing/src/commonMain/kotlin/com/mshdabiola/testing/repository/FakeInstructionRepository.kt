@@ -2,14 +2,14 @@ package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.testing.defaultData
+import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 internal class FakeInstructionRepository : IInstructionRepository {
 
-    private val _instruction = MutableStateFlow(defaultData.instructions)
+    private val _instruction = MutableStateFlow(exportableData.instructions)
 
     override suspend fun upsert(instruction: Instruction): Long {
         _instruction.value = _instruction.value.toMutableList().apply {
