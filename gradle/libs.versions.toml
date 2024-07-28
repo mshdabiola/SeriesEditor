@@ -5,7 +5,6 @@ androidGradlePlugin = "8.5.0"
 androidTools = "31.5.0"
 androidxActivity = "1.9.0"
 androidxAppCompat = "1.7.0"
-androidxBrowser = "1.8.0"
 
 androidxComposeMaterial3Adaptive = "1.0.0-beta04"
 androidxComposeMaterial3AdaptiveNavigationSuite = "1.3.0-beta04"
@@ -209,7 +208,6 @@ sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sql
 #
 retex = { module = "com.mshdabiola.series:retex", version.ref = "series" }
 model = { module = "com.mshdabiola.series:model", version.ref = "series" }
-testing = { module = "com.mshdabiola.series:testing", version.ref = "series" }
 
 database = { module = "com.mshdabiola.series:database", version.ref = "series" }
 calf-filepicker = { module = "com.mohamedrejeb.calf:calf-file-picker", version.ref = "calf" }
