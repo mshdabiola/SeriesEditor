@@ -8,9 +8,8 @@ import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.ISettingRepository
-import com.mshdabiola.testing.dataTestModule2
-import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.insertData
+import com.mshdabiola.testing.dataTestModule
+import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -20,7 +19,6 @@ import org.junit.rules.TemporaryFolder
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -37,15 +35,11 @@ class CiViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule2)
+        this.modules(dataTestModule)
     }
     private val instructionRepository by inject<IInstructionRepository>()
     private val settingRepository by inject<ISettingRepository>()
 
-    @BeforeTest
-    fun setup() = runTest(mainDispatcherRule.testDispatcher) {
-        insertData()
-    }
 
     @Test
     fun init_update() = runTest(mainDispatcherRule.testDispatcher) {
@@ -62,7 +56,7 @@ class CiViewModelTest : KoinTest {
 
                 assertTrue(state is CiState.Success)
 
-                val default = defaultData
+                val default = exportableData
                 val instruction = default.instructions[0]
 
                 assertEquals(viewModel.title.text.toString(), instruction.title)
