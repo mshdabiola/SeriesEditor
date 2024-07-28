@@ -8,8 +8,8 @@ import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.testing.dataTestModule2
-import com.mshdabiola.testing.defaultData
+import com.mshdabiola.testing.dataTestModule
+import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -38,7 +38,7 @@ class CeViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule2)
+        this.modules(dataTestModule)
     }
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
@@ -52,7 +52,7 @@ class CeViewModelTest : KoinTest {
 
         val state = viewModel.ceState
         assert(state.value is CeState.Loading)
-        val exam = defaultData.examinations[0]
+        val exam = exportableData.examinations[0]
 
         state
             .test(timeout = (10L).toDuration(DurationUnit.SECONDS)) {
