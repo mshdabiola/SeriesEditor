@@ -6,7 +6,7 @@ package com.mshdabiola.topics
 
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.testing.di.dataTestModule
+import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
