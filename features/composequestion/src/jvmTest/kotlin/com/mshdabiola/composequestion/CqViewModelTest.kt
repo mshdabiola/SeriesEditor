@@ -11,9 +11,9 @@ import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.data.repository.ITopicCategory
-import com.mshdabiola.testing.dataTestModule2
-import com.mshdabiola.testing.defaultData
-import com.mshdabiola.testing.insertData
+import com.mshdabiola.testing.dataTestModule
+import com.mshdabiola.testing.exportableData
+import com.mshdabiola.testing.questions
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -40,7 +40,7 @@ class CqViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(dataTestModule2)
+        this.modules(dataTestModule)
     }
     private val questionRepository by inject<IQuestionRepository>()
     private val settingRepository by inject<ISettingRepository>()
@@ -48,15 +48,11 @@ class CqViewModelTest : KoinTest {
     private val examinationRepository by inject<IExaminationRepository>()
     private val topicategoryRepository by inject<ITopicCategory>()
 
-    @BeforeTest
-    fun setup() = runTest(mainDispatcherRule.testDispatcher) {
-        insertData()
-    }
+
 
     @Test
     fun init_update() = runTest(mainDispatcherRule.testDispatcher) {
-        val default = defaultData
-        val question = default.questions[0]
+        val question = questions[0]
 
         val viewModel = CqViewModel(
             question.examId,
@@ -89,7 +85,7 @@ class CqViewModelTest : KoinTest {
 
     @Test
     fun update() = runTest(mainDispatcherRule.testDispatcher) {
-        val default = defaultData
+        val default = exportableData
         val question = default.questions[0]
 
         val viewModel = CqViewModel(
