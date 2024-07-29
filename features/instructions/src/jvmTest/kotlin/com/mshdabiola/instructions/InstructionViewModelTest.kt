@@ -37,10 +37,8 @@ class InstructionViewModelTest : KoinTest {
     }
     private val instructionRepository by inject<IInstructionRepository>()
 
-
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = InstructionsViewModel(
             1,
             instructionRepository,
@@ -59,7 +57,7 @@ class InstructionViewModelTest : KoinTest {
 
                 assertEquals(
                     state.data.size,
-                    1
+                    1,
                 )
 
                 cancelAndIgnoreRemainingEvents()
@@ -68,7 +66,6 @@ class InstructionViewModelTest : KoinTest {
 
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = InstructionsViewModel(
             1,
             instructionRepository,
@@ -93,11 +90,10 @@ class InstructionViewModelTest : KoinTest {
 
                 assertEquals(
                     state.data.size,
-                    0
+                    0,
                 )
 
                 cancelAndIgnoreRemainingEvents()
             }
     }
-
 }
