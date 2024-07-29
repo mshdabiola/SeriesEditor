@@ -117,14 +117,14 @@ internal fun QuestionsScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .testTag("main:screen"),
+            .testTag("question:screen"),
 
     ) {
         LazyColumn(
             state = state,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .testTag("main:list"),
+                .testTag("question:list"),
         ) {
             item {
                 // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
@@ -182,7 +182,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .wrapContentSize()
-            .testTag("main:loading"),
+            .testTag("question:loading"),
         contentDesc = stringResource(Res.string.features_main_loading),
     )
 }
