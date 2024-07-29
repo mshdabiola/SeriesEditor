@@ -21,13 +21,12 @@ class ExamScreenTest {
             MainScreen(
                 modifier = Modifier.fillMaxSize(),
                 mainState = Result.Success(
-                    examinations.map { it.toUi() }
-                )
+                    examinations.map { it.toUi() },
+                ),
             )
         }
 
         composeRule.onNodeWithTag("main:screen").assertExists()
         composeRule.onNodeWithTag("main:list").assertExists()
-
     }
 }

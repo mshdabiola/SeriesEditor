@@ -40,15 +40,13 @@ class ExamViewModelTest : KoinTest {
     private val examinationRepository by inject<IExaminationRepository>()
     private val userdataRepository by inject<UserDataRepository>()
 
-
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = MainViewModel(
-           subjectRepository,
+            subjectRepository,
             examinationRepository,
             userdataRepository,
-            1
+            1,
         )
 
         viewModel
@@ -74,12 +72,11 @@ class ExamViewModelTest : KoinTest {
 
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = MainViewModel(
             subjectRepository,
             examinationRepository,
             userdataRepository,
-            1
+            1,
         )
 
         viewModel
@@ -108,5 +105,4 @@ class ExamViewModelTest : KoinTest {
                 cancelAndIgnoreRemainingEvents()
             }
     }
-
 }
