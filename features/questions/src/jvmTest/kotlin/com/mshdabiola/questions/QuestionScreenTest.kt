@@ -18,16 +18,15 @@ class QuestionScreenTest {
     @Test
     fun main() {
         composeRule.setContent {
-            QuestionsScreen (
+            QuestionsScreen(
                 modifier = Modifier.fillMaxSize(),
                 mainState = Result.Success(
-                    questions.map { it.toQuestionUiState() }
-                )
+                    questions.map { it.toQuestionUiState() },
+                ),
             )
         }
 
         composeRule.onNodeWithTag("question:screen").assertExists()
         composeRule.onNodeWithTag("question:list").assertExists()
-
     }
 }

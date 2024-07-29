@@ -36,10 +36,8 @@ class QuestionViewModelTest : KoinTest {
     }
     private val questionRepository by inject<IQuestionRepository>()
 
-
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
-
         val viewModel = QuestionsViewModel(
             2,
             questionRepository,
@@ -60,7 +58,7 @@ class QuestionViewModelTest : KoinTest {
                     1,
                     state.data.size,
 
-                    )
+                )
 
                 cancelAndIgnoreRemainingEvents()
             }
@@ -68,8 +66,6 @@ class QuestionViewModelTest : KoinTest {
 
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
-
-
         val viewModel = QuestionsViewModel(
             1,
             questionRepository,
@@ -96,10 +92,9 @@ class QuestionViewModelTest : KoinTest {
                     0,
                     state.data.size,
 
-                    )
+                )
 
                 cancelAndIgnoreRemainingEvents()
             }
     }
-
 }
