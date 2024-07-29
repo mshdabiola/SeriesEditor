@@ -18,17 +18,16 @@ class TopicsScreenTest {
     @Test
     fun main() {
         composeRule.setContent {
-        TopicScreen(
+            TopicScreen(
                 modifier = Modifier.fillMaxSize(),
                 mainState = Result.Success(
-                    topicWithCategory.map { it.toUi() }
-                )
+                    topicWithCategory.map { it.toUi() },
+                ),
             )
         }
         composeRule.onNodeWithTag("topics:screen").assertExists()
         composeRule.onNodeWithTag("topics:list").assertExists()
         composeRule.onNodeWithTag("topics:loading").assertDoesNotExist()
         composeRule.onNodeWithTag("topics:empty").assertDoesNotExist()
-
     }
 }

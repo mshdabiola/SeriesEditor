@@ -38,11 +38,9 @@ class TopicsViewModelTest : KoinTest {
     val topicRepository by inject<ITopicRepository>()
     val categoryRepository by inject<ITopicCategory>()
 
-
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
-
-        val  viewModel = TopicsViewModel(
+        val viewModel = TopicsViewModel(
             1,
             categoryRepository,
             topicRepository,
@@ -71,9 +69,7 @@ class TopicsViewModelTest : KoinTest {
 
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
-
-
-        val  viewModel = TopicsViewModel(
+        val viewModel = TopicsViewModel(
             1,
             categoryRepository,
             topicRepository,
@@ -94,7 +90,7 @@ class TopicsViewModelTest : KoinTest {
 //
                 viewModel.onDelete(topic.id)
 //
-               // state = awaitItem()
+                // state = awaitItem()
 //
 //                assertTrue(state is Result.Success)
 //
@@ -107,5 +103,4 @@ class TopicsViewModelTest : KoinTest {
 //                cancelAndIgnoreRemainingEvents()
             }
     }
-
 }
