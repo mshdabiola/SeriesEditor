@@ -22,7 +22,7 @@ class InstructionsViewModel(
     private val instructionRepository: IInstructionRepository,
 ) : ViewModel() {
 
-    val questions = MutableStateFlow<Result<List<InstructionUiState>>>(Result.Loading)
+    val instructions = MutableStateFlow<Result<List<InstructionUiState>>>(Result.Loading)
 //    val questions = mutableStateOf(emptyList<QuestionUiState>().toImmutableList())
 
     init {
@@ -35,7 +35,7 @@ class InstructionsViewModel(
                 }
                 .asResult()
                 .collectLatest { result ->
-                    questions.update { result }
+                    instructions.update { result }
                 }
         }
     }

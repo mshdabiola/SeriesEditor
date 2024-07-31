@@ -82,7 +82,7 @@ fun InstructionsRoute(
 ) {
     val viewModel: InstructionsViewModel = koinViewModel(parameters = { parametersOf(examId) })
 
-    val feedNote = viewModel.questions.collectAsStateWithLifecycleCommon()
+    val feedNote = viewModel.instructions.collectAsStateWithLifecycleCommon()
 
     InstructionScreen(
         modifier = modifier,

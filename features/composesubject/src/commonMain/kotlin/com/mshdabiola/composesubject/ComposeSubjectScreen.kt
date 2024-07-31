@@ -16,14 +16,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.NavigateBefore
 import androidx.compose.material.icons.automirrored.outlined.NavigateNext
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -42,11 +41,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Series
 import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import kotlinx.coroutines.launch
@@ -67,11 +64,10 @@ internal fun SubjectRoute(
 ) {
     val viewModel: ComposeSubjectViewModel = koinViewModel(parameters = { parametersOf(subjectId) })
 
-    val update = viewModel.update.collectAsStateWithLifecycleCommon()
-    val series = viewModel.series.collectAsStateWithLifecycleCommon()
+    val update = viewModel.csState.collectAsStateWithLifecycleCommon()
 
     LaunchedEffect(update.value) {
-        if (update.value == Update.Success) {
+        if (update.value is CsState.Loading && (update.value as CsState.Loading).isLoading) {
             onFinish()
             onShowSnack("Add Subject", null)
         }
@@ -80,9 +76,7 @@ internal fun SubjectRoute(
         modifier = modifier,
         subjectState = viewModel.subjectState,
         seriesState = viewModel.seriesState,
-        currentSeries = viewModel.currentSeriesId.value,
-        series = series.value,
-        update = update.value,
+        csState = update.value,
         addSubject = viewModel::addSubject,
         addSeries = viewModel::addSeries,
         onSeriesChange = viewModel::onCurrentSeriesChange,
@@ -90,15 +84,51 @@ internal fun SubjectRoute(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun SubjectScreen(
     modifier: Modifier = Modifier,
     subjectState: TextFieldState,
     seriesState: TextFieldState,
-    currentSeries: Long,
-    series: List<Series>,
-    update: Update,
+    csState: CsState,
+    addSubject: () -> Unit = {},
+    addSeries: () -> Unit = {},
+    onSeriesChange: (Long) -> Unit = {},
+    onDeleteSeries: () -> Unit = {},
+) {
+    AnimatedContent(
+        targetState = csState,
+        modifier = modifier
+            .testTag("cs:screen"),
+
+    ) {
+        when (it) {
+            is CsState.Success -> MainContent(
+                modifier = modifier,
+                subjectState = subjectState,
+                seriesState = seriesState,
+                csState = it,
+                addSubject = addSubject,
+                addSeries = addSeries,
+                onSeriesChange = onSeriesChange,
+                onDeleteSeries = onDeleteSeries,
+            )
+
+            is CsState.Loading -> {
+                Waiting()
+            }
+
+            else -> {}
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun MainContent(
+    modifier: Modifier = Modifier,
+    subjectState: TextFieldState,
+    seriesState: TextFieldState,
+    csState: CsState.Success,
     addSubject: () -> Unit = {},
     addSeries: () -> Unit = {},
     onSeriesChange: (Long) -> Unit = {},
@@ -107,144 +137,136 @@ internal fun SubjectScreen(
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = modifier
-            .testTag("composesubject:screen"),
-
-    ) {
-        when (update) {
-            Update.Edit -> {
-                Section(title = "Subject Section")
-                Row(Modifier.fillMaxWidth()) {
-                    TooltipBox(
-                        tooltip = { Text("Scroll to the next") },
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    scrollState.animateScrollTo(scrollState.value - 40)
-                                }
-                            },
-                            enabled = scrollState.canScrollBackward,
-                        ) {
-                            Icon(Icons.AutoMirrored.Outlined.NavigateBefore, "previous")
+    Column(modifier = modifier) {
+        Section(title = "Subject Section")
+        Row(Modifier.fillMaxWidth()) {
+            TooltipBox(
+                tooltip = { Text("Scroll to the next") },
+                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                state = rememberTooltipState(),
+            ) {
+                IconButton(
+                    modifier = Modifier.testTag("cs:previous"),
+                    onClick = {
+                        coroutineScope.launch {
+                            scrollState.animateScrollTo(scrollState.value - 40)
                         }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.weight(1f).horizontalScroll(scrollState),
-                    ) {
-                        series.forEach {
-                            FilterChip(
-                                leadingIcon = {
-                                    if (it.id == currentSeries) {
-                                        Icon(
-                                            modifier = Modifier.size(FilterChipDefaults.IconSize),
-                                            imageVector = Icons.Default.Done,
-                                            contentDescription = "done",
-                                        )
-                                    }
-                                },
-                                selected = currentSeries == it.id,
-                                onClick = {
-                                    onSeriesChange(it.id)
-                                },
-                                label = { Text(it.name) },
-                            )
-                        }
-                    }
-
-                    TooltipBox(
-                        tooltip = { Text("Scroll to the next") },
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    scrollState.animateScrollTo(scrollState.value + 40)
-                                }
-                            },
-                            enabled = scrollState.canScrollForward,
-                        ) {
-                            Icon(Icons.AutoMirrored.Outlined.NavigateNext, "next")
-                        }
-                    }
-                }
-
-                SeriesEditorTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("composesubject:subject"),
-                    state = subjectState,
-                    label = "Subject",
-                    placeholder = "Mathematics",
-                    keyboardAction = { addSubject() },
-                    maxNum = TextFieldLineLimits.SingleLine,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SeriesEditorButton(
-                    modifier = Modifier.align(Alignment.End),
-                    enabled = subjectState.text.isNotBlank() && currentSeries > 0,
-                    onClick = addSubject,
+                    },
+                    enabled = scrollState.canScrollBackward,
                 ) {
-                    Icon(Icons.Default.Add, "Add")
-                    Text("Add Subject")
+                    Icon(Icons.AutoMirrored.Outlined.NavigateBefore, "previous")
                 }
+            }
 
-                Section(title = "Type Section")
+            Row(
 
-                SeriesEditorTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("composesubject:series"),
-                    state = seriesState,
-                    label = "Type",
-                    placeholder = "NECO",
-                    keyboardAction = { addSeries() },
-                    maxNum = TextFieldLineLimits.SingleLine,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                ) {
-                    AnimatedVisibility(currentSeries > 1) {
-                        TextButton(onClick = onDeleteSeries) {
-                            Text("Delete")
-                        }
-                    }
-
-                    SeriesEditorButton(
-                        modifier = Modifier,
-                        enabled = seriesState.text.isNotBlank(),
-                        onClick = addSeries,
-                    ) {
-                        AnimatedContent(currentSeries) {
-                            if (it > 1) {
-                                Row {
-                                    Icon(Icons.Default.Update, "update")
-                                    Text("Update Series")
-                                }
-                            } else {
-                                Row {
-                                    Icon(Icons.Default.Add, "Add")
-                                    Text("Add Series")
-                                }
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.testTag("cs:list_series").weight(1f).horizontalScroll(scrollState),
+            ) {
+                csState.series.forEach {
+                    FilterChip(
+                        leadingIcon = {
+                            if (it.id == csState.currentSeries) {
+                                Icon(
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                                    imageVector = Icons.Default.Done,
+                                    contentDescription = "done",
+                                )
                             }
+                        },
+                        selected = csState.currentSeries == it.id,
+                        onClick = {
+                            onSeriesChange(it.id)
+                        },
+                        label = { Text(it.name) },
+                    )
+                }
+            }
+
+            TooltipBox(
+                tooltip = { Text("Scroll to the next") },
+                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                state = rememberTooltipState(),
+            ) {
+                IconButton(
+                    modifier = Modifier.testTag("cs:next"),
+                    onClick = {
+                        coroutineScope.launch {
+                            scrollState.animateScrollTo(scrollState.value + 40)
+                        }
+                    },
+                    enabled = scrollState.canScrollForward,
+                ) {
+                    Icon(Icons.AutoMirrored.Outlined.NavigateNext, "next")
+                }
+            }
+        }
+
+        SeriesEditorTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("cs:subject"),
+            state = subjectState,
+            label = "Subject",
+            placeholder = "Mathematics",
+            keyboardAction = { addSubject() },
+            maxNum = TextFieldLineLimits.SingleLine,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        SeriesEditorButton(
+            modifier = Modifier.align(Alignment.End).testTag("cs:add_subject"),
+            enabled = subjectState.text.isNotBlank() && csState.currentSeries > 0,
+            onClick = addSubject,
+        ) {
+            Icon(Icons.Default.Add, "Add")
+            Text("Add Subject")
+        }
+
+        Section(title = "Type Section")
+
+        SeriesEditorTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("cs:series"),
+            state = seriesState,
+            label = "Type",
+            placeholder = "NECO",
+            keyboardAction = { addSeries() },
+            maxNum = TextFieldLineLimits.SingleLine,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+        ) {
+            AnimatedVisibility(csState.currentSeries > 1) {
+                TextButton(
+                    modifier = Modifier.testTag("cs:delete_series"),
+                    onClick = onDeleteSeries,
+                ) {
+                    Text("Delete")
+                }
+            }
+
+            SeriesEditorButton(
+                modifier = Modifier.testTag("cs:add_series"),
+                enabled = seriesState.text.isNotBlank(),
+                onClick = addSeries,
+            ) {
+                AnimatedContent(csState.currentSeries) {
+                    if (it > 1) {
+                        Row {
+                            Icon(Icons.Default.Update, "update")
+                            Text("Update Series")
+                        }
+                    } else {
+                        Row {
+                            Icon(Icons.Default.Add, "Add")
+                            Text("Add Series")
                         }
                     }
                 }
             }
-
-            Update.Saving -> {
-                Waiting()
-            }
-
-            else -> {}
         }
     }
 }

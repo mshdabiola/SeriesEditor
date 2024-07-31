@@ -4,7 +4,7 @@
 
 package com.mshdabiola.composeinstruction
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -32,8 +32,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
@@ -42,7 +42,6 @@ import com.mshdabiola.ui.QuestionDialog
 import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.image.Content
-import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -50,7 +49,7 @@ import org.koin.core.parameter.parametersOf
 
 // import org.koin.androidx.compose.koinViewModel
 
-@OptIn(KoinExperimentalAPI::class, ExperimentalFoundationApi::class)
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun CiRoute(
     modifier: Modifier = Modifier,
@@ -63,9 +62,9 @@ internal fun CiRoute(
     var itemUiState by remember { mutableStateOf<ItemUiState?>(null) }
 
 //    val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
-    val update = viewModel.update.collectAsStateWithLifecycleCommon()
+    val update = viewModel.ciState.collectAsStateWithLifecycleCommon()
     LaunchedEffect(update.value) {
-        if (update.value == Update.Success) {
+        if (update.value is CiState.Loading && (update.value as CiState.Loading).isLoading) {
             onFinish()
             onShowSnack("Add Instruction", null)
         }
@@ -73,8 +72,9 @@ internal fun CiRoute(
 
     CiScreen(
         modifier = modifier,
-        instructionUiState = viewModel.instructionUiState.value,
-        update = update.value,
+        title = viewModel.title,
+        ciState = update.value,
+        instructionInput = viewModel.instructionInput,
         addUp = viewModel::addUp,
         addBottom = viewModel::addDown,
         delete = viewModel::deleteInstruction,
@@ -84,7 +84,6 @@ internal fun CiRoute(
         onAddInstruction = viewModel::onAdd,
         onChangeView = viewModel::changeView,
         onAddInstructionUiState = viewModel::onAddInstructionInput,
-        instructionInput = viewModel.instructionInput,
         onItemClicked = { itemUiState = it },
     )
     QuestionDialog(
@@ -94,13 +93,12 @@ internal fun CiRoute(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun CiScreen(
     modifier: Modifier = Modifier,
-    instructionUiState: InstructionUiState,
+    ciState: CiState,
     instructionInput: TextFieldState,
-    update: Update,
+    title: TextFieldState,
     addUp: (Int) -> Unit = { _ -> },
     addBottom: (Int) -> Unit = { _ -> },
     delete: (Int) -> Unit = { _ -> },
@@ -113,98 +111,131 @@ internal fun CiScreen(
     onItemClicked: (ItemUiState) -> Unit = {},
 
 ) {
+    AnimatedContent(modifier = modifier.testTag("ci:screen"), targetState = ciState) {
+        when (it) {
+            is CiState.Loading -> Waiting()
+            is CiState.Success -> MainContent(
+                modifier = Modifier,
+                title = title,
+                instructionInput = instructionInput,
+                success = it,
+                addUp = addUp,
+                addBottom = addBottom,
+                delete = delete,
+                moveUp = moveUp,
+                moveDown = moveDown,
+                changeType = changeType,
+                onAddInstruction = onAddInstruction,
+                onAddInstructionUiState = onAddInstructionUiState,
+                onChangeView = onChangeView,
+                onItemClicked = onItemClicked,
+            )
+
+            else -> {}
+        }
+    }
+}
+
+@Composable
+internal fun MainContent(
+    modifier: Modifier = Modifier,
+    title: TextFieldState,
+    instructionInput: TextFieldState,
+    success: CiState.Success,
+    addUp: (Int) -> Unit = { _ -> },
+    addBottom: (Int) -> Unit = { _ -> },
+    delete: (Int) -> Unit = { _ -> },
+    moveUp: (Int) -> Unit = { _ -> },
+    moveDown: (Int) -> Unit = { _ -> },
+    changeType: (Int, Type) -> Unit = { _, _ -> },
+    onAddInstruction: () -> Unit = {},
+    onAddInstructionUiState: () -> Unit = {},
+    onChangeView: (Int) -> Unit = { _ -> },
+    onItemClicked: (ItemUiState) -> Unit = {},
+) {
     var showConvert by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        when (update) {
-            Update.Edit -> {
-                Section(title = "Instruction Section")
+        Section(title = "Instruction Section")
+        SeriesEditorTextField(
+            modifier = Modifier.fillMaxWidth().testTag("ci:title"),
+            state = title,
+            maxNum = TextFieldLineLimits.SingleLine,
+            label = "Title",
+        )
+        Spacer(Modifier.height(4.dp))
+        Content(
+            modifier = Modifier.testTag("ci:content"),
+            items = success.content,
+            label = "Instruction",
+            addUp = addUp,
+            changeView = onChangeView,
+            addBottom = addBottom,
+            delete = delete,
+            moveUp = moveUp,
+            moveDown = moveDown,
+            changeType = changeType,
+            onItemClicked = onItemClicked,
+        )
+        Spacer(Modifier.height(4.dp))
+
+        SeriesEditorButton(
+            modifier = Modifier.align(Alignment.End).testTag("ci:add_instruction"),
+            onClick = onAddInstruction,
+            enabled = success.content.any { it.content.text.isNotBlank() },
+            // enabled = instructionUiState.content.first().content.isNotBlank(),
+        ) {
+            Text("Add Instruction")
+        }
+
+        Spacer(Modifier.height(16.dp))
+        Row(
+            Modifier
+                .clickable(onClick = { showConvert = !showConvert })
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Convert text to exams")
+            IconButton(modifier = Modifier, onClick = { showConvert = !showConvert }) {
+                Icon(
+                    if (!showConvert) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                    "down",
+                )
+            }
+        }
+
+        if (showConvert) {
+            Column {
                 SeriesEditorTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    state = instructionUiState.title,
-                    maxNum = TextFieldLineLimits.SingleLine,
-                    label = "Title",
-                )
-                Spacer(Modifier.height(4.dp))
-                Content(
-                    items = instructionUiState.content,
-                    label = "Instruction",
-                    addUp = addUp,
-                    changeView = onChangeView,
-                    addBottom = addBottom,
-                    delete = delete,
-                    moveUp = moveUp,
-                    moveDown = moveDown,
-                    changeType = changeType,
-                    onItemClicked = onItemClicked,
-                )
-                Spacer(Modifier.height(4.dp))
-
-                SeriesEditorButton(
-                    modifier = Modifier.align(Alignment.End),
-                    onClick = onAddInstruction,
-                    enabled = instructionUiState.content.any { it.content.text.isNotBlank() },
-                    // enabled = instructionUiState.content.first().content.isNotBlank(),
-                ) {
-                    Text("Add Instruction")
-                }
-
-                Spacer(Modifier.height(16.dp))
-                Row(
-                    Modifier
-                        .clickable(onClick = { showConvert = !showConvert })
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text("Convert text to exams")
-                    IconButton(modifier = Modifier, onClick = { showConvert = !showConvert }) {
-                        Icon(
-                            if (!showConvert) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                            "down",
-                        )
-                    }
-                }
-
-                if (showConvert) {
-                    Column {
-                        SeriesEditorTextField(
-                            state = instructionInput,
+                    state = instructionInput,
 //                    isError = instruInputUiState.isError,
-                            modifier = Modifier.fillMaxWidth().height(300.dp),
-                        )
+                    modifier = Modifier.fillMaxWidth().height(300.dp),
+                )
 //                OutlinedTextField(
 //                    value = instruInputUiState.content,
 //                    onValueChange = onInstruInputChange,
 //                    isError = instruInputUiState.isError,
 //                    modifier = Modifier.fillMaxWidth().height(300.dp),
 //                )
-                        Spacer(Modifier.height(4.dp))
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text("* instruction title")
-                            Button(
-                                modifier = Modifier,
-                                onClick = onAddInstructionUiState,
-                            ) {
-                                Text("Convert to Instruction")
-                            }
-                        }
-
-                        Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(4.dp))
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text("* instruction title")
+                    Button(
+                        modifier = Modifier,
+                        onClick = onAddInstructionUiState,
+                    ) {
+                        Text("Convert to Instruction")
                     }
                 }
-            }
 
-            Update.Saving -> {
-                Waiting()
+                Spacer(Modifier.height(16.dp))
             }
-
-            else -> {}
         }
     }
 }

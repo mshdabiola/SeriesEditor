@@ -4,21 +4,17 @@
 
 package com.mshdabiola.composeinstruction
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.ISettingRepository
+import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil.getAppPath
-import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
-import com.mshdabiola.ui.toInstruction
-import com.mshdabiola.ui.toInstructionUiState
+import com.mshdabiola.ui.toItem
+import com.mshdabiola.ui.toItemUi
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +22,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 class CiViewModel(
     private val examId: Long,
     private val introductionId: Long,
@@ -37,15 +32,9 @@ class CiViewModel(
 
     val instructionInput = TextFieldState()
 
-    private val defaultInstruction = InstructionUiState(
-        examId = examId,
-        title = TextFieldState(),
-        content = listOf(ItemUiState(isEditMode = true)).toImmutableList(),
-    )
-    private val _instructionUiState = mutableStateOf(
-        defaultInstruction,
-    )
-    val instructionUiState: State<InstructionUiState> = _instructionUiState
+    private val _ciState = MutableStateFlow<CiState>(CiState.Loading())
+    val ciState = _ciState.asStateFlow()
+    val title = TextFieldState()
 
     init {
 
@@ -55,28 +44,47 @@ class CiViewModel(
                 .first()
 
             if (instruct != null) {
-                _instructionUiState.value = instruct.toInstructionUiState(isEdit = true)
+
+                title.edit {
+                    append(instruct.title)
+                }
+                _ciState.update {
+                    CiState.Success(
+                        id = introductionId,
+                        examId = examId,
+                        content = instruct.content.map { it.toItemUi() }.toImmutableList(),
+                    )
+                }
+            } else {
+                _ciState.update {
+                    CiState.Success(
+                        id = introductionId,
+                        examId = examId,
+                        content = listOf(ItemUiState(isEditMode = true)).toImmutableList(),
+                    )
+                }
             }
         }
     }
 
-    // instruction logic
-
-    private val _update = MutableStateFlow(Update.Edit)
-    val update = _update.asStateFlow()
-
     fun onAdd() {
         viewModelScope.launch {
-            _update.update {
-                Update.Saving
+            val success = _ciState.value as CiState.Success
+            _ciState.update {
+                CiState.Loading(false)
             }
+
             instructionRepository.upsert(
-                instructionUiState.value.toInstruction(),
+                Instruction(
+                    success.id,
+                    examId,
+                    title.text.toString(),
+                    success.content.map { it.toItem() },
+                ),
             )
 
-            _instructionUiState.value = defaultInstruction
-            _update.update {
-                Update.Success
+            _ciState.update {
+                CiState.Loading(true)
             }
         }
     }
@@ -112,7 +120,8 @@ class CiViewModel(
     }
 
     fun moveDown(index: Int) {
-        if (index == instructionUiState.value.content.lastIndex) {
+        val contents = (ciState.value as CiState.Success).content
+        if (index == contents.lastIndex) {
             return
         }
         editContentInstruction() {
@@ -137,7 +146,9 @@ class CiViewModel(
     }
 
     fun deleteInstruction(index: Int) {
-        if (instructionUiState.value.content.size == 1) {
+        val contents = (ciState.value as CiState.Success).content
+
+        if (contents.size == 1) {
             return
         }
         editContentInstruction() {
@@ -164,24 +175,25 @@ class CiViewModel(
     private fun editContentInstruction(
         onItems: suspend (MutableList<ItemUiState>) -> Int?,
     ) {
+        val contents = (ciState.value as CiState.Success).content
+
         viewModelScope.launch {
-            var items = instructionUiState.value.content.toMutableList()
+            var items = contents.toMutableList()
             val i = onItems(items)
             if (i != null) {
                 items = items.mapIndexed { index, itemUi ->
                     itemUi.copy(focus = index == i)
                 }.toMutableList()
             }
-            _instructionUiState.value = instructionUiState
-                .value
-                .copy(
+
+            _ciState.update {
+                CiState.Success(
+                    id = introductionId,
+                    examId = examId,
                     content = items.toImmutableList(),
                 )
+            }
         }
-    }
-
-    private fun log(msg: String) {
-//        co.touchlab.kermit.Logger.e(msg)
     }
 
     fun onAddInstructionInput() {

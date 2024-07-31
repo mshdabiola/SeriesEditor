@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
@@ -46,7 +45,6 @@ internal fun SettingRoute(
         settingState = settingState.value,
         onBack = onBack,
         setThemeBrand = viewModel::setThemeBrand,
-        setContrast = viewModel::setThemeContrast,
         setDarkThemeConfig = viewModel::setDarkThemeConfig,
     )
 }
@@ -59,7 +57,6 @@ internal fun SettingScreen(
     onBack: () -> Unit = {},
     setThemeBrand: (ThemeBrand) -> Unit = {},
     setDarkThemeConfig: (DarkThemeConfig) -> Unit = {},
-    setContrast: (Contrast) -> Unit = {},
 
 ) {
     Column(
@@ -85,29 +82,6 @@ internal fun SettingScreen(
                     .toImmutableList(),
                 onDataChange = {
                     setThemeBrand(ThemeBrand.entries[it])
-                },
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(0.8f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text("Contrast")
-            DropdownMenu(
-                currentIndex = Contrast.entries.indexOf(settingState.userData.contrast),
-                data = Contrast.entries.map { themeBrand ->
-                    themeBrand
-                        .name
-                        .lowercase()
-                        .replaceFirstChar {
-                            it.uppercaseChar()
-                        }
-                }
-                    .toImmutableList(),
-                onDataChange = {
-                    setContrast(Contrast.entries[it])
                 },
             )
         }

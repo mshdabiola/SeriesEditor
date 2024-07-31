@@ -1,3 +1,5 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 /*
  *abiola 2024
  */
@@ -5,6 +7,7 @@
 plugins {
     id("mshdabiola.android.library")
     id("mshdabiola.android.library.compose")
+
 //    id("mshdabiola.android.library.jacoco")
 }
 
@@ -13,22 +16,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     namespace = "com.mshdabiola.ui"
+
 }
 
 dependencies {
-    api(libs.androidx.metrics)
+    androidTestImplementation(projects.modules.testing)
 
-
-
-
-    androidTestImplementation(project(":modules:testing"))
 }
 
 kotlin {
-//    @OptIn(ExperimentalWasmDsl::class)
-//    wasmJs {
-//        browser()
-//    }
     sourceSets {
 
         val commonMain by getting {
@@ -36,7 +32,7 @@ kotlin {
                 implementation(project(":modules:analytics"))
                 implementation(project(":modules:designsystem"))
                 implementation(project(":modules:model"))
-                api("com.mshdabiola.series:retex:0.0.3")
+                api(libs.retex)
 
                 api(libs.coil.kt)
                 api(libs.coil.kt.compose)

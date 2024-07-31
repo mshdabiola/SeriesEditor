@@ -65,7 +65,6 @@ import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
 import com.mshdabiola.generalmodel.User
-import com.mshdabiola.model.Contrast
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
@@ -105,8 +104,13 @@ fun SeriesEditorApp() {
     val subjects = viewModel.subjects.collectAsStateWithLifecycleCommon()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutine = rememberCoroutineScope()
+    val open: () -> Unit = { coroutine.launch { drawerState.open() } }
 
     val user = viewModel.user.collectAsStateWithLifecycleCommon()
+//    LaunchedEffect(drawerState.currentValue) {
+//        println(drawerState.currentValue)
+//
+//    }
 
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
@@ -148,7 +152,7 @@ fun SeriesEditorApp() {
                         ModalNavigationDrawer(
                             drawerState = drawerState,
                             drawerContent = {
-                                if (!appState.showPermanentDrawer) {
+                                if (appState.showDrawer) {
                                     ModalDrawerSheet(
                                         modifier = Modifier.widthIn(max = 300.dp),
                                     ) {
@@ -185,7 +189,7 @@ fun SeriesEditorApp() {
                                         MainBottomBarSection(
                                             modifier = Modifier,
                                             onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
-                                                { coroutine.launch { drawerState.open() } }
+                                                open
                                             } else {
                                                 null
                                             },
@@ -208,7 +212,7 @@ fun SeriesEditorApp() {
                                                 subjectId = currentSubjectId,
                                                 updateSubject = appState::onUpdateSubject,
                                                 onNavigationClick = if (!appState.showPermanentDrawer) {
-                                                    { coroutine.launch { drawerState.open() } }
+                                                    open
                                                 } else {
                                                     null
                                                 },
@@ -367,14 +371,6 @@ private fun shouldUseAndroidTheme(
         ThemeBrand.DEFAULT -> false
         ThemeBrand.GREEN -> true
     }
-}
-
-@Composable
-private fun chooseContrast(
-    uiState: MainActivityUiState,
-): Contrast = when (uiState) {
-    MainActivityUiState.Loading -> Contrast.Normal
-    is MainActivityUiState.Success -> uiState.userData.contrast
 }
 
 @Composable

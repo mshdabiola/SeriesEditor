@@ -1,7 +1,6 @@
 package com.mshdabiola.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import com.mshdabiola.generalmodel.Content
 import com.mshdabiola.generalmodel.Examination
 import com.mshdabiola.generalmodel.ExaminationWithSubject
@@ -71,14 +70,11 @@ fun OptionUiState.toOption(questionId: Long, examId: Long) =
         title = "",
     )
 
-@OptIn(ExperimentalFoundationApi::class)
 fun ItemUiState.toItem() = Content(content = content.text.toString(), type = type)
 
-@OptIn(ExperimentalFoundationApi::class)
 fun Content.toItemUi(isEdit: Boolean = false) =
     ItemUiState(content = TextFieldState(content), type = type, isEditMode = isEdit)
 
-@OptIn(ExperimentalFoundationApi::class)
 fun InstructionUiState.toInstruction() = Instruction(
     id = id,
     examId = examId,
@@ -86,7 +82,6 @@ fun InstructionUiState.toInstruction() = Instruction(
     content = content.map { it.toItem() },
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
     InstructionUiState(
         id = id,

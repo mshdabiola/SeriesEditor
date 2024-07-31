@@ -1,22 +1,22 @@
 package com.mshdabiola.datastore
 
 import androidx.datastore.core.DataStore
-import com.mshdabiola.datastore.model.UserDataSer
 import com.mshdabiola.generalmodel.Instruction
 import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.model.UserData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class StoreImpl(
-    private val userdata: DataStore<UserDataSer>,
+    private val userdata: DataStore<UserData>,
     private val question: DataStore<Map<Long, Question>>,
     private val instruction: DataStore<Map<Long, Instruction>>,
     private val coroutineDispatcher: CoroutineDispatcher,
 ) : Store {
 
-    override val userData: Flow<UserDataSer>
+    override val userData: Flow<UserData>
         get() = userdata
             .data
             .flowOn(coroutineDispatcher)
@@ -29,7 +29,7 @@ class StoreImpl(
             .data
             .flowOn(coroutineDispatcher)
 
-    override suspend fun updateUserData(transform: suspend (UserDataSer) -> UserDataSer): UserDataSer {
+    override suspend fun updateUserData(transform: suspend (UserData) -> UserData): UserData {
         return withContext(coroutineDispatcher) {
             userdata.updateData(transform)
         }

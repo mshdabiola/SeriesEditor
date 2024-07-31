@@ -21,13 +21,11 @@ import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.database.generalPath
 import com.mshdabiola.designsystem.drawable.defaultAppIcon
 import com.mshdabiola.designsystem.string.appName
-import com.mshdabiola.model.Writer
 import com.mshdabiola.serieseditor.di.appModule
 import com.mshdabiola.serieseditor.ui.SeriesEditorApp
 import com.mshdabiola.ui.SplashScreen
 import kotlinx.coroutines.delay
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.module
 import java.io.File
 
 fun mainApp() {
@@ -71,11 +69,6 @@ fun main() {
         loggerConfigInit(platformLogWriter(), Writer(path)),
         "DesktopLogger,",
     )
-    val logModule = module {
-        single {
-            logger
-        }
-    }
 
     try {
         startKoin {
@@ -84,7 +77,6 @@ fun main() {
             )
             modules(
                 appModule,
-                logModule,
             )
         }
 
