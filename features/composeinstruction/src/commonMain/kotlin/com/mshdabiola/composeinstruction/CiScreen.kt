@@ -157,11 +157,11 @@ internal fun MainContent(
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         Section(title = "Instruction Section")
+        Text("Title")
         SeriesEditorTextField(
             modifier = Modifier.fillMaxWidth().testTag("ci:title"),
             state = title,
             maxNum = TextFieldLineLimits.SingleLine,
-            label = "Title",
         )
         Spacer(Modifier.height(4.dp))
         Content(
