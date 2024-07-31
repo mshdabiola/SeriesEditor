@@ -7,7 +7,7 @@ package com.mshdabiola.setting
 import app.cash.turbine.test
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.model.DarkThemeConfig
-import com.mshdabiola.testing.fake.testDataModule
+import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -29,7 +29,7 @@ class SettingViewModelTest : KoinTest {
 
     @get:Rule(order = 3)
     val koinTestRule = KoinTestRule.create {
-        this.modules(testDataModule)
+        this.modules(dataTestModule)
     }
     private val userRepository by inject<UserDataRepository>()
 
@@ -53,7 +53,7 @@ class SettingViewModelTest : KoinTest {
                 assertEquals(
                     SettingState.Success(
                         themeBrand = com.mshdabiola.model.ThemeBrand.DEFAULT,
-                        darkThemeConfig = com.mshdabiola.model.DarkThemeConfig.DARK,
+                        darkThemeConfig = DarkThemeConfig.FOLLOW_SYSTEM,
                     ),
                     state,
                 )
@@ -112,7 +112,7 @@ class SettingViewModelTest : KoinTest {
 
                 assertTrue(state is SettingState.Success)
 
-                viewModel.setDarkThemeConfig(com.mshdabiola.model.DarkThemeConfig.LIGHT)
+                viewModel.setDarkThemeConfig(DarkThemeConfig.LIGHT)
 
                 state = awaitItem()
 
