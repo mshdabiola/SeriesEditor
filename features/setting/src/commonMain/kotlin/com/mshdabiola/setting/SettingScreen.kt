@@ -4,162 +4,153 @@
 
 package com.mshdabiola.setting
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
-import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import com.mshdabiola.ui.Waiting
+import org.jetbrains.compose.resources.stringArrayResource
+import serieseditor.features.setting.generated.resources.Res
+import serieseditor.features.setting.generated.resources.daynight
+import serieseditor.features.setting.generated.resources.theme
 
 // import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun SettingRoute(
-    modifier: Modifier,
-    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
+    onBack: () -> Unit,
     viewModel: SettingViewModel,
 ) {
-    val settingState = viewModel.uiState.collectAsStateWithLifecycleCommon()
+    val settingState = viewModel.settingState.collectAsStateWithLifecycle()
 
     SettingScreen(
-        modifier = modifier,
+        modifier = modifier.heightIn(min = 300.dp),
         settingState = settingState.value,
+        setTheme = viewModel::setThemeBrand,
+        setDarkMode = viewModel::setDarkThemeConfig,
         onBack = onBack,
-        setThemeBrand = viewModel::setThemeBrand,
-        setDarkThemeConfig = viewModel::setDarkThemeConfig,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun SettingScreen(
-    modifier: Modifier,
     settingState: SettingState,
+    modifier: Modifier = Modifier,
+    setTheme: (ThemeBrand) -> Unit = {},
+    setDarkMode: (DarkThemeConfig) -> Unit = {},
     onBack: () -> Unit = {},
-    setThemeBrand: (ThemeBrand) -> Unit = {},
-    setDarkThemeConfig: (DarkThemeConfig) -> Unit = {},
-
 ) {
-    Column(
-        modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(0.8f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text("Theme")
-            DropdownMenu(
-                currentIndex = ThemeBrand.entries.indexOf(settingState.userData.themeBrand),
-                data = ThemeBrand.entries.map { themeBrand ->
-                    themeBrand
-                        .name
-                        .lowercase()
-                        .replaceFirstChar {
-                            it.uppercaseChar()
-                        }
-                }
-                    .toImmutableList(),
-                onDataChange = {
-                    setThemeBrand(ThemeBrand.entries[it])
-                },
-            )
-        }
+    Card(modifier = modifier.testTag("setting:screen")) {
+        AnimatedContent(settingState) {
+            when (it) {
+                is SettingState.Loading -> Waiting(modifier)
+                is SettingState.Success -> MainContent(
+                    modifier = modifier,
+                    settingState = it,
+                    setTheme = setTheme,
+                    setDarkMode = setDarkMode,
+                    onBack = onBack,
+                )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(0.8f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text("Dark")
-            DropdownMenu(
-                currentIndex = DarkThemeConfig.entries.indexOf(settingState.userData.darkThemeConfig),
-                data = DarkThemeConfig.entries.map { themeBrand ->
-                    themeBrand
-                        .name
-                        .lowercase()
-                        .replaceFirstChar {
-                            it.uppercaseChar()
-                        }
-                }
-                    .toImmutableList(),
-                onDataChange = {
-                    setDarkThemeConfig(DarkThemeConfig.entries[it])
-                },
-            )
+                else -> {}
+            }
         }
     }
 }
-//
-// @Preview
-// @Composable
-// fun MainScreenPreview() {
-//    MainScreen(
-//        mainState = MainState(),
-//       items =listOf(ModelUiState(2, "")).toImmutableList()
-//    )
-// }
 
 @Composable
-expect fun SettingScreenPreview()
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DropdownMenu(
-    currentIndex: Int = 0,
-    data: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    onDataChange: (Int) -> Unit = {},
+internal fun MainContent(
+    modifier: Modifier = Modifier,
+    settingState: SettingState.Success,
+    setTheme: (ThemeBrand) -> Unit = {},
+    setDarkMode: (DarkThemeConfig) -> Unit = {},
+    onBack: () -> Unit = {},
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var dark by remember { mutableStateOf(false) }
+    var theme by remember { mutableStateOf(false) }
 
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
+    Column(
+        modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        TextField(
-            // The `menuAnchor` modifier must be passed to the text field for correctness.
-            modifier = Modifier.menuAnchor(),
-            readOnly = true,
-            value = data[currentIndex],
-            onValueChange = {},
-            //  label = { Text("Label") },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-        )
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            data.forEachIndexed { index, s ->
-                DropdownMenuItem(
-                    text = { Text(s) },
-                    onClick = {
-                        onDataChange(index)
-                        expanded = false
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                )
+            Text(text = "Settings", style = MaterialTheme.typography.titleLarge)
+            IconButton(
+                onClick = onBack,
+
+            ) {
+                Icon(imageVector = Icons.Outlined.Cancel, "cancel")
             }
         }
+
+        Spacer(Modifier.height(8.dp))
+
+        ListItem(
+            modifier = Modifier.testTag("setting:theme").clickable { theme = true },
+            headlineContent = { Text("Theme") },
+            supportingContent = {
+                Text(stringArrayResource(Res.array.theme)[settingState.themeBrand.ordinal])
+            },
+        )
+
+        ListItem(
+            modifier = Modifier.testTag("setting:mode").clickable { dark = true },
+            headlineContent = { Text("DayNight mode") },
+            supportingContent = {
+                Text(stringArrayResource(Res.array.daynight)[settingState.darkThemeConfig.ordinal])
+            },
+        )
+    }
+
+    AnimatedVisibility(theme) {
+        OptionsDialog(
+            modifier = Modifier,
+            options = stringArrayResource(Res.array.theme),
+            current = settingState.themeBrand.ordinal,
+            onDismiss = { theme = false },
+            onSelect = { setTheme(ThemeBrand.entries[it]) },
+        )
+    }
+    AnimatedVisibility(dark) {
+        OptionsDialog(
+            modifier = Modifier,
+            options = stringArrayResource(Res.array.daynight),
+            current = settingState.darkThemeConfig.ordinal,
+            onDismiss = { dark = false },
+            onSelect = { setDarkMode(DarkThemeConfig.entries[it]) },
+        )
     }
 }
