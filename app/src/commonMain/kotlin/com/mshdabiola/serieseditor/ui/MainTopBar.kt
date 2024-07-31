@@ -25,7 +25,7 @@ fun MainTopBarSection(
     updateSubject: (Long) -> Unit,
     onNavigationClick: (() -> Unit)? = null,
 
-) {
+    ) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -72,7 +72,7 @@ fun MainBottomBarSection(
     subjectId: Long,
     onNavigationClick: (() -> Unit)?,
 
-) {
+    ) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -98,7 +98,7 @@ fun MainBottomBarSection(
         },
         onNavigationClick = onNavigationClick,
         onSettingsClick = if (appState.isMain) {
-            appState.navController::navigateToSetting
+            { appState.navController.navigateToSetting() }
         } else {
             null
         },
