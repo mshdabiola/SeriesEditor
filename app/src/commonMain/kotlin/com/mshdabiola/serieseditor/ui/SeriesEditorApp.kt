@@ -109,7 +109,6 @@ fun SeriesEditorApp() {
 
     val user = viewModel.user.collectAsStateWithLifecycleCommon()
 
-
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
             darkTheme = darkTheme,
