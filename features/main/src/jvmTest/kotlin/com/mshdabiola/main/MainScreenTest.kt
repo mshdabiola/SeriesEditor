@@ -10,7 +10,7 @@ import com.mshdabiola.ui.toUi
 import org.junit.Rule
 import kotlin.test.Test
 
-class ExamScreenTest {
+class MainScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()

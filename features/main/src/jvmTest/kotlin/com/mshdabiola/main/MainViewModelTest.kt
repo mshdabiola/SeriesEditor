@@ -22,7 +22,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ExamViewModelTest : KoinTest {
+class MainViewModelTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
