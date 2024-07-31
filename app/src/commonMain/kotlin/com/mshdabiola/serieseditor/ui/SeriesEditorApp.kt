@@ -193,6 +193,11 @@ fun SeriesEditorApp() {
                                             } else {
                                                 null
                                             },
+                                            onAddTopic = if (currentSubjectId > 0) {
+                                                { appState.onAddTopic(currentSubjectId) }
+                                            } else {
+                                                null
+                                            },
                                             subjectId = currentSubjectId,
                                             appState = appState,
                                         )
@@ -213,6 +218,11 @@ fun SeriesEditorApp() {
                                                 updateSubject = appState::onUpdateSubject,
                                                 onNavigationClick = if (!appState.showPermanentDrawer) {
                                                     open
+                                                } else {
+                                                    null
+                                                },
+                                                onAddTopic = if (currentSubjectId > 0) {
+                                                    { appState.onAddTopic(currentSubjectId) }
                                                 } else {
                                                     null
                                                 },
