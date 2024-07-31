@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Deselect
@@ -36,6 +37,7 @@ fun SeBottonAppBar(
     modifier: Modifier = Modifier,
     onFabClick: (() -> Unit)? = null,
     onNavigationClick: (() -> Unit)? = null,
+    onAddTopic: (() -> Unit)? = null,
     onSettingsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     isSelectMode: Boolean = false,
@@ -178,6 +180,14 @@ fun SeBottonAppBar(
                             )
                         }
                     }
+                }
+            }
+            if (onAddTopic != null) {
+                IconButton(
+                    onClick = onAddTopic,
+                    // enabled = currentSubjectIndex > -1
+                ) {
+                    Icon(Icons.Default.Topic, "topic")
                 }
             }
             if (onBackClick != null) {
