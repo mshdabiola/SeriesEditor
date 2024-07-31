@@ -48,6 +48,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -107,10 +108,6 @@ fun SeriesEditorApp() {
     val open: () -> Unit = { coroutine.launch { drawerState.open() } }
 
     val user = viewModel.user.collectAsStateWithLifecycleCommon()
-//    LaunchedEffect(drawerState.currentValue) {
-//        println(drawerState.currentValue)
-//
-//    }
 
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
@@ -153,6 +150,9 @@ fun SeriesEditorApp() {
                             drawerState = drawerState,
                             drawerContent = {
                                 if (appState.showDrawer) {
+                                    LaunchedEffect(Unit) {
+                                        drawerState.close()
+                                    }
                                     ModalDrawerSheet(
                                         modifier = Modifier.widthIn(max = 300.dp),
                                     ) {

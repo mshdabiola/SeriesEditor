@@ -66,7 +66,7 @@ fun ExtendNavHost(
             onShowSnackbar,
         )
         settingScreen(
-            modifier = screenModifier,
+            modifier = Modifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
         )
@@ -140,7 +140,7 @@ fun OtherNavHost(
             subjectId = -1,
         )
         settingScreen(
-            modifier = screenModifier,
+            modifier = Modifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
 

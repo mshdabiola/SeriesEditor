@@ -10,6 +10,9 @@ plugins {
 }
 
 android {
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
     namespace = "com.mshdabiola.designsystem"
 }
 
@@ -27,6 +30,8 @@ kotlin {
                 api(compose.components.resources)
                 api(libs.kotlinx.collection.immutable)
                 implementation(project(":modules:model"))
+                api(libs.androidx.compose.material3.windowSizeClass2)
+                api(libs.androidx.navigation.compose.get())
 
                 api(libs.koin.compose)
                 api(libs.koin.composeVM)

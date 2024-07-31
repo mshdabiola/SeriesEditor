@@ -98,7 +98,7 @@ fun MainBottomBarSection(
         },
         onNavigationClick = onNavigationClick,
         onSettingsClick = if (appState.isMain) {
-            appState.navController::navigateToSetting
+            { appState.navController.navigateToSetting() }
         } else {
             null
         },
