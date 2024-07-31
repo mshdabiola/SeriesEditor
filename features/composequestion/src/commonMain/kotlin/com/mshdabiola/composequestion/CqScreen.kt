@@ -22,8 +22,10 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
@@ -103,7 +105,7 @@ internal fun CqRoute(
         onAddQuestion = viewModel::onAddQuestion,
         // onTextChange = viewModel::onTextChange,
         onAddOption = viewModel::onAddOption,
-        // onAddAnswer = viewModel::onAddAnswer,
+        onAddAnswer = viewModel::onAddAnswer,
         isTheory = viewModel::isTheory,
         changeView = viewModel::changeView,
         navigateToTopic = { navigateToTopic(viewModel.subjectId, -1) },
@@ -175,6 +177,7 @@ internal fun CqScreen(
                 onInstructionChange = onInstructionChange,
                 onItemClicked = onItemClicked,
             )
+
             is CqState.Loading -> Waiting(modifier)
             else -> {}
         }
@@ -209,6 +212,8 @@ internal fun MainContent(
     var topicExpanded by remember { mutableStateOf(false) }
     var instrucExpanded by remember { mutableStateOf(false) }
 
+    var isRow by remember { mutableStateOf(false) }
+
     val topicState = rememberTextFieldState()
     val instructState = rememberTextFieldState()
 
@@ -240,13 +245,17 @@ internal fun MainContent(
                 expanded = topicExpanded,
                 onExpandedChange = { topicExpanded = it },
             ) {
+                Text(
+                    "Topic",
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+                Spacer(modifier = Modifier.height(2.dp))
                 MyTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .menuAnchor(MenuAnchorType.PrimaryEditable)
                         .testTag("ci:topic"),
                     state = topicState,
-                    label = { Text("Topic") },
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = topicExpanded) },
                     colors = TextFieldDefaults.colors(
@@ -308,12 +317,14 @@ internal fun MainContent(
                 expanded = instrucExpanded,
                 onExpandedChange = { instrucExpanded = it },
             ) {
+                Text("Instruction", color = MaterialTheme.colorScheme.secondary)
+                Spacer(modifier = Modifier.height(2.dp))
+
                 MyTextField(
                     modifier = Modifier.fillMaxWidth()
                         .menuAnchor(MenuAnchorType.PrimaryEditable)
                         .testTag("ci:instruction"),
                     state = instructState,
-                    label = { Text("Instruction") },
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = instrucExpanded) },
                     colors = TextFieldDefaults.colors(
@@ -372,7 +383,7 @@ internal fun MainContent(
         if (cqState.questionUiState.topicUiState != null) {
             Spacer(modifier = Modifier.height(4.dp))
             Row(
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text("Topic:", color = MaterialTheme.colorScheme.secondary)
@@ -382,22 +393,23 @@ internal fun MainContent(
         if (cqState.questionUiState.instructionUiState != null) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier,
                 text = "Instruction",
                 color = MaterialTheme.colorScheme.secondary,
             )
             Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier,
                 text = cqState.questionUiState.instructionUiState!!.title.text.toString(),
             )
             ContentView(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier,
                 items = cqState.questionUiState.instructionUiState!!.content,
                 examId = 4,
                 color = Color.Transparent,
             )
             Spacer(modifier = Modifier.height(4.dp))
         }
+        Spacer(modifier = Modifier.height(4.dp))
         Content(
             modifier = Modifier.testTag("cq:content"),
             items = cqState.questionUiState.contents,
@@ -414,6 +426,16 @@ internal fun MainContent(
 
         )
 
+        if (cqState.questionUiState.options?.isEmpty() == false) {
+            IconButton(modifier = Modifier.align(Alignment.End), onClick = { isRow = !isRow }) {
+                if (isRow) {
+                    Icon(imageVector = Icons.Filled.GridView, "grid")
+                } else {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ViewList, "column")
+                }
+            }
+        }
+
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
             maxItemsInEachRow = 2,
@@ -425,7 +447,8 @@ internal fun MainContent(
 //                Box(modifier=Modifier.height(20.dp).fillMaxWidth(0.49f).background(if(i%2==0)Color.Blue else Color.Black))
 
                 Content(
-                    modifier = Modifier.fillMaxWidth(if (cqState.fillIt) 1f else 0.499999f), // .weight(0.5f)
+                    modifier = Modifier
+                        .fillMaxWidth(if (isRow) 1f else 0.499999f), // .weight(0.5f)
                     items = optionUiState.content,
                     label = "Option ${i + 1}",
                     addUp = { addUp(i, it) },
@@ -443,8 +466,6 @@ internal fun MainContent(
         }
 
         if (cqState.questionUiState.answers != null && cqState.questionUiState.answers!!.isNotEmpty()) {
-            Spacer(Modifier.height(4.dp))
-            Text("Answer", modifier = Modifier.padding(horizontal = 16.dp))
             Content(
                 items = cqState.questionUiState.answers!!,
                 label = "Answer",
@@ -490,10 +511,12 @@ internal fun MainContent(
             verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            SuggestionChip(
-                onClick = onAddOption,
-                label = { Text("Add Option") },
-            )
+            if (!cqState.questionUiState.isTheory) {
+                SuggestionChip(
+                    onClick = onAddOption,
+                    label = { Text("Add Option") },
+                )
+            }
 
             // TODO("fix answer not null")
             SuggestionChip(

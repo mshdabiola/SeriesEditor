@@ -139,7 +139,6 @@ fun SeriesEditorApp() {
                                         addSubject = null,
                                         onSubjectClick = appState::onSubjectClick,
                                         checkIfSelected = { currentSubjectId == it },
-                                        onAddTopic = { appState.onAddTopic(currentSubjectId) },
                                         user = user.value,
                                     )
                                 }
@@ -171,7 +170,6 @@ fun SeriesEditorApp() {
                                                 coroutine.launch { drawerState.close() }
                                             },
                                             checkIfSelected = { currentSubjectId == it },
-                                            onAddTopic = { appState.onAddTopic(currentSubjectId) },
                                             user = user.value,
                                         )
                                     }
@@ -190,6 +188,11 @@ fun SeriesEditorApp() {
                                             modifier = Modifier,
                                             onNavigationClick = if (appState.isMain && !appState.showPermanentDrawer) {
                                                 open
+                                            } else {
+                                                null
+                                            },
+                                            onAddTopic = if (currentSubjectId > 0) {
+                                                { appState.onAddTopic(currentSubjectId) }
                                             } else {
                                                 null
                                             },
@@ -213,6 +216,11 @@ fun SeriesEditorApp() {
                                                 updateSubject = appState::onUpdateSubject,
                                                 onNavigationClick = if (!appState.showPermanentDrawer) {
                                                     open
+                                                } else {
+                                                    null
+                                                },
+                                                onAddTopic = if (currentSubjectId > 0) {
+                                                    { appState.onAddTopic(currentSubjectId) }
                                                 } else {
                                                     null
                                                 },
@@ -281,7 +289,6 @@ fun NavigationSheet(
     addSubject: (() -> Unit)? = null,
     onSubjectClick: (Long) -> Unit = {},
     checkIfSelected: (Long) -> Boolean = { false },
-    onAddTopic: () -> Unit = {},
 ) {
     LazyColumn(modifier = modifier) {
         item {
@@ -340,16 +347,6 @@ fun NavigationSheet(
                 onClick = { onSubjectClick(it.id) },
                 series = it.seriesLabel,
             )
-        }
-        item {
-            if (!checkIfSelected(-1)) {
-                Spacer(Modifier.height(16.dp))
-                SeNavigationDrawerItem(
-                    selected = false,
-                    label = "Add Topic",
-                    onClick = onAddTopic,
-                )
-            }
         }
     }
 }

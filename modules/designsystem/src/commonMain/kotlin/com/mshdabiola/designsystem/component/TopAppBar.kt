@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Deselect
@@ -115,6 +116,7 @@ fun MainTopBar(
     showDeleteDialog: () -> Unit = {},
     updateSubject: (Long) -> Unit = {},
     onNavigationClick: (() -> Unit)? = null,
+    onAddTopic: (() -> Unit)? = null,
 
 ) {
     var showDrop by remember { mutableStateOf(false) }
@@ -130,6 +132,14 @@ fun MainTopBar(
             }
         },
         actions = {
+            if (onAddTopic != null) {
+                IconButton(
+                    onClick = onAddTopic,
+                    // enabled = currentSubjectIndex > -1
+                ) {
+                    Icon(Icons.Default.Topic, "topic")
+                }
+            }
             IconButton(
                 onClick = navigateToSetting,
                 // enabled = currentSubjectIndex > -1

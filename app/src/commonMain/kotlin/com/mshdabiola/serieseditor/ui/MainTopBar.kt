@@ -24,6 +24,7 @@ fun MainTopBarSection(
     subjectId: Long,
     updateSubject: (Long) -> Unit,
     onNavigationClick: (() -> Unit)? = null,
+    onAddTopic: (() -> Unit)? = null,
 
 ) {
     val viewModel: MainAppViewModel = koinViewModel()
@@ -44,6 +45,7 @@ fun MainTopBarSection(
         showDeleteDialog = { showDeleteDialog = true },
         updateSubject = updateSubject,
         onNavigationClick = onNavigationClick,
+        onAddTopic = onAddTopic,
     )
 
     MainExportDialog(
@@ -71,6 +73,7 @@ fun MainBottomBarSection(
     appState: Other,
     subjectId: Long,
     onNavigationClick: (() -> Unit)?,
+    onAddTopic: (() -> Unit)?,
 
 ) {
     val viewModel: MainAppViewModel = koinViewModel()
@@ -82,6 +85,7 @@ fun MainBottomBarSection(
     SeBottonAppBar(
         modifier = modifier,
         isSelectMode = isSelect.value,
+        onAddTopic = onAddTopic,
         currentSubjectId = subjectId,
         selectAll = viewModel::selectAll,
         deselectAll = viewModel::deselectAll,

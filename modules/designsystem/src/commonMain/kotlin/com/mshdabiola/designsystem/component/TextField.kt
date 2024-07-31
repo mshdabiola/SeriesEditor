@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -81,7 +82,7 @@ fun SeriesEditorTextField(
             unfocusedContainerColor = Color.Transparent,
             disabledContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.primaryContainer,
         ),
 
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -97,7 +98,7 @@ fun SeriesEditorTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTextField(
     state: TextFieldState,

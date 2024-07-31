@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -97,7 +98,7 @@ fun ContentView(
 fun Content(
     modifier: Modifier = Modifier,
     items: ImmutableList<ItemUiState>,
-    label: String,
+    label: String? = null,
     addUp: (Int) -> Unit = {},
     addBottom: (Int) -> Unit = {},
     delete: (Int) -> Unit = {},
@@ -109,6 +110,9 @@ fun Content(
 
 ) {
     Column(modifier) {
+        if (label != null) {
+            Text(label, color = MaterialTheme.colorScheme.secondary)
+        }
         items.forEachIndexed { index, item ->
             var showContext by remember { mutableStateOf(false) }
             var showChange by remember { mutableStateOf(false) }
@@ -137,7 +141,7 @@ fun Content(
                         }
                     }
 
-                    Type.TEXT -> TextContent(childModifier, item, "$label line ${index + 1}")
+                    Type.TEXT -> TextContent(childModifier, item)
 
                     Type.IMAGE -> {
                         if (item.content.text.isBlank()) {
@@ -308,7 +312,7 @@ fun ImageContent(
 fun TextContent(
     modifier: Modifier = Modifier,
     text: ItemUiState,
-    label: String,
+    label: String? = null,
 ) {
     val focusRequester = remember {
         FocusRequester()
