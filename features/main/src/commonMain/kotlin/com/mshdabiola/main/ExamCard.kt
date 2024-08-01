@@ -1,6 +1,7 @@
 package com.mshdabiola.main
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.ui.state.ExamUiState
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExamCard(
     modifier: Modifier = Modifier,
@@ -40,13 +42,19 @@ fun ExamCard(
 ) {
     var showDrop by remember { mutableStateOf(false) }
     ListItem(
-        modifier = modifier.clickable {
-            if (isSelectMode) {
-                toggleSelect(examUiState.id)
-            } else {
-                onExamClick(examUiState.id)
-            }
-        },
+        modifier = modifier
+            .combinedClickable(
+                onClick = {
+                    if (isSelectMode) {
+                        toggleSelect(examUiState.id)
+                    } else {
+                        onExamClick(examUiState.id)
+                    }
+                },
+                onLongClick = {
+                    toggleSelect(examUiState.id)
+                },
+            ),
         colors = if (examUiState.isSelected) {
             ListItemDefaults.colors(
                 containerColor =
