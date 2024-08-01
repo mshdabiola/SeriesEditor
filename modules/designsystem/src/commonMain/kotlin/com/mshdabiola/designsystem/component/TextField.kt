@@ -55,6 +55,8 @@ fun SeriesEditorTextField(
     state: TextFieldState,
     placeholder: String? = null,
     label: String? = null,
+    supportingText: String? = null,
+    isError: Boolean = false,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -77,6 +79,12 @@ fun SeriesEditorTextField(
                 Text(text = placeholder)
             }
         },
+        supportingText = {
+            if (supportingText != null) {
+                Text(supportingText)
+            }
+        },
+        isError = isError,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
