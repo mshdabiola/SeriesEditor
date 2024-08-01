@@ -1,11 +1,11 @@
 package com.mshdabiola.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.onClick
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HdrOnSelect
@@ -42,17 +42,19 @@ fun ExamCard(
 ) {
     var showDrop by remember { mutableStateOf(false) }
     ListItem(
-        modifier = modifier.onClick(
-            onLongClick = {
-                toggleSelect(examUiState.id)
-            },
-        ) {
-            if (isSelectMode) {
-                toggleSelect(examUiState.id)
-            } else {
-                onExamClick(examUiState.id)
-            }
-        },
+        modifier = modifier
+            .combinedClickable(
+                onClick = {
+                    if (isSelectMode) {
+                        toggleSelect(examUiState.id)
+                    } else {
+                        onExamClick(examUiState.id)
+                    }
+                },
+                onLongClick = {
+                    toggleSelect(examUiState.id)
+                },
+            ),
         colors = if (examUiState.isSelected) {
             ListItemDefaults.colors(
                 containerColor =

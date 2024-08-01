@@ -11,21 +11,19 @@ import kotlinx.coroutines.withContext
 
 class Converter {
 
-    suspend fun textToTopic(
+    fun textToTopic(
         path: String,
         categoryId: Long,
     ): List<Topic> {
-        return withContext(Dispatchers.IO) {
-            path
-                .split(Regex("\\s*\\*\\s*"))
-                .filter { it.isNotBlank() }
-                .map {
-                    Topic(
-                        categoryId = categoryId, // Todo: get category id
-                        title = it,
-                    )
-                }
-        }
+        return path
+            .split(Regex("\\s*\\*\\s*"))
+            .filter { it.isNotBlank() }
+            .map {
+                Topic(
+                    categoryId = categoryId, // Todo: get category id
+                    title = it,
+                )
+            }
     }
 
     suspend fun textToInstruction(
