@@ -46,100 +46,98 @@ class Converter {
         }
     }
 
-    suspend fun textToQuestion(
+    fun textToQuestion(
         path: String,
         examId: Long,
         nextObjNumber: Long,
         nextTheoryNumber: Long,
     ): List<Question> {
-        return withContext(Dispatchers.IO) {
-            val list = mutableListOf<Question>()
-            var options = mutableListOf<String>()
-            var answer: String? = null
-            var isTheory = false
-            var objNo = nextObjNumber
-            var thrNo = nextTheoryNumber
-            var question: String? = null
-            val s = path
-                .split(Regex("\\s*\\*\\s*"))
-                .toMutableList()
-            println(s.joinToString())
-            s.removeAt(0)
+        val list = mutableListOf<Question>()
+        var options = mutableListOf<String>()
+        var answer: String? = null
+        var isTheory = false
+        var objNo = nextObjNumber
+        var thrNo = nextTheoryNumber
+        var question: String? = null
+        val s = path
+            .split(Regex("\\s*\\*\\s*"))
+            .toMutableList()
+//            println(s.joinToString())
+        s.removeAt(0)
 
-            s.chunked(2) {
-                Pair(it[0].trim(), it[1])
-            }
-                .forEachIndexed { _, pair ->
-                    when (pair.first) {
-                        "q" -> {
-                            if (question != null) {
-                                if (isTheory) {
-                                    list.add(
-                                        convertThe(
-                                            theoryNo = thrNo,
-                                            content = question!!,
-                                            examId = examId,
-                                            answer = answer ?: "",
-                                        ),
-                                    )
+        s.chunked(2) {
+            Pair(it[0].trim(), it[1])
+        }
+            .forEachIndexed { _, pair ->
+                when (pair.first) {
+                    "q" -> {
+                        if (question != null) {
+                            if (isTheory) {
+                                list.add(
+                                    convertThe(
+                                        theoryNo = thrNo,
+                                        content = question!!,
+                                        examId = examId,
+                                        answer = answer ?: "",
+                                    ),
+                                )
 
-                                    thrNo += 1
-                                } else {
-                                    list.add(
-                                        convertObj(
-                                            questionNos = objNo,
-                                            content = question!!,
-                                            examId = examId,
-                                            options = options,
-                                        ),
-                                    )
-                                    objNo += 1
-                                }
-                                isTheory = false
-                                answer = null
-                                question = null
-                                options = mutableListOf()
+                                thrNo += 1
+                            } else {
+                                list.add(
+                                    convertObj(
+                                        questionNos = objNo,
+                                        content = question!!,
+                                        examId = examId,
+                                        options = options,
+                                    ),
+                                )
+                                objNo += 1
                             }
-                            question = pair.second
+                            isTheory = false
+                            answer = null
+                            question = null
+                            options = mutableListOf()
                         }
+                        question = pair.second
+                    }
 
-                        "o" -> {
-                            options.add(pair.second)
-                        }
+                    "o" -> {
+                        options.add(pair.second)
+                    }
 
-                        "t" -> {
-                            isTheory = (pair.second.toIntOrNull() ?: 0) == 1
-                        }
+                    "t" -> {
+                        isTheory = (pair.second.toIntOrNull() ?: 0) == 1
+                    }
 
-                        "a" -> {
-                            answer = pair.second
-                        }
+                    "a" -> {
+                        answer = pair.second
                     }
                 }
-            if (question != null) {
-                if (isTheory) {
-                    list.add(
-                        convertThe(
-                            theoryNo = thrNo,
-                            content = question!!,
-                            examId = examId,
-                            answer = answer ?: "",
-                        ),
-                    )
-                } else {
-                    list.add(
-                        convertObj(
-                            questionNos = objNo,
-                            content = question!!,
-                            examId = examId,
-                            options = options,
-                        ),
-                    )
-                }
             }
-
-            list
+        if (question != null) {
+            if (isTheory) {
+                list.add(
+                    convertThe(
+                        theoryNo = thrNo,
+                        content = question!!,
+                        examId = examId,
+                        answer = answer ?: "",
+                    ),
+                )
+            } else {
+                list.add(
+                    convertObj(
+                        questionNos = objNo,
+                        content = question!!,
+                        examId = examId,
+                        options = options,
+                    ),
+                )
+            }
         }
+
+        return list
     }
 
     private fun convertObj(
@@ -165,7 +163,7 @@ class Converter {
             examId = examId,
             contents = listOf(itemise(content)),
             options = opti,
-            type = QUESTION_TYPE.ESSAY,
+            type = if (opti.isEmpty()) QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
             answers = emptyList(),
             instruction = null,
             topic = null,
