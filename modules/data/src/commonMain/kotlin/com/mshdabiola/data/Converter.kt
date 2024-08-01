@@ -13,7 +13,7 @@ class Converter {
 
     suspend fun textToTopic(
         path: String,
-        subjectId: Long,
+        categoryId: Long,
     ): List<Topic> {
         return withContext(Dispatchers.IO) {
             path
@@ -21,7 +21,7 @@ class Converter {
                 .filter { it.isNotBlank() }
                 .map {
                     Topic(
-                        categoryId = subjectId, // Todo: get category id
+                        categoryId = categoryId, // Todo: get category id
                         title = it,
                     )
                 }
