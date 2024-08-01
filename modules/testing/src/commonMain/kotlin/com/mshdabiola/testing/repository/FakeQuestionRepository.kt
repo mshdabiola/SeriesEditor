@@ -5,6 +5,7 @@ import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.testing.questions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 
 internal class FakeQuestionRepository : IQuestionRepository {
@@ -38,7 +39,7 @@ internal class FakeQuestionRepository : IQuestionRepository {
     }
 
     override fun getByExamId(examId: Long): Flow<List<Question>> {
-        return _question
+        return _question.asStateFlow()
             .map { it.filter { it.examId == examId } }
     }
 

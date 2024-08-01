@@ -25,6 +25,7 @@ class CqScreenTest {
         composeRule.setContent {
             CqScreen(
                 modifier = Modifier.fillMaxSize(),
+                state = rememberTextFieldState(""),
                 cqState = CqState.Success(
                     topics = listOf(
                         TopicUiState(
@@ -85,7 +86,7 @@ class CqScreenTest {
                             examId = 1,
                         ),
                     ),
-                    fillIt = false,
+                    // errorInInput = false,
                 ),
             )
         }

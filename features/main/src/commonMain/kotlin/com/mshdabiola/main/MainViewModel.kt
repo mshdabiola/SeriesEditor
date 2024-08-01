@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -47,7 +46,6 @@ internal class MainViewModel constructor(
         ) { list, ids, userId ->
             Triple(list, ids, userId)
         }
-            .onEach { println(it) }
             .map { triple ->
                 triple.first
                     .filter { it.series.userId == triple.third }

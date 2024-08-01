@@ -570,7 +570,7 @@ val questions = List(10) {
         contents = listOf(Content("Multiple choice question about capital cities.")),
         answers = listOf(Content("Paris")),
         options = options.filter { it.questionId == id },
-        type = QUESTION_TYPE.entries.random(),
+        type = QUESTION_TYPE.MULTIPLE_CHOICE,
         instruction = instructions.random(),
         topic = topicWithCategory.random(),
     )

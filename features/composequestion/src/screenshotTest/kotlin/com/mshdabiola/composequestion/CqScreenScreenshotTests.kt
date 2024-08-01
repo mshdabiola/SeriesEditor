@@ -31,6 +31,8 @@ class CqScreenScreenshotTests {
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
                     cqState = CqState.Loading(),
+                    state = rememberTextFieldState(""),
+
                 )
             }
         }
@@ -44,6 +46,7 @@ class CqScreenScreenshotTests {
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
                     cqState = CqState.Loading(),
+                    state = rememberTextFieldState(""),
                 )
             }
         }
@@ -56,6 +59,8 @@ class CqScreenScreenshotTests {
             Surface {
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
+                    state = rememberTextFieldState(""),
+
                     cqState = CqState.Success(
                         topics = listOf(
                             TopicUiState(
@@ -116,7 +121,6 @@ class CqScreenScreenshotTests {
                                 examId = 1,
                             ),
                         ),
-                        fillIt = false,
                     ),
                 )
             }
@@ -130,6 +134,8 @@ class CqScreenScreenshotTests {
             Surface {
                 CqScreen(
                     modifier = Modifier.fillMaxSize(),
+                    state = rememberTextFieldState(""),
+
                     cqState = CqState.Success(
                         topics = listOf(
                             TopicUiState(
@@ -190,7 +196,6 @@ class CqScreenScreenshotTests {
                                 examId = 1,
                             ),
                         ),
-                        fillIt = false,
                     ),
                 )
             }
