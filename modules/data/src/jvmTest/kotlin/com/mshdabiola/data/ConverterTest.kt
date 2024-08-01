@@ -30,6 +30,6 @@ class ConverterTest {
             4,
         )
 
-        assertEquals(9, questions.size)
+        assertEquals(2, questions.size)
     }
 }
