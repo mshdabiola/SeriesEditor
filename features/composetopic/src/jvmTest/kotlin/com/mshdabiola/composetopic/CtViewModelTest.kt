@@ -223,4 +223,55 @@ class CtViewModelTest : KoinTest {
                 cancelAndIgnoreRemainingEvents()
             }
     }
+
+    @Test
+    fun addNewInput() = runTest(testDispatcher) {
+        val default = exportableData
+        val topic = default.topics[0]
+
+        val topicCategory = default.topicCategory.single { it.id == topic.categoryId }
+
+        val viewModel = CtViewModel(
+            topicCategory.subjectId,
+            -1,
+            topicRepository,
+            categoryRepository,
+            Logger,
+
+        )
+
+        viewModel
+            .ctState
+            .test {
+                var state = awaitItem()
+
+                assertTrue(state is CtState.Loading)
+
+                state = awaitItem()
+
+                assertTrue(state is CtState.Success)
+
+                state = awaitItem()
+
+                assertTrue(state is CtState.Success)
+
+                with(viewModel.topicInput) {
+                    clearText()
+                    edit {
+                        append("* New Subject * New topic")
+                    }
+                }
+                viewModel.addTopicInput()
+
+                awaitItem()
+                awaitItem()
+
+                val newTopic = topicRepository.getAllBySubject(topicCategory.subjectId).first().last()
+
+                assertEquals("New Subject", newTopic.title)
+                assertEquals(topicCategory.id, newTopic.categoryId)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+    }
 }

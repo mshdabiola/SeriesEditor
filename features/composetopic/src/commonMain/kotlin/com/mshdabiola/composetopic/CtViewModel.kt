@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.mshdabiola.data.Converter
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
 import com.mshdabiola.generalmodel.Topic
@@ -176,5 +177,30 @@ class CtViewModel(
     }
 
     fun addTopicInput() {
+        viewModelScope.launch {
+            val success = (ctState.value as CtState.Success)
+
+            _ctState.update {
+                CtState.Loading()
+            }
+
+            val topics = Converter().textToTopic(
+                topicInput.text.toString(),
+                categoryId = success.categories[success.currentCategoryIndex].id,
+
+            )
+
+            topics.forEach {
+                topicRepository.upsert(
+                    topic = it,
+                )
+            }
+
+            topicInput.clearText()
+            // delay(500)
+            _ctState.update {
+                CtState.Loading(true)
+            }
+        }
     }
 }

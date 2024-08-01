@@ -53,6 +53,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.data.Converter
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
@@ -159,6 +160,8 @@ internal fun MainContent(
     onDeleteCategory: () -> Unit = {},
 ) {
     var showConvert by remember { mutableStateOf(false) }
+    var isError by remember { mutableStateOf(false) }
+
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -319,10 +322,18 @@ internal fun MainContent(
         }
 
         if (showConvert) {
+            LaunchedEffect(topicInput.text) {
+                try {
+                    Converter().textToTopic(topicInput.text.toString(), 4)
+                } catch (e: Exception) {
+                    isError = true
+                }
+            }
             Column {
                 SeriesEditorTextField(
                     state = topicInput,
-                    // isError = topicInputUiState.isError,
+                    isError = isError,
+                    supportingText = if (isError)"Error in the text " else null,
                     modifier = Modifier.fillMaxWidth().height(300.dp),
                 )
 //                OutlinedTextField(
@@ -340,6 +351,7 @@ internal fun MainContent(
                     Text("* topic title")
                     Button(
                         modifier = Modifier,
+                        enabled = topicInput.text.isNotBlank() && isError.not(),
                         onClick = onAddTopicInput,
                     ) {
                         Text("Convert to topic")
