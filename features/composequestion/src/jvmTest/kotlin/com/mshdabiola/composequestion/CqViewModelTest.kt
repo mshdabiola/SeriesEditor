@@ -15,6 +15,7 @@ import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.questions
 import com.mshdabiola.testing.util.MainDispatcherRule
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -205,6 +206,67 @@ class CqViewModelTest : KoinTest {
 
                 var questionNew = questionRepository.getByExamId(2).first().last()
                 assertEquals("What is ur name", questionNew.contents[0].content)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+    }
+
+    @Test
+    fun addNewInputQuestionTest() = runTest(mainDispatcherRule.testDispatcher) {
+        val text = """
+             *q* What is your name?
+               *o* John
+               *o* Jane
+               *o* Joe
+               *o* Jack
+               *a* John
+              *q* What is your age?
+               *o* 10
+               *o* 20
+               *o* 30
+               *o* 40
+               *a* 20
+        """.trimIndent()
+
+        val viewModel = CqViewModel(
+            2,
+            -1,
+            questionRepository,
+            instructionRepository,
+            examinationRepository,
+            settingRepository,
+            topicategoryRepository,
+        )
+
+        viewModel
+            .cqState
+            .test {
+                var state = awaitItem()
+
+                assertTrue(state is CqState.Loading)
+
+                state = awaitItem()
+
+                assertTrue(state is CqState.Success)
+
+                state = awaitItem()
+
+                assertTrue(state is CqState.Success)
+
+                with(viewModel.inputQuestions) {
+                    edit {
+                        append(text)
+                    }
+                }
+                delay(3000)
+
+//
+                viewModel.onAddQuestionsFromInput()
+                state = awaitItem()
+                state = awaitItem()
+
+                val questionNew = questionRepository.getByExamId(2).first()
+                assertEquals(3, questionNew.size)
 
                 cancelAndIgnoreRemainingEvents()
             }

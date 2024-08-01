@@ -14,9 +14,16 @@ sealed class CqState {
         val questionUiState: QuestionUiState,
         val topics: ImmutableList<TopicUiState> = emptyList<TopicUiState>().toImmutableList(),
         val instructs: ImmutableList<InstructionUiState> = emptyList<InstructionUiState>().toImmutableList(),
-        val fillIt: Boolean = false,
 
     ) : CqState()
 
     data class Error(val exception: Throwable) : CqState()
+}
+
+fun CqState.getSuccess(value: (CqState.Success) -> CqState.Success): CqState {
+    return if (this is CqState.Success) {
+        value(this)
+    } else {
+        this
+    }
 }

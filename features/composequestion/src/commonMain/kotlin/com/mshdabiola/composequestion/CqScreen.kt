@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
@@ -53,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.data.Converter
 import com.mshdabiola.designsystem.component.MyTextField
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
@@ -96,6 +98,7 @@ internal fun CqRoute(
     CqScreen(
         modifier = modifier,
         cqState = update.value,
+        state = viewModel.inputQuestions,
         addUp = viewModel::addUP,
         addBottom = viewModel::addDown,
         delete = viewModel::delete,
@@ -113,6 +116,7 @@ internal fun CqRoute(
         onTopicChange = viewModel::onTopicChange,
         onInstructionChange = viewModel::onInstructionChange,
         onItemClicked = { itemUiState = it },
+        onAddQuestionInput = viewModel::onAddQuestionsFromInput,
     )
     QuestionDialog(
         itemUiState = itemUiState,
@@ -130,6 +134,7 @@ internal fun CqRoute(
 internal fun CqScreen(
     modifier: Modifier = Modifier,
     cqState: CqState,
+    state: TextFieldState,
     addUp: (Int, Int) -> Unit = { _, _ -> },
     addBottom: (Int, Int) -> Unit = { _, _ -> },
     delete: (Int, Int) -> Unit = { _, _ -> },
@@ -146,6 +151,7 @@ internal fun CqScreen(
     onTopicChange: (Int) -> Unit = {},
     onInstructionChange: (Int) -> Unit = {},
     onItemClicked: (ItemUiState) -> Unit = {},
+    onAddQuestionInput: () -> Unit = {},
 
 ) {
 //    var fillIt =
@@ -160,6 +166,7 @@ internal fun CqScreen(
             is CqState.Success -> MainContent(
                 modifier = modifier,
                 cqState = it,
+                state = state,
                 addUp = addUp,
                 addBottom = addBottom,
                 delete = delete,
@@ -176,6 +183,7 @@ internal fun CqScreen(
                 onTopicChange = onTopicChange,
                 onInstructionChange = onInstructionChange,
                 onItemClicked = onItemClicked,
+                onAddQuestionInput = onAddQuestionInput,
             )
 
             is CqState.Loading -> Waiting(modifier)
@@ -189,6 +197,7 @@ internal fun CqScreen(
 internal fun MainContent(
     modifier: Modifier = Modifier,
     cqState: CqState.Success,
+    state: TextFieldState = rememberTextFieldState(),
     addUp: (Int, Int) -> Unit = { _, _ -> },
     addBottom: (Int, Int) -> Unit = { _, _ -> },
     delete: (Int, Int) -> Unit = { _, _ -> },
@@ -205,9 +214,10 @@ internal fun MainContent(
     onTopicChange: (Int) -> Unit = {},
     onInstructionChange: (Int) -> Unit = {},
     onItemClicked: (ItemUiState) -> Unit = {},
+    onAddQuestionInput: () -> Unit = {},
 ) {
     var showConvert by remember { mutableStateOf(false) }
-    val state = rememberTextFieldState()
+    var isError by remember { mutableStateOf(false) }
 
     var topicExpanded by remember { mutableStateOf(false) }
     var instrucExpanded by remember { mutableStateOf(false) }
@@ -499,6 +509,7 @@ internal fun MainContent(
 
             SeriesEditorButton(
                 modifier = Modifier.testTag("cq:add_question"),
+                enabled = cqState.questionUiState.contents.any { it.content.text.isNotBlank() },
                 onClick = onAddQuestion,
             ) {
                 Icon(Icons.Default.Add, "add")
@@ -548,22 +559,33 @@ internal fun MainContent(
         }
 
         if (showConvert) {
+            LaunchedEffect(state.text) {
+                try {
+                    Converter().textToQuestion(state.text.toString(), 7, 1, 1)
+                    isError = false
+                } catch (e: Exception) {
+                    isError = true
+                }
+            }
             SeriesEditorTextField(
                 state = state,
                 label = "Exam Input",
+                isError = isError,
+                supportingText = if (isError) "there is error in your text " else null,
                 // isError = examInputUiState.isError,
                 modifier = Modifier.fillMaxWidth().height(300.dp),
             )
             Spacer(Modifier.height(4.dp))
-            Row(
+            FlowRow(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+                //  verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text("*q* question *o* option *t* type 0or1 *a* answer")
                 Button(
                     modifier = Modifier,
-                    onClick = {},
+                    enabled = isError.not() && state.text.isNotBlank(),
+                    onClick = onAddQuestionInput,
                 ) {
                     Text("Convert to Exam")
                 }
