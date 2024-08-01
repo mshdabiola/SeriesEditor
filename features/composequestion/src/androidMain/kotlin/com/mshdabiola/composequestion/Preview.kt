@@ -18,6 +18,8 @@ import kotlinx.collections.immutable.toImmutableList
 private fun QuestionPreview() {
     CqScreen(
         modifier = Modifier.fillMaxSize(),
+        state = rememberTextFieldState(""),
+
         cqState = CqState.Success(
             topics = listOf(
                 TopicUiState(
@@ -81,7 +83,6 @@ private fun QuestionPreview() {
                     examId = 1,
                 ),
             ),
-            fillIt = false,
         ),
     )
 }
