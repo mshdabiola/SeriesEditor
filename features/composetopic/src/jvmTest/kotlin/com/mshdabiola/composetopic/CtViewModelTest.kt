@@ -268,7 +268,7 @@ class CtViewModelTest : KoinTest {
 
                 val newTopic = topicRepository.getAllBySubject(topicCategory.subjectId).first().last()
 
-                assertEquals("New Subject", newTopic.title)
+                assertEquals("New topic", newTopic.title)
                 assertEquals(topicCategory.id, newTopic.categoryId)
 
                 cancelAndIgnoreRemainingEvents()
