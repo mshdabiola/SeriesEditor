@@ -4,9 +4,10 @@
 
 package com.mshdabiola.composequestion
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mshdabiola.data.Converter
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.IQuestionRepository
@@ -23,6 +24,7 @@ import com.mshdabiola.ui.toQuestionUiState
 import com.mshdabiola.ui.toQuestionWithOptions
 import com.mshdabiola.ui.toUi
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -32,7 +34,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(FlowPreview::class)
 class CqViewModel(
     private val examId: Long,
     private val questionId: Long,
@@ -54,6 +56,9 @@ class CqViewModel(
 
     private val _cqState = MutableStateFlow<CqState>(CqState.Loading())
     val cqState = _cqState.asStateFlow()
+
+    val inputQuestions = TextFieldState("")
+    private val convert = Converter()
 
 //    val instructs = instructionRepository
 //        .getAllByExamId(examId)
@@ -478,6 +483,38 @@ class CqViewModel(
                 it.copy(questionUiState = question)
             } else {
                 it
+            }
+        }
+    }
+
+    fun onAddQuestionsFromInput() {
+        viewModelScope.launch {
+            _cqState.update {
+                CqState.Loading()
+            }
+
+            val saveQuestions = questionRepository.getByExamId(examId)
+                .first()
+            val objNumber = saveQuestions
+                .filter { (it.type == QUESTION_TYPE.MULTIPLE_CHOICE) }
+                .maxOfOrNull { it.number } ?: 0
+            val theoryNumber = saveQuestions
+                .filter { (it.type == QUESTION_TYPE.ESSAY) }
+                .maxOfOrNull { it.number } ?: 0
+
+            val questions = convert.textToQuestion(
+                inputQuestions.text.toString(),
+                examId,
+                objNumber + 1,
+                theoryNumber + 1,
+            )
+
+            questions.forEach {
+                questionRepository.upsert(it)
+            }
+
+            _cqState.update {
+                CqState.Loading(true)
             }
         }
     }
