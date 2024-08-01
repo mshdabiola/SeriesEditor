@@ -7,6 +7,7 @@ package com.mshdabiola.composeinstruction
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mshdabiola.data.Converter
 import com.mshdabiola.data.repository.IInstructionRepository
 import com.mshdabiola.data.repository.ISettingRepository
 import com.mshdabiola.generalmodel.Instruction
@@ -197,6 +198,22 @@ class CiViewModel(
     }
 
     fun onAddInstructionInput() {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            _ciState.update {
+                CiState.Loading(false)
+            }
+
+            val instructions = Converter().textToInstruction(instructionInput.text.toString(), examId)
+
+            instructions.forEach {
+                instructionRepository.upsert(
+                    it,
+                )
+            }
+
+            _ciState.update {
+                CiState.Loading(true)
+            }
+        }
     }
 }
