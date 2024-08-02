@@ -10,9 +10,7 @@ actual fun GetFilePath(
     onFile: (File?) -> Unit,
 ) {
     LaunchedEffect(Unit) {
-
         onFile(File(getDesktopPath(), "series"))
-
     }
 }
 
@@ -35,7 +33,7 @@ actual fun PermissionDialog(
 
 @Composable
 actual fun HasWrittenPermission(result: (Boolean) -> Unit) {
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         result(true)
     }
 }

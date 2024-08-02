@@ -14,10 +14,13 @@ import com.mshdabiola.data.repository.UserRepository
 import com.mshdabiola.generalmodel.Series
 import com.mshdabiola.generalmodel.User
 import com.mshdabiola.generalmodel.UserType
+import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserData
+import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.serieseditor.MainActivityUiState.Loading
 import com.mshdabiola.serieseditor.MainActivityUiState.Success
 import com.mshdabiola.ui.toUi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,17 +42,18 @@ class MainAppViewModel(
     private val seriesRepository: SeriesRepository,
 ) : ViewModel() {
 
-    private val _user = MutableStateFlow<User?>(null)
-    val user = _user.asStateFlow()
+    private val _mainState = MutableStateFlow<MainState>(MainState.Loading)
+    val mainState = _mainState.asStateFlow()
+    private var user: User? = null
 
     init {
 
         viewModelScope.launch {
 
-            _user.value = userRepository.getUser(1).first()
+            user = userRepository.getUser(1).first()
 
-            if (user.value == null) {
-                val userr = User(
+            if (user == null) {
+                user = User(
                     id = -1,
                     name = "Abiola",
                     type = UserType.TEACHER,
@@ -57,12 +61,13 @@ class MainAppViewModel(
                     imagePath = "",
                     points = 1,
                 )
-                _user.value = userr
-                val id = userRepository.setUser(userr)
+
+                val id = userRepository.setUser(user!!)
                 userDataRepository.setUserId(id)
 
                 seriesRepository.upsert(Series(-1, userId = id, "Default"))
             }
+            _mainState.value = MainState.Success(user!!)
         }
     }
 
@@ -90,9 +95,8 @@ class MainAppViewModel(
 
     fun onExport(path: String, key: String) {
         viewModelScope.launch {
+            _mainState.value = MainState.Loading
             try {
-
-
                 val ids = iExamRepository.selectedList.first().toSet()
                 val file = File(path)
                 if (!file.exists()) {
@@ -102,16 +106,29 @@ class MainAppViewModel(
                 val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
 
                 val nameByDate = "series_${formatter.format(currentDateTime)}.se"
-                val outputStream = File(file, "$nameByDate.se").apply { createNewFile() }.outputStream()
+                val outputStream =
+                    File(file, nameByDate).apply { createNewFile() }.outputStream()
 
                 iExamRepository.export(ids, outputStream, key)
                 deselectAll()
+                val messeage = if (Platform.Android == currentPlatform) {
+                    "Successfully exported to internal storage, series directory"
+                } else {
+                    "successfully exported to desktop, series directory"
+                }
+                _mainState.value = MainState.Success(user!!, messeage)
             } catch (e: Exception) {
                 e.printStackTrace()
+                deselectAll()
+
+                _mainState.value = MainState.Success(user!!, "Failed to export")
             }
+
+            delay(1500)
+
+            _mainState.value = MainState.Success(user!!, "")
         }
     }
-
 
     fun deselectAll() {
         viewModelScope.launch {
@@ -124,15 +141,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                        if (subjectId < 0) {
-                            iExamRepository.getAll()
-                                .mapNotNull { it.map { it.id } }
-                        } else {
-                            iExamRepository
-                                .getAllBuSubjectId(subjectId)
-                                .mapNotNull { it.map { it.examination.id } }
-                        }
-                        ).first()
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

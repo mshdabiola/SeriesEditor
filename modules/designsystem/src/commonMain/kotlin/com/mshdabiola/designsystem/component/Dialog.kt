@@ -1,6 +1,5 @@
 package com.mshdabiola.designsystem.component
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -8,7 +7,6 @@ import androidx.compose.material.icons.filled.Password
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,12 +24,10 @@ fun MainExportDialog(
     export: (String, String) -> Unit = { _, _ -> },
     onClose: () -> Unit = {},
 ) {
-
     var path by remember { mutableStateOf<String?>(null) }
 
     val key = rememberTextFieldState()
     var hasPermission by remember { mutableStateOf(false) }
-
 
     if (show) {
         HasWrittenPermission {
@@ -40,7 +36,6 @@ fun MainExportDialog(
 
         GetFilePath {
             path = it?.absolutePath
-
         }
 
         if (!hasPermission) {
@@ -60,7 +55,6 @@ fun MainExportDialog(
                     TextButton(onClick = onClose) {
                         Text("Cancel")
                     }
-
                 },
                 confirmButton = {
                     Button(
@@ -81,11 +75,8 @@ fun MainExportDialog(
                     )
                 },
             )
-
         }
-
     }
-
 }
 
 @Composable
@@ -108,7 +99,7 @@ fun DeleteDialog(
                 ElevatedButton(
                     onClick = onDelete,
 
-                    ) {
+                ) {
                     Text("Delete exam")
                 }
             },
