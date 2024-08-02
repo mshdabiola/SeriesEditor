@@ -1,8 +1,12 @@
 package com.mshdabiola.designsystem.component
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.AlertDialog
@@ -45,7 +49,21 @@ actual fun PermissionDialog(
     // var showDialog by remember { mutableStateOf(false) }
     //  var permissionGranted by remember { mutableStateOf(false) }
     val context = LocalContext.current
-
+    val activityResultContracts = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    val file = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOCUMENTS,
+                    ).parentFile
+                    onFile(File(file, "series"))
+                } else {
+                    onDismiss()
+                }
+            }
+        },
+    )
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
@@ -59,6 +77,25 @@ actual fun PermissionDialog(
         }
     }
 
+    val askPermission = {
+        when {
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q ->
+                launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                val intent = Intent().apply {
+                    action = Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
+                    data = Uri.fromParts("package", context.packageName, null)
+                }
+                activityResultContracts.launch(intent)
+            }
+
+            else ->
+                launcher
+                    .launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("File Access Required") },
@@ -66,7 +103,7 @@ actual fun PermissionDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    askPermission()
                 },
             ) {
                 Text("Grant Permission")
@@ -139,12 +176,18 @@ actual fun PermissionDialog(
 @Composable
 actual fun HasWrittenPermission(result: (Boolean) -> Unit) {
     val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        result(
+        val isGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.isExternalStorageManager()
+        } else {
             ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            ) == PackageManager.PERMISSION_GRANTED,
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+        result(
+            isGranted,
         )
     }
 }
