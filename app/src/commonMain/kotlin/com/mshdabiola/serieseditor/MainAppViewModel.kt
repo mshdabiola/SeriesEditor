@@ -27,7 +27,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.OutputStream
+import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainAppViewModel(
     userDataRepository: UserDataRepository,
@@ -86,14 +88,30 @@ class MainAppViewModel(
             initialValue = emptyList(),
         )
 
-    fun onExport(outputStream: OutputStream, key: String) {
+    fun onExport(path: String, key: String) {
         viewModelScope.launch {
-            val ids = iExamRepository.selectedList.first().toSet()
+            try {
 
-            iExamRepository.export(ids, outputStream, key)
-            deselectAll()
+
+                val ids = iExamRepository.selectedList.first().toSet()
+                val file = File(path)
+                if (!file.exists()) {
+                    file.mkdirs()
+                }
+                val currentDateTime = LocalDateTime.now() // Use LocalDateTime
+                val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
+
+                val nameByDate = "series_${formatter.format(currentDateTime)}.se"
+                val outputStream = File(file, "$nameByDate.se").apply { createNewFile() }.outputStream()
+
+                iExamRepository.export(ids, outputStream, key)
+                deselectAll()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
+
 
     fun deselectAll() {
         viewModelScope.launch {
@@ -106,15 +124,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                    if (subjectId < 0) {
-                        iExamRepository.getAll()
-                            .mapNotNull { it.map { it.id } }
-                    } else {
-                        iExamRepository
-                            .getAllBuSubjectId(subjectId)
-                            .mapNotNull { it.map { it.examination.id } }
-                    }
-                    ).first()
+                        if (subjectId < 0) {
+                            iExamRepository.getAll()
+                                .mapNotNull { it.map { it.id } }
+                        } else {
+                            iExamRepository
+                                .getAllBuSubjectId(subjectId)
+                                .mapNotNull { it.map { it.examination.id } }
+                        }
+                        ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
