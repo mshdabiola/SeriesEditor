@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
+import com.mshdabiola.testing.dataTestModule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -56,6 +57,7 @@ class NavigationTest {
     fun firstScreen_isForYou() {
         composeTestRule.apply {
             // VERIFY for you is selected
+            //  this.waitUntil()
             onNodeWithText("Add", useUnmergedTree = true).assertExists()
         }
     }
@@ -65,7 +67,7 @@ class KoinTestRule(
     private val modules: List<Module>,
 ) : TestWatcher() {
     override fun starting(description: Description) {
-        loadKoinModules(modules)
+        loadKoinModules(dataTestModule)
 //        startKoin {
 //            androidContext(InstrumentationRegistry.getInstrumentation().targetContext.applicationContext)
 //            modules(modules)
