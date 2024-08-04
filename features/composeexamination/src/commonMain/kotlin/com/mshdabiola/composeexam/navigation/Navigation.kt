@@ -27,7 +27,9 @@ fun NavGraphBuilder.composeExaminationScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     onBack: () -> Unit,
-) {
+    onAddSubject: (() -> Unit)?,
+
+    ) {
     composable(
         route = "$COMPOSE_EXAMINATION_ROUTE/{$EXAM_ARG}",
         arguments = listOf(
@@ -43,6 +45,7 @@ fun NavGraphBuilder.composeExaminationScreen(
             examId = examId,
             onBack = onBack,
             onShowSnack = onShowSnack,
+            onAddSubject = onAddSubject,
 
         )
     }

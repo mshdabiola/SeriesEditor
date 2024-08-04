@@ -27,13 +27,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -183,31 +182,31 @@ fun SeriesEditorApp() {
                                                 LaunchedEffect(Unit) {
                                                     drawerState.close()
                                                 }
-                                            ModalDrawerSheet(
-                                                modifier = Modifier.widthIn(max = 300.dp),
-                                            ) {
-                                                NavigationSheet(
-                                                    modifier = Modifier
-                                                        .padding(
-                                                            top = 16.dp,
-                                                            start = 16.dp,
-                                                            end = 8.dp,
-                                                        ),
-                                                    subjects = subjects.value,
+                                                ModalDrawerSheet(
+                                                    modifier = Modifier.widthIn(max = 300.dp),
+                                                ) {
+                                                    NavigationSheet(
+                                                        modifier = Modifier
+                                                            .padding(
+                                                                top = 16.dp,
+                                                                start = 16.dp,
+                                                                end = 8.dp,
+                                                            ),
+                                                        subjects = subjects.value,
 
-                                                    addSubject = {
-                                                        appState.navController.navigateToComposeSubject(
-                                                            -1,
-                                                        )
-                                                    },
-                                                    onSubjectClick = {
-                                                        appState.onSubjectClick(it)
-                                                        coroutine.launch { drawerState.close() }
-                                                    },
-                                                    checkIfSelected = { currentSubjectId == it },
-                                                    user = it.user,
-                                                )
-                                            }
+                                                        addSubject = {
+                                                            appState.navController.navigateToComposeSubject(
+                                                                -1,
+                                                            )
+                                                        },
+                                                        onSubjectClick = {
+                                                            appState.onSubjectClick(it)
+                                                            coroutine.launch { drawerState.close() }
+                                                        },
+                                                        checkIfSelected = { currentSubjectId == it },
+                                                        user = it.user,
+                                                    )
+                                                }
                                             }
                                         },
                                     ) {
@@ -259,7 +258,7 @@ fun SeriesEditorApp() {
                                                 }
                                             },
 
-                                        ) { padding ->
+                                            ) { padding ->
 
                                             Column(
                                                 Modifier
@@ -355,14 +354,24 @@ fun NavigationSheet(
 
         item {
             Spacer(Modifier.height(16.dp))
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(modifier = Modifier.weight(1f), text = "Subject")
-                if (addSubject != null) {
-                    IconButton(onClick = addSubject) {
-                        Icon(Icons.Default.Add, "add")
+            if (addSubject != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    ElevatedButton(onClick = addSubject) {
+                        Text("Add Subject")
                     }
                 }
+
             }
+        }
+
+        item {
+            Spacer(Modifier.height(16.dp))
+            Text(text = "Subjects")
+
+
         }
         item {
             SeNavigationDrawerItem(

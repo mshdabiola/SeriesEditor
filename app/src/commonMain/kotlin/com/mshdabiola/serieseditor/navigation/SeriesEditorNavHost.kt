@@ -20,6 +20,7 @@ import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.main.navigation.DEFAULT_ROUTE
@@ -107,6 +108,7 @@ fun OtherNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
+            onAddSubject = {navController.navigateToComposeSubject(-1)}
         )
 
         examPanelScreen(
