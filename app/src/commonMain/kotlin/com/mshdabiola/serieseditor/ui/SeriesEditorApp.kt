@@ -178,10 +178,10 @@ fun SeriesEditorApp() {
                                         drawerState = drawerState,
                                         gesturesEnabled = appState.showDrawer,
                                         drawerContent = {
-                                            if (appState.showDrawer) {
-                                                LaunchedEffect(Unit) {
-                                                    drawerState.close()
-                                                }
+                                            if ( !appState.showPermanentDrawer) {
+//                                                LaunchedEffect(Unit) {
+//                                                    drawerState.close()
+//                                                }
                                                 ModalDrawerSheet(
                                                     modifier = Modifier.widthIn(max = 300.dp),
                                                 ) {
