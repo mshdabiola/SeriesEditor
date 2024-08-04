@@ -19,7 +19,9 @@ const val DEFAULT_ROUTE = "$MAIN_ROUTE/{$SUBJECT_ARG}"
 
 fun NavController.navigateToMain(
     subjectId: Long,
-    navOptions: NavOptions = androidx.navigation.navOptions { },
+    navOptions: NavOptions = androidx.navigation.navOptions {
+        this.launchSingleTop=true
+    },
 ) = navigate("$MAIN_ROUTE/$subjectId", navOptions)
 
 fun NavGraphBuilder.mainScreen(

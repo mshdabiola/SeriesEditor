@@ -37,7 +37,6 @@ fun SeBottonAppBar(
     modifier: Modifier = Modifier,
     onFabClick: (() -> Unit)? = null,
     onNavigationClick: (() -> Unit)? = null,
-    onAddTopic: (() -> Unit)? = null,
     onSettingsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     isSelectMode: Boolean = false,
@@ -48,6 +47,7 @@ fun SeBottonAppBar(
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
     updateSubject: (Long) -> Unit = {},
+    fabText: String,
 ) {
     var showDrop by remember { mutableStateOf(false) }
 
@@ -60,8 +60,8 @@ fun SeBottonAppBar(
                     onClick = onFabClick,
                 ) {
                     Icon(Icons.Default.Add, "add")
-                    Spacer(Modifier.width(8.dp))
-                    Text("Add")
+                    Spacer(Modifier.width(4.dp))
+                    Text(fabText)
                 }
             }
         },
@@ -180,14 +180,6 @@ fun SeBottonAppBar(
                             )
                         }
                     }
-                }
-            }
-            if (onAddTopic != null) {
-                IconButton(
-                    onClick = onAddTopic,
-                    // enabled = currentSubjectIndex > -1
-                ) {
-                    Icon(Icons.Default.Topic, "topic")
                 }
             }
             if (onBackClick != null) {

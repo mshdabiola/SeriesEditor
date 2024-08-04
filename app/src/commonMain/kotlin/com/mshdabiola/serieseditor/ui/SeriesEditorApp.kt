@@ -179,10 +179,10 @@ fun SeriesEditorApp() {
                                         drawerState = drawerState,
                                         gesturesEnabled = appState.showDrawer,
                                         drawerContent = {
-//                                            if (appState.showDrawer) {
-//                                                LaunchedEffect(Unit) {
-//                                                    drawerState.close()
-//                                                }
+                                            if (appState.showDrawer) {
+                                                LaunchedEffect(Unit) {
+                                                    drawerState.close()
+                                                }
                                             ModalDrawerSheet(
                                                 modifier = Modifier.widthIn(max = 300.dp),
                                             ) {
@@ -208,7 +208,7 @@ fun SeriesEditorApp() {
                                                     user = it.user,
                                                 )
                                             }
-//                                            }
+                                            }
                                         },
                                     ) {
                                         Scaffold(
@@ -226,11 +226,7 @@ fun SeriesEditorApp() {
                                                         } else {
                                                             null
                                                         },
-                                                        onAddTopic = if (currentSubjectId > 0) {
-                                                            { appState.onAddTopic(currentSubjectId) }
-                                                        } else {
-                                                            null
-                                                        },
+                                                        fabText = appState.fabText,
                                                         subjectId = currentSubjectId,
                                                         appState = appState,
                                                     )
@@ -251,15 +247,6 @@ fun SeriesEditorApp() {
                                                             updateSubject = appState::onUpdateSubject,
                                                             onNavigationClick = if (!appState.showPermanentDrawer) {
                                                                 open
-                                                            } else {
-                                                                null
-                                                            },
-                                                            onAddTopic = if (currentSubjectId > 0) {
-                                                                {
-                                                                    appState.onAddTopic(
-                                                                        currentSubjectId,
-                                                                    )
-                                                                }
                                                             } else {
                                                                 null
                                                             },

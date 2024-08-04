@@ -116,9 +116,8 @@ fun MainTopBar(
     showDeleteDialog: () -> Unit = {},
     updateSubject: (Long) -> Unit = {},
     onNavigationClick: (() -> Unit)? = null,
-    onAddTopic: (() -> Unit)? = null,
 
-) {
+    ) {
     var showDrop by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -132,14 +131,6 @@ fun MainTopBar(
             }
         },
         actions = {
-            if (onAddTopic != null) {
-                IconButton(
-                    onClick = onAddTopic,
-                    // enabled = currentSubjectIndex > -1
-                ) {
-                    Icon(Icons.Default.Topic, "topic")
-                }
-            }
             IconButton(
                 onClick = navigateToSetting,
                 // enabled = currentSubjectIndex > -1
