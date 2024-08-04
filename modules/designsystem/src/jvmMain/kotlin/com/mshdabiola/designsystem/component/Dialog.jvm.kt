@@ -2,34 +2,38 @@ package com.mshdabiola.designsystem.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.mohamedrejeb.calf.picker.FilePickerFileType
-import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
-import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
+import androidx.compose.ui.Modifier
 import java.io.File
 
 @Composable
-actual fun DirtoryUi(
-    show: Boolean,
+actual fun GetFilePath(
+    onFile: (File?) -> Unit,
+) {
+    LaunchedEffect(Unit) {
+        onFile(File(getDesktopPath(), "series"))
+    }
+}
+
+fun getDesktopPath(): String {
+    val userHome = System.getProperty("user.home")
+    return when {
+        System.getProperty("os.name").startsWith("Windows") -> "$userHome\\Desktop"
+        System.getProperty("os.name").startsWith("Mac OS X") -> "$userHome/Desktop"
+        else -> "$userHome/Desktop" // Linux (and other Unix-like systems)
+    }
+}
+
+@Composable
+actual fun PermissionDialog(
+    modifier: Modifier,
     onDismiss: () -> Unit,
     onFile: (File?) -> Unit,
 ) {
-//    val scope = rememberCoroutineScope()
-//    val context = LocalPlatformContext.current
+}
 
-    val pickerLauncher = rememberFilePickerLauncher(
-        type = FilePickerFileType.Folder,
-        selectionMode = FilePickerSelectionMode.Single,
-        onResult = { files ->
-            files.firstOrNull()?.let { file ->
-
-                onFile(file.file)
-            }
-        },
-    )
-    LaunchedEffect(show) {
-        if (show) {
-            pickerLauncher.launch()
-            onDismiss()
-        }
+@Composable
+actual fun HasWrittenPermission(result: (Boolean) -> Unit) {
+    LaunchedEffect(Unit) {
+        result(true)
     }
 }

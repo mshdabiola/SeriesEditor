@@ -84,7 +84,7 @@ fun OtherNavHost(
     val navController = appState.navController
     val screenModifier = modifier
         .fillMaxSize()
-        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .padding(horizontal = 8.dp, vertical = 8.dp)
         .windowInsetsPadding(WindowInsets.systemBars)
 
     NavHost(
