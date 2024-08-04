@@ -178,7 +178,7 @@ fun SeriesEditorApp() {
                                         drawerState = drawerState,
                                         gesturesEnabled = appState.showDrawer,
                                         drawerContent = {
-                                            if (!appState.showPermanentDrawer) {
+                                            if (appState.windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded) {
 //                                                LaunchedEffect(Unit) {
 //                                                    drawerState.close()
 //                                                }

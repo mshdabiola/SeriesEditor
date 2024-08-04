@@ -46,7 +46,6 @@ import com.mshdabiola.designsystem.drawable.emptyCartIcon
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.state.TopicUiState
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
