@@ -20,6 +20,7 @@ import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.main.navigation.DEFAULT_ROUTE
@@ -34,6 +35,7 @@ import com.mshdabiola.serieseditor.ui.mainpanel.mainPanelScreen
 import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
+import com.mshdabiola.topics.navigation.navigateToTopic
 import com.mshdabiola.topics.navigation.topicScreen
 
 @Composable
@@ -107,6 +109,7 @@ fun OtherNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
+            onAddSubject = { navController.navigateToComposeSubject(-1) },
         )
 
         examPanelScreen(
@@ -118,7 +121,7 @@ fun OtherNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             navigateToInstruction = navController::navigateToComposeInstruction,
-            navigateToTopic = navController::navigateToComposeTopic,
+            navigateToTopic = navController::navigateToTopic,
             onFinish = { navController.popBackStack() },
         )
 

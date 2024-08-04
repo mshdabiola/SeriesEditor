@@ -26,7 +26,6 @@ import com.mshdabiola.main.navigation.SUBJECT_ARG
 import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.exampanelother.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
 
@@ -87,6 +86,10 @@ sealed class SeriesEditorAppState(
     open val coroutineScope: CoroutineScope,
     open val windowSizeClass: WindowSizeClass,
 ) {
+
+    abstract val currentDestination: NavDestination?
+        @Composable get
+
     abstract val showMainTopBar: Boolean
         @Composable get
 
@@ -101,7 +104,6 @@ sealed class SeriesEditorAppState(
 
     abstract fun onSubjectClick(id: Long)
     abstract fun onUpdateSubject(id: Long)
-    abstract fun onAddTopic(id: Long)
 }
 
 class Extended(
@@ -114,7 +116,7 @@ class Extended(
 
 ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
-    val currentDestination: NavDestination?
+    override val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
@@ -141,10 +143,6 @@ class Extended(
         subjectNavHostController.popBackStack()
         subjectNavHostController.navigateToComposeSubject(id)
     }
-
-    override fun onAddTopic(id: Long) {
-        navController.navigateToTopicPanel(id)
-    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -155,7 +153,7 @@ class Other(
     val pagerState: PagerState,
 ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
-    val currentDestination: NavDestination?
+    override val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
@@ -182,10 +180,6 @@ class Other(
         navController.navigateToComposeSubject(id)
     }
 
-    override fun onAddTopic(id: Long) {
-        navController.navigateToComposeTopic(id, -1)
-    }
-
     val isMain
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
 
@@ -199,7 +193,23 @@ class Other(
                 else -> false
             }
 
-    @OptIn(ExperimentalFoundationApi::class)
+    val fabText: String
+        @Composable
+        get() =
+            when {
+                currentDestination?.route?.contains(MAIN_ROUTE) == true -> "Add Exam"
+                currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> {
+                    if (pagerState.currentPage == 0) {
+                        "Add Question"
+                    } else {
+                        "Add Instruction"
+                    }
+                }
+
+                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> "Add Topic"
+                else -> "Add"
+            }
+
     fun onAdd() {
         when {
             navController.currentDestination?.route?.contains(MAIN_ROUTE) == true -> {

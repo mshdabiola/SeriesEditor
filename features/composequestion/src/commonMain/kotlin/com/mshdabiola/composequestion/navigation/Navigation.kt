@@ -29,7 +29,7 @@ fun NavGraphBuilder.composeQuestionScreen(
     modifier: Modifier = Modifier,
     defaultExamId: Long = -1,
     onShowSnack: suspend (String, String?) -> Boolean,
-    navigateToTopic: (Long, Long) -> Unit,
+    navigateToTopic: (Long) -> Unit,
     navigateToInstruction: (Long, Long) -> Unit,
     onFinish: () -> Unit,
 

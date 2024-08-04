@@ -57,6 +57,7 @@ fun MainPaneScreen(
                             appState.examNavHostController.navigateToComposeExamination(-1)
                         }
                     },
+                    null,
                 )
             }
 

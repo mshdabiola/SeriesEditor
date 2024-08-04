@@ -13,13 +13,16 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -60,6 +63,7 @@ internal fun ComposeExaminationRoute(
     examId: Long,
     onBack: () -> Unit,
     onShowSnack: suspend (String, String?) -> Boolean,
+    onAddSubject: (() -> Unit)?,
 
 ) {
     val viewModel: ComposeExaminationViewModel = koinViewModel(
@@ -83,6 +87,7 @@ internal fun ComposeExaminationRoute(
         duration = viewModel.duration,
         year = viewModel.year,
         addExam = { viewModel.addExam() },
+        onAddSubject = onAddSubject,
     )
 }
 
@@ -95,6 +100,8 @@ internal fun ComposeExaminationScreen(
     duration: TextFieldState,
     year: TextFieldState,
     addExam: () -> Unit = {},
+    onAddSubject: (() -> Unit)? = null,
+
 ) {
     AnimatedContent(
         modifier = modifier
@@ -103,7 +110,10 @@ internal fun ComposeExaminationScreen(
         transitionSpec = {
             (
                 slideInHorizontally(animationSpec = tween(220, delayMillis = 90)) +
-                    scaleIn(initialScale = 0.92f, animationSpec = tween(220, delayMillis = 90))
+                    scaleIn(
+                        initialScale = 0.92f,
+                        animationSpec = tween(220, delayMillis = 90),
+                    )
                 )
                 .togetherWith(slideOutHorizontally(animationSpec = tween(90)))
         },
@@ -117,6 +127,7 @@ internal fun ComposeExaminationScreen(
                 duration = duration,
                 year = year,
                 addExam = addExam,
+                onAddSubject = onAddSubject,
             )
 
             else -> {}
@@ -133,6 +144,8 @@ internal fun MainContent(
     duration: TextFieldState,
     year: TextFieldState,
     addExam: () -> Unit = {},
+    onAddSubject: (() -> Unit)?,
+
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -140,6 +153,18 @@ internal fun MainContent(
         var expanded by remember { mutableStateOf(false) }
 
         Section(title = "Examination Section")
+
+        if (onAddSubject != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                ElevatedButton(onClick = onAddSubject) {
+                    Text("Add Subject")
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
         ExposedDropdownMenuBox(
             modifier = Modifier.testTag("ce:subject"),
