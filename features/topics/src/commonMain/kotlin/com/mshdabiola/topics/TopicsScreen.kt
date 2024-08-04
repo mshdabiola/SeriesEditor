@@ -42,10 +42,10 @@ import com.mshdabiola.designsystem.component.SeriesEditorLoadingWheel
 import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
+import com.mshdabiola.designsystem.drawable.emptyCartIcon
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.state.TopicUiState
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -53,7 +53,6 @@ import org.koin.core.parameter.parametersOf
 import serieseditor.features.topics.generated.resources.Res
 import serieseditor.features.topics.generated.resources.features_main_empty_description
 import serieseditor.features.topics.generated.resources.features_main_empty_error
-import serieseditor.features.topics.generated.resources.features_main_img_empty_bookmarks
 import serieseditor.features.topics.generated.resources.features_main_loading
 
 // import org.koin.androidx.compose.koinViewModel
@@ -171,7 +170,7 @@ private fun EmptyState(modifier: Modifier = Modifier) {
         val iconTint = LocalTintTheme.current.iconTint
         Image(
             modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(Res.drawable.features_main_img_empty_bookmarks),
+            painter = emptyCartIcon,
             colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,
             contentDescription = null,
         )

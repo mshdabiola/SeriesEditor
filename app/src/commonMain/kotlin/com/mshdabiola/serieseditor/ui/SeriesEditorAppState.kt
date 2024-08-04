@@ -170,7 +170,7 @@ class Other(
     override val showPermanentDrawer: Boolean
         @Composable get() = false
     override val showDrawer: Boolean
-        @Composable get() = isMain
+        @Composable get() = true
 
     override fun onSubjectClick(id: Long) {
         navController.navigateToMain(id)
