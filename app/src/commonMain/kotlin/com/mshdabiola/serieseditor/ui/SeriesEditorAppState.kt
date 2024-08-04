@@ -26,9 +26,7 @@ import com.mshdabiola.main.navigation.SUBJECT_ARG
 import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.exampanelother.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
-import com.mshdabiola.topics.navigation.navigateToTopic
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -104,15 +102,6 @@ sealed class SeriesEditorAppState(
     abstract val currentSubjectId: Long
         @Composable get
 
-    val fabText: String
-        @Composable
-        get() =
-            when {
-                currentDestination?.route?.contains(MAIN_ROUTE) == true -> "Add Exam"
-                currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> "Add Question"
-                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> "Add Topic"
-                else -> "Add"
-            }
 
     abstract fun onSubjectClick(id: Long)
     abstract fun onUpdateSubject(id: Long)
@@ -126,9 +115,9 @@ class Extended(
     val subjectNavHostController: NavHostController,
     val examNavHostController: NavHostController,
 
-) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
-   override val currentDestination: NavDestination?
+    override val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
@@ -208,7 +197,23 @@ class Other(
                 else -> false
             }
 
-    @OptIn(ExperimentalFoundationApi::class)
+    val fabText: String
+        @Composable
+        get() =
+            when {
+                currentDestination?.route?.contains(MAIN_ROUTE) == true -> "Add Exam"
+                currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> {
+                    if (pagerState.currentPage == 0) {
+                        "Add Question"
+                    } else {
+                        "Add Instruction"
+                    }
+                }
+
+                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> "Add Topic"
+                else -> "Add"
+            }
+
     fun onAdd() {
         when {
             navController.currentDestination?.route?.contains(MAIN_ROUTE) == true -> {
