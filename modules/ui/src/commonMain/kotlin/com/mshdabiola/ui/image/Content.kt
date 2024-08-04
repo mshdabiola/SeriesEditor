@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -89,7 +90,7 @@ fun ContentView(
                     }
                 },
 
-            )
+                )
         }
     }
 }
@@ -108,7 +109,7 @@ fun Content(
     changeType: (Int, Type) -> Unit = { _, _ -> },
     onItemClicked: (ItemUiState) -> Unit = {},
 
-) {
+    ) {
     Column(modifier) {
         if (label != null) {
             Text(label, color = MaterialTheme.colorScheme.secondary)
@@ -321,7 +322,12 @@ fun TextContent(
         launch {
             if (text.focus) {
                 delay(1000)
-                focusRequester.requestFocus()
+                try {
+                    focusRequester.requestFocus()
+
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
             }
         }
     }

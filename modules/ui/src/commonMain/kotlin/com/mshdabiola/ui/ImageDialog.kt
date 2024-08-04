@@ -101,6 +101,7 @@ fun ImageDialog(
                 DragAndDropImage(
                     modifier = modifier.fillMaxSize(),
                     path = ImageUtil.getAppPath(textFieldState.text.toString()).path,
+                    isEmpty = textFieldState.text.isBlank(),
 // ,
                     onPathChange = { path ->
                         coroutineScope.launch {
