@@ -177,37 +177,38 @@ fun SeriesEditorApp() {
                                 ) {
                                     ModalNavigationDrawer(
                                         drawerState = drawerState,
+                                        gesturesEnabled = appState.showDrawer,
                                         drawerContent = {
-                                            if (appState.showDrawer) {
-                                                LaunchedEffect(Unit) {
-                                                    drawerState.close()
-                                                }
-                                                ModalDrawerSheet(
-                                                    modifier = Modifier.widthIn(max = 300.dp),
-                                                ) {
-                                                    NavigationSheet(
-                                                        modifier = Modifier
-                                                            .padding(
-                                                                top = 16.dp,
-                                                                start = 16.dp,
-                                                                end = 8.dp,
-                                                            ),
-                                                        subjects = subjects.value,
+//                                            if (appState.showDrawer) {
+//                                                LaunchedEffect(Unit) {
+//                                                    drawerState.close()
+//                                                }
+                                            ModalDrawerSheet(
+                                                modifier = Modifier.widthIn(max = 300.dp),
+                                            ) {
+                                                NavigationSheet(
+                                                    modifier = Modifier
+                                                        .padding(
+                                                            top = 16.dp,
+                                                            start = 16.dp,
+                                                            end = 8.dp,
+                                                        ),
+                                                    subjects = subjects.value,
 
-                                                        addSubject = {
-                                                            appState.navController.navigateToComposeSubject(
-                                                                -1,
-                                                            )
-                                                        },
-                                                        onSubjectClick = {
-                                                            appState.onSubjectClick(it)
-                                                            coroutine.launch { drawerState.close() }
-                                                        },
-                                                        checkIfSelected = { currentSubjectId == it },
-                                                        user = it.user,
-                                                    )
-                                                }
+                                                    addSubject = {
+                                                        appState.navController.navigateToComposeSubject(
+                                                            -1,
+                                                        )
+                                                    },
+                                                    onSubjectClick = {
+                                                        appState.onSubjectClick(it)
+                                                        coroutine.launch { drawerState.close() }
+                                                    },
+                                                    checkIfSelected = { currentSubjectId == it },
+                                                    user = it.user,
+                                                )
                                             }
+//                                            }
                                         },
                                     ) {
                                         Scaffold(

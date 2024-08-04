@@ -1,9 +1,11 @@
 package com.mshdabiola.serieseditor
 
 import androidx.annotation.StringRes
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
@@ -53,12 +55,13 @@ class NavigationTest {
     // The strings used for matching in these tests
     // private val navigateUp by composeTestRule.stringResource(FeatureForyouR.string.feature_foryou_navigate_up)
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun firstScreen_isForYou() {
         composeTestRule.apply {
             // VERIFY for you is selected
-            //  this.waitUntil()
-            onNodeWithText("Add", useUnmergedTree = true).assertExists()
+            waitUntilExactlyOneExists(hasTestTag("add"))
+            onNodeWithTag("add").assertExists()
         }
     }
 }
