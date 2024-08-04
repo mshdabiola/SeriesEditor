@@ -118,7 +118,7 @@ fun ExamPaneScreen(
                                             pagerState.animateScrollToPage(1)
                                         }
                                     },
-                                    navigateToTopic = { id, _ ->
+                                    navigateToTopic = { id ->
                                         navigateToTopicPanel(id)
                                     },
 

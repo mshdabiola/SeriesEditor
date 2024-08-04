@@ -42,6 +42,7 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -80,7 +81,7 @@ internal fun CqRoute(
     questionId: Long,
     onShowSnack: suspend (String, String?) -> Boolean,
     onFinish: () -> Unit,
-    navigateToTopic: (Long, Long) -> Unit,
+    navigateToTopic: (Long) -> Unit,
     navigateToInstruction: (Long, Long) -> Unit,
 ) {
     val viewModel: CqViewModel = koinViewModel(parameters = { parametersOf(examId, questionId) })
@@ -111,7 +112,7 @@ internal fun CqRoute(
         onAddAnswer = viewModel::onAddAnswer,
         isTheory = viewModel::isTheory,
         changeView = viewModel::changeView,
-        navigateToTopic = { navigateToTopic(viewModel.subjectId, -1) },
+        navigateToTopic = { navigateToTopic(viewModel.subjectId) },
         navigateToInstruction = { navigateToInstruction(examId, -1) },
         onTopicChange = viewModel::onTopicChange,
         onInstructionChange = viewModel::onInstructionChange,
@@ -153,7 +154,7 @@ internal fun CqScreen(
     onItemClicked: (ItemUiState) -> Unit = {},
     onAddQuestionInput: () -> Unit = {},
 
-) {
+    ) {
 //    var fillIt =
 //        rememberUpdatedState(screenSize != ScreenSize.EXPANDED)
     AnimatedContent(
@@ -249,6 +250,17 @@ internal fun MainContent(
 
     Column(modifier) {
         Section(title = "Question Section")
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+
+            TextButton(onClick = { navigateToTopic() }) {
+                Text("Add Topic")
+            }
+
+            TextButton(onClick = { navigateToInstruction() }) {
+                Text("Add Instruction")
+            }
+
+        }
         Row(Modifier.fillMaxWidth()) {
             ExposedDropdownMenuBox(
                 modifier = Modifier.weight(0.5f),
@@ -307,18 +319,7 @@ internal fun MainContent(
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
                     }
-                    DropdownMenuItem(
-                        modifier = Modifier,
-                        text = { Text("Add Topic") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Add, "add")
-                        },
-                        onClick = {
-                            topicExpanded = false
-                            navigateToTopic()
-                        },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                    )
+
                 }
             }
 
@@ -376,17 +377,6 @@ internal fun MainContent(
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
                     }
-                    DropdownMenuItem(
-                        modifier = Modifier,
-                        text = { Text("Add Instruct") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Add, "add")
-                        },
-                        onClick = {
-                            instrucExpanded = false
-                            navigateToInstruction()
-                        },
-                    )
                 }
             }
         }
