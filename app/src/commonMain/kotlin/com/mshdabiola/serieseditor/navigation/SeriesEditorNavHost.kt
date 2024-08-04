@@ -109,7 +109,7 @@ fun OtherNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
-            onAddSubject = {navController.navigateToComposeSubject(-1)}
+            onAddSubject = { navController.navigateToComposeSubject(-1) },
         )
 
         examPanelScreen(

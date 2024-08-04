@@ -65,7 +65,7 @@ internal fun ComposeExaminationRoute(
     onShowSnack: suspend (String, String?) -> Boolean,
     onAddSubject: (() -> Unit)?,
 
-    ) {
+) {
     val viewModel: ComposeExaminationViewModel = koinViewModel(
         parameters = {
             parametersOf(examId)
@@ -102,19 +102,19 @@ internal fun ComposeExaminationScreen(
     addExam: () -> Unit = {},
     onAddSubject: (() -> Unit)? = null,
 
-    ) {
+) {
     AnimatedContent(
         modifier = modifier
             .testTag("ce:screen"),
         targetState = ceState,
         transitionSpec = {
             (
-                    slideInHorizontally(animationSpec = tween(220, delayMillis = 90)) +
-                            scaleIn(
-                                initialScale = 0.92f,
-                                animationSpec = tween(220, delayMillis = 90),
-                            )
+                slideInHorizontally(animationSpec = tween(220, delayMillis = 90)) +
+                    scaleIn(
+                        initialScale = 0.92f,
+                        animationSpec = tween(220, delayMillis = 90),
                     )
+                )
                 .togetherWith(slideOutHorizontally(animationSpec = tween(90)))
         },
     ) {
@@ -146,7 +146,7 @@ internal fun MainContent(
     addExam: () -> Unit = {},
     onAddSubject: (() -> Unit)?,
 
-    ) {
+) {
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -164,7 +164,6 @@ internal fun MainContent(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-
         }
 
         ExposedDropdownMenuBox(
@@ -224,7 +223,7 @@ internal fun MainContent(
                 keyboardType = KeyboardType.Number,
                 inputTransformation = DigitOnlyTransformation,
 
-                )
+            )
             SeriesEditorTextField(
                 modifier = Modifier
                     .weight(0.5f)
@@ -237,7 +236,7 @@ internal fun MainContent(
                 keyboardType = KeyboardType.Number,
                 inputTransformation = DigitOnlyTransformation,
 
-                )
+            )
         }
 
         SeriesEditorButton(
@@ -248,8 +247,8 @@ internal fun MainContent(
                 addExam()
             },
             enabled = subject.text.toString().isNotBlank() &&
-                    duration.text.toString().isNotBlank() &&
-                    year.text.toString().isNotBlank(),
+                duration.text.toString().isNotBlank() &&
+                year.text.toString().isNotBlank(),
         ) {
             Icon(Icons.Default.Add, "add")
             Text("Add Examination")

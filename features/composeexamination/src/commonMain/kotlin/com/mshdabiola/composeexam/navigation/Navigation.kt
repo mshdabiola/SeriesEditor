@@ -29,7 +29,7 @@ fun NavGraphBuilder.composeExaminationScreen(
     onBack: () -> Unit,
     onAddSubject: (() -> Unit)?,
 
-    ) {
+) {
     composable(
         route = "$COMPOSE_EXAMINATION_ROUTE/{$EXAM_ARG}",
         arguments = listOf(

@@ -178,7 +178,7 @@ fun SeriesEditorApp() {
                                         drawerState = drawerState,
                                         gesturesEnabled = appState.showDrawer,
                                         drawerContent = {
-                                            if ( !appState.showPermanentDrawer) {
+                                            if (!appState.showPermanentDrawer) {
 //                                                LaunchedEffect(Unit) {
 //                                                    drawerState.close()
 //                                                }
@@ -258,7 +258,7 @@ fun SeriesEditorApp() {
                                                 }
                                             },
 
-                                            ) { padding ->
+                                        ) { padding ->
 
                                             Column(
                                                 Modifier
@@ -363,15 +363,12 @@ fun NavigationSheet(
                         Text("Add Subject")
                     }
                 }
-
             }
         }
 
         item {
             Spacer(Modifier.height(16.dp))
             Text(text = "Subjects")
-
-
         }
         item {
             SeNavigationDrawerItem(

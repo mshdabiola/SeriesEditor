@@ -154,7 +154,7 @@ internal fun CqScreen(
     onItemClicked: (ItemUiState) -> Unit = {},
     onAddQuestionInput: () -> Unit = {},
 
-    ) {
+) {
 //    var fillIt =
 //        rememberUpdatedState(screenSize != ScreenSize.EXPANDED)
     AnimatedContent(
@@ -251,7 +251,6 @@ internal fun MainContent(
     Column(modifier) {
         Section(title = "Question Section")
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-
             TextButton(onClick = { navigateToTopic() }) {
                 Text("Add Topic")
             }
@@ -259,7 +258,6 @@ internal fun MainContent(
             TextButton(onClick = { navigateToInstruction() }) {
                 Text("Add Instruction")
             }
-
         }
         Row(Modifier.fillMaxWidth()) {
             ExposedDropdownMenuBox(
@@ -319,7 +317,6 @@ internal fun MainContent(
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
                     }
-
                 }
             }
 

@@ -102,7 +102,6 @@ sealed class SeriesEditorAppState(
     abstract val currentSubjectId: Long
         @Composable get
 
-
     abstract fun onSubjectClick(id: Long)
     abstract fun onUpdateSubject(id: Long)
 }
@@ -115,7 +114,7 @@ class Extended(
     val subjectNavHostController: NavHostController,
     val examNavHostController: NavHostController,
 
-    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
         @Composable get() = navController
@@ -144,8 +143,6 @@ class Extended(
         subjectNavHostController.popBackStack()
         subjectNavHostController.navigateToComposeSubject(id)
     }
-
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -182,7 +179,6 @@ class Other(
     override fun onUpdateSubject(id: Long) {
         navController.navigateToComposeSubject(id)
     }
-
 
     val isMain
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true

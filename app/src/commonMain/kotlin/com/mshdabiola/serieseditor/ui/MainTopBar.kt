@@ -74,7 +74,7 @@ fun MainBottomBarSection(
     onNavigationClick: (() -> Unit)?,
     fabText: String,
 
-    ) {
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
