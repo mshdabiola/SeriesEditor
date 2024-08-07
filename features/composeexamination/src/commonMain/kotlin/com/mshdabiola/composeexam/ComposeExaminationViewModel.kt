@@ -29,7 +29,7 @@ class ComposeExaminationViewModel(
     private val _ceState = MutableStateFlow<CeState>(CeState.Loading())
     val ceState = _ceState.asStateFlow()
     val duration = TextFieldState("15")
-    val year = TextFieldState("2015")
+    val year = TextFieldState("")
     val subject = TextFieldState()
 
     init {

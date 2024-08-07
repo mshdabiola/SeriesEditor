@@ -104,6 +104,9 @@ class CeViewModelTest : KoinTest {
             .test() {
                 awaitItem()
                 val st = awaitItem()
+                viewModel.year.edit {
+                    append("2015")
+                }
 
                 assertFalse((st as CeState.Success).isUpdate)
 
