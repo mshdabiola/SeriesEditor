@@ -44,10 +44,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.seriesmodel.Type
 import com.mshdabiola.model.ImageUtil
-import com.mshdabiola.retex.Latex
-import com.mshdabiola.retex.MarkUpText
+import com.mshdabiola.serieslatex.Latex
+import com.mshdabiola.serieslatex.MarkUpText
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay

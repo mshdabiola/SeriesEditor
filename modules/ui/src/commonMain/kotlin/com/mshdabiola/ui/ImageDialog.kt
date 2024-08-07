@@ -38,9 +38,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.seriesmodel.Type
 import com.mshdabiola.model.ImageUtil
-import com.mshdabiola.retex.Latex
+import com.mshdabiola.serieslatex.Latex
 import com.mshdabiola.ui.image.DragAndDropImage
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.coroutines.launch

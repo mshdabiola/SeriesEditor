@@ -1,15 +1,15 @@
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.mshdabiola.generalmodel.Content
-import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.generalmodel.ExaminationWithSubject
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Option
-import com.mshdabiola.generalmodel.QUESTION_TYPE
-import com.mshdabiola.generalmodel.Question
-import com.mshdabiola.generalmodel.SubjectWithSeries
-import com.mshdabiola.generalmodel.TopicWithCategory
+import com.mshdabiola.seriesmodel.Content
+import com.mshdabiola.seriesmodel.Examination
+import com.mshdabiola.seriesmodel.ExaminationWithSubject
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Option
+import com.mshdabiola.seriesmodel.QUESTION_TYPE
+import com.mshdabiola.seriesmodel.Question
+import com.mshdabiola.seriesmodel.SubjectWithSeries
+import com.mshdabiola.seriesmodel.TopicWithCategory
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
