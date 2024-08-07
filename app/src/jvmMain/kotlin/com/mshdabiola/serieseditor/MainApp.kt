@@ -18,7 +18,7 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.mshdabiola.database.generalPath
+import com.mshdabiola.seriesdatabase.generalPath
 import com.mshdabiola.designsystem.drawable.defaultAppIcon
 import com.mshdabiola.designsystem.string.appName
 import com.mshdabiola.serieseditor.di.appModule

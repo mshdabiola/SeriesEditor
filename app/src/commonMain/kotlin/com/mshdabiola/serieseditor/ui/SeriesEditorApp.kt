@@ -69,7 +69,7 @@ import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
-import com.mshdabiola.generalmodel.User
+import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState

@@ -1,6 +1,6 @@
 package com.mshdabiola.serieseditor
 
-import com.mshdabiola.generalmodel.User
+import com.mshdabiola.seriesmodel.User
 
 sealed class MainState {
 

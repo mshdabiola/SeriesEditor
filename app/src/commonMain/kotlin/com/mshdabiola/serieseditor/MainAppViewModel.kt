@@ -11,9 +11,9 @@ import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
-import com.mshdabiola.generalmodel.Series
-import com.mshdabiola.generalmodel.User
-import com.mshdabiola.generalmodel.UserType
+import com.mshdabiola.seriesmodel.Series
+import com.mshdabiola.seriesmodel.User
+import com.mshdabiola.seriesmodel.UserType
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserData
 import com.mshdabiola.model.currentPlatform
