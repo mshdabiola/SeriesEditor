@@ -59,7 +59,6 @@ jobs:
         uses: mi-kas/kover-report@v1
         with:
           path: |
-            ${{ github.workspace }}/project1/build/reports/kover/report.xml
             ${{ github.workspace }}/modules/analytics/build/reports/kover/reportJvm.xml
             ${{ github.workspace }}/modules/data/build/reports/kover/reportJvm.xml
             ${{ github.workspace }}/modules/datastore/build/reports/kover/reportJvm.xml
