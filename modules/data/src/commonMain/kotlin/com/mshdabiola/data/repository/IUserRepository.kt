@@ -1,6 +1,6 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.generalmodel.User
+import com.mshdabiola.seriesmodel.User
 import kotlinx.coroutines.flow.Flow
 
 interface IUserRepository {

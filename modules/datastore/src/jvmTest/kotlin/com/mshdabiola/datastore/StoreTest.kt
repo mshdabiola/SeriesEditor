@@ -1,6 +1,6 @@
 package com.mshdabiola.datastore
 
-import com.mshdabiola.database.generalPath
+import com.mshdabiola.seriesdatabase.generalPath
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.datastore.di.storePath
 import com.mshdabiola.testing.testDispatcherModule

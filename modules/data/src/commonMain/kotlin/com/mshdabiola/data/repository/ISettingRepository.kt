@@ -1,7 +1,7 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Question
 import kotlinx.coroutines.flow.Flow
 
 interface ISettingRepository {

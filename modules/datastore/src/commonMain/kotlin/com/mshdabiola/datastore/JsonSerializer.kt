@@ -1,8 +1,8 @@
 package com.mshdabiola.datastore
 
 import androidx.datastore.core.okio.OkioSerializer
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Question
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.model.UserData

@@ -1,7 +1,7 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.IInstructionRepository
-import com.mshdabiola.generalmodel.Instruction
+import com.mshdabiola.seriesmodel.Instruction
 import com.mshdabiola.testing.instructions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

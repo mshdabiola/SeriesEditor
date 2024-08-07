@@ -1,12 +1,12 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.database.ExportImport
-import com.mshdabiola.database.asEntity
-import com.mshdabiola.database.asExam
-import com.mshdabiola.database.asModel
-import com.mshdabiola.database.dao.ExaminationDao
-import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.generalmodel.ExaminationWithSubject
+import com.mshdabiola.seriesdatabase.ExportImport
+import com.mshdabiola.seriesdatabase.asEntity
+import com.mshdabiola.seriesdatabase.asExam
+import com.mshdabiola.seriesdatabase.asModel
+import com.mshdabiola.seriesdatabase.dao.ExaminationDao
+import com.mshdabiola.seriesmodel.Examination
+import com.mshdabiola.seriesmodel.ExaminationWithSubject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

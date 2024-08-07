@@ -1,8 +1,8 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.generalmodel.ExaminationWithSubject
+import com.mshdabiola.seriesmodel.Examination
+import com.mshdabiola.seriesmodel.ExaminationWithSubject
 import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

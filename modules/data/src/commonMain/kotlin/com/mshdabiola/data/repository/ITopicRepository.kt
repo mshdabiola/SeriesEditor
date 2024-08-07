@@ -1,7 +1,7 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.generalmodel.Topic
-import com.mshdabiola.generalmodel.TopicWithCategory
+import com.mshdabiola.seriesmodel.Topic
+import com.mshdabiola.seriesmodel.TopicWithCategory
 import kotlinx.coroutines.flow.Flow
 
 interface ITopicRepository {

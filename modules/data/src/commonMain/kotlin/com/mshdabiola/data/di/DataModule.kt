@@ -26,7 +26,7 @@ import com.mshdabiola.data.repository.TopicCategoryRepository
 import com.mshdabiola.data.repository.TopicRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
-import com.mshdabiola.database.di.databaseModule
+import com.mshdabiola.seriesdatabase.di.databaseModule
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
 import kotlinx.coroutines.CoroutineDispatcher

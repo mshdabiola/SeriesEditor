@@ -1,7 +1,7 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.IQuestionRepository
-import com.mshdabiola.generalmodel.Question
+import com.mshdabiola.seriesmodel.Question
 import com.mshdabiola.testing.questions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
