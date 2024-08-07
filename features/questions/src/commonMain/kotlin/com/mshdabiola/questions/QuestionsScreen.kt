@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -198,7 +199,7 @@ private fun EmptyState(modifier: Modifier = Modifier) {
     ) {
         val iconTint = LocalTintTheme.current.iconTint
         Image(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.size(200.dp),
             painter = emptyCartIcon,
             colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,
             contentDescription = null,
