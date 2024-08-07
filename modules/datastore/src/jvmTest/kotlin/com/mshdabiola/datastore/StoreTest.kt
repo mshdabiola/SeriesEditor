@@ -1,8 +1,8 @@
 package com.mshdabiola.datastore
 
-import com.mshdabiola.seriesdatabase.generalPath
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.datastore.di.storePath
+import com.mshdabiola.seriesdatabase.generalPath
 import com.mshdabiola.testing.testDispatcherModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.first

@@ -1,11 +1,11 @@
 package com.mshdabiola.datastore
 
 import androidx.datastore.core.okio.OkioSerializer
-import com.mshdabiola.seriesmodel.Instruction
-import com.mshdabiola.seriesmodel.Question
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.model.UserData
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Question
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
