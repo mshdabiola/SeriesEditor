@@ -12,8 +12,8 @@ import co.touchlab.kermit.Logger
 import com.mshdabiola.data.Converter
 import com.mshdabiola.data.repository.ITopicCategory
 import com.mshdabiola.data.repository.ITopicRepository
-import com.mshdabiola.generalmodel.Topic
-import com.mshdabiola.generalmodel.TopicCategory
+import com.mshdabiola.seriesmodel.Topic
+import com.mshdabiola.seriesmodel.TopicCategory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

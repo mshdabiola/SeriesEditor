@@ -5,7 +5,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.mshdabiola.generalmodel.TopicCategory
+import com.mshdabiola.seriesmodel.TopicCategory
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.state.OptionUiState

@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.generalmodel.Examination
+import com.mshdabiola.seriesmodel.Examination
 import com.mshdabiola.ui.toUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

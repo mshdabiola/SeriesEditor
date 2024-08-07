@@ -1,6 +1,6 @@
 package com.mshdabiola.composetopic
 
-import com.mshdabiola.generalmodel.TopicCategory
+import com.mshdabiola.seriesmodel.TopicCategory
 
 sealed class CtState {
 

@@ -1,6 +1,6 @@
 package com.mshdabiola.composesubject
 
-import com.mshdabiola.generalmodel.Series
+import com.mshdabiola.seriesmodel.Series
 
 sealed class CsState {
 

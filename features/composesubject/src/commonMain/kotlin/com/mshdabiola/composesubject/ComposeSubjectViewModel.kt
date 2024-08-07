@@ -13,8 +13,8 @@ import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.generalmodel.Series
-import com.mshdabiola.generalmodel.Subject
+import com.mshdabiola.seriesmodel.Series
+import com.mshdabiola.seriesmodel.Subject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

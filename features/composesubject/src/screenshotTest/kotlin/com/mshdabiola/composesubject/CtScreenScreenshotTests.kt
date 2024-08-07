@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.DevicePreviews
 import com.mshdabiola.designsystem.theme.darkDefaultScheme
 import com.mshdabiola.designsystem.theme.lightDefaultScheme
-import com.mshdabiola.generalmodel.Series
+import com.mshdabiola.seriesmodel.Series
 
 class CtScreenScreenshotTests {
 
