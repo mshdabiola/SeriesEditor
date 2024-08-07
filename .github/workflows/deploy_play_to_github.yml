@@ -33,9 +33,6 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
 
       - name: Build release variant apk
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew assembleGooglePlayRelease
 
       - name: Sign APK

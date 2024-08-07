@@ -10,6 +10,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,7 @@ import java.io.InputStreamReader
 actual fun DragAndDropImage(
     modifier: Modifier,
     path: String,
+    isEmpty: Boolean,
     onPathChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -72,15 +74,15 @@ actual fun DragAndDropImage(
 
     ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            //  if (File(path).exists()) {
-            ImageUi(
-                Modifier.fillMaxSize(),
-                path = path,
-                contentDescription = "",
-            )
-//                            } else {
-//                                Text(text = "drag image here")
-//                            }
+            if (!isEmpty) {
+                ImageUi(
+                    Modifier.fillMaxSize(),
+                    path = path,
+                    contentDescription = "",
+                )
+            } else {
+                Text(text = "Click to add image")
+            }
         }
     }
 }

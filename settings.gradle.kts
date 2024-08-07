@@ -11,36 +11,12 @@ pluginManagement {
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-var project: Properties? = null
-try {
-    project = File(rootDir, "local.properties").inputStream().use {
-        java.util.Properties().apply { load(it) }
-
-    }
-    println("user ${project?.getProperty("gpr.user")}")
-
-
-} catch (e: Exception) {
-
-//        e.printStackTrace()
-}
-//val user = project?.getProperty("gpr.userid")  ?: System.getenv("USERID")
-//val token=  project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
-//println("user $user token $token")
-
 dependencyResolutionManagement {
 //    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
         mavenLocal()
-        maven {
-            url = uri("https://maven.pkg.github.com/mshdabiola/series")
-            credentials {
-                username = project?.getProperty("gpr.userid") ?: System.getenv("USERID")
-                password = project?.getProperty("gpr.password") ?: System.getenv("PASSWORD")
-            }
-        }
         maven(url = "https://www.jitpack.io")
         maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers")

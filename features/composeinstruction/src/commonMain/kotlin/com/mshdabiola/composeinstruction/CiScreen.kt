@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.Section
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Type
+import com.mshdabiola.seriesmodel.Type
 import com.mshdabiola.ui.QuestionDialog
 import com.mshdabiola.ui.Waiting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon

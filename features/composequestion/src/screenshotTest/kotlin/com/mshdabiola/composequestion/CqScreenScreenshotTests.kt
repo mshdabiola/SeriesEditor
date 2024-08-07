@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.DevicePreviews
 import com.mshdabiola.designsystem.theme.darkDefaultScheme
 import com.mshdabiola.designsystem.theme.lightDefaultScheme
-import com.mshdabiola.generalmodel.TopicCategory
+import com.mshdabiola.seriesmodel.TopicCategory
 import com.mshdabiola.ui.state.InstructionUiState
 import com.mshdabiola.ui.state.ItemUiState
 import com.mshdabiola.ui.state.OptionUiState

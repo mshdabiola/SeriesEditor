@@ -1,8 +1,8 @@
 package com.mshdabiola.datastore
 
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.model.UserData
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Question
 import kotlinx.coroutines.flow.Flow
 
 interface Store {

@@ -1,21 +1,21 @@
 package com.mshdabiola.testing
 
-import com.mshdabiola.generalmodel.Content
-import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.generalmodel.ExportableData
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Option
-import com.mshdabiola.generalmodel.QUESTION_TYPE
-import com.mshdabiola.generalmodel.Question
-import com.mshdabiola.generalmodel.QuestionPlain
-import com.mshdabiola.generalmodel.Series
-import com.mshdabiola.generalmodel.Subject
-import com.mshdabiola.generalmodel.Topic
-import com.mshdabiola.generalmodel.TopicCategory
-import com.mshdabiola.generalmodel.TopicWithCategory
-import com.mshdabiola.generalmodel.User
-import com.mshdabiola.generalmodel.UserType
-import com.mshdabiola.generalmodel.serial.asString
+import com.mshdabiola.seriesmodel.Content
+import com.mshdabiola.seriesmodel.Examination
+import com.mshdabiola.seriesmodel.ExportableData
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Option
+import com.mshdabiola.seriesmodel.QUESTION_TYPE
+import com.mshdabiola.seriesmodel.Question
+import com.mshdabiola.seriesmodel.QuestionPlain
+import com.mshdabiola.seriesmodel.Series
+import com.mshdabiola.seriesmodel.Subject
+import com.mshdabiola.seriesmodel.Topic
+import com.mshdabiola.seriesmodel.TopicCategory
+import com.mshdabiola.seriesmodel.TopicWithCategory
+import com.mshdabiola.seriesmodel.User
+import com.mshdabiola.seriesmodel.UserType
+import com.mshdabiola.seriesmodel.serial.asString
 
 val users = listOf(
     User(1, "Alice", UserType.STUDENT, "password1", "path/to/image1.jpg", 85),

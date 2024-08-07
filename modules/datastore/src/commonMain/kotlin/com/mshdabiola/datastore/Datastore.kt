@@ -4,9 +4,9 @@ import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.model.UserData
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Question
 import okio.FileSystem
 import okio.Path.Companion.toPath
 

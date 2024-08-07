@@ -1,9 +1,9 @@
 package com.mshdabiola.datastore
 
 import androidx.datastore.core.DataStore
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Question
 import com.mshdabiola.model.UserData
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Question
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

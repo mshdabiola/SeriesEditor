@@ -1,8 +1,8 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.ITopicCategory
-import com.mshdabiola.generalmodel.TopicCategory
-import com.mshdabiola.generalmodel.TopicWithCategory
+import com.mshdabiola.seriesmodel.TopicCategory
+import com.mshdabiola.seriesmodel.TopicWithCategory
 import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,6 +1,5 @@
 package com.mshdabiola.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Tab
@@ -27,24 +25,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil
-import com.mshdabiola.retex.Latex
+import com.mshdabiola.serieslatex.Latex
+import com.mshdabiola.seriesmodel.Type
 import com.mshdabiola.ui.image.DragAndDropImage
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionDialog(
     modifier: Modifier = Modifier,
@@ -70,7 +67,6 @@ fun QuestionDialog(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageDialog(
     modifier: Modifier = Modifier,
@@ -101,6 +97,7 @@ fun ImageDialog(
                 DragAndDropImage(
                     modifier = modifier.fillMaxSize(),
                     path = ImageUtil.getAppPath(textFieldState.text.toString()).path,
+                    isEmpty = textFieldState.text.isBlank(),
 // ,
                     onPathChange = { path ->
                         coroutineScope.launch {
@@ -123,7 +120,7 @@ fun ImageDialog(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EquationDialog(
     modifier: Modifier = Modifier,
@@ -158,7 +155,10 @@ fun EquationDialog(
         },
         text = {
             Column(modifier) {
-                ScrollableTabRow(selectedTabIndex = pagerState.currentPage) {
+                ScrollableTabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    containerColor = Color.Transparent,
+                ) {
                     map.keys.forEachIndexed { index, s ->
 
                         Tab(
@@ -204,12 +204,10 @@ fun EquationDialog(
                     state = textFieldState,
                 )
 
-                key(textFieldState.text) {
-                    Latex(
-                        modifier = Modifier.fillMaxWidth().height(80.dp),
-                        text = textFieldState.text.toString(),
-                    )
-                }
+                Latex(
+                    modifier = Modifier.fillMaxWidth().height(80.dp),
+                    text = textFieldState.text.toString(),
+                )
             }
         },
     )

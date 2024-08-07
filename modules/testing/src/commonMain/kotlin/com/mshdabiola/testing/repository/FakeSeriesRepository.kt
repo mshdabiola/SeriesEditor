@@ -1,7 +1,7 @@
 package com.mshdabiola.testing.repository
 
 import com.mshdabiola.data.repository.ISeriesRepository
-import com.mshdabiola.generalmodel.Series
+import com.mshdabiola.seriesmodel.Series
 import com.mshdabiola.testing.exportableData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

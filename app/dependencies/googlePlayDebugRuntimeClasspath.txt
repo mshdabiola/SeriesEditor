@@ -248,13 +248,6 @@ com.google.guava:guava:32.0.1-android
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 com.google.j2objc:j2objc-annotations:2.8
 com.google.protobuf:protobuf-javalite:3.22.3
-com.mshdabiola.series:database-android-debug:0.0.8
-com.mshdabiola.series:database:0.0.8
-com.mshdabiola.series:jretex:0.0.8
-com.mshdabiola.series:model-android-debug:0.0.8
-com.mshdabiola.series:model:0.0.8
-com.mshdabiola.series:retex-android-debug:0.0.8
-com.mshdabiola.series:retex:0.0.8
 com.squareup.okhttp3:okhttp:3.12.1
 com.squareup.okio:okio-jvm:3.9.0
 com.squareup.okio:okio:3.9.0
@@ -274,6 +267,13 @@ io.coil-kt.coil3:coil-network-ktor:3.0.0-alpha07
 io.coil-kt.coil3:coil-svg-android:3.0.0-alpha07
 io.coil-kt.coil3:coil-svg:3.0.0-alpha07
 io.coil-kt.coil3:coil:3.0.0-alpha07
+io.github.mshdabiola:jretex:0.0.15
+io.github.mshdabiola:seriesdatabase-android-debug:0.0.15
+io.github.mshdabiola:seriesdatabase:0.0.15
+io.github.mshdabiola:serieslatex-android-debug:0.0.15
+io.github.mshdabiola:serieslatex:0.0.15
+io.github.mshdabiola:seriesmodel-android-debug:0.0.15
+io.github.mshdabiola:seriesmodel:0.0.15
 io.grpc:grpc-api:1.57.2
 io.grpc:grpc-context:1.57.2
 io.grpc:grpc-core:1.57.2

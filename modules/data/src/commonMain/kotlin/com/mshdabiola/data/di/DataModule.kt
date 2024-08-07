@@ -26,9 +26,9 @@ import com.mshdabiola.data.repository.TopicCategoryRepository
 import com.mshdabiola.data.repository.TopicRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
-import com.mshdabiola.database.di.databaseModule
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
+import com.mshdabiola.seriesdatabase.di.databaseModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module

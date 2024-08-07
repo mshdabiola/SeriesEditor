@@ -1,10 +1,10 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.database.asEntity
-import com.mshdabiola.database.asModel
-import com.mshdabiola.database.dao.SubjectDao
-import com.mshdabiola.generalmodel.Subject
-import com.mshdabiola.generalmodel.SubjectWithSeries
+import com.mshdabiola.seriesdatabase.asEntity
+import com.mshdabiola.seriesdatabase.asModel
+import com.mshdabiola.seriesdatabase.dao.SubjectDao
+import com.mshdabiola.seriesmodel.Subject
+import com.mshdabiola.seriesmodel.SubjectWithSeries
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

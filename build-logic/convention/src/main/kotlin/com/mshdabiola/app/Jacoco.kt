@@ -68,10 +68,20 @@ internal fun Project.configureJacoco(
                 }
 
                 // TODO: This is missing files in src/debug/, src/prod, src/demo, src/demoDebug...
-                sourceDirectories.setFrom(files("$projectDir/src/main/java", "$projectDir/src/main/kotlin"))
+                sourceDirectories.setFrom(files(
+                    "$projectDir/src/main/java",
+                    "$projectDir/src/main/kotlin",
+                    "$projectDir/src/commonMain/kotlin",
+                    "$projectDir/src/jvmMain/kotlin"
+
+
+                ))
 
                 executionData.setFrom(
                     project.fileTree("$buildDir/outputs/unit_test_code_coverage/${variant.name}UnitTest")
+                        .matching { include("**/*.exec") },
+
+                    project.fileTree("$buildDir/outputs/unit_test_code_coverage/${variant.name}JvmTest")
                         .matching { include("**/*.exec") },
 
                     project.fileTree("$buildDir/outputs/code_coverage/${variant.name}AndroidTest")

@@ -78,7 +78,7 @@ windowSizeClass = "0.5.0"
 screenshot = "0.0.1-alpha03"
 
 
-series = "0.0.8"
+series = "0.0.15"
 calf = "0.4.0"
 
 versionCode = "14"
@@ -205,10 +205,10 @@ paging-common = { module = "androidx.paging:paging-common", version.ref = "andro
 
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 #
-retex = { module = "com.mshdabiola.series:retex", version.ref = "series" }
-model = { module = "com.mshdabiola.series:model", version.ref = "series" }
+retex = { module = "io.github.mshdabiola:serieslatex", version.ref = "series" }
+model = { module = "io.github.mshdabiola:seriesmodel", version.ref = "series" }
 
-database = { module = "com.mshdabiola.series:database", version.ref = "series" }
+database = { module = "io.github.mshdabiola:seriesdatabase", version.ref = "series" }
 calf-filepicker = { module = "com.mohamedrejeb.calf:calf-file-picker", version.ref = "calf" }
 
 # Dependencies of the included build-logic

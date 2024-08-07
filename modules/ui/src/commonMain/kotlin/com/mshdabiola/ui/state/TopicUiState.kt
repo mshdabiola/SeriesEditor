@@ -1,6 +1,6 @@
 package com.mshdabiola.ui.state
 
-import com.mshdabiola.generalmodel.TopicCategory
+import com.mshdabiola.seriesmodel.TopicCategory
 
 data class TopicUiState(
     val id: Long = -1,

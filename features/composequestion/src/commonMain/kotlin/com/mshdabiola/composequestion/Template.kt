@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.retex.Latex
-import com.mshdabiola.retex.MarkUpEngine
-import com.mshdabiola.retex.MarkUpText
+import com.mshdabiola.serieslatex.Latex
+import com.mshdabiola.serieslatex.MarkUpEngine
+import com.mshdabiola.serieslatex.MarkUpText
 
 @OptIn(
     ExperimentalLayoutApi::class,

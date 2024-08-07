@@ -30,7 +30,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,10 +42,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil
-import com.mshdabiola.retex.Latex
-import com.mshdabiola.retex.MarkUpText
+import com.mshdabiola.serieslatex.Latex
+import com.mshdabiola.serieslatex.MarkUpText
+import com.mshdabiola.seriesmodel.Type
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -287,9 +286,7 @@ fun EquationContent(
     modifier: Modifier = Modifier,
     equation: ItemUiState,
 ) {
-    key(equation.content.text) {
-        Latex(modifier = modifier, equation.content.text.toString())
-    }
+    Latex(modifier = modifier, equation.content.text.toString())
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -321,7 +318,11 @@ fun TextContent(
         launch {
             if (text.focus) {
                 delay(1000)
-                focusRequester.requestFocus()
+                try {
+                    focusRequester.requestFocus()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }

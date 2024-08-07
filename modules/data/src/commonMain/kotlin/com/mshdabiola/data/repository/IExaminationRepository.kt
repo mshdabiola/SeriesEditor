@@ -1,7 +1,7 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.generalmodel.ExaminationWithSubject
+import com.mshdabiola.seriesmodel.Examination
+import com.mshdabiola.seriesmodel.ExaminationWithSubject
 import kotlinx.coroutines.flow.Flow
 import java.io.InputStream
 import java.io.OutputStream
