@@ -51,40 +51,6 @@ jobs:
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
 
-      - name: Generate coverage reports for Jvm
-        run: ./gradlew koverXmlReportJvm; ./gradlew koverHtmlReportJvm   #koverHtmlReportJvm
-
-      - name: Add coverage report to PR
-        id: kover
-        uses: mi-kas/kover-report@v1
-        with:
-          path: |
-            ${{ github.workspace }}/modules/analytics/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/data/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/datastore/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/designsystem/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/domain/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/model/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/network/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/testing/build/reports/kover/reportJvm.xml
-            ${{ github.workspace }}/modules/ui/build/reports/kover/reportJvm.xml
-
-          title: Code Coverage
-          update-comment: true
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload local coverage reports (XML + HTML) (only API 30)
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-reports
-          if-no-files-found: error
-          compression-level: 1
-          overwrite: false
-          path: '**/build/reports/kover/'
-
-
       - name: Check build-logic
         run: ./gradlew check -p build-logic
 
@@ -186,39 +152,30 @@ jobs:
       - name: Check badging
         run: ./gradlew checkFossReliantReleaseBadging
 
-#      - name: Generate coverage reports for Jvm
-#        run: ./gradlew koverXmlReportJvm; ./gradlew koverHtmlReportJvm   #koverHtmlReportJvm
-#
+      - name: Generate coverage reports for Jvm
+        run: ./gradlew koverXmlReportJvm; ./gradlew koverHtmlReportJvm   #koverHtmlReportJvm
+
 #      - name: Add coverage report to PR
 #        id: kover
 #        uses: mi-kas/kover-report@v1
 #        with:
 #          path: |
-#            ${{ github.workspace }}/project1/build/reports/kover/report.xml
 #            ${{ github.workspace }}/modules/analytics/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/data/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/datastore/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/designsystem/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/domain/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/model/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/network/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/testing/build/reports/kover/reportJvm.xml
-#            ${{ github.workspace }}/modules/ui/build/reports/kover/reportJvm.xml
 #
 #          title: Code Coverage
 #          update-comment: true
 #          min-coverage-overall: 40
 #          min-coverage-changed-files: 60
 #          token: ${{ secrets.GITHUB_TOKEN }}
-#
-#      - name: Upload local coverage reports (XML + HTML) (only API 30)
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: coverage-reports
-#          if-no-files-found: error
-#          compression-level: 1
-#          overwrite: false
-#          path: '**/build/reports/kover/'
+
+      - name: Upload local coverage reports (XML + HTML) (only API 30)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          if-no-files-found: error
+          compression-level: 1
+          overwrite: false
+          path: '**/build/reports/kover/'
 
   androidTest:
     runs-on: ubuntu-latest
