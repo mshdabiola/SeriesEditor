@@ -69,7 +69,6 @@ import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
-import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
@@ -77,6 +76,7 @@ import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.serieseditor.MainState
 import com.mshdabiola.serieseditor.navigation.ExtendNavHost
 import com.mshdabiola.serieseditor.navigation.OtherNavHost
+import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.semanticsCommon
