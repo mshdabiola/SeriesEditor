@@ -136,6 +136,7 @@ class Extended(
             ?.getLong(SUBJECT_ARG) ?: -1
 
     override fun onSubjectClick(id: Long) {
+        navController.popBackStack()
         mainNavController.navigateToMain(id)
     }
 
@@ -173,6 +174,7 @@ class Other(
         @Composable get() = true
 
     override fun onSubjectClick(id: Long) {
+        navController.popBackStack()
         navController.navigateToMain(id)
     }
 

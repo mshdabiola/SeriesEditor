@@ -195,6 +195,7 @@ fun SeriesEditorApp() {
                                                         subjects = subjects.value,
 
                                                         addSubject = {
+                                                            coroutine.launch { drawerState.close() }
                                                             appState.navController.navigateToComposeSubject(
                                                                 -1,
                                                             )
