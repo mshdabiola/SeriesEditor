@@ -222,15 +222,15 @@ internal fun MainContent(
             Text("Add Subject")
         }
 
-        Section(title = "Type Section")
+        Section(title = "Class Section")
 
         SeriesEditorTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag("cs:series"),
             state = seriesState,
-            label = "Type",
-            placeholder = "NECO",
+            label = "Class",
+            placeholder = "Freshman",
             keyboardAction = { addSeries() },
             maxNum = TextFieldLineLimits.SingleLine,
         )
