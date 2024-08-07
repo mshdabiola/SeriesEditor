@@ -38,12 +38,10 @@ actual fun DragAndDropImage(
 
             override fun onStarted(event: DragAndDropEvent) {
                 isover = true
-
             }
 
             override fun onEnded(event: DragAndDropEvent) {
                 isover = false
-
             }
 
             override fun onDrop(event: DragAndDropEvent): Boolean {
@@ -65,7 +63,6 @@ actual fun DragAndDropImage(
             }
         }
     }
-
 
     Card(
         modifier = modifier
@@ -98,12 +95,11 @@ actual fun DragAndDropImage(
             }
         }
     }
-
 }
 
-//@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
-//@Composable
-//fun MainForm() {
+// @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
+// @Composable
+// fun MainForm() {
 //    val exportedText = "Hello, DnD!"
 //    Row(
 //        horizontalArrangement = Arrangement.SpaceEvenly,
@@ -148,8 +144,8 @@ actual fun DragAndDropImage(
 //                                        DragAndDropTransferAction.Move,
 //                                        DragAndDropTransferAction.Link,
 //                                    ),
-////                                initialAction = DragAndDropTransferAction.Copy,
-////                                dragOffset = offset,
+// //                                initialAction = DragAndDropTransferAction.Copy,
+// //                                dragOffset = offset,
 //                                    onTransferCompleted = { action ->
 //                                        when (action) {
 //                                            null -> println("Transfer aborted")
@@ -216,4 +212,4 @@ actual fun DragAndDropImage(
 //            Text(targetText, Modifier.align(Alignment.Center))
 //        }
 //    }
-//}
+// }

@@ -72,7 +72,7 @@ actual fun DragAndDropImage(
             BorderStroke(width = 2.dp, color = Color.Black)
         },
 
-        ) {
+    ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             if (!isEmpty) {
                 ImageUi(
