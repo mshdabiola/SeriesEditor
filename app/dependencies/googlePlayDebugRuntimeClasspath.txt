@@ -322,7 +322,6 @@ io.reactivex.rxjava2:rxjava:2.1.14
 javax.inject:javax.inject:1
 org.checkerframework:checker-qual:3.33.0
 org.codehaus.mojo:animal-sniffer-annotations:1.23
-org.jacoco:org.jacoco.agent:0.8.11
 org.jetbrains.androidx.core:core-bundle-android-debug:1.0.0
 org.jetbrains.androidx.core:core-bundle:1.0.0
 org.jetbrains.androidx.lifecycle:lifecycle-common:2.8.0
