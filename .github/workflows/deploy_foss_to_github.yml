@@ -39,9 +39,6 @@ jobs:
           sed -i -e '/libs.firebase/d' build-logic/convention/build.gradle.kts
 
       - name: Build release variant apk
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew assembleFossReliantRelease
 
       - name: Sign APK

@@ -55,17 +55,11 @@ jobs:
         run: ./gradlew check -p build-logic
 
       - name: Check spotless
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
 
       - name: Check Dependency Guard
         id: dependencyguard_verify
         continue-on-error: true
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew dependencyGuard
 
       - name: Prevent updating Dependency Guard baselines if this is a fork
@@ -79,9 +73,6 @@ jobs:
       - name: Generate new Dependency Guard baselines if verification failed and it's a PR
         id: dependencyguard_baseline
         if: steps.dependencyguard_verify.outcome == 'failure' && github.event_name == 'pull_request'
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           ./gradlew dependencyGuardBaseline
 
@@ -96,9 +87,6 @@ jobs:
       - name: Run all local screenshot tests
         id: screenshotsverify
         continue-on-error: true
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew validateFossReliantDebugScreenshotTest
 
       - name: Prevent pushing new screenshots if this is a fork
@@ -112,9 +100,6 @@ jobs:
       - name: Generate new screenshots if verification failed and it's a PR
         id: screenshotsrecord
         if: steps.screenshotsverify.outcome == 'failure' && github.event_name == 'pull_request'
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           ./gradlew updateFossReliantDebugScreenshotTest
 
@@ -129,18 +114,12 @@ jobs:
       # Run local tests after screenshot tests to avoid wrong UP-TO-DATE. TODO: Ignore screenshots.
       - name: Run local tests and create report
         if: always()
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew jvmTest
       # Replace task exclusions with `-Pandroidx.baselineprofile.skipgeneration` when
       # https://android-review.googlesource.com/c/platform/frameworks/support/+/2602790 landed in a
       # release build
 
       - name: Build all build type and flavor permutations
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew assembleFossReliant :benchmarks:assembleFossReliant
           -x pixel6Api33FossReliantNonMinifiedReleaseAndroidTest
           -x pixel6Api33FossReliantNonMinifiedBenchmarkAndroidTest
@@ -161,9 +140,6 @@ jobs:
           path: '**/build/reports/tests/jvmTest'
 
       - name: Check lint
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew lintFossReliantRelease
 
       - name: Upload lint reports (HTML)
@@ -174,9 +150,6 @@ jobs:
           path: '**/build/reports/lint-results-*.html'
 
       - name: Check badging
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew checkFossReliantReleaseBadging
 
   androidTest:
@@ -226,9 +199,6 @@ jobs:
 
       - name: Build projects and run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         with:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
@@ -239,18 +209,12 @@ jobs:
 
       - name: Run local tests (including Roborazzi) for the combined coverage report (only API 30)
         if: matrix.api-level == 30
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         # There is no need to verify Roborazzi tests to generate coverage.
         run: ./gradlew testFossReliantDebugUnitTest -Proborazzi.test.verify=false # Add Prod if we ever add JVM tests for prod
 
       # Add `createProdDebugUnitTestCoverageReport` if we ever add JVM tests for prod
       - name: Generate coverage reports for Debug variants (only API 30)
         if: matrix.api-level == 30
-        env:
-          USERID: ${{ secrets.USERID }}
-          PASSWORD: ${{ secrets.PASSWORD }}
         run: ./gradlew createFossReliantDebugCombinedCoverageReport
 
       - name: Upload test reports
