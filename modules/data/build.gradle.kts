@@ -22,6 +22,8 @@ kotlin {
                 implementation(project(":modules:network"))
                 implementation(libs.kotlinx.coroutines.core)
                 api(libs.database)
+                implementation(libs.poi)
+
 
 
 

@@ -39,6 +39,7 @@ kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.0"
 ksp = "2.0.0-1.0.21"
 moduleGraph = "2.5.0"
+poi = "5.3.0"
 room = "2.7.0-alpha05"
 secrets = "2.0.1"
 truth = "1.4.3"
@@ -148,6 +149,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "androidTools" }
 lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "androidTools" }
 lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "androidTools" }
+poi = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
