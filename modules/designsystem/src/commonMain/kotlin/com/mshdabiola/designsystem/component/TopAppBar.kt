@@ -111,6 +111,7 @@ fun MainTopBar(
     deselectAll: () -> Unit = {},
     navigateToSetting: () -> Unit = {},
     showExportDialog: () -> Unit = {},
+    exportWord: () -> Unit = {},
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
     updateSubject: (Long) -> Unit = {},
@@ -187,6 +188,20 @@ fun MainTopBar(
                             onClick = {
                                 // onDelete(examUiState.id)
                                 showExportDialog()
+                                showDrop = false
+                            },
+                        )
+                        DropdownMenuItem(
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Rounded.SaveAs,
+                                    "save",
+                                )
+                            },
+                            text = { Text("Export to Word") },
+                            onClick = {
+                                // onDelete(examUiState.id)
+                                exportWord()
                                 showDrop = false
                             },
                         )

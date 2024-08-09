@@ -63,6 +63,7 @@ fun MainTopBarSection(
             else
                 showPermissionDialog = true
         },
+        exportWord = { viewModel.onExportWord(path!!) },
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = { showDeleteDialog = true },
         updateSubject = updateSubject,
@@ -156,6 +157,7 @@ fun MainBottomBarSection(
         } else {
             null
         },
+        exportWord = { viewModel.onExportWord(path!!) },
         onBackClick = if (!appState.isMain) {
             { appState.navController.popBackStack() }
         } else {

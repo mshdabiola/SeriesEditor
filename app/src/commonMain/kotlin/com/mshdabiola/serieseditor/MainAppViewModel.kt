@@ -141,17 +141,14 @@ class MainAppViewModel(
                 if (!file.exists()) {
                     file.mkdirs()
                 }
-                val currentDateTime = LocalDateTime.now() // Use LocalDateTime
-                val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
-                val nowDate = formatter.format(currentDateTime)
 
 
 
                 ids
                     .mapNotNull { iExamRepository.getOne(it).first() }
                     .forEach {
-                        val nameByDate = "${it.subject.title}-${it.examination.year}_$nowDate.docx"
-                        val newPath = File(file, nameByDate)
+                        val name = "${it.subject.title}-${it.examination.year}.docx"
+                        val newPath = File(file, name)
                         val questions = questionRepository.getByExamId(it.examination.id).first()
                         com.mshdabiola.data.repository.ExportWord(it, questions).write(newPath.path)
                     }

@@ -19,10 +19,12 @@ class ExportWord(
         createHead("Examination")
         addParagraph("subject: ${examination.subject.title}")
         addParagraph("Year: ${examination.examination.year}")
-        addParagraph("Duration: ${examination.examination.duration} minute")
+        addParagraph("Duration: ${examination.examination.duration} minutes")
         addBreak(1)
-        createSubHead("Instructions")
         val instructions = questions.mapNotNull { it.instruction }
+        if (instructions.isNotEmpty()) {
+            createSubHead("Instructions")
+        }
         instructions.forEachIndexed { index, instruction ->
             addParagraph(instruction.title, index + 1)
 
