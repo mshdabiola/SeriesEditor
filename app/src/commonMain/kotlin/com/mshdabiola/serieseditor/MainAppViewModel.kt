@@ -7,6 +7,7 @@ package com.mshdabiola.serieseditor
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
@@ -39,6 +40,7 @@ class MainAppViewModel(
     subjectRepository: ISubjectRepository,
     userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
+    private val questionRepository: IQuestionRepository,
     private val seriesRepository: SeriesRepository,
 ) : ViewModel() {
 
@@ -130,6 +132,54 @@ class MainAppViewModel(
         }
     }
 
+    fun onExportWord(path: String) {
+        viewModelScope.launch {
+            _mainState.value = MainState.Loading
+            try {
+                val ids = iExamRepository.selectedList.first().toSet()
+                val file = File(path)
+                if (!file.exists()) {
+                    file.mkdirs()
+                }
+                val currentDateTime = LocalDateTime.now() // Use LocalDateTime
+                val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
+                val nowDate = formatter.format(currentDateTime)
+
+
+
+                ids
+                    .mapNotNull { iExamRepository.getOne(it).first() }
+                    .forEach {
+                        val nameByDate = "${it.subject.title}-${it.examination.year}_$nowDate.docx"
+                        val newPath = File(file, nameByDate)
+                        val questions = questionRepository.getByExamId(it.examination.id).first()
+                        com.mshdabiola.data.repository.ExportWord(it, questions).write(newPath.path)
+                    }
+
+
+
+
+                deselectAll()
+                val messeage = if (Platform.Android == currentPlatform) {
+                    "Successfully Saved to internal storage, series directory"
+                } else {
+                    "successfully Saved to desktop, series directory"
+                }
+                _mainState.value = MainState.Success(user!!, messeage)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                deselectAll()
+
+                _mainState.value = MainState.Success(user!!, "Failed to export")
+            }
+
+            delay(1500)
+
+            _mainState.value = MainState.Success(user!!, "")
+        }
+    }
+
+
     fun deselectAll() {
         viewModelScope.launch {
             iExamRepository.updateSelectedList(emptyList())
@@ -141,15 +191,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                    if (subjectId < 0) {
-                        iExamRepository.getAll()
-                            .mapNotNull { it.map { it.id } }
-                    } else {
-                        iExamRepository
-                            .getAllBuSubjectId(subjectId)
-                            .mapNotNull { it.map { it.examination.id } }
-                    }
-                    ).first()
+                        if (subjectId < 0) {
+                            iExamRepository.getAll()
+                                .mapNotNull { it.map { it.id } }
+                        } else {
+                            iExamRepository
+                                .getAllBuSubjectId(subjectId)
+                                .mapNotNull { it.map { it.examination.id } }
+                        }
+                        ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

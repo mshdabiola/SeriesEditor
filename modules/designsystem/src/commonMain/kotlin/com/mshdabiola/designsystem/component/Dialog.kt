@@ -21,34 +21,13 @@ import java.io.File
 @Composable
 fun MainExportDialog(
     show: Boolean,
-    export: (String, String) -> Unit = { _, _ -> },
+    export: ( String) -> Unit = { },
     onClose: () -> Unit = {},
 ) {
-    var path by remember { mutableStateOf<String?>(null) }
 
     val key = rememberTextFieldState()
-    var hasPermission by remember { mutableStateOf(false) }
 
     if (show) {
-        HasWrittenPermission {
-            hasPermission = it
-        }
-
-        GetFilePath {
-            path = it?.absolutePath
-        }
-
-        if (!hasPermission) {
-            PermissionDialog(
-                onDismiss = onClose,
-                onFile = {
-                    path = it?.absolutePath
-                    if (it != null) {
-                        hasPermission = true
-                    }
-                },
-            )
-        } else {
             AlertDialog(
                 onDismissRequest = onClose,
                 dismissButton = {
@@ -60,7 +39,7 @@ fun MainExportDialog(
                     Button(
                         onClick = {
                             onClose()
-                            export(path!!, key.text.toString())
+                            export( key.text.toString())
                         },
                     ) {
                         Text("Export")
@@ -75,7 +54,7 @@ fun MainExportDialog(
                     )
                 },
             )
-        }
+
     }
 }
 
