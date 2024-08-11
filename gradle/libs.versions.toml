@@ -1,9 +1,9 @@
 [versions]
 accompanist = "0.34.0"
 androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.5.0"
+androidGradlePlugin = "8.5.2"
 androidTools = "31.5.0"
-androidxActivity = "1.9.0"
+androidxActivity = "1.9.1"
 androidxAppCompat = "1.7.0"
 
 androidxComposeMaterial3Adaptive = "1.0.0-beta04"
@@ -40,7 +40,7 @@ kotlinxSerializationJson = "1.7.0"
 ksp = "2.0.0-1.0.21"
 moduleGraph = "2.5.0"
 poi = "5.3.0"
-room = "2.7.0-alpha05"
+room = "2.7.0-alpha06"
 secrets = "2.0.1"
 truth = "1.4.3"
 turbine = "1.1.0"
@@ -79,7 +79,7 @@ screenshot = "0.0.1-alpha03"
 kover = "0.8.3"
 
 
-series = "0.0.15"
+series = "0.0.16"
 calf = "0.4.0"
 
 versionCode = "14"
