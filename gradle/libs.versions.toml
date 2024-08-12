@@ -70,7 +70,7 @@ kermit = "2.0.4"
 slf4jSimple = "2.0.13"
 
 androidx-paging = "3.3.0"
-sqlite = "2.5.0-alpha05"
+sqlite = "2.5.0-alpha06"
 kotlinxCollectionImmutable = "0.3.7"
 windowSizeClass = "0.5.0"
 
