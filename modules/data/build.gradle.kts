@@ -23,6 +23,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 api(libs.database)
                 implementation(libs.poi)
+                implementation(projects.modules.ui)
 
 
 

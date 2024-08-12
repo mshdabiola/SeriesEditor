@@ -1,11 +1,21 @@
 package com.mshdabiola.data.repository
 
+import androidx.compose.ui.graphics.Color
+import com.mshdabiola.model.ImageUtil
+import com.mshdabiola.serieslatex.getLatexImage
+import com.mshdabiola.serieslatex.toByteArray
 import com.mshdabiola.seriesmodel.Content
 import com.mshdabiola.seriesmodel.ExaminationWithSubject
 import com.mshdabiola.seriesmodel.Option
 import com.mshdabiola.seriesmodel.Question
+import com.mshdabiola.seriesmodel.Type
+import org.apache.poi.util.Units
+import org.apache.poi.xwpf.usermodel.Document
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment
 import org.apache.poi.xwpf.usermodel.XWPFDocument
+import org.apache.poi.xwpf.usermodel.XWPFRun
+import java.io.ByteArrayInputStream
+import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
@@ -27,8 +37,9 @@ class ExportWord(
         }
         instructions.forEachIndexed { index, instruction ->
             addParagraph(instruction.title, index + 1)
-
-            addContent(instruction.content)
+            val paragraph = document.createParagraph()
+            val run = paragraph.createRun()
+            addContent(run, instruction.content)
             addBreak(1)
         }
         addBreak(1)
@@ -91,13 +102,37 @@ class ExportWord(
         }
     }
 
-    private fun addContent(contents: List<Content>) {
-        val paragraph = document.createParagraph()
-        val run = paragraph.createRun()
+    private fun addContent(run: XWPFRun, contents: List<Content>) {
+
         for (content in contents) {
-            run.setText(content.content)
-            run.setText(" ")
+            when (content.type) {
+                Type.TEXT -> {
+                    run.setText(content.content)
+                    run.setText(" ")
+
+                }
+
+                Type.IMAGE -> {
+                    val imageData =
+                        FileInputStream(ImageUtil.getAppPath(content.content).path).readAllBytes()
+                    addImageToWord(run, imageData, 200.0, 200.0)
+
+                }
+
+                Type.EQUATION -> {
+                    val imageData = getLatexImage(
+                        content.content,
+                        backgroundColor = Color.Transparent,
+                        foregroundColor = Color.Black,
+                    )
+                        .toByteArray()
+                    addImageToWord(run, imageData, 300.0, 50.0)
+                }
+
+            }
+
         }
+
 
     }
 
@@ -106,9 +141,57 @@ class ExportWord(
         val run = paragraph.createRun()
         run.setText(" $number. ")
         for (content in contents) {
-            run.setText(content.content)
+            when (content.type) {
+                Type.TEXT -> {
+                    run.setText(content.content)
+                }
+
+                Type.IMAGE -> {
+                    val imageData =
+                        FileInputStream(ImageUtil.getAppPath(content.content).path).readAllBytes()
+                    addImageToWord(run, imageData, 200.0, 200.0)
+
+                }
+
+                Type.EQUATION -> {
+                    val imageData = getLatexImage(
+                        content.content,
+                        backgroundColor = Color.Transparent,
+                        foregroundColor = Color.Black,
+                    )
+                        .toByteArray()
+                    addImageToWord(run, imageData, 300.0, 50.0)
+                }
+
+            }
+
         }
 
+    }
+
+    fun addImageToWord(
+        run: org.apache.poi.xwpf.usermodel.XWPFRun,
+        imageData: ByteArray,
+        width: Double,
+        height: Double,
+    ) {
+        // Load the image
+
+
+        // Create a relationship for the image
+        val relationshipId =
+            document.addPictureData(ByteArrayInputStream(imageData), Document.PICTURE_TYPE_PNG)
+
+
+        // Add the image to the run
+        run.addPicture(
+            ByteArrayInputStream(imageData),
+            Document.PICTURE_TYPE_PNG,
+            relationshipId,
+            Units.toEMU(width),
+            Units.toEMU(height),
+        )
+        run.addBreak()
     }
 
     private fun addOptionContent(options: List<Option>) {
@@ -123,11 +206,7 @@ class ExportWord(
 
             run.setText("(${('A' + index)}) ")
 
-            for (content in option.contents) {
-
-                run.setText(content.content)
-                run.setText(" ")
-            }
+            addContent(run, option.contents)
 
         }
 

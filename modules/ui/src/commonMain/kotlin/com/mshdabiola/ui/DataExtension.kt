@@ -1,6 +1,8 @@
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.text.input.TextFieldState
+import com.mshdabiola.serieslatex.getLatexImage
+import com.mshdabiola.serieslatex.toByteArray
 import com.mshdabiola.seriesmodel.Content
 import com.mshdabiola.seriesmodel.Examination
 import com.mshdabiola.seriesmodel.ExaminationWithSubject
@@ -18,6 +20,8 @@ import com.mshdabiola.ui.state.QuestionUiState
 import com.mshdabiola.ui.state.SubjectUiState
 import com.mshdabiola.ui.state.TopicUiState
 import kotlinx.collections.immutable.toImmutableList
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 
 fun Question.toQuestionUiState(isEdit: Boolean = false) = QuestionUiState(
     id = id,
@@ -89,6 +93,7 @@ fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
         title = TextFieldState(title),
         content = content.map { it.toItemUi(isEdit = isEdit) }.toImmutableList(),
     )
+
 fun TopicWithCategory.toUi() = TopicUiState(id = id, topicCategory = topicCategory, name = title)
 fun TopicUiState.toTopic() = TopicWithCategory(id = id, topicCategory = topicCategory, title = name)
 

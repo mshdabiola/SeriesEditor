@@ -147,7 +147,7 @@ class MainAppViewModel(
                 ids
                     .mapNotNull { iExamRepository.getOne(it).first() }
                     .forEach {
-                        val name = "${it.subject.title}-${it.examination.year}.docx"
+                        val name = "${it.examination.id}-${it.subject.title}-${it.examination.year}.docx"
                         val newPath = File(file, name)
                         val questions = questionRepository.getByExamId(it.examination.id).first()
                         com.mshdabiola.data.repository.ExportWord(it, questions).write(newPath.path)
