@@ -1,6 +1,9 @@
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.ui.graphics.Color
+import com.mshdabiola.serieslatex.getLatexImage
+import com.mshdabiola.serieslatex.toByteArray
 import com.mshdabiola.seriesmodel.Content
 import com.mshdabiola.seriesmodel.Examination
 import com.mshdabiola.seriesmodel.ExaminationWithSubject
@@ -115,3 +118,12 @@ fun ExamUiState.toExam() =
         year = year,
         duration = duration,
     )
+
+fun getLatexByte(content: String): ByteArray {
+    return getLatexImage(
+        content,
+        backgroundColor = Color.Transparent,
+        foregroundColor = Color.Black,
+    )
+        .toByteArray()
+}

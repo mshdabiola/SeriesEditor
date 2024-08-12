@@ -1,14 +1,12 @@
 package com.mshdabiola.data.repository
 
-import androidx.compose.ui.graphics.Color
 import com.mshdabiola.model.ImageUtil
-import com.mshdabiola.serieslatex.getLatexImage
-import com.mshdabiola.serieslatex.toByteArray
 import com.mshdabiola.seriesmodel.Content
 import com.mshdabiola.seriesmodel.ExaminationWithSubject
 import com.mshdabiola.seriesmodel.Option
 import com.mshdabiola.seriesmodel.Question
 import com.mshdabiola.seriesmodel.Type
+import com.mshdabiola.ui.getLatexByte
 import org.apache.poi.util.Units
 import org.apache.poi.xwpf.usermodel.Document
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment
@@ -112,12 +110,7 @@ class ExportWord(
                 }
 
                 Type.EQUATION -> {
-                    val imageData = getLatexImage(
-                        content.content,
-                        backgroundColor = Color.Transparent,
-                        foregroundColor = Color.Black,
-                    )
-                        .toByteArray()
+                    val imageData = getLatexByte(content.content)
                     addImageToWord(run, imageData, 300.0, 50.0)
                 }
             }
@@ -137,16 +130,13 @@ class ExportWord(
                 Type.IMAGE -> {
                     val imageData =
                         FileInputStream(ImageUtil.getAppPath(content.content).path).readAllBytes()
+
                     addImageToWord(run, imageData, 200.0, 200.0)
                 }
 
                 Type.EQUATION -> {
-                    val imageData = getLatexImage(
-                        content.content,
-                        backgroundColor = Color.Transparent,
-                        foregroundColor = Color.Black,
-                    )
-                        .toByteArray()
+                    val imageData = getLatexByte(
+                        content.content)
                     addImageToWord(run, imageData, 300.0, 50.0)
                 }
             }
