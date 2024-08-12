@@ -262,7 +262,7 @@ fun SeriesEditorApp() {
                                                 }
                                             },
 
-                                            ) { padding ->
+                                        ) { padding ->
 
                                             Column(
                                                 Modifier

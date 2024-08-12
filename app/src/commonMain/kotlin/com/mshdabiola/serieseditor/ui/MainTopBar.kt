@@ -29,15 +29,12 @@ fun MainTopBarSection(
     onNavigationClick: (() -> Unit)? = null,
     onAddTopic: (() -> Unit)? = null,
 
-    ) {
-
-
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
-
 
     var path by remember { mutableStateOf<String?>(null) }
     var hasPermission by remember { mutableStateOf(false) }
@@ -58,10 +55,11 @@ fun MainTopBarSection(
         deselectAll = viewModel::deselectAll,
         navigateToSetting = navigateToSetting,
         showExportDialog = {
-            if (hasPermission)
+            if (hasPermission) {
                 showDialog = true
-            else
+            } else {
                 showPermissionDialog = true
+            }
         },
         exportWord = { viewModel.onExportWord(path!!) },
         toggleSelectMode = viewModel::toggleSelectMode,
@@ -79,7 +77,6 @@ fun MainTopBarSection(
                     hasPermission = true
                 }
                 showPermissionDialog = false
-
             },
         )
     }
@@ -110,7 +107,7 @@ fun MainBottomBarSection(
     onNavigationClick: (() -> Unit)?,
     fabText: String,
 
-    ) {
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -136,10 +133,11 @@ fun MainBottomBarSection(
         selectAll = viewModel::selectAll,
         deselectAll = viewModel::deselectAll,
         showExportDialog = {
-            if (hasPermission)
+            if (hasPermission) {
                 showDialog = true
-            else
+            } else {
                 showPermissionDialog = true
+            }
         },
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = { showDeleteDialog = true },
@@ -171,7 +169,6 @@ fun MainBottomBarSection(
                 path = it?.absolutePath
                 if (it != null) {
                     hasPermission = true
-
                 }
                 showPermissionDialog = false
             },

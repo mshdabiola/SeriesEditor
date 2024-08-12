@@ -142,8 +142,6 @@ class MainAppViewModel(
                     file.mkdirs()
                 }
 
-
-
                 ids
                     .mapNotNull { iExamRepository.getOne(it).first() }
                     .forEach {
@@ -152,9 +150,6 @@ class MainAppViewModel(
                         val questions = questionRepository.getByExamId(it.examination.id).first()
                         com.mshdabiola.data.repository.ExportWord(it, questions).write(newPath.path)
                     }
-
-
-
 
                 deselectAll()
                 val messeage = if (Platform.Android == currentPlatform) {
@@ -176,7 +171,6 @@ class MainAppViewModel(
         }
     }
 
-
     fun deselectAll() {
         viewModelScope.launch {
             iExamRepository.updateSelectedList(emptyList())
@@ -188,15 +182,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                        if (subjectId < 0) {
-                            iExamRepository.getAll()
-                                .mapNotNull { it.map { it.id } }
-                        } else {
-                            iExamRepository
-                                .getAllBuSubjectId(subjectId)
-                                .mapNotNull { it.map { it.examination.id } }
-                        }
-                        ).first()
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
