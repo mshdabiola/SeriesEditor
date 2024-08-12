@@ -7,7 +7,6 @@ import com.mshdabiola.testing.questions
 import com.mshdabiola.testing.series
 import com.mshdabiola.testing.subjects
 import java.io.File
-import kotlin.test.Test
 
 class ExportWordTest {
 

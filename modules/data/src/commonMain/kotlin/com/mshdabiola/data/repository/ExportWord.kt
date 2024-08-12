@@ -18,12 +18,11 @@ import java.io.ByteArrayInputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-
 class ExportWord(
-    private val examination: ExaminationWithSubject, private val questions: List<Question>,
+    private val examination: ExaminationWithSubject,
+    private val questions: List<Question>,
 ) {
     private val document = XWPFDocument()
-
 
     private fun process() {
         createHead("Examination")
@@ -57,14 +56,10 @@ class ExportWord(
                 addOptionContent(options)
             }
             addBreak(1)
-
-
         }
     }
 
-
     fun write(path: String): Boolean {
-
         process()
 
         val outputStream = FileOutputStream(path)
@@ -97,26 +92,23 @@ class ExportWord(
         val paragraph = document.createParagraph()
         val run = paragraph.createRun()
         repeat(number) {
-            //run.addBreak()
+            // run.addBreak()
             run.setText("\n")
         }
     }
 
     private fun addContent(run: XWPFRun, contents: List<Content>) {
-
         for (content in contents) {
             when (content.type) {
                 Type.TEXT -> {
                     run.setText(content.content)
                     run.setText(" ")
-
                 }
 
                 Type.IMAGE -> {
                     val imageData =
                         FileInputStream(ImageUtil.getAppPath(content.content).path).readAllBytes()
                     addImageToWord(run, imageData, 200.0, 200.0)
-
                 }
 
                 Type.EQUATION -> {
@@ -128,12 +120,8 @@ class ExportWord(
                         .toByteArray()
                     addImageToWord(run, imageData, 300.0, 50.0)
                 }
-
             }
-
         }
-
-
     }
 
     private fun addQuestionContent(contents: List<Content>, number: Int) {
@@ -150,7 +138,6 @@ class ExportWord(
                     val imageData =
                         FileInputStream(ImageUtil.getAppPath(content.content).path).readAllBytes()
                     addImageToWord(run, imageData, 200.0, 200.0)
-
                 }
 
                 Type.EQUATION -> {
@@ -162,11 +149,8 @@ class ExportWord(
                         .toByteArray()
                     addImageToWord(run, imageData, 300.0, 50.0)
                 }
-
             }
-
         }
-
     }
 
     fun addImageToWord(
@@ -177,11 +161,9 @@ class ExportWord(
     ) {
         // Load the image
 
-
         // Create a relationship for the image
         val relationshipId =
             document.addPictureData(ByteArrayInputStream(imageData), Document.PICTURE_TYPE_PNG)
-
 
         // Add the image to the run
         run.addPicture(
@@ -195,24 +177,17 @@ class ExportWord(
     }
 
     private fun addOptionContent(options: List<Option>) {
-
-
         options.forEachIndexed { index, option ->
 
             val paragraph = document.createParagraph()
             val run = paragraph.createRun()
             run.setText("   ")
 
-
             run.setText("(${('A' + index)}) ")
 
             addContent(run, option.contents)
-
         }
-
-
     }
-
 
     private fun addParagraph(text: String, index: Int? = null) {
         val paragraph = document.createParagraph()
@@ -231,6 +206,4 @@ class ExportWord(
         run.setText(text)
         run.setFontSize(10)
     }
-
-
 }

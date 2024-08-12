@@ -12,8 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import java.io.File
@@ -21,40 +19,38 @@ import java.io.File
 @Composable
 fun MainExportDialog(
     show: Boolean,
-    export: ( String) -> Unit = { },
+    export: (String) -> Unit = { },
     onClose: () -> Unit = {},
 ) {
-
     val key = rememberTextFieldState()
 
     if (show) {
-            AlertDialog(
-                onDismissRequest = onClose,
-                dismissButton = {
-                    TextButton(onClick = onClose) {
-                        Text("Cancel")
-                    }
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            onClose()
-                            export( key.text.toString())
-                        },
-                    ) {
-                        Text("Export")
-                    }
-                },
-                icon = { Icon(Icons.Default.Password, "password") },
-                title = { Text(text = "Enter password") },
-                text = {
-                    SeriesEditorTextField(
-                        state = key,
-                        label = "Password",
-                    )
-                },
-            )
-
+        AlertDialog(
+            onDismissRequest = onClose,
+            dismissButton = {
+                TextButton(onClick = onClose) {
+                    Text("Cancel")
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onClose()
+                        export(key.text.toString())
+                    },
+                ) {
+                    Text("Export")
+                }
+            },
+            icon = { Icon(Icons.Default.Password, "password") },
+            title = { Text(text = "Enter password") },
+            text = {
+                SeriesEditorTextField(
+                    state = key,
+                    label = "Password",
+                )
+            },
+        )
     }
 }
 
