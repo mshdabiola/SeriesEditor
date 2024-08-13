@@ -98,7 +98,7 @@ kotlin {
 
 
             implementation(projects.features.examinations)
-            // implementation(projects.features.detail)
+             implementation(projects.features.subjects)
             implementation(projects.features.setting)
             implementation(projects.features.composesubject)
             implementation(projects.features.composeexamination)

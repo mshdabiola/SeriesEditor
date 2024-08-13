@@ -27,9 +27,9 @@ import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
-import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
-import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.serieseditor.ui.questionpanel.questionPanelScreen
 import com.mshdabiola.serieseditor.ui.questionpanelother.navigateToQuestionPanelOther
 import com.mshdabiola.serieseditor.ui.questionpanelother.questionPanelOtherScreen
@@ -44,7 +44,7 @@ fun ExtendNavHost(
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = EXAM_PANEL_ROUTE,
+    startDestination: String = SUBJECT_PANEL_ROUTE,
 ) {
     val navController = appState.navController
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
@@ -54,6 +54,10 @@ fun ExtendNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        subjectPanelScreen(
+            appState = appState,
+            onShowSnack = onShowSnackbar,
+        )
         examPanelScreen(
             onShowSnack = onShowSnackbar,
             appState = appState,

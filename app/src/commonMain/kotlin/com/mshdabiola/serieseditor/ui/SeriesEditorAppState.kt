@@ -26,6 +26,7 @@ import com.mshdabiola.examinations.navigation.SUBJECT_ARG
 import com.mshdabiola.examinations.navigation.navigateToExam
 import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
 
@@ -121,10 +122,10 @@ class Extended(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true
 
     override val showPermanentDrawer: Boolean
-        @Composable get() = currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true
     override val showDrawer: Boolean
         @Composable get() = false
 
