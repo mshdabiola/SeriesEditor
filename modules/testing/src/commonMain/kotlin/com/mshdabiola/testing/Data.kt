@@ -576,9 +576,9 @@ val questions = List(10) {
         topic = topicWithCategory.random(),
     )
 }
- val subjectWithSeries = subjects.map { subject->
-     SubjectWithSeries(subject, series = series.single { it.id==subject.seriesId })
- }
+val subjectWithSeries = subjects.map { subject ->
+    SubjectWithSeries(subject, series = series.single { it.id == subject.seriesId })
+}
 val exportableData = ExportableData(
     users = users,
     series = series,
