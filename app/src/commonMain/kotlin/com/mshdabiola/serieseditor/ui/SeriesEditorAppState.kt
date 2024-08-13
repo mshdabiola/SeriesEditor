@@ -15,7 +15,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
@@ -24,7 +23,6 @@ import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.EXAM_ROUTE
 import com.mshdabiola.examinations.navigation.SUBJECT_ARG
 import com.mshdabiola.examinations.navigation.navigateToExam
-import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
@@ -216,7 +214,7 @@ class Other(
     fun onAdd() {
         when {
             navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
-                navController.navigateToComposeExamination(-1)
+                // navController.navigateToComposeExamination(-1)
             }
 
             navController.currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> {

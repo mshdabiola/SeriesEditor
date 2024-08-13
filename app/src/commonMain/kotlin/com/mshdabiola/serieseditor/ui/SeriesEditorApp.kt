@@ -119,12 +119,11 @@ fun SeriesEditorApp() {
 
     LoadTex()
 
-        val route =appState.currentDestination?.route
+    val route = appState.currentDestination?.route
 
-    LaunchedEffect(route){
+    LaunchedEffect(route) {
         println(route)
     }
-
 
     LaunchedEffect(mainState.value) {
         if (mainState.value is MainState.Success && (mainState.value as MainState.Success).message.isNotEmpty()) {

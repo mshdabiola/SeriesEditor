@@ -10,12 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composeexam.navigation.FULL_COMPOSE_EXAMINATION_ROUTE
 import com.mshdabiola.composeexam.navigation.composeExaminationScreen
 import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
-import com.mshdabiola.composesubject.navigation.FULL_CS_ROUTE
-import com.mshdabiola.composesubject.navigation.composeSubjectScreen
-import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
 import com.mshdabiola.serieseditor.ui.Extended
@@ -26,25 +24,29 @@ fun ExamPaneScreen(
     modifier: Modifier = Modifier,
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
+    subjectId: Long,
 ) {
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
+    val examNavHostController = rememberNavController()
+    val ceNavHostController = rememberNavController()
 
     Row(modifier) {
         NavHost(
             modifier = modifier.weight(0.6f),
             startDestination = DEFAULT_ROUTE,
-            navController = appState.mainNavController,
+            navController = examNavHostController,
         ) {
             examScreen(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 navigateToQuestion = appState.navController::navigateToQuestionPanel,
-                updateExam = appState.examNavHostController::navigateToComposeExamination,
+                updateExam = ceNavHostController::navigateToComposeExamination,
+                subjectId = subjectId,
             )
         }
         Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
             NavHost(
-                navController = appState.examNavHostController,
+                navController = ceNavHostController,
                 startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
                 modifier = Modifier,
             ) {
@@ -52,29 +54,15 @@ fun ExamPaneScreen(
                     modifier = Modifier.padding(8.dp),
                     onShowSnack = onShowSnackbar,
                     onBack = {
-                        appState.examNavHostController.popBackStack()
-                        if (appState.examNavHostController.currentDestination == null) {
-                            appState.examNavHostController.navigateToComposeExamination(-1)
+                        ceNavHostController.popBackStack()
+                        if (ceNavHostController.currentDestination == null) {
+                            ceNavHostController.navigateToComposeExamination(
+                                subjectId,
+                                -1,
+                            )
                         }
                     },
-                    null,
-                )
-            }
-
-            NavHost(
-                navController = appState.subjectNavHostController,
-                startDestination = FULL_CS_ROUTE,
-                modifier = Modifier,
-            ) {
-                composeSubjectScreen(
-                    modifier = Modifier.padding(8.dp),
-                    onShowSnack = onShowSnackbar,
-                    onFinish = {
-                        appState.subjectNavHostController.popBackStack()
-                        if (appState.subjectNavHostController.currentDestination == null) {
-                            appState.subjectNavHostController.navigateToComposeSubject(-1)
-                        }
-                    },
+                    subjectId = subjectId,
                 )
             }
         }

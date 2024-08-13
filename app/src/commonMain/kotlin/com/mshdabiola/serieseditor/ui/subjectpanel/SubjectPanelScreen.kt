@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composesubject.navigation.FULL_CS_ROUTE
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
@@ -25,23 +26,25 @@ fun SubjectPaneScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
 ) {
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
+    val subjectNavHostController = rememberNavController()
+    val csNavHostController = rememberNavController()
 
     Row(modifier) {
         NavHost(
             modifier = modifier.weight(0.6f),
             startDestination = SUBJECT_ROUTE,
-            navController = appState.mainNavController,
+            navController = subjectNavHostController,
         ) {
             subjectScreen(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
-                navigateToExam = { appState.navController::navigateToExamPanel },
-                updateSubject = appState.subjectNavHostController::navigateToComposeSubject,
+                navigateToExam = appState.navController::navigateToExamPanel,
+                updateSubject = csNavHostController::navigateToComposeSubject,
             )
         }
         Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
             NavHost(
-                navController = appState.subjectNavHostController,
+                navController = csNavHostController,
                 startDestination = FULL_CS_ROUTE,
                 modifier = Modifier,
             ) {
@@ -49,9 +52,11 @@ fun SubjectPaneScreen(
                     modifier = Modifier.padding(8.dp),
                     onShowSnack = onShowSnackbar,
                     onFinish = {
-                        appState.subjectNavHostController.popBackStack()
-                        if (appState.subjectNavHostController.currentDestination == null) {
-                            appState.subjectNavHostController.navigateToComposeSubject(-1)
+                        csNavHostController.popBackStack()
+                        if (csNavHostController.currentDestination == null) {
+                            csNavHostController.navigateToComposeSubject(
+                                -1,
+                            )
                         }
                     },
                 )
