@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.main.navigation
+package com.mshdabiola.examinations.navigation
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -11,7 +11,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mshdabiola.main.ExamRoute
+import com.mshdabiola.examinations.ExamRoute
 
 const val EXAM_ROUTE = "exam_route"
 const val SUBJECT_ARG = "subject_arg"

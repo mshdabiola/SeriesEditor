@@ -1,4 +1,4 @@
-package com.mshdabiola.main
+package com.mshdabiola.examinations
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable

@@ -21,9 +21,9 @@ import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
-import com.mshdabiola.main.navigation.MAIN_ROUTE
-import com.mshdabiola.main.navigation.SUBJECT_ARG
-import com.mshdabiola.main.navigation.navigateToMain
+import com.mshdabiola.examinations.navigation.EXAM_ROUTE
+import com.mshdabiola.examinations.navigation.SUBJECT_ARG
+import com.mshdabiola.examinations.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.exampanelother.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
@@ -159,7 +159,7 @@ class Other(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
 
     override val currentSubjectId: Long
         @Composable get() = navController
@@ -183,13 +183,13 @@ class Other(
     }
 
     val isMain
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
 
     val isList
         @Composable
         get() =
             when {
-                currentDestination?.route?.contains(MAIN_ROUTE) == true -> true
+                currentDestination?.route?.contains(EXAM_ROUTE) == true -> true
                 currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> true
                 currentDestination?.route?.contains(TOPIC_ROUTE) == true -> true
                 else -> false
@@ -199,7 +199,7 @@ class Other(
         @Composable
         get() =
             when {
-                currentDestination?.route?.contains(MAIN_ROUTE) == true -> "Add Exam"
+                currentDestination?.route?.contains(EXAM_ROUTE) == true -> "Add Exam"
                 currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> {
                     if (pagerState.currentPage == 0) {
                         "Add Question"
@@ -214,7 +214,7 @@ class Other(
 
     fun onAdd() {
         when {
-            navController.currentDestination?.route?.contains(MAIN_ROUTE) == true -> {
+            navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
                 navController.navigateToComposeExamination(-1)
             }
 

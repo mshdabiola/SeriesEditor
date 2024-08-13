@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mshdabiola.main"
+    namespace = "com.mshdabiola.examinations"
 }
 kotlin {
     sourceSets {

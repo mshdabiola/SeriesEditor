@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.main
+package com.mshdabiola.examinations
 
 import app.cash.turbine.test
 import com.mshdabiola.data.model.Result

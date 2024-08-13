@@ -2,7 +2,7 @@
  *abiola 2023
  */
 
-package com.mshdabiola.main
+package com.mshdabiola.examinations
 
 class ScreenScreenshotTests {
 //

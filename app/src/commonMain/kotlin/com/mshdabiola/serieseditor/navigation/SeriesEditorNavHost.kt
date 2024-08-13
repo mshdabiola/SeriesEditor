@@ -23,8 +23,8 @@ import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
-import com.mshdabiola.main.navigation.DEFAULT_ROUTE
-import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
+import com.mshdabiola.examinations.navigation.mainScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
 import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen

@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.main
+package com.mshdabiola.examinations
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

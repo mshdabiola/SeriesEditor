@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.main
+package com.mshdabiola.examinations
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.Orientation
