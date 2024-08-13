@@ -17,14 +17,14 @@ const val EXAM_ROUTE = "exam_route"
 const val SUBJECT_ARG = "subject_arg"
 const val DEFAULT_ROUTE = "$EXAM_ROUTE/{$SUBJECT_ARG}"
 
-fun NavController.navigateToMain(
+fun NavController.navigateToExam(
     subjectId: Long,
     navOptions: NavOptions = androidx.navigation.navOptions {
         //  this.launchSingleTop = true
     },
 ) = navigate("$EXAM_ROUTE/$subjectId", navOptions)
 
-fun NavGraphBuilder.mainScreen(
+fun NavGraphBuilder.examScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     navigateToQuestion: (Long) -> Unit,
