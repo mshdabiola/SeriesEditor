@@ -36,7 +36,7 @@ fun SubjectPaneScreen(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 navigateToExam = { appState.navController::navigateToExamPanel },
-                updateSubject = {},
+                updateSubject = appState.subjectNavHostController::navigateToComposeSubject,
             )
         }
         Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
