@@ -20,19 +20,18 @@ import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
-import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
-import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
-import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.serieseditor.ui.questionpanel.questionPanelScreen
 import com.mshdabiola.serieseditor.ui.questionpanelother.navigateToQuestionPanelOther
 import com.mshdabiola.serieseditor.ui.questionpanelother.questionPanelOtherScreen
+import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
@@ -67,7 +66,7 @@ fun ExtendNavHost(
             onShowSnack = onShowSnackbar,
             navigateToTopicPanel = navController::navigateToTopicPanel,
 
-            )
+        )
         topicPanelScreen(
             modifier,
             onShowSnackbar,
@@ -114,7 +113,6 @@ fun OtherNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
-            onAddSubject = { navController.navigateToComposeSubject(-1) },
         )
 
         questionPanelOtherScreen(
@@ -152,6 +150,6 @@ fun OtherNavHost(
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
 
-            )
+        )
     }
 }
