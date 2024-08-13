@@ -15,6 +15,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
@@ -25,6 +26,7 @@ import com.mshdabiola.examinations.navigation.SUBJECT_ARG
 import com.mshdabiola.examinations.navigation.navigateToExam
 import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
+import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
 
@@ -113,7 +115,7 @@ class Extended(
     val subjectNavHostController: NavHostController,
     val examNavHostController: NavHostController,
 
-) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
         @Composable get() = navController
@@ -182,12 +184,13 @@ class Other(
     }
 
     val isMain
-        @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(SUBJECT_ROUTE) == true
 
     val isList
         @Composable
         get() =
             when {
+                currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> true
                 currentDestination?.route?.contains(EXAM_ROUTE) == true -> true
                 currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> true
                 currentDestination?.route?.contains(TOPIC_ROUTE) == true -> true
@@ -198,6 +201,7 @@ class Other(
         @Composable
         get() =
             when {
+                currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Add Subject"
                 currentDestination?.route?.contains(EXAM_ROUTE) == true -> "Add Exam"
                 currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> {
                     if (pagerState.currentPage == 0) {
@@ -213,8 +217,17 @@ class Other(
 
     fun onAdd() {
         when {
+
+            navController.currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> {
+
+                navController.navigateToComposeSubject(-1)
+            }
+
             navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
-                // navController.navigateToComposeExamination(-1)
+                val subjectId =
+                    navController.currentBackStackEntry?.arguments?.getLong(com.mshdabiola.composeexam.navigation.SUBJECT_ARG)
+                        ?: -1
+                navController.navigateToComposeExamination(subjectId, -1)
             }
 
             navController.currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> {

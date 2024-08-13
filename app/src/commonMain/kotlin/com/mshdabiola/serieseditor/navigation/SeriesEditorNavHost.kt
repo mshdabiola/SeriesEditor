@@ -20,10 +20,12 @@ import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
+import com.mshdabiola.examinations.navigation.navigateToExam
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
 import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
@@ -35,6 +37,8 @@ import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
+import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
+import com.mshdabiola.subjects.navigation.subjectScreen
 import com.mshdabiola.topics.navigation.navigateToTopic
 import com.mshdabiola.topics.navigation.topicScreen
 
@@ -85,7 +89,7 @@ fun OtherNavHost(
     appState: Other,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = DEFAULT_ROUTE,
+    startDestination: String = SUBJECT_ROUTE,
 ) {
     val navController = appState.navController
     val screenModifier = modifier
@@ -98,6 +102,13 @@ fun OtherNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        subjectScreen(
+            modifier = screenModifier,
+            onShowSnack = onShowSnackbar,
+            navigateToExam = navController::navigateToExam,
+            updateSubject = navController::navigateToComposeSubject,
+            )
+
         examScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
