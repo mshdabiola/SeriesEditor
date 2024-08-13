@@ -24,14 +24,15 @@ import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
-import com.mshdabiola.examinations.navigation.mainScreen
+import com.mshdabiola.examinations.navigation.examScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
+import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
-import com.mshdabiola.serieseditor.ui.exampanelother.examPanelScreen
-import com.mshdabiola.serieseditor.ui.exampanelother.navigateToExamPanel
-import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.mainpanel.mainPanelScreen
+import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.questionpanel.questionPanelScreen
+import com.mshdabiola.serieseditor.ui.questionpanelother.navigateToQuestionPanelOther
+import com.mshdabiola.serieseditor.ui.questionpanelother.questionPanelOtherScreen
 import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
@@ -43,7 +44,7 @@ fun ExtendNavHost(
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = MAIN_PANEL_ROUTE,
+    startDestination: String = EXAM_PANEL_ROUTE,
 ) {
     val navController = appState.navController
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
@@ -53,16 +54,16 @@ fun ExtendNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        mainPanelScreen(
+        examPanelScreen(
             onShowSnack = onShowSnackbar,
             appState = appState,
         )
-        examPanelScreen(
+        questionPanelScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
             navigateToTopicPanel = navController::navigateToTopicPanel,
 
-        )
+            )
         topicPanelScreen(
             modifier,
             onShowSnackbar,
@@ -94,10 +95,10 @@ fun OtherNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        mainScreen(
+        examScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
-            navigateToQuestion = navController::navigateToExamPanel,
+            navigateToQuestion = navController::navigateToQuestionPanelOther,
             updateExam = navController::navigateToComposeExamination,
         )
         composeSubjectScreen(
@@ -112,7 +113,7 @@ fun OtherNavHost(
             onAddSubject = { navController.navigateToComposeSubject(-1) },
         )
 
-        examPanelScreen(
+        questionPanelOtherScreen(
             modifier = Modifier.fillMaxSize(),
             onShowSnack = onShowSnackbar,
             appState = appState,
@@ -147,6 +148,6 @@ fun OtherNavHost(
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
 
-        )
+            )
     }
 }
