@@ -11,15 +11,15 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.mshdabiola.subjects.SubjectRoute
 
-const val MAIN_ROUTE = "main_route"
+const val SUBJECT_ROUTE = "main_route"
 
 fun NavController.navigateToSubjects(
     navOptions: NavOptions = androidx.navigation.navOptions {
         //  this.launchSingleTop = true
     },
-) = navigate(MAIN_ROUTE, navOptions)
+) = navigate(SUBJECT_ROUTE, navOptions)
 
-fun NavGraphBuilder.mainScreen(
+fun NavGraphBuilder.subjectScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     navigateToExam: (Long) -> Unit,
@@ -27,7 +27,7 @@ fun NavGraphBuilder.mainScreen(
 
     ) {
     composable(
-        route = MAIN_ROUTE,
+        route = SUBJECT_ROUTE,
     ) {
         SubjectRoute(
             modifier = modifier,
