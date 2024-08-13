@@ -132,7 +132,7 @@ fun SeBottonAppBar(
                                 },
                             )
 
-                            if (currentPlatform!=Platform.Android) {
+                            if (currentPlatform != Platform.Android) {
                                 DropdownMenuItem(
                                     leadingIcon = {
                                         Icon(

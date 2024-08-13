@@ -184,15 +184,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                        if (subjectId < 0) {
-                            iExamRepository.getAll()
-                                .mapNotNull { it.map { it.id } }
-                        } else {
-                            iExamRepository
-                                .getAllBuSubjectId(subjectId)
-                                .mapNotNull { it.map { it.examination.id } }
-                        }
-                        ).first()
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

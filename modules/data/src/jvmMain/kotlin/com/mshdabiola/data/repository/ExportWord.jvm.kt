@@ -136,7 +136,8 @@ class ExportWord(
 
                 Type.EQUATION -> {
                     val imageData = getLatexByte(
-                        content.content)
+                        content.content,
+                    )
                     addImageToWord(run, imageData, 300.0, 50.0)
                 }
             }
@@ -203,6 +204,6 @@ actual fun toWord(
     examination: ExaminationWithSubject,
     questions: List<Question>,
 ) {
-    val exportWord= ExportWord(examination,questions)
+    val exportWord = ExportWord(examination, questions)
     exportWord.write(path)
 }
