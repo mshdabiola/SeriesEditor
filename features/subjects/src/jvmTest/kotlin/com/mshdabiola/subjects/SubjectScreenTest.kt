@@ -7,10 +7,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import com.mshdabiola.data.model.Result
-import com.mshdabiola.testing.examinations
 import com.mshdabiola.testing.subjectWithSeries
 import com.mshdabiola.testing.subjects
-import com.mshdabiola.ui.toUi
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -35,6 +33,5 @@ class SubjectScreenTest {
         composeRule.onNodeWithTag("subjects:loading").assertDoesNotExist()
         composeRule.onNodeWithTag("subjects:empty").assertDoesNotExist()
         composeRule.onNodeWithTag("subjects:list").onChildren().assertCountEquals(9)
-
     }
 }

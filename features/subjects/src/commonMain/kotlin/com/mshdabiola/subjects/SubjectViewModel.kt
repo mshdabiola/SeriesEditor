@@ -23,7 +23,6 @@ internal class SubjectViewModel constructor(
     private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
-
     val subjects: StateFlow<Result<List<SubjectWithSeries>>> =
         combine(
             iSubjectRepository.getAllWithSeries(),
@@ -40,8 +39,7 @@ internal class SubjectViewModel constructor(
 
     fun onDelete(id: Long) {
         viewModelScope.launch {
-         iSubjectRepository.delete(id)
+            iSubjectRepository.delete(id)
         }
     }
-
 }

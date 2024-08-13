@@ -25,7 +25,7 @@ fun NavGraphBuilder.subjectScreen(
     navigateToExam: (Long) -> Unit,
     updateSubject: (Long) -> Unit,
 
-    ) {
+) {
     composable(
         route = SUBJECT_ROUTE,
     ) {

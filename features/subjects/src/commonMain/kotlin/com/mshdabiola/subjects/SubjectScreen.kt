@@ -77,7 +77,7 @@ internal fun SubjectRoute(
         onDelete = viewModel::onDelete,
         onUpdate = updateSubjects,
 
-        )
+    )
 }
 
 @Composable
@@ -95,7 +95,7 @@ internal fun SubjectScreen(
             .fillMaxSize()
             .testTag("subjects:screen"),
 
-        ) {
+    ) {
         LazyColumn(
             state = state,
             // contentPadding = PaddingValues(16.dp),

@@ -63,10 +63,8 @@ fun SubjectCard(
                             showDrop = false
                         },
                     )
-
                 }
             }
-
         },
     )
 }

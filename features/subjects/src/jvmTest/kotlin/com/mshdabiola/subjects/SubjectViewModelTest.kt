@@ -6,7 +6,6 @@ package com.mshdabiola.subjects
 
 import app.cash.turbine.test
 import com.mshdabiola.data.model.Result
-import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.dataTestModule
