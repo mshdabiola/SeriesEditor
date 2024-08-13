@@ -7,10 +7,12 @@ package com.mshdabiola.serieseditor
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
+import com.mshdabiola.data.repository.toWord
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserData
 import com.mshdabiola.model.currentPlatform
@@ -39,6 +41,7 @@ class MainAppViewModel(
     subjectRepository: ISubjectRepository,
     userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
+    private val questionRepository: IQuestionRepository,
     private val seriesRepository: SeriesRepository,
 ) : ViewModel() {
 
@@ -115,6 +118,46 @@ class MainAppViewModel(
                     "Successfully exported to internal storage, series directory"
                 } else {
                     "successfully exported to desktop, series directory"
+                }
+                _mainState.value = MainState.Success(user!!, messeage)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                deselectAll()
+
+                _mainState.value = MainState.Success(user!!, "Failed to export")
+            }
+
+            delay(1500)
+
+            _mainState.value = MainState.Success(user!!, "")
+        }
+    }
+
+    fun onExportWord(path: String) {
+        viewModelScope.launch {
+            _mainState.value = MainState.Loading
+            try {
+                val ids = iExamRepository.selectedList.first().toSet()
+                val file = File(path)
+                if (!file.exists()) {
+                    file.mkdirs()
+                }
+
+                ids
+                    .mapNotNull { iExamRepository.getOne(it).first() }
+                    .forEach {
+                        val name =
+                            "${it.examination.id}-${it.subject.title}-${it.examination.year}.docx"
+                        val newPath = File(file, name)
+                        val questions = questionRepository.getByExamId(it.examination.id).first()
+                        toWord(newPath.path, it, questions)
+                    }
+
+                deselectAll()
+                val messeage = if (Platform.Android == currentPlatform) {
+                    "Successfully Saved to internal storage, series directory"
+                } else {
+                    "successfully Saved to desktop, series directory"
                 }
                 _mainState.value = MainState.Success(user!!, messeage)
             } catch (e: Exception) {

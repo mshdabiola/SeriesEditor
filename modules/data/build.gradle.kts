@@ -22,11 +22,12 @@ kotlin {
                 implementation(project(":modules:network"))
                 implementation(libs.kotlinx.coroutines.core)
                 api(libs.database)
-
-
-
                 implementation(libs.paging.common)
             }
+        }
+        jvmMain.dependencies {
+            implementation(libs.poi)
+            implementation(projects.modules.ui)
         }
 
     }

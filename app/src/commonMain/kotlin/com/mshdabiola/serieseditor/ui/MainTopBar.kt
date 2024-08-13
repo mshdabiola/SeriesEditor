@@ -7,8 +7,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.component.DeleteDialog
+import com.mshdabiola.designsystem.component.GetFilePath
+import com.mshdabiola.designsystem.component.HasWrittenPermission
 import com.mshdabiola.designsystem.component.MainExportDialog
 import com.mshdabiola.designsystem.component.MainTopBar
+import com.mshdabiola.designsystem.component.PermissionDialog
 import com.mshdabiola.designsystem.component.SeBottonAppBar
 import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.setting.navigation.navigateToSetting
@@ -33,6 +36,17 @@ fun MainTopBarSection(
     var showDialog by remember { mutableStateOf(false) }
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
 
+    var path by remember { mutableStateOf<String?>(null) }
+    var hasPermission by remember { mutableStateOf(false) }
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    HasWrittenPermission {
+        hasPermission = it
+    }
+
+    GetFilePath {
+        path = it?.absolutePath
+    }
+
     MainTopBar(
         modifier = modifier,
         isSelectMode = isSelect.value,
@@ -40,16 +54,35 @@ fun MainTopBarSection(
         selectAll = viewModel::selectAll,
         deselectAll = viewModel::deselectAll,
         navigateToSetting = navigateToSetting,
-        showExportDialog = { showDialog = true },
+        showExportDialog = {
+            if (hasPermission) {
+                showDialog = true
+            } else {
+                showPermissionDialog = true
+            }
+        },
+        exportWord = { viewModel.onExportWord(path!!) },
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = { showDeleteDialog = true },
         updateSubject = updateSubject,
         onNavigationClick = onNavigationClick,
     )
 
+    if (showPermissionDialog) {
+        PermissionDialog(
+            onDismiss = { showPermissionDialog = false },
+            onFile = {
+                path = it?.absolutePath
+                if (it != null) {
+                    hasPermission = true
+                }
+                showPermissionDialog = false
+            },
+        )
+    }
     MainExportDialog(
         show = showDialog,
-        export = viewModel::onExport,
+        export = { viewModel.onExport(path!!, it) },
         onClose = { showDialog = false },
     )
 
@@ -81,6 +114,17 @@ fun MainBottomBarSection(
     var showDialog by remember { mutableStateOf(false) }
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
 
+    var path by remember { mutableStateOf<String?>(null) }
+    var hasPermission by remember { mutableStateOf(false) }
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    HasWrittenPermission {
+        hasPermission = it
+    }
+
+    GetFilePath {
+        path = it?.absolutePath
+    }
+
     SeBottonAppBar(
         modifier = modifier,
         isSelectMode = isSelect.value,
@@ -88,7 +132,13 @@ fun MainBottomBarSection(
         currentSubjectId = subjectId,
         selectAll = viewModel::selectAll,
         deselectAll = viewModel::deselectAll,
-        showExportDialog = { showDialog = true },
+        showExportDialog = {
+            if (hasPermission) {
+                showDialog = true
+            } else {
+                showPermissionDialog = true
+            }
+        },
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = { showDeleteDialog = true },
         onFabClick =
@@ -105,16 +155,28 @@ fun MainBottomBarSection(
         } else {
             null
         },
+        exportWord = { viewModel.onExportWord(path!!) },
         onBackClick = if (!appState.isMain) {
             { appState.navController.popBackStack() }
         } else {
             null
         },
     )
-
+    if (showPermissionDialog) {
+        PermissionDialog(
+            onDismiss = { showPermissionDialog = false },
+            onFile = {
+                path = it?.absolutePath
+                if (it != null) {
+                    hasPermission = true
+                }
+                showPermissionDialog = false
+            },
+        )
+    }
     MainExportDialog(
         show = showDialog,
-        export = viewModel::onExport,
+        export = { viewModel.onExport(path!!, it) },
         onClose = { showDialog = false },
     )
 

@@ -1,6 +1,9 @@
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.ui.graphics.Color
+import com.mshdabiola.serieslatex.getLatexImage
+import com.mshdabiola.serieslatex.toByteArray
 import com.mshdabiola.seriesmodel.Content
 import com.mshdabiola.seriesmodel.Examination
 import com.mshdabiola.seriesmodel.ExaminationWithSubject
@@ -89,6 +92,7 @@ fun Instruction.toInstructionUiState(isEdit: Boolean = false) =
         title = TextFieldState(title),
         content = content.map { it.toItemUi(isEdit = isEdit) }.toImmutableList(),
     )
+
 fun TopicWithCategory.toUi() = TopicUiState(id = id, topicCategory = topicCategory, name = title)
 fun TopicUiState.toTopic() = TopicWithCategory(id = id, topicCategory = topicCategory, title = name)
 
@@ -114,3 +118,12 @@ fun ExamUiState.toExam() =
         year = year,
         duration = duration,
     )
+
+fun getLatexByte(content: String): ByteArray {
+    return getLatexImage(
+        content,
+        backgroundColor = Color.Transparent,
+        foregroundColor = Color.Black,
+    )
+        .toByteArray()
+}

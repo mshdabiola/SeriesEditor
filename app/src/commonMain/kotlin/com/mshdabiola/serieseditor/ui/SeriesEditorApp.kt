@@ -76,6 +76,7 @@ import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.serieseditor.MainState
 import com.mshdabiola.serieseditor.navigation.ExtendNavHost
 import com.mshdabiola.serieseditor.navigation.OtherNavHost
+import com.mshdabiola.serieslatex.LoadTex
 import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
@@ -115,6 +116,8 @@ fun SeriesEditorApp() {
 
     val mainState = viewModel.mainState.collectAsStateWithLifecycle()
     val currentSubjectId = appState.currentSubjectId
+
+    LoadTex()
 
     LaunchedEffect(mainState.value) {
         if (mainState.value is MainState.Success && (mainState.value as MainState.Success).message.isNotEmpty()) {
