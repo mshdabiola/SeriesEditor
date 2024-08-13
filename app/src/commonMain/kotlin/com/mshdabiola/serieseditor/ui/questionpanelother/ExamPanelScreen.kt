@@ -1,4 +1,4 @@
-package com.mshdabiola.serieseditor.ui.exampanelother
+package com.mshdabiola.serieseditor.ui.questionpanelother
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExamPaneScreen(
+fun QuestionPaneScreen(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     appState: Other,
