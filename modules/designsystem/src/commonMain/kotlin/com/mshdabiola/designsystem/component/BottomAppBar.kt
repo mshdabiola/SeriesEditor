@@ -30,6 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.model.Platform
+import com.mshdabiola.model.currentPlatform
 
 @Composable
 fun SeBottonAppBar(
@@ -130,20 +132,22 @@ fun SeBottonAppBar(
                                 },
                             )
 
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        Icons.Rounded.SaveAs,
-                                        "save",
-                                    )
-                                },
-                                text = { Text("Export to Word") },
-                                onClick = {
-                                    // onDelete(examUiState.id)
-                                    exportWord()
-                                    showDrop = false
-                                },
-                            )
+                            if (currentPlatform!=Platform.Android) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Rounded.SaveAs,
+                                            "save",
+                                        )
+                                    },
+                                    text = { Text("Export to Word") },
+                                    onClick = {
+                                        // onDelete(examUiState.id)
+                                        exportWord()
+                                        showDrop = false
+                                    },
+                                )
+                            }
 
                             DropdownMenuItem(
                                 leadingIcon = {
