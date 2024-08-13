@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.data.model.Result
 import com.mshdabiola.designsystem.component.SeriesEditorLoadingWheel
@@ -45,13 +46,11 @@ import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
 import com.mshdabiola.designsystem.drawable.emptyCartIcon
 import com.mshdabiola.designsystem.theme.LocalTintTheme
-import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
+import com.mshdabiola.seriesmodel.SubjectWithSeries
 import com.mshdabiola.ui.logNoteOpened
-import com.mshdabiola.ui.state.ExamUiState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.parameter.parametersOf
 import serieseditor.features.subjects.generated.resources.Res
 import serieseditor.features.subjects.generated.resources.features_main_empty_description
 import serieseditor.features.subjects.generated.resources.features_main_empty_error
@@ -64,35 +63,29 @@ import serieseditor.features.subjects.generated.resources.features_main_loading
 internal fun SubjectRoute(
     modifier: Modifier = Modifier,
     navigateToQuestion: (Long) -> Unit,
-    updateExam: (Long) -> Unit,
-    subjectId: Long,
+    updateSubjects: (Long) -> Unit,
 ) {
     val viewModel: SubjectViewModel =
-        koinViewModel(parameters = { parametersOf(subjectId) }, key = "test")
+        koinViewModel()
 
-    val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
-    val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
+    val feedNote = viewModel.subjects.collectAsStateWithLifecycle()
 
     SubjectScreen(
         modifier = modifier,
         mainState = feedNote.value,
         navigateToQuestion = navigateToQuestion,
-        onDelete = viewModel::onDeleteExam,
-        onUpdate = updateExam,
-        toggleSelect = viewModel::toggleSelect,
-        isSelectMode = isSelect.value,
+        onDelete = viewModel::onDelete,
+        onUpdate = updateSubjects,
 
-    )
+        )
 }
 
 @Composable
 internal fun SubjectScreen(
     modifier: Modifier = Modifier,
-    mainState: Result<List<ExamUiState>>,
+    mainState: Result<List<SubjectWithSeries>>,
     onDelete: (Long) -> Unit = {},
     onUpdate: (Long) -> Unit = {},
-    toggleSelect: (Long) -> Unit = {},
-    isSelectMode: Boolean = false,
     navigateToQuestion: (Long) -> Unit = {},
 ) {
     val state = rememberLazyListState()
@@ -100,15 +93,15 @@ internal fun SubjectScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .testTag("main:screen"),
+            .testTag("subjects:screen"),
 
-    ) {
+        ) {
         LazyColumn(
             state = state,
             // contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .testTag("main:list"),
+                .testTag("subjects:list"),
         ) {
             item {
                 // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
@@ -125,14 +118,12 @@ internal fun SubjectScreen(
                             EmptyState()
                         }
                     } else {
-                        examItems(
+                        subjectItems(
                             items = mainState.data,
-                            onExamClick = navigateToQuestion,
+                            onClick = navigateToQuestion,
                             itemModifier = Modifier,
                             onDelete = onDelete,
                             onUpdate = onUpdate,
-                            toggleSelect = toggleSelect,
-                            isSelectMode = isSelectMode,
                         )
                     }
                 }
@@ -141,7 +132,7 @@ internal fun SubjectScreen(
                 Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
             }
         }
-        val itemsAvailable = examUiStateItemsSize(mainState)
+        val itemsAvailable = subjectsItemsSize(mainState)
         val scrollbarState = state.scrollbarState(
             itemsAvailable = itemsAvailable,
         )
@@ -166,7 +157,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .wrapContentSize()
-            .testTag("main:loading"),
+            .testTag("subjects:loading"),
         contentDesc = stringResource(Res.string.features_main_loading),
     )
 }
@@ -177,7 +168,7 @@ private fun EmptyState(modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(16.dp)
             .fillMaxSize()
-            .testTag("main:empty"),
+            .testTag("subjects:empty"),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -210,38 +201,34 @@ private fun EmptyState(modifier: Modifier = Modifier) {
     }
 }
 
-private fun examUiStateItemsSize(
-    topicUiState: Result<List<ExamUiState>>,
-) = when (topicUiState) {
+private fun subjectsItemsSize(
+    subjects: Result<List<SubjectWithSeries>>,
+) = when (subjects) {
     is Result.Error -> 0 // Nothing
     is Result.Loading -> 1 // Loading bar
-    is Result.Success -> topicUiState.data.size + 2
+    is Result.Success -> subjects.data.size + 2
 }
 
-fun LazyListScope.examItems(
-    items: List<ExamUiState>,
-    onExamClick: (Long) -> Unit,
+fun LazyListScope.subjectItems(
+    items: List<SubjectWithSeries>,
+    onClick: (Long) -> Unit,
     itemModifier: Modifier = Modifier,
     onDelete: (Long) -> Unit = {},
     onUpdate: (Long) -> Unit = {},
-    toggleSelect: (Long) -> Unit = {},
-    isSelectMode: Boolean = false,
 ) = items(
     items = items,
-    key = { it.id },
-    itemContent = { examUiState ->
+    key = { it.subject.id },
+    itemContent = { subject ->
         val analyticsHelper = LocalAnalyticsHelper.current
 
         SubjectCard(
             modifier = itemModifier,
-            examUiState = examUiState,
+            subjectWithSeries = subject,
             onDelete = onDelete,
             onUpdate = onUpdate,
-            toggleSelect = toggleSelect,
-            isSelectMode = isSelectMode,
-            onExamClick = {
-                analyticsHelper.logNoteOpened(examUiState.id.toString())
-                onExamClick(examUiState.id)
+            onClick = {
+                analyticsHelper.logNoteOpened(it.toString())
+                onClick(it)
             },
         )
     },
