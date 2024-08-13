@@ -12,6 +12,7 @@ import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
+import com.mshdabiola.data.repository.toWord
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserData
 import com.mshdabiola.model.currentPlatform
@@ -145,10 +146,11 @@ class MainAppViewModel(
                 ids
                     .mapNotNull { iExamRepository.getOne(it).first() }
                     .forEach {
-                        val name = "${it.examination.id}-${it.subject.title}-${it.examination.year}.docx"
+                        val name =
+                            "${it.examination.id}-${it.subject.title}-${it.examination.year}.docx"
                         val newPath = File(file, name)
                         val questions = questionRepository.getByExamId(it.examination.id).first()
-                        com.mshdabiola.data.repository.ExportWord(it, questions).write(newPath.path)
+                        toWord(newPath.path, it, questions)
                     }
 
                 deselectAll()
@@ -182,15 +184,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                    if (subjectId < 0) {
-                        iExamRepository.getAll()
-                            .mapNotNull { it.map { it.id } }
-                    } else {
-                        iExamRepository
-                            .getAllBuSubjectId(subjectId)
-                            .mapNotNull { it.map { it.examination.id } }
-                    }
-                    ).first()
+                        if (subjectId < 0) {
+                            iExamRepository.getAll()
+                                .mapNotNull { it.map { it.id } }
+                        } else {
+                            iExamRepository
+                                .getAllBuSubjectId(subjectId)
+                                .mapNotNull { it.map { it.examination.id } }
+                        }
+                        ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
