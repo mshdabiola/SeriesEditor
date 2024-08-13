@@ -18,15 +18,13 @@ class CeScreenTest {
         composeRule.setContent {
             ComposeExaminationScreen(
                 modifier = Modifier.fillMaxSize(),
-                ceState = CeState.Success(isUpdate = false, subjects = emptyList()),
-                subject = rememberTextFieldState("Math"),
+                ceState = CeState.Success(isUpdate = false),
                 duration = rememberTextFieldState("12"),
                 year = rememberTextFieldState("1556"),
                 addExam = {},
             )
         }
         composeRule.onNodeWithTag("ce:screen").assertExists()
-        composeRule.onNodeWithTag("ce:subject").assertExists()
         composeRule.onNodeWithTag("ce:year").assertExists()
         composeRule.onNodeWithTag("ce:duration").assertExists()
     }

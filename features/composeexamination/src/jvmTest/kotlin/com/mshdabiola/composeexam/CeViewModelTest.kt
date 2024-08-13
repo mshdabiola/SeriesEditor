@@ -7,7 +7,6 @@ package com.mshdabiola.composeexam
 import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
 import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.util.MainDispatcherRule
@@ -23,8 +22,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 class CeViewModelTest : KoinTest {
 
@@ -43,19 +40,19 @@ class CeViewModelTest : KoinTest {
 
     // private val savedStateHandle = SavedStateHandle(mapOf(DETAIL_ID_ARG to 4))
     //  private lateinit var viewModel: ComposeExaminationViewModel
-    private val subjectRepository by inject<ISubjectRepository>()
     private val examinationRepository by inject<IExaminationRepository>()
 
     @Test
     fun updateExam_InitExam() = runTest(mainDispatcherRule.testDispatcher) {
-        val viewModel = ComposeExaminationViewModel(1, subjectRepository, examinationRepository)
+        val exam = exportableData.examinations[0]
+
+        val viewModel = ComposeExaminationViewModel(exam.subjectId, 1, examinationRepository)
 
         val state = viewModel.ceState
         assert(state.value is CeState.Loading)
-        val exam = exportableData.examinations[0]
 
         state
-            .test(timeout = (10L).toDuration(DurationUnit.SECONDS)) {
+            .test() {
                 awaitItem()
                 val st = awaitItem()
 
@@ -69,7 +66,7 @@ class CeViewModelTest : KoinTest {
 
     @Test
     fun updateExam() = runTest(mainDispatcherRule.testDispatcher) {
-        val viewModel = ComposeExaminationViewModel(1, subjectRepository, examinationRepository)
+        val viewModel = ComposeExaminationViewModel(2, 1, examinationRepository)
 
         val state = viewModel.ceState
         assert(state.value is CeState.Loading)
@@ -98,7 +95,7 @@ class CeViewModelTest : KoinTest {
 
     @Test
     fun enterNewExam() = runTest(mainDispatcherRule.testDispatcher) {
-        val viewModel = ComposeExaminationViewModel(-1, subjectRepository, examinationRepository)
+        val viewModel = ComposeExaminationViewModel(1, -1, examinationRepository)
         viewModel
             .ceState
             .test() {
@@ -118,7 +115,7 @@ class CeViewModelTest : KoinTest {
 
     @Test
     fun addNewExam() = runTest(mainDispatcherRule.testDispatcher) {
-        val viewModel = ComposeExaminationViewModel(-1, subjectRepository, examinationRepository)
+        val viewModel = ComposeExaminationViewModel(2, -1, examinationRepository)
         viewModel
             .ceState
             .test() {
