@@ -11,18 +11,18 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mshdabiola.main.MainRoute
+import com.mshdabiola.main.ExamRoute
 
-const val MAIN_ROUTE = "main_route"
+const val EXAM_ROUTE = "exam_route"
 const val SUBJECT_ARG = "subject_arg"
-const val DEFAULT_ROUTE = "$MAIN_ROUTE/{$SUBJECT_ARG}"
+const val DEFAULT_ROUTE = "$EXAM_ROUTE/{$SUBJECT_ARG}"
 
 fun NavController.navigateToMain(
     subjectId: Long,
     navOptions: NavOptions = androidx.navigation.navOptions {
         //  this.launchSingleTop = true
     },
-) = navigate("$MAIN_ROUTE/$subjectId", navOptions)
+) = navigate("$EXAM_ROUTE/$subjectId", navOptions)
 
 fun NavGraphBuilder.mainScreen(
     modifier: Modifier = Modifier,
@@ -32,7 +32,7 @@ fun NavGraphBuilder.mainScreen(
 
 ) {
     composable(
-        route = "$MAIN_ROUTE/{$SUBJECT_ARG}",
+        route = "$EXAM_ROUTE/{$SUBJECT_ARG}",
         arguments = listOf(
             navArgument(SUBJECT_ARG) {
                 type = NavType.LongType
@@ -41,7 +41,7 @@ fun NavGraphBuilder.mainScreen(
         ),
     ) { curr ->
         val currentSubjectId = curr.arguments?.getLong(SUBJECT_ARG) ?: -1L
-        MainRoute(
+        ExamRoute(
             modifier = modifier,
             // onShowSnackbar = onShowSnack,
             subjectId = currentSubjectId,

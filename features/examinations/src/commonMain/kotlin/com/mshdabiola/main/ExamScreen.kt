@@ -52,28 +52,28 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
-import serieseditor.features.main.generated.resources.Res
-import serieseditor.features.main.generated.resources.features_main_empty_description
-import serieseditor.features.main.generated.resources.features_main_empty_error
-import serieseditor.features.main.generated.resources.features_main_loading
+import serieseditor.features.examinations.generated.resources.Res
+import serieseditor.features.examinations.generated.resources.features_main_empty_description
+import serieseditor.features.examinations.generated.resources.features_main_empty_error
+import serieseditor.features.examinations.generated.resources.features_main_loading
 
 // import org.koin.androidx.compose.koinViewModel
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-internal fun MainRoute(
+internal fun ExamRoute(
     modifier: Modifier = Modifier,
     navigateToQuestion: (Long) -> Unit,
     updateExam: (Long) -> Unit,
     subjectId: Long,
 ) {
-    val viewModel: MainViewModel =
+    val viewModel: ExamViewModel =
         koinViewModel(parameters = { parametersOf(subjectId) }, key = "test")
 
     val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
     val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
 
-    MainScreen(
+    ExamScreen(
         modifier = modifier,
         mainState = feedNote.value,
         navigateToQuestion = navigateToQuestion,
@@ -86,7 +86,7 @@ internal fun MainRoute(
 }
 
 @Composable
-internal fun MainScreen(
+internal fun ExamScreen(
     modifier: Modifier = Modifier,
     mainState: Result<List<ExamUiState>>,
     onDelete: (Long) -> Unit = {},

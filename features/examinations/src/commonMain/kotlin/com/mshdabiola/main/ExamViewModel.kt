@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.model.Result
 import com.mshdabiola.data.model.asResult
 import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.ui.state.ExamUiState
 import com.mshdabiola.ui.toUi
@@ -21,13 +20,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-internal class MainViewModel constructor(
-    private val iSubjectRepository: ISubjectRepository,
+internal class ExamViewModel(
     private val iExamRepository: IExaminationRepository,
     private val userDataRepository: UserDataRepository,
     val subjectId: Long,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
 //    private val _mainState = MutableStateFlow(MainState())
 //    val mainState = _mainState.asStateFlow()

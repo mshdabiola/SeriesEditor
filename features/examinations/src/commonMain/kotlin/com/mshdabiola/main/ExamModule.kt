@@ -3,7 +3,7 @@ package com.mshdabiola.main
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
-val mainModule = module {
+val examModule = module {
 
-    viewModelOf(::MainViewModel)
+    viewModelOf(::ExamViewModel)
 }

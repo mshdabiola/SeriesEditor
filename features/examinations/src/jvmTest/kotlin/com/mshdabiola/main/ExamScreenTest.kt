@@ -10,7 +10,7 @@ import com.mshdabiola.ui.toUi
 import org.junit.Rule
 import kotlin.test.Test
 
-class MainScreenTest {
+class ExamScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()
@@ -18,7 +18,7 @@ class MainScreenTest {
     @Test
     fun main() {
         composeRule.setContent {
-            MainScreen(
+            ExamScreen(
                 modifier = Modifier.fillMaxSize(),
                 mainState = Result.Success(
                     examinations.map { it.toUi() },

@@ -22,7 +22,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class MainViewModelTest : KoinTest {
+class ExamViewModelTest : KoinTest {
 
     @get:Rule(order = 1)
     val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
@@ -42,8 +42,7 @@ class MainViewModelTest : KoinTest {
 
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
-        val viewModel = MainViewModel(
-            subjectRepository,
+        val viewModel = ExamViewModel(
             examinationRepository,
             userdataRepository,
             1,
@@ -72,8 +71,7 @@ class MainViewModelTest : KoinTest {
 
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
-        val viewModel = MainViewModel(
-            subjectRepository,
+        val viewModel = ExamViewModel(
             examinationRepository,
             userdataRepository,
             1,
