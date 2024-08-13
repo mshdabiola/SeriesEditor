@@ -63,6 +63,7 @@ fun ExamCard(
         } else {
             ListItemDefaults.colors()
         },
+        overlineContent = { Text(examUiState.subject.seriesLabel) },
         headlineContent = {
             Text(examUiState.subject.name)
         },

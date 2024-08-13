@@ -14,7 +14,7 @@ import androidx.navigation.navArgument
 import com.mshdabiola.examinations.ExamRoute
 
 const val EXAM_ROUTE = "exam_route"
-const val SUBJECT_ARG = "subject_arg"
+const val SUBJECT_ARG = "subject2_arg"
 const val DEFAULT_ROUTE = "$EXAM_ROUTE/{$SUBJECT_ARG}"
 
 fun NavController.navigateToExam(
@@ -28,15 +28,16 @@ fun NavGraphBuilder.examScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     navigateToQuestion: (Long) -> Unit,
-    updateExam: (Long) -> Unit,
+    updateExam: (Long, Long) -> Unit,
+    subjectId: Long = -1L,
 
 ) {
     composable(
-        route = "$EXAM_ROUTE/{$SUBJECT_ARG}",
+        route = DEFAULT_ROUTE,
         arguments = listOf(
             navArgument(SUBJECT_ARG) {
                 type = NavType.LongType
-                defaultValue = -1L
+                defaultValue = subjectId
             },
         ),
     ) { curr ->
@@ -46,7 +47,7 @@ fun NavGraphBuilder.examScreen(
             // onShowSnackbar = onShowSnack,
             subjectId = currentSubjectId,
             navigateToQuestion = navigateToQuestion,
-            updateExam = updateExam,
+            updateExam = { updateExam(currentSubjectId, it) },
         )
     }
 }
