@@ -8,14 +8,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IQuestionRepository
+import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.data.repository.UserRepository
 import com.mshdabiola.data.repository.toWord
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserData
 import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.serieseditor.MainActivityUiState.Loading
 import com.mshdabiola.serieseditor.MainActivityUiState.Success
+import com.mshdabiola.seriesmodel.Series
+import com.mshdabiola.seriesmodel.User
+import com.mshdabiola.seriesmodel.UserType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,12 +39,38 @@ class MainAppViewModel(
     userDataRepository: UserDataRepository,
 //    userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
+    userRepository: UserRepository,
+    private val seriesRepository: SeriesRepository,
     private val questionRepository: IQuestionRepository,
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow<MainState>(MainState.Success())
     val mainState = _mainState.asStateFlow()
+    private var user: User? = null
 
+    init {
+
+        viewModelScope.launch {
+
+            user = userRepository.getUser(1).first()
+
+            if (user == null) {
+                user = User(
+                    id = -1,
+                    name = "Abiola",
+                    type = UserType.TEACHER,
+                    password = "cheatmobi",
+                    imagePath = "",
+                    points = 1,
+                )
+
+                val id = userRepository.setUser(user!!)
+                userDataRepository.setUserId(id)
+
+                seriesRepository.upsert(Series(-1, userId = id, "Default"))
+            }
+        }
+    }
 
     val uiState: StateFlow<MainActivityUiState> = userDataRepository.userData.map {
         Success(it)
