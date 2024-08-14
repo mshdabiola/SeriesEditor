@@ -37,8 +37,8 @@ import com.mshdabiola.model.currentPlatform
 fun SeBottonAppBar(
     modifier: Modifier = Modifier,
     onFabClick: (() -> Unit)? = null,
-    onSettingsClick: (() -> Unit)? = null,
-    onBackClick: (() -> Unit)? = null,
+    onSettingsClick: () -> Unit,
+    onBackClick: () -> Unit,
     isSelectMode: Boolean = false,
     currentSubjectId: Long = -1,
     selectAll: (Long) -> Unit = {},
@@ -47,8 +47,9 @@ fun SeBottonAppBar(
     showExportDialog: () -> Unit = {},
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
-    updateSubject: (Long) -> Unit = {},
     fabText: String,
+    isMain:Boolean,
+    isExam:Boolean,
 ) {
     var showDrop by remember { mutableStateOf(false) }
 
@@ -67,11 +68,19 @@ fun SeBottonAppBar(
             }
         },
         actions = {
+            if (!isMain) {
+                IconButton(onClick = onBackClick) {
+                    Icon(Icons.Default.ArrowBackIosNew, "back")
+                }
+            }
 
-            if (onSettingsClick != null) {
+            if (isMain) {
                 IconButton(onClick = onSettingsClick) {
                     Icon(Icons.Default.Settings, "setting")
                 }
+            }
+            if (isExam) {
+
                 Box {
                     IconButton(
                         onClick = { showDrop = true },
@@ -163,21 +172,7 @@ fun SeBottonAppBar(
                             expanded = showDrop,
                             onDismissRequest = { showDrop = false },
                         ) {
-                            if (currentSubjectId > -1) {
-                                DropdownMenuItem(
-                                    leadingIcon = {
-                                        Icon(
-                                            Icons.Default.Update,
-                                            "update",
-                                        )
-                                    },
-                                    text = { Text("Update") },
-                                    onClick = {
-                                        updateSubject(currentSubjectId)
-                                        showDrop = false
-                                    },
-                                )
-                            }
+
 
                             DropdownMenuItem(
                                 leadingIcon = {
@@ -196,11 +191,7 @@ fun SeBottonAppBar(
                     }
                 }
             }
-            if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.Default.ArrowBackIosNew, "back")
-                }
-            }
+
         },
     )
 }

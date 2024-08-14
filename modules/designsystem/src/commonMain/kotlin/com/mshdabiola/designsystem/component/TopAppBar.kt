@@ -108,6 +108,8 @@ fun DetailTopAppBar(
 fun MainTopBar(
     modifier: Modifier = Modifier,
     isSelectMode: Boolean = false,
+    isMain: Boolean = false,
+    isExam: Boolean = false,
     currentSubjectId: Long = 0,
     selectAll: (Long) -> Unit = {},
     deselectAll: () -> Unit = {},
@@ -116,22 +118,38 @@ fun MainTopBar(
     exportWord: () -> Unit = {},
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
-    updateSubject: (Long) -> Unit = {},
+    onNavigationClick: () -> Unit = {},
 
-) {
+
+    ) {
     var showDrop by remember { mutableStateOf(false) }
 
     TopAppBar(
         modifier = modifier,
-        title = { Text("Main Screen") },
+        title = { Text("Series Editor") },
+        navigationIcon = {
+            if (!isMain) {
+                IconButton(onClick = onNavigationClick) {
+                    Icon(
+                        modifier = Modifier.testTag("back"),
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "back",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+            }
+        },
 
         actions = {
-            IconButton(
-                onClick = navigateToSetting,
-                // enabled = currentSubjectIndex > -1
-            ) {
-                Icon(Icons.Default.Settings, "setting")
+            if (isMain) {
+                IconButton(
+                    onClick = navigateToSetting,
+                    // enabled = currentSubjectIndex > -1
+                ) {
+                    Icon(Icons.Default.Settings, "setting")
+                }
             }
+            if (isExam){
             Box {
                 IconButton(
                     onClick = { showDrop = true },
@@ -222,21 +240,7 @@ fun MainTopBar(
                         expanded = showDrop,
                         onDismissRequest = { showDrop = false },
                     ) {
-                        if (currentSubjectId > -1) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        Icons.Default.Update,
-                                        "update",
-                                    )
-                                },
-                                text = { Text("Update") },
-                                onClick = {
-                                    updateSubject(currentSubjectId)
-                                    showDrop = false
-                                },
-                            )
-                        }
+
 
                         DropdownMenuItem(
                             leadingIcon = {
@@ -253,6 +257,7 @@ fun MainTopBar(
                         )
                     }
                 }
+            }
             }
         },
     )
