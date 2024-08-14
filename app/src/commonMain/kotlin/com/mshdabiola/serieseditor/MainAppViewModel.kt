@@ -8,20 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IQuestionRepository
-import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.data.repository.UserRepository
 import com.mshdabiola.data.repository.toWord
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserData
 import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.serieseditor.MainActivityUiState.Loading
 import com.mshdabiola.serieseditor.MainActivityUiState.Success
-import com.mshdabiola.seriesmodel.Series
-import com.mshdabiola.seriesmodel.User
-import com.mshdabiola.seriesmodel.UserType
-import com.mshdabiola.ui.toUi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,41 +32,14 @@ import java.time.format.DateTimeFormatter
 
 class MainAppViewModel(
     userDataRepository: UserDataRepository,
-    subjectRepository: ISubjectRepository,
-    userRepository: UserRepository,
+//    userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
     private val questionRepository: IQuestionRepository,
-    private val seriesRepository: SeriesRepository,
 ) : ViewModel() {
 
-    private val _mainState = MutableStateFlow<MainState>(MainState.Loading)
+    private val _mainState = MutableStateFlow<MainState>(MainState.Success())
     val mainState = _mainState.asStateFlow()
-    private var user: User? = null
 
-    init {
-
-        viewModelScope.launch {
-
-            user = userRepository.getUser(1).first()
-
-            if (user == null) {
-                user = User(
-                    id = -1,
-                    name = "Abiola",
-                    type = UserType.TEACHER,
-                    password = "cheatmobi",
-                    imagePath = "",
-                    points = 1,
-                )
-
-                val id = userRepository.setUser(user!!)
-                userDataRepository.setUserId(id)
-
-                seriesRepository.upsert(Series(-1, userId = id, "Default"))
-            }
-            _mainState.value = MainState.Success(user!!)
-        }
-    }
 
     val uiState: StateFlow<MainActivityUiState> = userDataRepository.userData.map {
         Success(it)
@@ -86,15 +53,6 @@ class MainAppViewModel(
         .isSelectMode
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    val subjects = subjectRepository
-        .getAllWithSeries()
-        .map { subjectList -> subjectList.map { it.toUi() } }
-        // .asResult()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList(),
-        )
 
     fun onExport(path: String, key: String) {
         viewModelScope.launch {
@@ -119,17 +77,17 @@ class MainAppViewModel(
                 } else {
                     "successfully exported to desktop, series directory"
                 }
-                _mainState.value = MainState.Success(user!!, messeage)
+                _mainState.value = MainState.Success(messeage)
             } catch (e: Exception) {
                 e.printStackTrace()
                 deselectAll()
 
-                _mainState.value = MainState.Success(user!!, "Failed to export")
+                _mainState.value = MainState.Success("Failed to export")
             }
 
             delay(1500)
 
-            _mainState.value = MainState.Success(user!!, "")
+            _mainState.value = MainState.Success("")
         }
     }
 
@@ -159,17 +117,17 @@ class MainAppViewModel(
                 } else {
                     "successfully Saved to desktop, series directory"
                 }
-                _mainState.value = MainState.Success(user!!, messeage)
+                _mainState.value = MainState.Success(messeage)
             } catch (e: Exception) {
                 e.printStackTrace()
                 deselectAll()
 
-                _mainState.value = MainState.Success(user!!, "Failed to export")
+                _mainState.value = MainState.Success("Failed to export")
             }
 
             delay(1500)
 
-            _mainState.value = MainState.Success(user!!, "")
+            _mainState.value = MainState.Success("")
         }
     }
 
@@ -184,15 +142,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                    if (subjectId < 0) {
-                        iExamRepository.getAll()
-                            .mapNotNull { it.map { it.id } }
-                    } else {
-                        iExamRepository
-                            .getAllBuSubjectId(subjectId)
-                            .mapNotNull { it.map { it.examination.id } }
-                    }
-                    ).first()
+                        if (subjectId < 0) {
+                            iExamRepository.getAll()
+                                .mapNotNull { it.map { it.id } }
+                        } else {
+                            iExamRepository
+                                .getAllBuSubjectId(subjectId)
+                                .mapNotNull { it.map { it.examination.id } }
+                        }
+                        ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

@@ -6,7 +6,6 @@ sealed class MainState {
 
     data object Loading : MainState()
     data class Success(
-        val user: User,
         val message: String = "",
     ) : MainState()
 }
