@@ -1,8 +1,8 @@
 package com.mshdabiola.subjects
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.onClick
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
@@ -32,7 +32,7 @@ fun SubjectCard(
 ) {
     var showDrop by remember { mutableStateOf(false) }
     ListItem(
-        modifier = modifier.onClick { onClick(subjectWithSeries.subject.id) },
+        modifier = modifier.clickable { onClick(subjectWithSeries.subject.id) },
 
         headlineContent = {
             Text(subjectWithSeries.subject.title)

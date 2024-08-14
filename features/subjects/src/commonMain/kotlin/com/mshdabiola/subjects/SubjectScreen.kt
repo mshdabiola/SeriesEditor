@@ -5,6 +5,7 @@
 package com.mshdabiola.subjects
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -118,6 +120,16 @@ internal fun SubjectScreen(
                             EmptyState()
                         }
                     } else {
+                        item {
+                            ListItem(
+                                modifier = Modifier.clickable {
+                                    navigateToQuestion(-1)
+                                },
+                                headlineContent = {
+                                    Text("All Examinations")
+                                }
+                            )
+                        }
                         subjectItems(
                             items = mainState.data,
                             onClick = navigateToQuestion,
