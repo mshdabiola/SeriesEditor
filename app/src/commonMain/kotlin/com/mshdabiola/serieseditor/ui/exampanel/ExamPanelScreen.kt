@@ -45,25 +45,27 @@ fun ExamPaneScreen(
             )
         }
         Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
-            NavHost(
-                navController = ceNavHostController,
-                startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
-                modifier = Modifier,
-            ) {
-                composeExaminationScreen(
-                    modifier = Modifier.padding(8.dp),
-                    onShowSnack = onShowSnackbar,
-                    onBack = {
-                        ceNavHostController.popBackStack()
-                        if (ceNavHostController.currentDestination == null) {
-                            ceNavHostController.navigateToComposeExamination(
-                                subjectId,
-                                -1,
-                            )
-                        }
-                    },
-                    subjectId = subjectId,
-                )
+            if(subjectId>0) {
+                NavHost(
+                    navController = ceNavHostController,
+                    startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
+                    modifier = Modifier,
+                ) {
+                    composeExaminationScreen(
+                        modifier = Modifier.padding(8.dp),
+                        onShowSnack = onShowSnackbar,
+                        onBack = {
+                            ceNavHostController.popBackStack()
+                            if (ceNavHostController.currentDestination == null) {
+                                ceNavHostController.navigateToComposeExamination(
+                                    subjectId,
+                                    -1,
+                                )
+                            }
+                        },
+                        subjectId = subjectId,
+                    )
+                }
             }
         }
     }

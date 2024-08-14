@@ -24,6 +24,7 @@ import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.EXAM_ROUTE
 import com.mshdabiola.examinations.navigation.SUBJECT_ARG
 import com.mshdabiola.examinations.navigation.navigateToExam
+import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
@@ -103,6 +104,11 @@ sealed class SeriesEditorAppState(
     abstract val currentSubjectId: Long
         @Composable get
 
+    abstract val isMain: Boolean
+        @Composable get
+    abstract val isExam: Boolean
+        @Composable get
+
     abstract fun onSubjectClick(id: Long)
     abstract fun onUpdateSubject(id: Long)
 }
@@ -135,6 +141,10 @@ class Extended(
             .value
             ?.arguments
             ?.getLong(SUBJECT_ARG) ?: -1
+    override val isMain: Boolean
+        @Composable get() = currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true
+    override val isExam: Boolean
+        @Composable get() = currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true
 
     override fun onSubjectClick(id: Long) {
         navController.popBackStack()
@@ -183,15 +193,23 @@ class Other(
         navController.navigateToComposeSubject(id)
     }
 
-    val isMain
+
+    override val isMain: Boolean
         @Composable get() = currentDestination?.route?.contains(SUBJECT_ROUTE) == true
+    override val isExam: Boolean
+        @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
 
     val isList
         @Composable
         get() =
             when {
                 currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> true
-                currentDestination?.route?.contains(EXAM_ROUTE) == true -> true
+                currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
+                    val subjectId =
+                        navController.currentBackStackEntry?.arguments?.getLong(SUBJECT_ARG)
+                            ?: -1
+                    subjectId >= 0
+                }
                 currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> true
                 currentDestination?.route?.contains(TOPIC_ROUTE) == true -> true
                 else -> false
@@ -225,7 +243,7 @@ class Other(
 
             navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
                 val subjectId =
-                    navController.currentBackStackEntry?.arguments?.getLong(com.mshdabiola.composeexam.navigation.SUBJECT_ARG)
+                    navController.currentBackStackEntry?.arguments?.getLong(SUBJECT_ARG)
                         ?: -1
                 navController.navigateToComposeExamination(subjectId, -1)
             }

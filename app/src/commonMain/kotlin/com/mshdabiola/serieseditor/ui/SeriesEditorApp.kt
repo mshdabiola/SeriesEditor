@@ -85,7 +85,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
     ExperimentalMaterial3WindowSizeClassApi::class,
     KoinExperimentalAPI::class,
     ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class,
 )
 @Composable
 fun SeriesEditorApp() {
@@ -161,27 +160,15 @@ fun SeriesEditorApp() {
                                                 appState = appState,
                                             )
                                         }
-//                                if (appState.shouldShowBottomBar) {
-//                                    CommonBar(
-//                                        currentNavigation = appState.currentDestination?.route
-//                                            ?: "",
-//                                    ) { navigator(it) }
-//                                }
                                     },
                                     topBar = {
                                         if (appState is Extended) {
-                                            if (appState.showMainTopBar) {
                                                 MainTopBarSection(
                                                     navigateToSetting = appState.navController::navigateToSetting,
-                                                    subjectId = currentSubjectId,
-                                                    updateSubject = appState::onUpdateSubject,
+                                                  appState = appState
 
                                                 )
-                                            } else {
-                                                DetailTopAppBar(
-                                                    onNavigationClick = appState.navController::popBackStack,
-                                                )
-                                            }
+
                                         }
                                     },
 

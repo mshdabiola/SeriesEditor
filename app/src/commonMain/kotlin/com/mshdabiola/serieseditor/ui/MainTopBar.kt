@@ -24,10 +24,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 fun MainTopBarSection(
     modifier: Modifier = Modifier,
     navigateToSetting: () -> Unit,
-    subjectId: Long,
-    updateSubject: (Long) -> Unit,
-
-) {
+    appState: SeriesEditorAppState,
+    ) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -48,7 +46,7 @@ fun MainTopBarSection(
     MainTopBar(
         modifier = modifier,
         isSelectMode = isSelect.value,
-        currentSubjectId = subjectId,
+        currentSubjectId = appState.currentSubjectId,
         selectAll = viewModel::selectAll,
         deselectAll = viewModel::deselectAll,
         navigateToSetting = navigateToSetting,
@@ -62,7 +60,9 @@ fun MainTopBarSection(
         exportWord = { viewModel.onExportWord(path!!) },
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = { showDeleteDialog = true },
-        updateSubject = updateSubject,
+        isMain = appState.isMain,
+        isExam = appState.isExam,
+        onNavigationClick = appState.navController::popBackStack
     )
 
     if (showPermissionDialog) {
@@ -103,7 +103,7 @@ fun MainBottomBarSection(
     subjectId: Long,
     fabText: String,
 
-) {
+    ) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -145,17 +145,12 @@ fun MainBottomBarSection(
         } else {
             null
         },
-        onSettingsClick = if (appState.isMain) {
-            { appState.navController.navigateToSetting() }
-        } else {
-            null
-        },
+        onSettingsClick = appState.navController::navigateToSetting
+       ,
         exportWord = { viewModel.onExportWord(path!!) },
-        onBackClick = if (!appState.isMain) {
-            { appState.navController.popBackStack() }
-        } else {
-            null
-        },
+        onBackClick = appState.navController::popBackStack ,
+        isMain = appState.isMain,
+        isExam = appState.isExam,
     )
     if (showPermissionDialog) {
         PermissionDialog(
