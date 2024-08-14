@@ -26,8 +26,6 @@ fun MainTopBarSection(
     navigateToSetting: () -> Unit,
     subjectId: Long,
     updateSubject: (Long) -> Unit,
-    onNavigationClick: (() -> Unit)? = null,
-    onAddTopic: (() -> Unit)? = null,
 
 ) {
     val viewModel: MainAppViewModel = koinViewModel()
@@ -65,7 +63,6 @@ fun MainTopBarSection(
         toggleSelectMode = viewModel::toggleSelectMode,
         showDeleteDialog = { showDeleteDialog = true },
         updateSubject = updateSubject,
-        onNavigationClick = onNavigationClick,
     )
 
     if (showPermissionDialog) {
@@ -104,7 +101,6 @@ fun MainBottomBarSection(
     modifier: Modifier = Modifier,
     appState: Other,
     subjectId: Long,
-    onNavigationClick: (() -> Unit)?,
     fabText: String,
 
 ) {
@@ -149,7 +145,6 @@ fun MainBottomBarSection(
         } else {
             null
         },
-        onNavigationClick = onNavigationClick,
         onSettingsClick = if (appState.isMain) {
             { appState.navController.navigateToSetting() }
         } else {
