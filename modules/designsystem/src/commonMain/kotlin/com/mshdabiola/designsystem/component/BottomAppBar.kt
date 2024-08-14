@@ -37,7 +37,6 @@ import com.mshdabiola.model.currentPlatform
 fun SeBottonAppBar(
     modifier: Modifier = Modifier,
     onFabClick: (() -> Unit)? = null,
-    onNavigationClick: (() -> Unit)? = null,
     onSettingsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     isSelectMode: Boolean = false,
@@ -68,11 +67,7 @@ fun SeBottonAppBar(
             }
         },
         actions = {
-            if (onNavigationClick != null) {
-                IconButton(onClick = onNavigationClick) {
-                    Icon(Icons.Default.Menu, "menu")
-                }
-            }
+
             if (onSettingsClick != null) {
                 IconButton(onClick = onSettingsClick) {
                     Icon(Icons.Default.Settings, "setting")

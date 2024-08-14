@@ -117,7 +117,6 @@ fun MainTopBar(
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
     updateSubject: (Long) -> Unit = {},
-    onNavigationClick: (() -> Unit)? = null,
 
 ) {
     var showDrop by remember { mutableStateOf(false) }
@@ -125,13 +124,7 @@ fun MainTopBar(
     TopAppBar(
         modifier = modifier,
         title = { Text("Main Screen") },
-        navigationIcon = {
-            if (onNavigationClick != null) {
-                IconButton(onClick = onNavigationClick) {
-                    Icon(Icons.Default.Menu, "menu")
-                }
-            }
-        },
+
         actions = {
             IconButton(
                 onClick = navigateToSetting,
