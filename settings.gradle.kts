@@ -42,7 +42,7 @@ include(":benchmarks")
 include(":app")
 //include(":shared")
 
-
+include(":features:main")
 include(":features:examinations")
 include(":features:subjects")
 include(":features:setting")
