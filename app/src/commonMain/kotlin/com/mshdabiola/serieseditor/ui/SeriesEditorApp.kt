@@ -26,9 +26,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -53,8 +55,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
+import com.mshdabiola.designsystem.component.SerMainTopAppBar
+import com.mshdabiola.designsystem.component.SerSubTopAppBar
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
+import com.mshdabiola.designsystem.string.appName
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SeriesEditorTheme
@@ -97,7 +102,6 @@ fun SeriesEditorApp() {
     val darkTheme = shouldUseDarkTheme(uiState)
 
     val mainState = viewModel.mainState.collectAsStateWithLifecycle()
-    val currentSubjectId = appState.currentSubjectId
 
     LoadTex()
 
@@ -141,28 +145,34 @@ fun SeriesEditorApp() {
                                     contentColor = MaterialTheme.colorScheme.onBackground,
                                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                     snackbarHost = { SnackbarHost(snackbarHostState) },
-                                    bottomBar = {
+                                    floatingActionButton = {
                                         if (appState is Other) {
-                                            MainBottomBarSection(
-                                                modifier = Modifier,
-
-                                                fabText = appState.fabText,
-                                                subjectId = currentSubjectId,
-                                                appState = appState,
-                                            )
+                                            if (appState.isList) {
+                                                ExtendedFloatingActionButton(onClick = appState::onAdd) {
+                                                    Icon(Icons.Outlined.Add, "add")
+                                                    Text(appState.fabText)
+                                                }
+                                            }
                                         }
                                     },
+
                                     topBar = {
-                                        if (appState is Extended) {
-                                            MainTopBarSection(
-                                                navigateToSetting = appState.navController::navigateToSetting,
-                                                appState = appState,
+                                        if (appState.showMainTopBar) {
+                                            SerMainTopAppBar(
+                                                titleRes = appName,
+                                                onProfile = { },
+                                                onNavigationClick = { appState.navController.navigateToSetting() },
 
+                                                )
+                                        } else {
+                                            SerSubTopAppBar(
+                                                title = "Topbar",
+                                                onBack = appState.navController::popBackStack,
                                             )
                                         }
                                     },
 
-                                ) { padding ->
+                                    ) { padding ->
 
                                     Column(
                                         Modifier

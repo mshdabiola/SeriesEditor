@@ -19,6 +19,7 @@ import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
+import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.EXAM_ROUTE
 import com.mshdabiola.examinations.navigation.SUBJECT_ARG
@@ -26,6 +27,7 @@ import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
+import com.mshdabiola.subjects.navigation.SERIES_ID
 import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
@@ -35,26 +37,17 @@ fun rememberExtend(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-    mainNavController: NavHostController = rememberNavController(),
-    subjectNavHostController: NavHostController = rememberNavController(),
-    examNavHostController: NavHostController = rememberNavController(),
 ): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,
         coroutineScope,
         windowSizeClass,
-        mainNavController,
-        subjectNavHostController,
-        examNavHostController,
     ) {
         Extended(
             navController,
             coroutineScope,
             windowSizeClass,
-            mainNavController,
-            subjectNavHostController,
-            examNavHostController,
         )
     }
 }
@@ -94,28 +87,13 @@ sealed class SeriesEditorAppState(
     abstract val showMainTopBar: Boolean
         @Composable get
 
-    abstract val showPermanentDrawer: Boolean
-        @Composable get
 
-    abstract val showDrawer: Boolean
-        @Composable get
-
-    abstract val currentSubjectId: Long
-        @Composable get
-
-    abstract val isMain: Boolean
-        @Composable get
-    abstract val isExam: Boolean
-        @Composable get
 }
 
 class Extended(
     override val navController: NavHostController,
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
-    val mainNavController: NavHostController,
-    val subjectNavHostController: NavHostController,
-    val examNavHostController: NavHostController,
 
 ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
@@ -124,23 +102,9 @@ class Extended(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true
-
-    override val showPermanentDrawer: Boolean
-        @Composable get() = currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true
-    override val showDrawer: Boolean
-        @Composable get() = false
-
-    override val currentSubjectId: Long
-        @Composable get() = mainNavController
-            .currentBackStackEntryAsState()
-            .value
-            ?.arguments
-            ?.getLong(SUBJECT_ARG) ?: -1
-    override val isMain: Boolean
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
-    override val isExam: Boolean
-        @Composable get() = currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true
+                ||currentDestination?.route?.contains("setting") == true
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -156,24 +120,8 @@ class Other(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
-
-    override val currentSubjectId: Long
-        @Composable get() = navController
-            .currentBackStackEntryAsState()
-            .value
-            ?.arguments
-            ?.getLong(SUBJECT_ARG) ?: -1
-
-    override val showPermanentDrawer: Boolean
-        @Composable get() = false
-    override val showDrawer: Boolean
-        @Composable get() = true
-
-    override val isMain: Boolean
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
-    override val isExam: Boolean
-        @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
+                || currentDestination?.route?.contains("setting") == true
 
     val isList
         @Composable
@@ -212,7 +160,10 @@ class Other(
     fun onAdd() {
         when {
             navController.currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> {
-                // navController.navigateToComposeSubject(-1)
+                val seriesId =
+                    navController.currentBackStackEntry?.arguments?.getLong(SERIES_ID)
+                        ?: -1
+                 navController.navigateToComposeSubject(seriesId,-1)
             }
 
             navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
