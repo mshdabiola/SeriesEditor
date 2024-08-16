@@ -9,26 +9,24 @@ package com.mshdabiola.designsystem.components
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mshdabiola.designsystem.component.DetailTopAppBar
-import com.mshdabiola.designsystem.component.SeriesEditorTopAppBar
-import com.mshdabiola.designsystem.icon.SkIcons
+import com.mshdabiola.designsystem.component.SerMainTopAppBar
+import com.mshdabiola.designsystem.component.SerSubTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview("Top App Bar")
 @Composable
 private fun SkTopAppBarPreview() {
-    SeriesEditorTopAppBar(
-        titleRes = "",
-        navigationIcon = SkIcons.Search,
-        navigationIconContentDescription = "Navigation icon",
-        actionIcon = SkIcons.MoreVert,
-        actionIconContentDescription = "Action icon",
-    )
+    SerMainTopAppBar(
+        titleRes = "Main Top Bar",
+
+        )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview("Top App Bar")
 @Composable
 private fun DetailTopAppBarPreview() {
-    DetailTopAppBar()
+    SerSubTopAppBar(
+        title = "Detail Top Bar",
+    )
 }
