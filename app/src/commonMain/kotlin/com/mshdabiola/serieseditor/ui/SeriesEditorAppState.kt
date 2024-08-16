@@ -19,11 +19,10 @@ import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
-import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.EXAM_ROUTE
 import com.mshdabiola.examinations.navigation.SUBJECT_ARG
-import com.mshdabiola.examinations.navigation.navigateToExam
+import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
@@ -108,9 +107,6 @@ sealed class SeriesEditorAppState(
         @Composable get
     abstract val isExam: Boolean
         @Composable get
-
-    abstract fun onSubjectClick(id: Long)
-    abstract fun onUpdateSubject(id: Long)
 }
 
 class Extended(
@@ -121,7 +117,7 @@ class Extended(
     val subjectNavHostController: NavHostController,
     val examNavHostController: NavHostController,
 
-    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
         @Composable get() = navController
@@ -142,19 +138,9 @@ class Extended(
             ?.arguments
             ?.getLong(SUBJECT_ARG) ?: -1
     override val isMain: Boolean
-        @Composable get() = currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
     override val isExam: Boolean
         @Composable get() = currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true
-
-    override fun onSubjectClick(id: Long) {
-        navController.popBackStack()
-        mainNavController.navigateToExam(id)
-    }
-
-    override fun onUpdateSubject(id: Long) {
-        subjectNavHostController.popBackStack()
-        subjectNavHostController.navigateToComposeSubject(id)
-    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -184,18 +170,8 @@ class Other(
     override val showDrawer: Boolean
         @Composable get() = true
 
-    override fun onSubjectClick(id: Long) {
-        navController.popBackStack()
-        navController.navigateToExam(id)
-    }
-
-    override fun onUpdateSubject(id: Long) {
-        navController.navigateToComposeSubject(id)
-    }
-
-
     override val isMain: Boolean
-        @Composable get() = currentDestination?.route?.contains(SUBJECT_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
     override val isExam: Boolean
         @Composable get() = currentDestination?.route?.contains(EXAM_ROUTE) == true
 
@@ -235,10 +211,8 @@ class Other(
 
     fun onAdd() {
         when {
-
             navController.currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> {
-
-                navController.navigateToComposeSubject(-1)
+                // navController.navigateToComposeSubject(-1)
             }
 
             navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {

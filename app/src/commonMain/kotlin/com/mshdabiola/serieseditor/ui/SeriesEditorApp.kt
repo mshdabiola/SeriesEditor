@@ -5,7 +5,6 @@
 package com.mshdabiola.serieseditor.ui
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,7 +37,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
@@ -48,7 +45,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
-import com.mshdabiola.designsystem.component.DetailTopAppBar
 import com.mshdabiola.designsystem.component.SeNavigationDrawerItem
 import com.mshdabiola.designsystem.component.SeriesEditorBackground
 import com.mshdabiola.designsystem.component.SeriesEditorGradientBackground
@@ -76,7 +71,6 @@ import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.ui.state.SubjectUiState
-import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -106,7 +100,6 @@ fun SeriesEditorApp() {
     val currentSubjectId = appState.currentSubjectId
 
     LoadTex()
-
 
     LaunchedEffect(mainState.value) {
         if (mainState.value is MainState.Success && (mainState.value as MainState.Success).message.isNotEmpty()) {
@@ -142,8 +135,6 @@ fun SeriesEditorApp() {
                             }
 
                             is MainState.Success -> {
-
-
                                 Scaffold(
                                     modifier = Modifier.semanticsCommon {},
                                     containerColor = Color.Transparent,
@@ -163,16 +154,15 @@ fun SeriesEditorApp() {
                                     },
                                     topBar = {
                                         if (appState is Extended) {
-                                                MainTopBarSection(
-                                                    navigateToSetting = appState.navController::navigateToSetting,
-                                                  appState = appState
+                                            MainTopBarSection(
+                                                navigateToSetting = appState.navController::navigateToSetting,
+                                                appState = appState,
 
-                                                )
-
+                                            )
                                         }
                                     },
 
-                                    ) { padding ->
+                                ) { padding ->
 
                                     Column(
                                         Modifier
@@ -214,8 +204,6 @@ fun SeriesEditorApp() {
                                         }
                                     }
                                 }
-
-
                             }
                         }
                     }

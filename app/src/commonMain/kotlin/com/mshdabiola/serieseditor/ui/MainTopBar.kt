@@ -25,7 +25,7 @@ fun MainTopBarSection(
     modifier: Modifier = Modifier,
     navigateToSetting: () -> Unit,
     appState: SeriesEditorAppState,
-    ) {
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -62,7 +62,7 @@ fun MainTopBarSection(
         showDeleteDialog = { showDeleteDialog = true },
         isMain = appState.isMain,
         isExam = appState.isExam,
-        onNavigationClick = appState.navController::popBackStack
+        onNavigationClick = appState.navController::popBackStack,
     )
 
     if (showPermissionDialog) {
@@ -103,7 +103,7 @@ fun MainBottomBarSection(
     subjectId: Long,
     fabText: String,
 
-    ) {
+) {
     val viewModel: MainAppViewModel = koinViewModel()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -145,10 +145,9 @@ fun MainBottomBarSection(
         } else {
             null
         },
-        onSettingsClick = appState.navController::navigateToSetting
-       ,
+        onSettingsClick = appState.navController::navigateToSetting,
         exportWord = { viewModel.onExportWord(path!!) },
-        onBackClick = appState.navController::popBackStack ,
+        onBackClick = appState.navController::popBackStack,
         isMain = appState.isMain,
         isExam = appState.isExam,
     )
