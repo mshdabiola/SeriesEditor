@@ -7,11 +7,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.HdrOnSelect
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Deselect
 import androidx.compose.material.icons.rounded.SaveAs
@@ -48,8 +46,8 @@ fun SeBottonAppBar(
     toggleSelectMode: () -> Unit = {},
     showDeleteDialog: () -> Unit = {},
     fabText: String,
-    isMain:Boolean,
-    isExam:Boolean,
+    isMain: Boolean,
+    isExam: Boolean,
 ) {
     var showDrop by remember { mutableStateOf(false) }
 
@@ -80,7 +78,6 @@ fun SeBottonAppBar(
                 }
             }
             if (isExam) {
-
                 Box {
                     IconButton(
                         onClick = { showDrop = true },
@@ -172,8 +169,6 @@ fun SeBottonAppBar(
                             expanded = showDrop,
                             onDismissRequest = { showDrop = false },
                         ) {
-
-
                             DropdownMenuItem(
                                 leadingIcon = {
                                     Icon(
@@ -191,7 +186,6 @@ fun SeBottonAppBar(
                     }
                 }
             }
-
         },
     )
 }

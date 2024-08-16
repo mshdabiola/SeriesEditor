@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.HdrOnSelect
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Deselect
 import androidx.compose.material.icons.rounded.SaveAs
@@ -120,8 +118,7 @@ fun MainTopBar(
     showDeleteDialog: () -> Unit = {},
     onNavigationClick: () -> Unit = {},
 
-
-    ) {
+) {
     var showDrop by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -149,62 +146,47 @@ fun MainTopBar(
                     Icon(Icons.Default.Settings, "setting")
                 }
             }
-            if (isExam){
-            Box {
-                IconButton(
-                    onClick = { showDrop = true },
-                    // enabled = currentSubjectIndex > -1
-                ) {
-                    Icon(Icons.Default.MoreVert, "more")
-                }
-
-                if (isSelectMode) {
-                    DropdownMenu(
-                        expanded = showDrop,
-                        onDismissRequest = { showDrop = false },
+            if (isExam) {
+                Box {
+                    IconButton(
+                        onClick = { showDrop = true },
+                        // enabled = currentSubjectIndex > -1
                     ) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.SelectAll,
-                                    "select All",
-                                )
-                            },
-                            text = { Text("Select All") },
-                            onClick = {
-                                selectAll(currentSubjectId)
-                            },
-                        )
+                        Icon(Icons.Default.MoreVert, "more")
+                    }
 
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Rounded.Deselect,
-                                    "deselect",
-                                )
-                            },
-                            text = { Text("Deselect All") },
-                            onClick = {
-                                deselectAll()
-                                showDrop = false
-                            },
-                        )
+                    if (isSelectMode) {
+                        DropdownMenu(
+                            expanded = showDrop,
+                            onDismissRequest = { showDrop = false },
+                        ) {
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Default.SelectAll,
+                                        "select All",
+                                    )
+                                },
+                                text = { Text("Select All") },
+                                onClick = {
+                                    selectAll(currentSubjectId)
+                                },
+                            )
 
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Rounded.SaveAs,
-                                    "save",
-                                )
-                            },
-                            text = { Text("Export Selected") },
-                            onClick = {
-                                // onDelete(examUiState.id)
-                                showExportDialog()
-                                showDrop = false
-                            },
-                        )
-                        if (currentPlatform != Platform.Android) {
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Rounded.Deselect,
+                                        "deselect",
+                                    )
+                                },
+                                text = { Text("Deselect All") },
+                                onClick = {
+                                    deselectAll()
+                                    showDrop = false
+                                },
+                            )
+
                             DropdownMenuItem(
                                 leadingIcon = {
                                     Icon(
@@ -212,52 +194,65 @@ fun MainTopBar(
                                         "save",
                                     )
                                 },
-                                text = { Text("Export to Word") },
+                                text = { Text("Export Selected") },
                                 onClick = {
                                     // onDelete(examUiState.id)
-                                    exportWord()
+                                    showExportDialog()
+                                    showDrop = false
+                                },
+                            )
+                            if (currentPlatform != Platform.Android) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Rounded.SaveAs,
+                                            "save",
+                                        )
+                                    },
+                                    text = { Text("Export to Word") },
+                                    onClick = {
+                                        // onDelete(examUiState.id)
+                                        exportWord()
+                                        showDrop = false
+                                    },
+                                )
+                            }
+
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Rounded.Delete,
+                                        "delete",
+                                    )
+                                },
+                                text = { Text("Delete selected") },
+                                onClick = {
+                                    showDeleteDialog()
                                     showDrop = false
                                 },
                             )
                         }
-
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Rounded.Delete,
-                                    "delete",
-                                )
-                            },
-                            text = { Text("Delete selected") },
-                            onClick = {
-                                showDeleteDialog()
-                                showDrop = false
-                            },
-                        )
-                    }
-                } else {
-                    DropdownMenu(
-                        expanded = showDrop,
-                        onDismissRequest = { showDrop = false },
-                    ) {
-
-
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.HdrOnSelect,
-                                    "select mode",
-                                )
-                            },
-                            text = { Text("Select mode") },
-                            onClick = {
-                                toggleSelectMode()
-                                showDrop = false
-                            },
-                        )
+                    } else {
+                        DropdownMenu(
+                            expanded = showDrop,
+                            onDismissRequest = { showDrop = false },
+                        ) {
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Default.HdrOnSelect,
+                                        "select mode",
+                                    )
+                                },
+                                text = { Text("Select mode") },
+                                onClick = {
+                                    toggleSelectMode()
+                                    showDrop = false
+                                },
+                            )
+                        }
                     }
                 }
-            }
             }
         },
     )
