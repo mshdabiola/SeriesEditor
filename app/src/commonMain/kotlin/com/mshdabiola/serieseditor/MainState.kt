@@ -1,7 +1,5 @@
 package com.mshdabiola.serieseditor
 
-import com.mshdabiola.seriesmodel.User
-
 sealed class MainState {
 
     data object Loading : MainState()

@@ -8,8 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IQuestionRepository
-import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.SeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
 import com.mshdabiola.data.repository.toWord
@@ -18,7 +16,6 @@ import com.mshdabiola.model.UserData
 import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.serieseditor.MainActivityUiState.Loading
 import com.mshdabiola.serieseditor.MainActivityUiState.Success
-import com.mshdabiola.seriesmodel.Series
 import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.seriesmodel.UserType
 import kotlinx.coroutines.delay
@@ -40,7 +37,6 @@ class MainAppViewModel(
 //    userRepository: UserRepository,
     private val iExamRepository: IExaminationRepository,
     userRepository: UserRepository,
-    private val seriesRepository: SeriesRepository,
     private val questionRepository: IQuestionRepository,
 ) : ViewModel() {
 
@@ -66,8 +62,6 @@ class MainAppViewModel(
 
                 val id = userRepository.setUser(user!!)
                 userDataRepository.setUserId(id)
-
-                seriesRepository.upsert(Series(-1, userId = id, "Default"))
             }
         }
     }
@@ -83,7 +77,6 @@ class MainAppViewModel(
     val isSelectMode = iExamRepository
         .isSelectMode
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
-
 
     fun onExport(path: String, key: String) {
         viewModelScope.launch {
@@ -173,15 +166,15 @@ class MainAppViewModel(
         viewModelScope.launch {
             val list =
                 (
-                        if (subjectId < 0) {
-                            iExamRepository.getAll()
-                                .mapNotNull { it.map { it.id } }
-                        } else {
-                            iExamRepository
-                                .getAllBuSubjectId(subjectId)
-                                .mapNotNull { it.map { it.examination.id } }
-                        }
-                        ).first()
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)
