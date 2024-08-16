@@ -1,13 +1,10 @@
 package com.mshdabiola.composesubject
 
-import com.mshdabiola.seriesmodel.Series
-
 sealed class CsState {
 
     data class Loading(val isLoading: Boolean = false) : CsState()
     data class Success(
-        val currentSeries: Long,
-        val series: List<Series> = emptyList(),
+        val id: Long,
     ) : CsState()
 
     data class Error(val exception: Throwable) : CsState()
