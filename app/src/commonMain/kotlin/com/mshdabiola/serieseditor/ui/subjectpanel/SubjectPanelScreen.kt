@@ -16,7 +16,7 @@ import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.exampanel.navigateToExamPanel
-import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
+import com.mshdabiola.subjects.navigation.FULL_SUBJECT_ROUTE
 import com.mshdabiola.subjects.navigation.subjectScreen
 
 @Composable
@@ -24,6 +24,7 @@ fun SubjectPaneScreen(
     modifier: Modifier = Modifier,
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
+    seriesId: Long,
 ) {
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
     val subjectNavHostController = rememberNavController()
@@ -32,7 +33,7 @@ fun SubjectPaneScreen(
     Row(modifier) {
         NavHost(
             modifier = modifier.weight(0.6f),
-            startDestination = SUBJECT_ROUTE,
+            startDestination = FULL_SUBJECT_ROUTE,
             navController = subjectNavHostController,
         ) {
             subjectScreen(
@@ -40,6 +41,7 @@ fun SubjectPaneScreen(
                 onShowSnack = onShowSnackbar,
                 navigateToExam = appState.navController::navigateToExamPanel,
                 updateSubject = csNavHostController::navigateToComposeSubject,
+                defaultSeriesId = seriesId,
             )
         }
         Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
@@ -55,10 +57,12 @@ fun SubjectPaneScreen(
                         csNavHostController.popBackStack()
                         if (csNavHostController.currentDestination == null) {
                             csNavHostController.navigateToComposeSubject(
+                                seriesId,
                                 -1,
                             )
                         }
                     },
+                    defaultSeriesId = seriesId,
                 )
             }
         }
