@@ -20,6 +20,7 @@ val appModule = module {
         dataModule,
         examModule,
         com.mshdabiola.subjects.subjectModule,
+        com.mshdabiola.main.mainModule,
         subjectModule,
         composeExamModule,
         settingModule,
