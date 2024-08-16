@@ -18,9 +18,10 @@ fun NavController.navigateToMain(
     },
 ) = navigate(MAIN_ROUTE, navOptions)
 
-fun NavGraphBuilder.composeMainScreen(
+fun NavGraphBuilder.mainScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
+    onNavigateToSubject: (Long) -> Unit,
 ) {
     composable(
         route = MAIN_ROUTE
@@ -28,6 +29,7 @@ fun NavGraphBuilder.composeMainScreen(
         MainRoute(
             modifier = modifier,
             onShowSnack = onShowSnack,
+            navigateToSubject = onNavigateToSubject,
         )
     }
 }
