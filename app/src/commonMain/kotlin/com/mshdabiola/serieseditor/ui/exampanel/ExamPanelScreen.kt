@@ -45,7 +45,7 @@ fun ExamPaneScreen(
             )
         }
         Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
-            if(subjectId>0) {
+            if (subjectId > 0) {
                 NavHost(
                     navController = ceNavHostController,
                     startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
