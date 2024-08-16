@@ -4,7 +4,6 @@
 
 package com.mshdabiola.serieseditor.navigation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,21 +22,22 @@ import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
-import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
 import com.mshdabiola.examinations.navigation.navigateToExam
+import com.mshdabiola.main.navigation.MAIN_ROUTE
+import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
 import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
 import com.mshdabiola.serieseditor.ui.questionpanel.questionPanelScreen
 import com.mshdabiola.serieseditor.ui.questionpanelother.navigateToQuestionPanelOther
 import com.mshdabiola.serieseditor.ui.questionpanelother.questionPanelOtherScreen
-import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.navigateToSubjectPanel
 import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
-import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
+import com.mshdabiola.subjects.navigation.navigateToSubjects
 import com.mshdabiola.subjects.navigation.subjectScreen
 import com.mshdabiola.topics.navigation.navigateToTopic
 import com.mshdabiola.topics.navigation.topicScreen
@@ -47,7 +47,7 @@ fun ExtendNavHost(
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = SUBJECT_PANEL_ROUTE,
+    startDestination: String = MAIN_ROUTE,
 ) {
     val navController = appState.navController
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
@@ -57,6 +57,11 @@ fun ExtendNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        mainScreen(
+            modifier = screenModifier,
+            onShowSnack = onShowSnackbar,
+            onNavigateToSubject = navController::navigateToSubjectPanel,
+        )
         subjectPanelScreen(
             appState = appState,
             onShowSnack = onShowSnackbar,
@@ -83,13 +88,12 @@ fun ExtendNavHost(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OtherNavHost(
     appState: Other,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = SUBJECT_ROUTE,
+    startDestination: String = MAIN_ROUTE,
 ) {
     val navController = appState.navController
     val screenModifier = modifier
@@ -102,12 +106,19 @@ fun OtherNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        mainScreen(
+            modifier = screenModifier,
+            onShowSnack = onShowSnackbar,
+            onNavigateToSubject = navController::navigateToSubjects,
+
+        )
+
         subjectScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             navigateToExam = navController::navigateToExam,
             updateSubject = navController::navigateToComposeSubject,
-            )
+        )
 
         examScreen(
             modifier = screenModifier,
