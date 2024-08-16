@@ -5,7 +5,6 @@
 package com.mshdabiola.subjects
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +51,7 @@ import com.mshdabiola.ui.logNoteOpened
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.parameter.parametersOf
 import serieseditor.features.subjects.generated.resources.Res
 import serieseditor.features.subjects.generated.resources.features_main_empty_description
 import serieseditor.features.subjects.generated.resources.features_main_empty_error
@@ -66,9 +65,10 @@ internal fun SubjectRoute(
     modifier: Modifier = Modifier,
     navigateToQuestion: (Long) -> Unit,
     updateSubjects: (Long) -> Unit,
+    seriesId: Long,
 ) {
     val viewModel: SubjectViewModel =
-        koinViewModel()
+        koinViewModel(parameters = { parametersOf(seriesId) })
 
     val feedNote = viewModel.subjects.collectAsStateWithLifecycle()
 
@@ -120,16 +120,6 @@ internal fun SubjectScreen(
                             EmptyState()
                         }
                     } else {
-                        item {
-                            ListItem(
-                                modifier = Modifier.clickable {
-                                    navigateToQuestion(-1)
-                                },
-                                headlineContent = {
-                                    Text("All Examinations")
-                                }
-                            )
-                        }
                         subjectItems(
                             items = mainState.data,
                             onClick = navigateToQuestion,
