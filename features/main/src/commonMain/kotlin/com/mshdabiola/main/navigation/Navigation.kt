@@ -24,7 +24,7 @@ fun NavGraphBuilder.mainScreen(
     onNavigateToSubject: (Long) -> Unit,
 ) {
     composable(
-        route = MAIN_ROUTE
+        route = MAIN_ROUTE,
     ) {
         MainRoute(
             modifier = modifier,

@@ -24,6 +24,5 @@ class MainScreenTest {
                 subjectState = rememberTextFieldState("subject"),
             )
         }
-
     }
 }

@@ -27,7 +27,6 @@ class MainViewModel(
 
     val classState = TextFieldState()
 
-
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
 
@@ -42,13 +41,10 @@ class MainViewModel(
                 .collectLatest { list ->
                     _mainState.update {
                         it.copy(series = list)
-
-
                     }
                 }
         }
     }
-
 
     fun addClass() {
         viewModelScope.launch {
@@ -60,9 +56,8 @@ class MainViewModel(
                 ),
             )
 
-            currentId=-1
+            currentId = -1
             classState.clearText()
-
         }
     }
 
@@ -70,7 +65,6 @@ class MainViewModel(
         viewModelScope.launch {
             seriesRepository.delete(id)
         }
-
     }
 
     fun updateClass(id: Long) {
@@ -84,7 +78,5 @@ class MainViewModel(
                 }
             }
         }
-
     }
-
 }

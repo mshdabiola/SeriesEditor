@@ -2,7 +2,6 @@ package com.mshdabiola.main
 
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.mshdabiola.designsystem.DevicePreviews
 
 @DevicePreviews

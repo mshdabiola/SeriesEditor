@@ -51,7 +51,6 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
-
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun MainRoute(
@@ -93,16 +92,14 @@ internal fun MainScreen(
     onAdd: () -> Unit = {},
     onDelete: (Long) -> Unit = {},
     onUpdate: (Long) -> Unit = {},
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     FlowRow(
         modifier = modifier.verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
 
-
-        ) {
-
+    ) {
         FlowRow(
             modifier = Modifier.weight(0.6f),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -138,8 +135,6 @@ internal fun MainScreen(
                 title = "Students",
                 description = "10",
             )
-
-
         }
         Column(
             modifier = Modifier.widthIn(300.dp, 600.dp),
@@ -158,7 +153,6 @@ internal fun MainScreen(
                 SeriesEditorButton(onClick = onAdd, enabled = subjectState.text.isNotBlank()) {
                     Text("Add Class")
                 }
-
             }
             ContextualFlowColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -173,16 +167,10 @@ internal fun MainScreen(
                         onUpdate = onUpdate,
                         onClick = onClick,
                     )
-
                 }
             }
-
-
         }
-
-
     }
-
 }
 
 @Composable
@@ -231,7 +219,6 @@ fun MainCard(
                                 coroutineScope.launch {
                                     state.reset()
                                 }
-
                             },
                         ) {
                             Icon(
@@ -242,7 +229,7 @@ fun MainCard(
                     }
                 },
 
-                )
+            )
         },
     ) {
         ListItem(
@@ -253,13 +240,11 @@ fun MainCard(
                 Text(series.name)
             },
             trailingContent = {
-
                 IconButton(
                     onClick = {
                         coroutineScope.launch {
                             state.dismiss(SwipeToDismissBoxValue.StartToEnd)
                         }
-
                     },
                 ) {
                     Icon(
@@ -267,13 +252,10 @@ fun MainCard(
                         contentDescription = null,
                     )
                 }
-
             },
         )
     }
-
 }
-
 
 @Composable
 fun MainCard(
@@ -299,7 +281,6 @@ fun MainCard(
             Text(description)
         },
     )
-
 }
 
 @Composable
