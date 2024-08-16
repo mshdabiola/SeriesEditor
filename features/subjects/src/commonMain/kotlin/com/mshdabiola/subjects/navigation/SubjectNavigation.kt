@@ -11,7 +11,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.mshdabiola.subjects.SubjectRoute
 
-const val SUBJECT_ROUTE = "main_route"
+const val SUBJECT_ROUTE = "subject_route"
 
 fun NavController.navigateToSubjects(
     navOptions: NavOptions = androidx.navigation.navOptions {
