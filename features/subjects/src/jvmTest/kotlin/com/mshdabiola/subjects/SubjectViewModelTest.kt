@@ -36,13 +36,12 @@ class SubjectViewModelTest : KoinTest {
         this.modules(dataTestModule)
     }
     private val subjectRepository by inject<ISubjectRepository>()
-    private val userdataRepository by inject<UserDataRepository>()
 
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = SubjectViewModel(
+            1,
             subjectRepository,
-            userdataRepository,
         )
 
         viewModel
@@ -57,7 +56,7 @@ class SubjectViewModelTest : KoinTest {
                 assertTrue(state is Result.Success)
 
                 assertEquals(
-                    3,
+                    2,
                     state.data.size,
 
                 )
@@ -69,8 +68,8 @@ class SubjectViewModelTest : KoinTest {
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = SubjectViewModel(
+            1,
             subjectRepository,
-            userdataRepository,
         )
 
         viewModel
@@ -91,7 +90,7 @@ class SubjectViewModelTest : KoinTest {
                 assertTrue(state is Result.Success)
 
                 assertEquals(
-                    2,
+                    1,
                     state.data.size,
 
                 )
