@@ -18,10 +18,11 @@ class MainScreenTest {
         composeRule.setContent {
             MainScreen(
                 modifier = Modifier.fillMaxSize(),
-                mainState = MainState.Success(
+                mainState = MainState(
                     series = listOf(Series(1, 6, "ask")),
                 ),
                 subjectState = rememberTextFieldState("subject"),
+                onClick = {}
             )
         }
     }
