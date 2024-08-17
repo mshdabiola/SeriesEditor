@@ -20,20 +20,13 @@ class CsScreenTest {
             SubjectScreen(
                 modifier = Modifier.fillMaxSize(),
                 csState = CsState.Success(
-                    series = listOf(Series(1, 6, "ask")),
-                    currentSeries = 1,
+                   id = 1,
                 ),
                 subjectState = rememberTextFieldState("subject"),
-                seriesState = rememberTextFieldState("series"),
             )
         }
         composeRule.onNodeWithTag("cs:screen").assertExists()
-        composeRule.onNodeWithTag("cs:list_series").assertExists()
-        composeRule.onNodeWithTag("cs:previous").assertExists()
-        composeRule.onNodeWithTag("cs:next").assertExists()
         composeRule.onNodeWithTag("cs:subject").assertExists()
-        composeRule.onNodeWithTag("cs:series").assertExists()
-        composeRule.onNodeWithTag("cs:add_series").assertExists()
         composeRule.onNodeWithTag("cs:add_subject").assertExists()
         composeRule.onNodeWithTag("cs:delete_series").assertDoesNotExist()
     }
