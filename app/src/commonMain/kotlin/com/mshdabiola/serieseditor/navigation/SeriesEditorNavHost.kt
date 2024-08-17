@@ -14,33 +14,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.mshdabiola.composeexam.navigation.composeExaminationScreen
-import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
-import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
-import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
-import com.mshdabiola.examinations.navigation.examScreen
-import com.mshdabiola.examinations.navigation.navigateToExam
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
-import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
-import com.mshdabiola.serieseditor.ui.questionpanel.questionPanelScreen
-import com.mshdabiola.serieseditor.ui.questionpanelother.navigateToQuestionPanelOther
-import com.mshdabiola.serieseditor.ui.questionpanelother.questionPanelOtherScreen
+import com.mshdabiola.serieseditor.ui.examItemspanel.examItemOtherPanelScreen
+import com.mshdabiola.serieseditor.ui.examItemspanel.examItemPanelScreen
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.navigateToSubjectItemPanel
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelOtherScreen
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelScreen
 import com.mshdabiola.serieseditor.ui.subjectpanel.navigateToSubjectPanel
 import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
-import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
 import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
 import com.mshdabiola.subjects.navigation.navigateToSubjects
 import com.mshdabiola.subjects.navigation.subjectScreen
-import com.mshdabiola.topics.navigation.navigateToTopic
-import com.mshdabiola.topics.navigation.topicScreen
 
 @Composable
 fun ExtendNavHost(
@@ -66,15 +59,13 @@ fun ExtendNavHost(
             appState = appState,
             onShowSnack = onShowSnackbar,
         )
-        examPanelScreen(
+        subjectItemPanelScreen(
             onShowSnack = onShowSnackbar,
             appState = appState,
         )
-        questionPanelScreen(
+        examItemPanelScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
-            navigateToTopicPanel = navController::navigateToTopicPanel,
-
         )
         topicPanelScreen(
             modifier,
@@ -116,16 +107,15 @@ fun OtherNavHost(
         subjectScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
-            navigateToExam = navController::navigateToExam,
+            navigateToExam = navController::navigateToSubjectItemPanel,
             updateSubject = navController::navigateToComposeSubject,
         )
 
-        examScreen(
-            modifier = screenModifier,
+        subjectItemPanelOtherScreen(
             onShowSnack = onShowSnackbar,
-            navigateToQuestion = navController::navigateToQuestionPanelOther,
-            updateExam = navController::navigateToComposeExamination,
+            appState = appState,
         )
+
         composeSubjectScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
@@ -137,16 +127,14 @@ fun OtherNavHost(
             onBack = navController::popBackStack,
         )
 
-        questionPanelOtherScreen(
-            modifier = Modifier.fillMaxSize(),
+        examItemOtherPanelScreen(
+            modifier = Modifier,
             onShowSnack = onShowSnackbar,
-            appState = appState,
+            appState = appState
         )
         composeQuestionScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
-            navigateToInstruction = navController::navigateToComposeInstruction,
-            navigateToTopic = navController::navigateToTopic,
             onFinish = { navController.popBackStack() },
         )
 
@@ -155,12 +143,7 @@ fun OtherNavHost(
             onShowSnack = onShowSnackbar,
             onFinish = navController::popBackStack,
         )
-        topicScreen(
-            modifier = screenModifier,
-            onShowSnack = onShowSnackbar,
-            navigateToComposeTopic = navController::navigateToComposeTopic,
-            subjectId = -1,
-        )
+
         composeTopicScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
