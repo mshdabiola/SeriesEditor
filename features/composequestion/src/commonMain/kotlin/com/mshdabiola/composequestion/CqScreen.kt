@@ -81,8 +81,6 @@ internal fun CqRoute(
     questionId: Long,
     onShowSnack: suspend (String, String?) -> Boolean,
     onFinish: () -> Unit,
-    navigateToTopic: (Long) -> Unit,
-    navigateToInstruction: (Long, Long) -> Unit,
 ) {
     val viewModel: CqViewModel = koinViewModel(parameters = { parametersOf(examId, questionId) })
 
@@ -112,8 +110,6 @@ internal fun CqRoute(
         onAddAnswer = viewModel::onAddAnswer,
         isTheory = viewModel::isTheory,
         changeView = viewModel::changeView,
-        navigateToTopic = { navigateToTopic(viewModel.subjectId) },
-        navigateToInstruction = { navigateToInstruction(examId, -1) },
         onTopicChange = viewModel::onTopicChange,
         onInstructionChange = viewModel::onInstructionChange,
         onItemClicked = { itemUiState = it },
@@ -126,11 +122,6 @@ internal fun CqRoute(
     )
 }
 
-@OptIn(
-    ExperimentalLayoutApi::class,
-    ExperimentalFoundationApi::class,
-    ExperimentalMaterial3Api::class,
-)
 @Composable
 internal fun CqScreen(
     modifier: Modifier = Modifier,
@@ -147,8 +138,6 @@ internal fun CqScreen(
     onAddOption: () -> Unit = {},
     onAddAnswer: (Boolean) -> Unit = {},
     isTheory: (Boolean) -> Unit = {},
-    navigateToTopic: () -> Unit = {},
-    navigateToInstruction: () -> Unit = {},
     onTopicChange: (Int) -> Unit = {},
     onInstructionChange: (Int) -> Unit = {},
     onItemClicked: (ItemUiState) -> Unit = {},
@@ -179,8 +168,6 @@ internal fun CqScreen(
                 onAddOption = onAddOption,
                 onAddAnswer = onAddAnswer,
                 isTheory = isTheory,
-                navigateToTopic = navigateToTopic,
-                navigateToInstruction = navigateToInstruction,
                 onTopicChange = onTopicChange,
                 onInstructionChange = onInstructionChange,
                 onItemClicked = onItemClicked,
@@ -210,8 +197,6 @@ internal fun MainContent(
     onAddOption: () -> Unit = {},
     onAddAnswer: (Boolean) -> Unit = {},
     isTheory: (Boolean) -> Unit = {},
-    navigateToTopic: () -> Unit = {},
-    navigateToInstruction: () -> Unit = {},
     onTopicChange: (Int) -> Unit = {},
     onInstructionChange: (Int) -> Unit = {},
     onItemClicked: (ItemUiState) -> Unit = {},
@@ -250,15 +235,7 @@ internal fun MainContent(
 
     Column(modifier) {
         Section(title = "Question Section")
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-            TextButton(onClick = { navigateToTopic() }) {
-                Text("Add Topic")
-            }
 
-            TextButton(onClick = { navigateToInstruction() }) {
-                Text("Add Instruction")
-            }
-        }
         Row(Modifier.fillMaxWidth()) {
             ExposedDropdownMenuBox(
                 modifier = Modifier.weight(0.5f),
