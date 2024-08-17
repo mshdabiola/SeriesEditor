@@ -15,7 +15,7 @@ import com.mshdabiola.composesubject.navigation.FULL_CS_ROUTE
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.serieseditor.ui.Extended
-import com.mshdabiola.serieseditor.ui.exampanel.navigateToExamPanel
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.navigateToSubjectItemPanel
 import com.mshdabiola.subjects.navigation.FULL_SUBJECT_ROUTE
 import com.mshdabiola.subjects.navigation.subjectScreen
 
@@ -39,7 +39,7 @@ fun SubjectPaneScreen(
             subjectScreen(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
-                navigateToExam = appState.navController::navigateToExamPanel,
+                navigateToExam = appState.navController::navigateToSubjectItemPanel,
                 updateSubject = csNavHostController::navigateToComposeSubject,
                 defaultSeriesId = seriesId,
             )

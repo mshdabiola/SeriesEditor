@@ -21,12 +21,9 @@ import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
-import com.mshdabiola.examinations.navigation.EXAM_ROUTE
-import com.mshdabiola.examinations.navigation.SUBJECT_ARG
 import com.mshdabiola.main.navigation.MAIN_ROUTE
-import com.mshdabiola.serieseditor.ui.exampanel.EXAM_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.questionpanel.QUESTION_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ITEM_PANEL_ROUTE
 import com.mshdabiola.subjects.navigation.SERIES_ID
 import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
@@ -58,8 +55,10 @@ fun rememberOther(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-    pagerState: PagerState = rememberPagerState { 2 },
-): SeriesEditorAppState {
+    examPagerState: PagerState = rememberPagerState { 2 },
+    subjectPagerState: PagerState = rememberPagerState { 2 },
+
+    ): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,
@@ -70,7 +69,8 @@ fun rememberOther(
             navController,
             coroutineScope,
             windowSizeClass,
-            pagerState,
+            examPagerState,
+            subjectPagerState,
         )
     }
 }
@@ -95,7 +95,7 @@ class Extended(
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
 
-) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
         @Composable get() = navController
@@ -103,7 +103,7 @@ class Extended(
 
     override val showMainTopBar: Boolean
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
-                ||currentDestination?.route?.contains("setting") == true
+                || currentDestination?.route?.contains("setting") == true
 
 }
 
@@ -112,7 +112,8 @@ class Other(
     override val navController: NavHostController,
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
-    val pagerState: PagerState,
+    val examPagerState: PagerState,
+    val subjectPagerState: PagerState,
 ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
@@ -128,14 +129,8 @@ class Other(
         get() =
             when {
                 currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> true
-                currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
-                    val subjectId =
-                        navController.currentBackStackEntry?.arguments?.getLong(SUBJECT_ARG)
-                            ?: -1
-                    subjectId >= 0
-                }
-                currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> true
-                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> true
+                currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> true
+                currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> true
                 else -> false
             }
 
@@ -144,16 +139,22 @@ class Other(
         get() =
             when {
                 currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Add Subject"
-                currentDestination?.route?.contains(EXAM_ROUTE) == true -> "Add Exam"
-                currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> {
-                    if (pagerState.currentPage == 0) {
+                currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
+                    if (examPagerState.currentPage == 0) {
                         "Add Question"
                     } else {
                         "Add Instruction"
                     }
                 }
 
-                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> "Add Topic"
+                currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> {
+                    if (subjectPagerState.currentPage == 0) {
+                        "Add Examination"
+                    } else {
+                        "Add Topic"
+                    }
+                }
+
                 else -> "Add"
             }
 
@@ -163,23 +164,29 @@ class Other(
                 val seriesId =
                     navController.currentBackStackEntry?.arguments?.getLong(SERIES_ID)
                         ?: -1
-                 navController.navigateToComposeSubject(seriesId,-1)
+                navController.navigateToComposeSubject(seriesId, -1)
             }
 
-            navController.currentDestination?.route?.contains(EXAM_ROUTE) == true -> {
-                val subjectId =
-                    navController.currentBackStackEntry?.arguments?.getLong(SUBJECT_ARG)
-                        ?: -1
-                navController.navigateToComposeExamination(subjectId, -1)
-            }
 
-            navController.currentDestination?.route?.contains(QUESTION_PANEL_ROUTE) == true -> {
+            navController.currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
                 val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ARG) ?: -1
 
-                if (pagerState.currentPage == 0) {
+                if (examPagerState.currentPage == 0) {
                     navController.navigateToComposeQuestion(exam, -1)
                 } else {
                     navController.navigateToComposeInstruction(exam, -1)
+                }
+            }
+
+            navController.currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> {
+                val subjectId =
+                    navController.currentBackStackEntry?.arguments?.getLong(com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ARG)
+                        ?: -1
+
+                if (subjectPagerState.currentPage == 0) {
+                    navController.navigateToComposeExamination(subjectId, -1)
+                } else {
+                    navController.navigateToComposeTopic(subjectId, -1)
                 }
             }
 

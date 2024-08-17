@@ -20,11 +20,15 @@ fun NavController.navigateToTopicPanel(
 fun NavGraphBuilder.topicPanelScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
+    defaultSubjectId: Long = -1,
 ) {
     composable(
         route = "$TOPIC_PANEL_ROUTE/{$SUBJECT_ARG}",
         arguments = listOf(
-            navArgument(SUBJECT_ARG) { type = NavType.LongType },
+            navArgument(SUBJECT_ARG) {
+                type = NavType.LongType
+                defaultValue = defaultSubjectId
+            },
         ),
     ) {
         val subjectId = it.arguments?.getLong(SUBJECT_ARG) ?: -1
