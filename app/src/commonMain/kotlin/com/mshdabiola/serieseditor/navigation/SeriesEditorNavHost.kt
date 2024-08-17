@@ -30,7 +30,6 @@ import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelOtherScr
 import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelScreen
 import com.mshdabiola.serieseditor.ui.subjectpanel.navigateToSubjectPanel
 import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
-import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
 import com.mshdabiola.subjects.navigation.navigateToSubjects
 import com.mshdabiola.subjects.navigation.subjectScreen
@@ -67,10 +66,7 @@ fun ExtendNavHost(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
         )
-        topicPanelScreen(
-            modifier,
-            onShowSnackbar,
-        )
+
         settingScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
