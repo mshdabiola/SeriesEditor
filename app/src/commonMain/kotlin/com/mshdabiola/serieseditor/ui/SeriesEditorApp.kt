@@ -166,7 +166,7 @@ fun SeriesEditorApp() {
                                                 )
                                         } else {
                                             SerSubTopAppBar(
-                                                title = "Topbar",
+                                                title = appState.topbarTitle,
                                                 onBack = appState.navController::popBackStack,
                                             )
                                         }

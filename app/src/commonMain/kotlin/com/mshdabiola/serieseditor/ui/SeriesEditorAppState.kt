@@ -24,6 +24,7 @@ import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ITEM_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.subjects.navigation.SERIES_ID
 import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
@@ -87,6 +88,9 @@ sealed class SeriesEditorAppState(
     abstract val showMainTopBar: Boolean
         @Composable get
 
+    abstract val topbarTitle: String
+        @Composable get
+
 
 }
 
@@ -105,9 +109,16 @@ class Extended(
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
                 || currentDestination?.route?.contains("setting") == true
 
+    override val topbarTitle: String
+        @Composable get() = when {
+            currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> "Subject"
+            currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
+            currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
+            else -> ""
+        }
+
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 class Other(
     override val navController: NavHostController,
     override val coroutineScope: CoroutineScope,
@@ -123,6 +134,14 @@ class Other(
     override val showMainTopBar: Boolean
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
                 || currentDestination?.route?.contains("setting") == true
+
+    override val topbarTitle: String
+        @Composable get() = when {
+            currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Subject"
+            currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
+            currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
+            else -> ""
+        }
 
     val isList
         @Composable
