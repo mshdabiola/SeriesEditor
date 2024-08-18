@@ -8,6 +8,7 @@ import app.cash.turbine.test
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
+import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
@@ -38,7 +39,7 @@ class MainViewModelTest : KoinTest {
         this.modules(dataTestModule)
     }
     private val seriesRepository by inject<ISeriesRepository>()
-    private val subjectRepository by inject<ISeriesRepository>()
+    private val subjectRepository by inject<ISubjectRepository>()
     private val examRepository by inject<IExaminationRepository>()
     private val questionRepository by inject<IQuestionRepository>()
     private val userdataRepository by inject<IUserRepository>()
