@@ -22,7 +22,7 @@ class MainScreenTest {
                     series = listOf(Series(1, 6, "ask")),
                 ),
                 subjectState = rememberTextFieldState("subject"),
-                onClick = {}
+                onClick = {},
             )
         }
     }

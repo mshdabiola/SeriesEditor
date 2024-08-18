@@ -4,32 +4,23 @@
 
 package com.mshdabiola.main
 
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IQuestionRepository
-import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.data.repository.UserRepository
 import com.mshdabiola.data.repository.toWord
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.currentPlatform
-import com.mshdabiola.seriesmodel.Series
 import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.seriesmodel.UserType
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.LocalDateTime
@@ -161,15 +152,15 @@ class ExportDialogViewModel(
         viewModelScope.launch {
             val list =
                 (
-                        if (subjectId < 0) {
-                            iExamRepository.getAll()
-                                .mapNotNull { it.map { it.id } }
-                        } else {
-                            iExamRepository
-                                .getAllBuSubjectId(subjectId)
-                                .mapNotNull { it.map { it.examination.id } }
-                        }
-                        ).first()
+                    if (subjectId < 0) {
+                        iExamRepository.getAll()
+                            .mapNotNull { it.map { it.id } }
+                    } else {
+                        iExamRepository
+                            .getAllBuSubjectId(subjectId)
+                            .mapNotNull { it.map { it.examination.id } }
+                    }
+                    ).first()
 
             iExamRepository.updateSelectedList(list)
             iExamRepository.updateSelect(true)

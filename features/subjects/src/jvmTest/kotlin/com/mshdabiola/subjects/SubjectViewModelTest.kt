@@ -7,7 +7,6 @@ package com.mshdabiola.subjects
 import app.cash.turbine.test
 import com.mshdabiola.data.model.Result
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.test.StandardTestDispatcher

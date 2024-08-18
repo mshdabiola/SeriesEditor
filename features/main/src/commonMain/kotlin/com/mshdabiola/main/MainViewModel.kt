@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.IUserRepository
-import com.mshdabiola.data.repository.UserRepository
 import com.mshdabiola.seriesmodel.Series
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

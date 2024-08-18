@@ -6,9 +6,7 @@ package com.mshdabiola.composesubject
 
 import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
-import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.util.MainDispatcherRule
@@ -87,7 +85,6 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Loading)
 
-
                 state = awaitItem()
 
                 assertTrue(state is CsState.Success)
@@ -131,8 +128,6 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Loading)
 
-
-
                 state = awaitItem()
 
                 assertTrue(state is CsState.Success)
@@ -158,7 +153,6 @@ class CsViewModelTest : KoinTest {
                 var state = awaitItem()
 
                 assertTrue(state is CsState.Loading)
-
 
                 state = awaitItem()
 

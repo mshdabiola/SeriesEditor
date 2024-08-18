@@ -18,7 +18,6 @@ fun MainTopBarSection(
     modifier: Modifier = Modifier,
     navigateToSetting: () -> Unit,
 ) {
-
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
 
@@ -47,9 +46,7 @@ fun MainTopBarSection(
     }
     MainExportDialog(
         show = showDialog,
-        export = {},//{ viewModel.onExport(path!!, it) },
+        export = {}, // { viewModel.onExport(path!!, it) },
         onClose = { showDialog = false },
     )
-
-
 }

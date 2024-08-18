@@ -5,7 +5,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import com.mshdabiola.seriesmodel.Series
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -20,7 +19,7 @@ class CsScreenTest {
             SubjectScreen(
                 modifier = Modifier.fillMaxSize(),
                 csState = CsState.Success(
-                   id = 1,
+                    id = 1,
                 ),
                 subjectState = rememberTextFieldState("subject"),
             )
