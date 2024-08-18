@@ -56,17 +56,12 @@ fun ExamItemPaneOtherScreen(
     val instructionNavHostController = rememberNavController()
 
     Column(modifier) {
-        Box(
-            modifier = Modifier.background(
-                MaterialTheme.colorScheme.primaryContainer,
-            ).fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.systemBars),
-        ) {
+
             TabRow(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSurface,
+//                containerColor = MaterialTheme.colorScheme.primaryContainer,
+//                contentColor = MaterialTheme.colorScheme.onSurface,
                 selectedTabIndex = appState.examPagerState.currentPage,
-                modifier = Modifier.statusBarsPadding(),
+//                modifier = Modifier.statusBarsPadding(),
 
                 ) {
                 Tab(
@@ -88,7 +83,7 @@ fun ExamItemPaneOtherScreen(
                     text = { Text("Instruction") },
                 )
             }
-        }
+
 
         HorizontalPager(state = appState.examPagerState) {
             when (it) {
@@ -139,9 +134,7 @@ fun ExamItemPaneScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     examId: Long,
 ) {
-    var state by remember {
-        mutableStateOf(0)
-    }
+
 
     val pagerState = rememberPagerState(pageCount = { 2 })
     val coroutineScope = rememberCoroutineScope()
@@ -158,7 +151,7 @@ fun ExamItemPaneScreen(
 
             ) {
             Tab(
-                selected = state == 0,
+                selected = pagerState.currentPage == 0,
                 onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(0)
@@ -167,7 +160,7 @@ fun ExamItemPaneScreen(
                 text = { Text("Question") },
             )
             Tab(
-                selected = state == 1,
+                selected = pagerState.currentPage == 1,
                 onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(1)

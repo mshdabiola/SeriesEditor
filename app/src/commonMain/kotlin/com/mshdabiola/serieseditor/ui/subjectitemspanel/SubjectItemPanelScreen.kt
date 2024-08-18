@@ -1,21 +1,13 @@
 package com.mshdabiola.serieseditor.ui.subjectitemspanel
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -33,7 +25,6 @@ import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
-import com.mshdabiola.questions.navigation.navigateToQuestion
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
 import com.mshdabiola.serieseditor.ui.examItemspanel.navigateToExamItemPanel
@@ -57,38 +48,33 @@ fun SubjectItemPaneOtherScreen(
     val topicNavHostController = rememberNavController()
 
     Column(modifier) {
-        Box(
-            modifier = Modifier.background(
-                MaterialTheme.colorScheme.primaryContainer,
-            ).fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.systemBars),
-        ) {
-            TabRow(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                selectedTabIndex = appState.subjectPagerState.currentPage,
-                modifier = Modifier.statusBarsPadding(),
 
-                ) {
-                Tab(
-                    selected = appState.subjectPagerState.currentPage == 0,
-                    onClick = {
-                        coroutineScope.launch {
-                            appState.subjectPagerState.animateScrollToPage(0)
-                        }
-                    },
-                    text = { Text("Examinations") },
-                )
-                Tab(
-                    selected = appState.subjectPagerState.currentPage == 1,
-                    onClick = {
-                        coroutineScope.launch {
-                            appState.subjectPagerState.animateScrollToPage(1)
-                        }
-                    },
-                    text = { Text("Topics") },
-                )
-            }
+        TabRow(
+//                containerColor = MaterialTheme.colorScheme.primaryContainer,
+//                contentColor = MaterialTheme.colorScheme.onSurface,
+            selectedTabIndex = appState.subjectPagerState.currentPage,
+//                modifier = Modifier.statusBarsPadding(),
+
+        ) {
+            Tab(
+                selected = appState.subjectPagerState.currentPage == 0,
+                onClick = {
+                    coroutineScope.launch {
+                        appState.subjectPagerState.animateScrollToPage(0)
+                    }
+                },
+                text = { Text("Examinations") },
+            )
+            Tab(
+                selected = appState.subjectPagerState.currentPage == 1,
+                onClick = {
+                    coroutineScope.launch {
+                        appState.subjectPagerState.animateScrollToPage(1)
+                    }
+                },
+                text = { Text("Topics") },
+            )
+
         }
 
         HorizontalPager(state = appState.subjectPagerState) {

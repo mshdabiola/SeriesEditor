@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -83,7 +84,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(
     ExperimentalMaterial3WindowSizeClassApi::class,
     KoinExperimentalAPI::class,
-    ExperimentalMaterial3Api::class,
 )
 @Composable
 fun SeriesEditorApp() {
@@ -148,7 +148,9 @@ fun SeriesEditorApp() {
                                     floatingActionButton = {
                                         if (appState is Other) {
                                             if (appState.isList) {
-                                                ExtendedFloatingActionButton(onClick = appState::onAdd) {
+                                                ExtendedFloatingActionButton(
+                                                    modifier = Modifier.navigationBarsPadding(),
+                                                    onClick = appState::onAdd) {
                                                     Icon(Icons.Outlined.Add, "add")
                                                     Text(appState.fabText)
                                                 }
