@@ -17,11 +17,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
-import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.main.navigation.MAIN_ROUTE
+import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_ARG
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ITEM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
@@ -188,7 +188,7 @@ class Other(
 
 
             navController.currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
-                val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ARG) ?: -1
+                val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ITEM_ARG) ?: -1
 
                 if (examPagerState.currentPage == 0) {
                     navController.navigateToComposeQuestion(exam, -1)
