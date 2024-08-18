@@ -246,6 +246,59 @@ val onWrongDark = Color(0xFF561F10)
 val wrongContainerDark = Color(0xFF723524)
 val onWrongContainerDark = Color(0xFFFFDBD2)
 
+val color1Light = Color(0xFF8F4952)
+val onColor1Light = Color(0xFFFFFFFF)
+val color1ContainerLight = Color(0xFFFFDADC)
+val onColor1ContainerLight = Color(0xFF3B0712)
+val color2Light = Color(0xFF526526)
+val onColor2Light = Color(0xFFFFFFFF)
+val color2ContainerLight = Color(0xFFD4EC9D)
+val onColor2ContainerLight = Color(0xFF141F00)
+val color3Light = Color(0xFF755B0B)
+val onColor3Light = Color(0xFFFFFFFF)
+val color3ContainerLight = Color(0xFFFFDF96)
+val onColor3ContainerLight = Color(0xFF251A00)
+val color4Light = Color(0xFF705289)
+val onColor4Light = Color(0xFFFFFFFF)
+val color4ContainerLight = Color(0xFFF1DAFF)
+val onColor4ContainerLight = Color(0xFF290C41)
+val color5Light = Color(0xFF5B5891)
+val onColor5Light = Color(0xFFFFFFFF)
+val color5ContainerLight = Color(0xFFE3DFFF)
+val onColor5ContainerLight = Color(0xFF17134A)
+val color6Light = Color(0xFF406835)
+val onColor6Light = Color(0xFFFFFFFF)
+val color6ContainerLight = Color(0xFFC1EFAF)
+val onColor6ContainerLight = Color(0xFF012200)
+
+
+val color1Dark = Color(0xFFFFB2B9)
+val onColor1Dark = Color(0xFF561D26)
+val color1ContainerDark = Color(0xFF72333B)
+val onColor1ContainerDark = Color(0xFFFFDADC)
+val color2Dark = Color(0xFFB8CF84)
+val onColor2Dark = Color(0xFF263500)
+val color2ContainerDark = Color(0xFF3B4D10)
+val onColor2ContainerDark = Color(0xFFD4EC9D)
+val color3Dark = Color(0xFFE6C26C)
+val onColor3Dark = Color(0xFF3E2E00)
+val color3ContainerDark = Color(0xFF5A4400)
+val onColor3ContainerDark = Color(0xFFFFDF96)
+val color4Dark = Color(0xFFDCB9F8)
+val onColor4Dark = Color(0xFF3F2358)
+val color4ContainerDark = Color(0xFF573A70)
+val onColor4ContainerDark = Color(0xFFF1DAFF)
+val color5Dark = Color(0xFFC4C0FF)
+val onColor5Dark = Color(0xFF2D2960)
+val color5ContainerDark = Color(0xFF434078)
+val onColor5ContainerDark = Color(0xFFE3DFFF)
+val color6Dark = Color(0xFFA5D395)
+val onColor6Dark = Color(0xFF11380B)
+val color6ContainerDark = Color(0xFF295020)
+val onColor6ContainerDark = Color(0xFFC1EFAF)
+
+
+
 val extendedLight = ExtendedColorScheme(
     right = ColorFamily(
         rightLight,
@@ -258,6 +311,42 @@ val extendedLight = ExtendedColorScheme(
         onWrongLight,
         wrongContainerLight,
         onWrongContainerLight,
+    ),
+    color1 = ColorFamily(
+        color1Light,
+        onColor1Light,
+        color1ContainerLight,
+        onColor1ContainerLight,
+    ),
+    color2 = ColorFamily(
+        color2Light,
+        onColor2Light,
+        color2ContainerLight,
+        onColor2ContainerLight,
+    ),
+    color3 = ColorFamily(
+        color3Light,
+        onColor3Light,
+        color3ContainerLight,
+        onColor3ContainerLight,
+    ),
+    color4 = ColorFamily(
+        color4Light,
+        onColor4Light,
+        color4ContainerLight,
+        onColor4ContainerLight,
+    ),
+    color5 = ColorFamily(
+        color5Light,
+        onColor5Light,
+        color5ContainerLight,
+        onColor5ContainerLight,
+    ),
+    color6 = ColorFamily(
+        color6Light,
+        onColor6Light,
+        color6ContainerLight,
+        onColor6ContainerLight,
     ),
 )
 
@@ -274,7 +363,44 @@ val extendedDark = ExtendedColorScheme(
         wrongContainerDark,
         onWrongContainerDark,
     ),
+    color1 = ColorFamily(
+        color1Dark,
+        onColor1Dark,
+        color1ContainerDark,
+        onColor1ContainerDark,
+    ),
+    color2 = ColorFamily(
+        color2Dark,
+        onColor2Dark,
+        color2ContainerDark,
+        onColor2ContainerDark,
+    ),
+    color3 = ColorFamily(
+        color3Dark,
+        onColor3Dark,
+        color3ContainerDark,
+        onColor3ContainerDark,
+    ),
+    color4 = ColorFamily(
+        color4Dark,
+        onColor4Dark,
+        color4ContainerDark,
+        onColor4ContainerDark,
+    ),
+    color5 = ColorFamily(
+        color5Dark,
+        onColor5Dark,
+        color5ContainerDark,
+        onColor5ContainerDark,
+    ),
+    color6 = ColorFamily(
+        color6Dark,
+        onColor6Dark,
+        color6ContainerDark,
+        onColor6ContainerDark,
+    ),
 )
+
 
 @Immutable
 data class ColorFamily(
@@ -295,4 +421,10 @@ val unspecified_scheme = ColorFamily(
 data class ExtendedColorScheme(
     val right: ColorFamily,
     val wrong: ColorFamily,
+    val color1: ColorFamily,
+    val color2: ColorFamily,
+    val color3: ColorFamily,
+    val color4: ColorFamily,
+    val color5: ColorFamily,
+    val color6: ColorFamily,
 )

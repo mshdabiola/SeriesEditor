@@ -27,6 +27,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
@@ -46,6 +47,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
+import com.mshdabiola.designsystem.theme.extendedColorScheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -108,7 +110,7 @@ internal fun MainScreen(
             MainCard(
                 modifier = Modifier.width(200.dp),
                 icon = Icons.Default.People,
-                color = Color.Green,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color1.colorContainer,),
                 title = "Students",
                 description = "10",
             )
@@ -116,7 +118,7 @@ internal fun MainScreen(
             MainCard(
                 modifier = Modifier.width(200.dp),
                 icon = Icons.Default.People,
-                color = Color.Green,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color2.colorContainer,),
                 title = "Students",
                 description = "10",
             )
@@ -124,14 +126,14 @@ internal fun MainScreen(
             MainCard(
                 modifier = Modifier.width(200.dp),
                 icon = Icons.Default.People,
-                color = Color.Green,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color3.colorContainer,),
                 title = "Students",
                 description = "10",
             )
             MainCard(
                 modifier = Modifier.width(200.dp),
                 icon = Icons.Default.People,
-                color = Color.Green,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color4.colorContainer,),
                 title = "Students",
                 description = "10",
             )
@@ -263,11 +265,11 @@ fun MainCard(
     icon: ImageVector,
     title: String,
     description: String,
-    color: Color = ListItemDefaults.containerColor,
+    color: ListItemColors = ListItemDefaults.colors(),
 ) {
     ListItem(
         modifier = modifier,
-        colors = ListItemDefaults.colors(color),
+        colors = color,
         leadingContent = {
             Icon(
                 imageVector = icon,
