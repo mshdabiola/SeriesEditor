@@ -271,7 +271,6 @@ val onColor6Light = Color(0xFFFFFFFF)
 val color6ContainerLight = Color(0xFFC1EFAF)
 val onColor6ContainerLight = Color(0xFF012200)
 
-
 val color1Dark = Color(0xFFFFB2B9)
 val onColor1Dark = Color(0xFF561D26)
 val color1ContainerDark = Color(0xFF72333B)
@@ -296,8 +295,6 @@ val color6Dark = Color(0xFFA5D395)
 val onColor6Dark = Color(0xFF11380B)
 val color6ContainerDark = Color(0xFF295020)
 val onColor6ContainerDark = Color(0xFFC1EFAF)
-
-
 
 val extendedLight = ExtendedColorScheme(
     right = ColorFamily(
@@ -400,7 +397,6 @@ val extendedDark = ExtendedColorScheme(
         onColor6ContainerDark,
     ),
 )
-
 
 @Immutable
 data class ColorFamily(
