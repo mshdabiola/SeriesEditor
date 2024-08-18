@@ -20,9 +20,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.NavigateBefore
 import androidx.compose.material.icons.automirrored.outlined.NavigateNext
+import androidx.compose.material.icons.automirrored.outlined.Subject
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.outlined.Newspaper
+import androidx.compose.material.icons.outlined.Quiz
+import androidx.compose.material.icons.outlined.Subject
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,7 +46,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
@@ -109,33 +112,33 @@ internal fun MainScreen(
         ) {
             MainCard(
                 modifier = Modifier.width(200.dp),
-                icon = Icons.Default.People,
-                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color1.colorContainer,),
-                title = "Students",
-                description = "10",
+                icon = Icons.AutoMirrored.Outlined.Subject,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color2.colorContainer),
+                title = "Subjects",
+                description = mainState.subjectNumber.toString(),
+            )
+
+            MainCard(
+                modifier = Modifier.width(200.dp),
+                icon = Icons.Outlined.Newspaper,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color1.colorContainer),
+                title = "Examinations",
+                description = mainState.examNumber.toString(),
             )
 
             MainCard(
                 modifier = Modifier.width(200.dp),
                 icon = Icons.Default.People,
-                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color2.colorContainer,),
-                title = "Students",
-                description = "10",
-            )
-
-            MainCard(
-                modifier = Modifier.width(200.dp),
-                icon = Icons.Default.People,
-                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color3.colorContainer,),
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color3.colorContainer),
                 title = "Students",
                 description = "10",
             )
             MainCard(
                 modifier = Modifier.width(200.dp),
-                icon = Icons.Default.People,
-                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color4.colorContainer,),
-                title = "Students",
-                description = "10",
+                icon = Icons.Outlined.Quiz,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color4.colorContainer),
+                title = "Questions",
+                description = mainState.questionNumber.toString(),
             )
         }
         Column(

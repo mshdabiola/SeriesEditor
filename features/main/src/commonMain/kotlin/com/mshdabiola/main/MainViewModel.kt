@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.seriesmodel.Series
@@ -22,6 +24,9 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val seriesRepository: ISeriesRepository,
+    private val subjectRepository: ISeriesRepository,
+    private val examRepository: IExaminationRepository,
+    private val questionRepository: IQuestionRepository,
     private val userRepository: IUserRepository,
 ) : ViewModel() {
 
@@ -37,12 +42,44 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            seriesRepository.getAll()
-                .collectLatest { list ->
-                    _mainState.update {
-                        it.copy(series = list)
+            launch {
+                seriesRepository.getAll()
+                    .collectLatest { list ->
+                        _mainState.update {
+                            it.copy(series = list)
+                        }
                     }
-                }
+            }
+            launch {
+                subjectRepository
+                    .getAll()
+                    .collectLatest { list ->
+                        val no = list.count()
+                        _mainState.update {
+                            it.copy(subjectNumber = no)
+                        }
+                    }
+            }
+            launch {
+                examRepository
+                    .getAll()
+                    .collectLatest { list ->
+                        val no = list.count()
+                        _mainState.update {
+                            it.copy(examNumber = no)
+                        }
+                    }
+            }
+            launch {
+                questionRepository
+                    .getAll()
+                    .collectLatest { list ->
+                        val no = list.count()
+                        _mainState.update {
+                            it.copy(questionNumber = no)
+                        }
+                    }
+            }
         }
     }
 

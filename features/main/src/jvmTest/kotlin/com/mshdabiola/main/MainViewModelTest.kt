@@ -5,6 +5,8 @@
 package com.mshdabiola.main
 
 import app.cash.turbine.test
+import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.testing.dataTestModule
@@ -36,12 +38,18 @@ class MainViewModelTest : KoinTest {
         this.modules(dataTestModule)
     }
     private val seriesRepository by inject<ISeriesRepository>()
+    private val subjectRepository by inject<ISeriesRepository>()
+    private val examRepository by inject<IExaminationRepository>()
+    private val questionRepository by inject<IQuestionRepository>()
     private val userdataRepository by inject<IUserRepository>()
 
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = MainViewModel(
             seriesRepository,
+            subjectRepository,
+            examRepository,
+            questionRepository,
             userdataRepository,
         )
 
@@ -63,6 +71,9 @@ class MainViewModelTest : KoinTest {
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = MainViewModel(
             seriesRepository,
+            subjectRepository,
+            examRepository,
+            questionRepository,
             userdataRepository,
         )
 
@@ -88,6 +99,9 @@ class MainViewModelTest : KoinTest {
     fun update() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = MainViewModel(
             seriesRepository,
+            subjectRepository,
+            examRepository,
+            questionRepository,
             userdataRepository,
         )
 
@@ -113,6 +127,9 @@ class MainViewModelTest : KoinTest {
     fun add() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = MainViewModel(
             seriesRepository,
+            subjectRepository,
+            examRepository,
+            questionRepository,
             userdataRepository,
         )
 
