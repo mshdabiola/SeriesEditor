@@ -30,7 +30,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -150,7 +149,8 @@ fun SeriesEditorApp() {
                                             if (appState.isList) {
                                                 ExtendedFloatingActionButton(
                                                     modifier = Modifier.navigationBarsPadding(),
-                                                    onClick = appState::onAdd) {
+                                                    onClick = appState::onAdd,
+                                                ) {
                                                     Icon(Icons.Outlined.Add, "add")
                                                     Text(appState.fabText)
                                                 }
@@ -165,7 +165,7 @@ fun SeriesEditorApp() {
                                                 onProfile = { },
                                                 onNavigationClick = { appState.navController.navigateToSetting() },
 
-                                                )
+                                            )
                                         } else {
                                             SerSubTopAppBar(
                                                 title = appState.topbarTitle,
@@ -174,7 +174,7 @@ fun SeriesEditorApp() {
                                         }
                                     },
 
-                                    ) { padding ->
+                                ) { padding ->
 
                                     Column(
                                         Modifier

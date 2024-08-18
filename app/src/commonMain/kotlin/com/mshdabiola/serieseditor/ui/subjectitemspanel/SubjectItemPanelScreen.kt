@@ -32,7 +32,6 @@ import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import com.mshdabiola.topics.navigation.topicScreen
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun SubjectItemPaneOtherScreen(
     modifier: Modifier = Modifier,
@@ -40,7 +39,6 @@ fun SubjectItemPaneOtherScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     subjectId: Long,
 ) {
-
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
 
     val coroutineScope = rememberCoroutineScope()
@@ -48,7 +46,6 @@ fun SubjectItemPaneOtherScreen(
     val topicNavHostController = rememberNavController()
 
     Column(modifier) {
-
         TabRow(
 //                containerColor = MaterialTheme.colorScheme.primaryContainer,
 //                contentColor = MaterialTheme.colorScheme.onSurface,
@@ -74,7 +71,6 @@ fun SubjectItemPaneOtherScreen(
                 },
                 text = { Text("Topics") },
             )
-
         }
 
         HorizontalPager(state = appState.subjectPagerState) {
@@ -118,7 +114,6 @@ fun SubjectItemPaneOtherScreen(
             }
         }
     }
-
 }
 
 @Composable
@@ -128,7 +123,6 @@ fun SubjectItemPaneScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     subjectId: Long,
 ) {
-
     val pagerState = rememberPagerState(pageCount = { 2 })
     val coroutineScope = rememberCoroutineScope()
 
@@ -137,7 +131,7 @@ fun SubjectItemPaneScreen(
             selectedTabIndex = pagerState.currentPage,
             modifier = Modifier,
 
-            ) {
+        ) {
             Tab(
                 selected = pagerState.currentPage == 0,
                 onClick = {
@@ -174,7 +168,6 @@ fun SubjectItemPaneScreen(
                         onShowSnackbar = onShowSnackbar,
                         subjectId = subjectId,
                     )
-
                 }
 
                 else -> {}
@@ -182,7 +175,6 @@ fun SubjectItemPaneScreen(
         }
     }
 }
-
 
 @Composable
 fun ExamPanel(
@@ -236,7 +228,6 @@ fun ExamPanel(
     }
 }
 
-
 @Composable
 fun TopicPanel(
     modifier: Modifier = Modifier,
@@ -266,7 +257,7 @@ fun TopicPanel(
                 startDestination = COMPOSE_TOPIC_ROUTE,
                 modifier = Modifier,
 
-                ) {
+            ) {
                 composeTopicScreen(
                     modifier = screenModifier,
                     onShowSnack = onShowSnackbar,
@@ -281,7 +272,7 @@ fun TopicPanel(
                     },
                     subjectId = subjectId,
 
-                    )
+                )
             }
         }
     }

@@ -126,7 +126,7 @@ fun OtherNavHost(
         examItemOtherPanelScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
-            appState = appState
+            appState = appState,
         )
         composeQuestionScreen(
             modifier = screenModifier,

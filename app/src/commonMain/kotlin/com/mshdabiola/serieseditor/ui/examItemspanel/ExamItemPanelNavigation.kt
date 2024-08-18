@@ -22,7 +22,7 @@ fun NavController.navigateToExamItemPanel(
 fun NavGraphBuilder.examItemPanelScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
-    ) {
+) {
     composable(
         route = "$EXAM_ITEM_PANEL_ROUTE/{$EXAM_ITEM_ARG}",
         arguments = listOf(
@@ -38,13 +38,12 @@ fun NavGraphBuilder.examItemPanelScreen(
     }
 }
 
-
 fun NavGraphBuilder.examItemOtherPanelScreen(
     modifier: Modifier = Modifier,
     onShowSnack: suspend (String, String?) -> Boolean,
     appState: Other,
 
-    ) {
+) {
     composable(
         route = "$EXAM_ITEM_PANEL_ROUTE/{$EXAM_ITEM_ARG}",
         arguments = listOf(
@@ -60,4 +59,3 @@ fun NavGraphBuilder.examItemOtherPanelScreen(
         )
     }
 }
-

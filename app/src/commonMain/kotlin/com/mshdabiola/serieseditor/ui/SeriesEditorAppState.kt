@@ -59,7 +59,7 @@ fun rememberOther(
     examPagerState: PagerState = rememberPagerState { 2 },
     subjectPagerState: PagerState = rememberPagerState { 2 },
 
-    ): SeriesEditorAppState {
+): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,
@@ -90,8 +90,6 @@ sealed class SeriesEditorAppState(
 
     abstract val topbarTitle: String
         @Composable get
-
-
 }
 
 class Extended(
@@ -99,15 +97,15 @@ class Extended(
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
 
-    ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
-                || currentDestination?.route?.contains("setting") == true
+        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true ||
+            currentDestination?.route?.contains("setting") == true
 
     override val topbarTitle: String
         @Composable get() = when {
@@ -116,7 +114,6 @@ class Extended(
             currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
             else -> ""
         }
-
 }
 
 class Other(
@@ -132,8 +129,8 @@ class Other(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
-                || currentDestination?.route?.contains("setting") == true
+        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true ||
+            currentDestination?.route?.contains("setting") == true
 
     override val topbarTitle: String
         @Composable get() = when {
@@ -185,7 +182,6 @@ class Other(
                         ?: -1
                 navController.navigateToComposeSubject(seriesId, -1)
             }
-
 
             navController.currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
                 val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ITEM_ARG) ?: -1
