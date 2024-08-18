@@ -41,7 +41,6 @@ fun SerMainTopAppBar(
             IconButton(onClick = onNavigationClick) {
                 Icon(Icons.Outlined.Settings, "setting")
             }
-
         },
     )
 }
@@ -63,7 +62,6 @@ fun SerSubTopAppBar(
                     contentDescription = "back",
                 )
             }
-
         },
         modifier = modifier.testTag("SerSubTopbar"),
     )

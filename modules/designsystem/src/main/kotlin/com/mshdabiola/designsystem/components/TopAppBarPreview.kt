@@ -15,7 +15,7 @@ private fun SkTopAppBarPreview() {
     SerMainTopAppBar(
         titleRes = "Main Top Bar",
 
-        )
+    )
 }
 
 @Preview("Top App Bar")
