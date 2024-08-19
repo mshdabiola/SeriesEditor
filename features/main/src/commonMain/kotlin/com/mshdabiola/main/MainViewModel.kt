@@ -41,38 +41,47 @@ class MainViewModel(
     val mainState = _mainState.asStateFlow()
 
     private var currentId: Long = -1
-    private val user = userDataRepository
+    private val userId = userDataRepository
         .userData
         .map { it.userId }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 1)
 
     init {
         viewModelScope.launch {
+
+
             combine(
+                userDataRepository
+                    .userData
+                    .map { it.userId },
                 seriesRepository.getAll(),
                 subjectRepository.getAll(),
                 examRepository.getAll(),
                 questionRepository.getAll(),
-            ) { series, subject, exam, question ->
-                Pair(series, Triple(subject, exam, question))
+            ) { userId, series, subject, exam, question ->
+                Triple(userId, series, Triple(subject, exam, question))
             }.collectLatest { triplePair ->
-                val id = user.value
-                val series = triplePair.first.filter { it.userId == id }
-                val subjects =
-                    triplePair.second.first.filter { subject -> subject.seriesId in series.map { it.id } }
-                val exams =
-                    triplePair.second.second.filter { subject -> subject.subjectId in subjects.map { it.id } }
+                val id = triplePair.first
+                if (id > 0) {
+                    val user = userRepository.getUser(id).first()!!
+                    val series = triplePair.second.filter { it.userId == id }
+                    val subjects =
+                        triplePair.third.first.filter { subject -> subject.seriesId in series.map { it.id } }
+                    val exams =
+                        triplePair.third.second.filter { subject -> subject.subjectId in subjects.map { it.id } }
 
-                val questions =
-                    triplePair.second.third.filter { subject -> subject.examId in exams.map { it.id } }
+                    val questions =
+                        triplePair.third.third.filter { subject -> subject.examId in exams.map { it.id } }
 
-                _mainState.update {
-                    it.copy(
-                        series = series,
-                        subjectNumber = subjects.count(),
-                        examNumber = exams.count(),
-                        questionNumber = questions.count(),
-                    )
+                    _mainState.update {
+                        it.copy(
+                            user = user,
+                            series = series,
+                            subjectNumber = subjects.count(),
+                            examNumber = exams.count(),
+                            questionNumber = questions.count(),
+                        )
+                    }
                 }
             }
         }
@@ -83,7 +92,7 @@ class MainViewModel(
             seriesRepository.upsert(
                 Series(
                     currentId,
-                    user.value,
+                    mainState.value.user.id,
                     classState.text.toString(),
                 ),
             )
@@ -109,6 +118,12 @@ class MainViewModel(
                     this.append(series.name)
                 }
             }
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            userDataRepository.setUserId(-1)
         }
     }
 }

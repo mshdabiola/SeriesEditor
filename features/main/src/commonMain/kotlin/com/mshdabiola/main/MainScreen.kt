@@ -26,13 +26,13 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Quiz
-import androidx.compose.material.icons.outlined.Subject
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
@@ -76,6 +76,7 @@ internal fun MainRoute(
         onDelete = { deleteId = it },
         onUpdate = viewModel::updateClass,
         onClick = navigateToSubject,
+        signOut = viewModel::signOut
     )
     if (deleteId != null) {
         DeleteClassDialog(
@@ -97,19 +98,28 @@ internal fun MainScreen(
     onAdd: () -> Unit = {},
     onDelete: (Long) -> Unit = {},
     onUpdate: (Long) -> Unit = {},
-    onClick: (Long) -> Unit,
+    onClick: (Long) -> Unit = {},
+    signOut: () -> Unit = {},
 ) {
     FlowRow(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
 
-    ) {
+        ) {
         FlowRow(
             modifier = Modifier.weight(0.6f),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         ) {
+            Column(modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Welcome")
+                Text(mainState.user.name, style = MaterialTheme.typography.titleMedium)
+                TextButton(onClick = signOut) {
+                    Text("SignOut")
+                }
+            }
             MainCard(
                 modifier = Modifier.width(200.dp),
                 icon = Icons.AutoMirrored.Outlined.Subject,
@@ -234,7 +244,7 @@ fun MainCard(
                     }
                 },
 
-            )
+                )
         },
     ) {
         ListItem(
