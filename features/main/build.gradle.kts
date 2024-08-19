@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mshdabiola.composesubject"
+    namespace = "com.mshdabiola.main"
 }
 kotlin {
     sourceSets {

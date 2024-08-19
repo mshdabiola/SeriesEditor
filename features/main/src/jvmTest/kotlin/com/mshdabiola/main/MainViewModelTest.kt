@@ -10,6 +10,7 @@ import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.IUserRepository
+import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.delay
@@ -42,7 +43,8 @@ class MainViewModelTest : KoinTest {
     private val subjectRepository by inject<ISubjectRepository>()
     private val examRepository by inject<IExaminationRepository>()
     private val questionRepository by inject<IQuestionRepository>()
-    private val userdataRepository by inject<IUserRepository>()
+    private val iUserRepository by inject<IUserRepository>()
+    private val userDataRepository by inject<UserDataRepository>()
 
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
@@ -51,7 +53,8 @@ class MainViewModelTest : KoinTest {
             subjectRepository,
             examRepository,
             questionRepository,
-            userdataRepository,
+            iUserRepository,
+            userDataRepository,
         )
 
         viewModel
@@ -63,7 +66,7 @@ class MainViewModelTest : KoinTest {
 
                 state = awaitItem()
 
-                assertEquals(10, state.series.size)
+                assertEquals(2, state.series.size)
                 cancelAndIgnoreRemainingEvents()
             }
     }
@@ -75,7 +78,8 @@ class MainViewModelTest : KoinTest {
             subjectRepository,
             examRepository,
             questionRepository,
-            userdataRepository,
+            iUserRepository,
+            userDataRepository,
         )
 
         viewModel
@@ -91,7 +95,7 @@ class MainViewModelTest : KoinTest {
 
                 state = awaitItem()
 
-                assertEquals(9, state.series.size)
+                assertEquals(1, state.series.size)
                 cancelAndIgnoreRemainingEvents()
             }
     }
@@ -103,7 +107,8 @@ class MainViewModelTest : KoinTest {
             subjectRepository,
             examRepository,
             questionRepository,
-            userdataRepository,
+            iUserRepository,
+            userDataRepository,
         )
 
         viewModel
@@ -131,7 +136,8 @@ class MainViewModelTest : KoinTest {
             subjectRepository,
             examRepository,
             questionRepository,
-            userdataRepository,
+            iUserRepository,
+            userDataRepository,
         )
 
         viewModel

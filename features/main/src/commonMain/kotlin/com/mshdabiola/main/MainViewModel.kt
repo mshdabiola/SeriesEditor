@@ -13,6 +13,7 @@ import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
 import com.mshdabiola.data.repository.IUserRepository
+import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.seriesmodel.Series
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,6 +32,7 @@ class MainViewModel(
     private val examRepository: IExaminationRepository,
     private val questionRepository: IQuestionRepository,
     private val userRepository: IUserRepository,
+    private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
     val classState = TextFieldState()
@@ -38,9 +41,10 @@ class MainViewModel(
     val mainState = _mainState.asStateFlow()
 
     private var currentId: Long = -1
-    private val user = userRepository
-        .getUser(1)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    private val user = userDataRepository
+        .userData
+        .map { it.userId }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 1)
 
     init {
         viewModelScope.launch {
@@ -52,7 +56,7 @@ class MainViewModel(
             ) { series, subject, exam, question ->
                 Pair(series, Triple(subject, exam, question))
             }.collectLatest { triplePair ->
-                val id = user.value?.id ?: 1
+                val id = user.value
                 val series = triplePair.first.filter { it.userId == id }
                 val subjects =
                     triplePair.second.first.filter { subject -> subject.seriesId in series.map { it.id } }
@@ -79,7 +83,7 @@ class MainViewModel(
             seriesRepository.upsert(
                 Series(
                     currentId,
-                    user.value?.id ?: 1,
+                    user.value,
                     classState.text.toString(),
                 ),
             )
