@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.analytics.AnalyticsHelper
@@ -121,7 +122,7 @@ fun SeriesEditorApp() {
                             if (appState is Other) {
                                 if (appState.isList) {
                                     ExtendedFloatingActionButton(
-                                        modifier = Modifier.navigationBarsPadding(),
+                                        modifier = Modifier.testTag("add").navigationBarsPadding(),
                                         onClick = appState::onAdd,
                                     ) {
                                         Icon(Icons.Outlined.Add, "add")
