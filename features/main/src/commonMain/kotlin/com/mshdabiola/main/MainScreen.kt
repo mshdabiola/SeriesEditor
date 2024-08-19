@@ -120,8 +120,9 @@ internal fun MainScreen(
                     Text("SignOut")
                 }
             }
+            val generalModifier=Modifier.width(180.dp)
             MainCard(
-                modifier = Modifier.width(200.dp),
+                modifier = generalModifier,
                 icon = Icons.AutoMirrored.Outlined.Subject,
                 color = ListItemDefaults.colors(containerColor = extendedColorScheme.color2.colorContainer),
                 title = "Subjects",
@@ -129,7 +130,7 @@ internal fun MainScreen(
             )
 
             MainCard(
-                modifier = Modifier.width(200.dp),
+                modifier = generalModifier,
                 icon = Icons.Outlined.Newspaper,
                 color = ListItemDefaults.colors(containerColor = extendedColorScheme.color1.colorContainer),
                 title = "Examinations",
@@ -137,14 +138,14 @@ internal fun MainScreen(
             )
 
             MainCard(
-                modifier = Modifier.width(200.dp),
+                modifier = generalModifier,
                 icon = Icons.Default.People,
                 color = ListItemDefaults.colors(containerColor = extendedColorScheme.color3.colorContainer),
                 title = "Students",
                 description = "10",
             )
             MainCard(
-                modifier = Modifier.width(200.dp),
+                modifier = generalModifier,
                 icon = Icons.Outlined.Quiz,
                 color = ListItemDefaults.colors(containerColor = extendedColorScheme.color4.colorContainer),
                 title = "Questions",
