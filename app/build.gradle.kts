@@ -96,10 +96,10 @@ kotlin {
 //            implementation(libs.androidx.compose.material3.adaptive)
 
 
-
             implementation(projects.features.main)
+            implementation(projects.features.login)
             implementation(projects.features.examinations)
-             implementation(projects.features.subjects)
+            implementation(projects.features.subjects)
             implementation(projects.features.setting)
             implementation(projects.features.composesubject)
             implementation(projects.features.composeexamination)

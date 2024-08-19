@@ -43,6 +43,7 @@ include(":app")
 //include(":shared")
 
 include(":features:main")
+include(":features:login")
 include(":features:examinations")
 include(":features:subjects")
 include(":features:setting")
