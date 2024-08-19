@@ -14,7 +14,7 @@ class UserRepository(
     private val ioDispatcher: CoroutineDispatcher,
 ) : IUserRepository {
     override fun getUser(id: Long): Flow<User?> {
-        return userDao.getUserById(1)
+        return userDao.getUserById(id)
             .map {
                 it?.asModel()
             }
