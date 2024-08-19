@@ -26,6 +26,13 @@ class UserRepository(
         }
     }
 
+    override fun getUserByPassword(name: String, password: String): Flow<User?> {
+        return userDao.getUserByNameAndPassword(name, password)
+            .map {
+                it?.asModel()
+            }
+    }
+
     override suspend fun deleteUser(id: Long) {
         withContext(ioDispatcher) {
             userDao.deleteUser(id)
