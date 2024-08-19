@@ -20,6 +20,7 @@ import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
+import com.mshdabiola.login.navigation.LOGIN_ROUTE
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_ARG
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
@@ -90,6 +91,9 @@ sealed class SeriesEditorAppState(
 
     abstract val topbarTitle: String
         @Composable get
+
+    abstract val hideTopBar: Boolean
+        @Composable get
 }
 
 class Extended(
@@ -114,6 +118,8 @@ class Extended(
             currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
             else -> ""
         }
+    override val hideTopBar: Boolean
+        @Composable get() = currentDestination?.route?.contains(LOGIN_ROUTE) == true
 }
 
 class Other(
@@ -139,6 +145,9 @@ class Other(
             currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
             else -> ""
         }
+
+    override val hideTopBar: Boolean
+        @Composable get() = currentDestination?.route?.contains(LOGIN_ROUTE) == true
 
     val isList
         @Composable

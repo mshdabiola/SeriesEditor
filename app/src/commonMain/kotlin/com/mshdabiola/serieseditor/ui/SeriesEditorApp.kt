@@ -4,10 +4,8 @@
 
 package com.mshdabiola.serieseditor.ui
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +26,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,10 +41,8 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -67,7 +62,6 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
 import com.mshdabiola.serieseditor.MainAppViewModel
-import com.mshdabiola.serieseditor.MainState
 import com.mshdabiola.serieseditor.navigation.ExtendNavHost
 import com.mshdabiola.serieseditor.navigation.OtherNavHost
 import com.mshdabiola.serieslatex.LoadTex
@@ -104,15 +98,6 @@ fun SeriesEditorApp() {
 
     LoadTex()
 
-    LaunchedEffect(mainState.value) {
-        if (mainState.value is MainState.Success && (mainState.value as MainState.Success).message.isNotEmpty()) {
-            snackbarHostState.showSnackbar(
-                (mainState.value as MainState.Success).message,
-                duration = SnackbarDuration.Long,
-            )
-        }
-    }
-
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
         SeriesEditorTheme(
             darkTheme = darkTheme,
@@ -126,95 +111,85 @@ fun SeriesEditorApp() {
                         GradientColors()
                     },
                 ) {
-                    AnimatedContent(mainState.value) {
-                        when (it) {
-                            is MainState.Loading -> {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    CircularProgressIndicator()
+                    Scaffold(
+                        modifier = Modifier.semanticsCommon {},
+                        containerColor = Color.Transparent,
+                        contentColor = MaterialTheme.colorScheme.onBackground,
+                        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                        snackbarHost = { SnackbarHost(snackbarHostState) },
+                        floatingActionButton = {
+                            if (appState is Other) {
+                                if (appState.isList) {
+                                    ExtendedFloatingActionButton(
+                                        modifier = Modifier.navigationBarsPadding(),
+                                        onClick = appState::onAdd,
+                                    ) {
+                                        Icon(Icons.Outlined.Add, "add")
+                                        Text(appState.fabText)
+                                    }
                                 }
                             }
+                        },
 
-                            is MainState.Success -> {
-                                Scaffold(
-                                    modifier = Modifier.semanticsCommon {},
-                                    containerColor = Color.Transparent,
-                                    contentColor = MaterialTheme.colorScheme.onBackground,
-                                    contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                                    snackbarHost = { SnackbarHost(snackbarHostState) },
-                                    floatingActionButton = {
-                                        if (appState is Other) {
-                                            if (appState.isList) {
-                                                ExtendedFloatingActionButton(
-                                                    modifier = Modifier.navigationBarsPadding(),
-                                                    onClick = appState::onAdd,
-                                                ) {
-                                                    Icon(Icons.Outlined.Add, "add")
-                                                    Text(appState.fabText)
-                                                }
-                                            }
-                                        }
-                                    },
+                        topBar = {
+                            if (appState.hideTopBar.not()) {
+                                if (appState.showMainTopBar) {
+                                    SerMainTopAppBar(
+                                        titleRes = appName,
+                                        onProfile = { },
+                                        onNavigationClick = { appState.navController.navigateToSetting() },
 
-                                    topBar = {
-                                        if (appState.showMainTopBar) {
-                                            SerMainTopAppBar(
-                                                titleRes = appName,
-                                                onProfile = { },
-                                                onNavigationClick = { appState.navController.navigateToSetting() },
+                                    )
+                                } else {
+                                    SerSubTopAppBar(
+                                        title = appState.topbarTitle,
+                                        onBack = appState.navController::popBackStack,
+                                    )
+                                }
+                            }
+                        },
 
-                                            )
-                                        } else {
-                                            SerSubTopAppBar(
-                                                title = appState.topbarTitle,
-                                                onBack = appState.navController::popBackStack,
-                                            )
-                                        }
-                                    },
+                    ) { padding ->
 
-                                ) { padding ->
+                        Column(
+                            Modifier
+                                .fillMaxSize()
+                                .padding(padding)
+                                .consumeWindowInsets(padding)
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(
+                                        WindowInsetsSides.Horizontal,
+                                    ),
+                                ),
+                        ) {
+                            when (appState) {
+                                is Extended -> {
+                                    ExtendNavHost(
+                                        appState = appState,
+                                        onShowSnackbar = { message, action ->
+                                            snackbarHostState.showSnackbar(
+                                                message = message,
+                                                actionLabel = action,
+                                                duration = SnackbarDuration.Short,
+                                            ) == SnackbarResult.ActionPerformed
+                                        },
+                                        userId = viewModel.mainState.value.userId,
+                                    )
+                                }
 
-                                    Column(
-                                        Modifier
-                                            .fillMaxSize()
-                                            .padding(padding)
-                                            .consumeWindowInsets(padding)
-                                            .windowInsetsPadding(
-                                                WindowInsets.safeDrawing.only(
-                                                    WindowInsetsSides.Horizontal,
-                                                ),
-                                            ),
-                                    ) {
-                                        when (appState) {
-                                            is Extended -> {
-                                                ExtendNavHost(
-                                                    appState = appState,
-                                                    onShowSnackbar = { message, action ->
-                                                        snackbarHostState.showSnackbar(
-                                                            message = message,
-                                                            actionLabel = action,
-                                                            duration = SnackbarDuration.Short,
-                                                        ) == SnackbarResult.ActionPerformed
-                                                    },
-                                                )
-                                            }
+                                is Other -> {
+                                    OtherNavHost(
+                                        appState = appState,
+                                        onShowSnackbar = { message, action ->
+                                            snackbarHostState.showSnackbar(
+                                                message = message,
+                                                actionLabel = action,
+                                                duration = SnackbarDuration.Short,
+                                            ) == SnackbarResult.ActionPerformed
+                                        },
+                                        userId = viewModel.mainState.value.userId,
 
-                                            is Other -> {
-                                                OtherNavHost(
-                                                    appState = appState,
-                                                    onShowSnackbar = { message, action ->
-                                                        snackbarHostState.showSnackbar(
-                                                            message = message,
-                                                            actionLabel = action,
-                                                            duration = SnackbarDuration.Short,
-                                                        ) == SnackbarResult.ActionPerformed
-                                                    },
-                                                )
-                                            }
-                                        }
-                                    }
+                                    )
                                 }
                             }
                         }

@@ -10,17 +10,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
 import com.mshdabiola.composeexam.navigation.composeExaminationScreen
 import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
+import com.mshdabiola.login.navigation.LOGIN_ROUTE
+import com.mshdabiola.login.navigation.loginScreen
+import com.mshdabiola.login.navigation.navigateToLogin
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
 import com.mshdabiola.serieseditor.ui.examItemspanel.examItemOtherPanelScreen
@@ -40,15 +46,36 @@ fun ExtendNavHost(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
     startDestination: String = MAIN_ROUTE,
+    userId: Long = -1L,
 ) {
     val navController = appState.navController
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
+    LaunchedEffect(userId) {
+        if (userId == -1L) {
+            appState.navController.navigateToLogin(
+                navOptions = navOptions {
+                    popUpTo(MAIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        } else {
+            appState.navController.navigateToMain(
+                navOptions = navOptions {
+                    popUpTo(LOGIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        }
+    }
 
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        loginScreen(screenModifier)
         mainScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
@@ -81,6 +108,8 @@ fun OtherNavHost(
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
     startDestination: String = MAIN_ROUTE,
+    userId: Long = -1L,
+
 ) {
     val navController = appState.navController
     val screenModifier = modifier
@@ -88,11 +117,32 @@ fun OtherNavHost(
         .padding(horizontal = 8.dp, vertical = 8.dp)
         .windowInsetsPadding(WindowInsets.systemBars)
 
+    LaunchedEffect(userId) {
+        if (userId == -1L) {
+            appState.navController.navigateToLogin(
+                navOptions = navOptions {
+                    popUpTo(MAIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        } else {
+            appState.navController.navigateToMain(
+                navOptions = navOptions {
+                    popUpTo(LOGIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        loginScreen(screenModifier)
         mainScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,

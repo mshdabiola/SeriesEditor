@@ -8,6 +8,7 @@ import com.mshdabiola.composetopic.ctModule
 import com.mshdabiola.data.di.dataModule
 import com.mshdabiola.examinations.examModule
 import com.mshdabiola.instructions.instructionsModule
+import com.mshdabiola.login.loginModule
 import com.mshdabiola.questions.questionsModule
 import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.setting.settingModule
@@ -30,6 +31,7 @@ val appModule = module {
         instructionsModule,
         ctModule,
         topicModule,
+        loginModule,
     )
     viewModelOf(::MainAppViewModel)
 }
