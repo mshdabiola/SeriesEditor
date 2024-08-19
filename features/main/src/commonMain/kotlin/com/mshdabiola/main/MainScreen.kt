@@ -76,7 +76,7 @@ internal fun MainRoute(
         onDelete = { deleteId = it },
         onUpdate = viewModel::updateClass,
         onClick = navigateToSubject,
-        signOut = viewModel::signOut
+        signOut = viewModel::signOut,
     )
     if (deleteId != null) {
         DeleteClassDialog(
@@ -106,13 +106,14 @@ internal fun MainScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
 
-        ) {
+    ) {
         FlowRow(
             modifier = Modifier.weight(0.6f),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         ) {
-            Column(modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("Welcome")
                 Text(mainState.user.name, style = MaterialTheme.typography.titleMedium)
@@ -120,7 +121,7 @@ internal fun MainScreen(
                     Text("SignOut")
                 }
             }
-            val generalModifier=Modifier.width(180.dp)
+            val generalModifier = Modifier.width(180.dp)
             MainCard(
                 modifier = generalModifier,
                 icon = Icons.AutoMirrored.Outlined.Subject,
@@ -245,7 +246,7 @@ fun MainCard(
                     }
                 },
 
-                )
+            )
         },
     ) {
         ListItem(

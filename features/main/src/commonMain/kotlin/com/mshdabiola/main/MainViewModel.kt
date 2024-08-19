@@ -49,7 +49,6 @@ class MainViewModel(
     init {
         viewModelScope.launch {
 
-
             combine(
                 userDataRepository
                     .userData
