@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mshdabiola.designsystem.component.CaptureMultiTheme
 import com.mshdabiola.designsystem.component.SerMainTopAppBar
-import com.mshdabiola.designsystem.icon.SkIcons
 
 class TopAppBarScreenshotTests() {
 
