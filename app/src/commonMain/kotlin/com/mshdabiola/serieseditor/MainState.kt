@@ -1,17 +1,6 @@
 package com.mshdabiola.serieseditor
 
-sealed class MainState {
-
-    data object Loading : MainState()
-    data class Success(
-        val message: String = "",
-    ) : MainState()
-}
-
-fun MainState.getSuccess(value: (MainState.Success) -> MainState.Success): MainState {
-    return if (this is MainState.Success) {
-        value(this)
-    } else {
-        this
-    }
-}
+data class MainState(
+    val message: String = "",
+    val userId: Long = -1L,
+)
