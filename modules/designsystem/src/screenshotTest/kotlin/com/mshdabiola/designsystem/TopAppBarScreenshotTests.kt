@@ -34,10 +34,7 @@ class TopAppBarScreenshotTests() {
     private fun NiaTopAppBarExample() {
         SerMainTopAppBar(
             titleRes = "untitled",
-            navigationIcon = SkIcons.Search,
-            navigationIconContentDescription = "Navigation icon",
-            actionIcon = SkIcons.MoreVert,
-            actionIconContentDescription = "Action icon",
+
         )
     }
 }

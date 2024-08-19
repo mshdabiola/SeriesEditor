@@ -19,41 +19,13 @@ class MainScreenScreenshotTests {
 
     @DevicePreviews
     @Composable
-    fun LoadingLight() {
-        MaterialTheme(colorScheme = lightDefaultScheme) {
-            Surface {
-                MainScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    mainState = MainState.Loading(),
-                    subjectState = rememberTextFieldState("subject"),
-                )
-            }
-        }
-    }
-
-    @DevicePreviews
-    @Composable
-    fun LoadingDark() {
-        MaterialTheme(colorScheme = darkDefaultScheme) {
-            Surface {
-                MainScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    mainState = MainState.Loading(),
-                    subjectState = rememberTextFieldState("subject"),
-                )
-            }
-        }
-    }
-
-    @DevicePreviews
-    @Composable
     fun MainLight() {
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
                 MainScreen(
                     modifier = Modifier.fillMaxSize(),
-                    mainState = MainState.Success(
-                        series = listOf(Series(1, 6, "ask")),
+                    mainState = MainState(
+                        series = listOf(com.mshdabiola.seriesmodel.Series(1, 6, "ask")),
                     ),
                     subjectState = rememberTextFieldState("subject"),
                 )
@@ -68,8 +40,8 @@ class MainScreenScreenshotTests {
             Surface {
                 MainScreen(
                     modifier = Modifier.fillMaxSize(),
-                    mainState = MainState.Success(
-                        series = listOf(Series(1, 6, "ask")),
+                    mainState = MainState(
+                        series = listOf(com.mshdabiola.seriesmodel.Series(1, 6, "ask")),
                     ),
                     subjectState = rememberTextFieldState("subject"),
                 )

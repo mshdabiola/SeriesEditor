@@ -26,7 +26,6 @@ class CtScreenScreenshotTests {
                     modifier = Modifier.fillMaxSize(),
                     csState = CsState.Loading(),
                     subjectState = rememberTextFieldState("subject"),
-                    seriesState = rememberTextFieldState("series"),
                 )
             }
         }
@@ -41,7 +40,6 @@ class CtScreenScreenshotTests {
                     modifier = Modifier.fillMaxSize(),
                     csState = CsState.Loading(),
                     subjectState = rememberTextFieldState("subject"),
-                    seriesState = rememberTextFieldState("series"),
                 )
             }
         }
@@ -55,11 +53,9 @@ class CtScreenScreenshotTests {
                 SubjectScreen(
                     modifier = Modifier.fillMaxSize(),
                     csState = CsState.Success(
-                        series = listOf(Series(1, 6, "ask")),
-                        currentSeries = 1,
+                        id = 1,
                     ),
                     subjectState = rememberTextFieldState("subject"),
-                    seriesState = rememberTextFieldState("series"),
                 )
             }
         }
@@ -73,11 +69,9 @@ class CtScreenScreenshotTests {
                 SubjectScreen(
                     modifier = Modifier.fillMaxSize(),
                     csState = CsState.Success(
-                        series = listOf(Series(1, 6, "ask")),
-                        currentSeries = 1,
+                        id = 1,
                     ),
                     subjectState = rememberTextFieldState("subject"),
-                    seriesState = rememberTextFieldState("series"),
                 )
             }
         }
