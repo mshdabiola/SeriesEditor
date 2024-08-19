@@ -33,6 +33,7 @@ class LoginViewModel(
             } else {
                 val id = userRepository.setUser(
                     User(
+                        id = -1,
                         name = name,
                         password = password,
                         type = UserType.TEACHER,

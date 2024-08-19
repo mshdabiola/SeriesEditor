@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
@@ -50,12 +51,14 @@ internal fun LoginScreen(
             modifier = Modifier.testTag("login:user"),
             state = user,
             label = "Username",
+            imeAction = ImeAction.Next,
         )
         SeriesEditorTextField(
             modifier = Modifier.testTag("login:password"),
             state = password,
             label = "Password",
-        )
+            imeAction = ImeAction.Next,
+            )
         SeriesEditorButton(
             modifier = Modifier.testTag("login:button"),
             onClick = login,
