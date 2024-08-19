@@ -6,8 +6,9 @@ import com.mshdabiola.composequestion.cqModule
 import com.mshdabiola.composesubject.subjectModule
 import com.mshdabiola.composetopic.ctModule
 import com.mshdabiola.data.di.dataModule
+import com.mshdabiola.examinations.examModule
 import com.mshdabiola.instructions.instructionsModule
-import com.mshdabiola.main.mainModule
+import com.mshdabiola.login.loginModule
 import com.mshdabiola.questions.questionsModule
 import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.setting.settingModule
@@ -17,8 +18,20 @@ import org.koin.dsl.module
 
 val appModule = module {
     includes(
-        dataModule, mainModule, subjectModule, composeExamModule, settingModule,
-        cqModule, ciModule, questionsModule, instructionsModule, ctModule, topicModule,
+        dataModule,
+        examModule,
+        com.mshdabiola.subjects.subjectModule,
+        com.mshdabiola.main.mainModule,
+        subjectModule,
+        composeExamModule,
+        settingModule,
+        cqModule,
+        ciModule,
+        questionsModule,
+        instructionsModule,
+        ctModule,
+        topicModule,
+        loginModule,
     )
     viewModelOf(::MainAppViewModel)
 }

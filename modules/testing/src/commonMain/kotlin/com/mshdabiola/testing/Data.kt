@@ -10,6 +10,7 @@ import com.mshdabiola.seriesmodel.Question
 import com.mshdabiola.seriesmodel.QuestionPlain
 import com.mshdabiola.seriesmodel.Series
 import com.mshdabiola.seriesmodel.Subject
+import com.mshdabiola.seriesmodel.SubjectWithSeries
 import com.mshdabiola.seriesmodel.Topic
 import com.mshdabiola.seriesmodel.TopicCategory
 import com.mshdabiola.seriesmodel.TopicWithCategory
@@ -575,7 +576,9 @@ val questions = List(10) {
         topic = topicWithCategory.random(),
     )
 }
-
+val subjectWithSeries = subjects.map { subject ->
+    SubjectWithSeries(subject, series = series.single { it.id == subject.seriesId })
+}
 val exportableData = ExportableData(
     users = users,
     series = series,

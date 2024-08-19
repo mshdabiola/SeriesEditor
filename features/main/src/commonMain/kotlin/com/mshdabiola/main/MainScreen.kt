@@ -4,245 +4,331 @@
 
 package com.mshdabiola.main
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ContextualFlowColumn
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.NavigateBefore
+import androidx.compose.material.icons.automirrored.outlined.NavigateNext
+import androidx.compose.material.icons.automirrored.outlined.Subject
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.outlined.Newspaper
+import androidx.compose.material.icons.outlined.Quiz
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.analytics.LocalAnalyticsHelper
-import com.mshdabiola.data.model.Result
-import com.mshdabiola.designsystem.component.SeriesEditorLoadingWheel
-import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
-import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
-import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
-import com.mshdabiola.designsystem.drawable.emptyCartIcon
-import com.mshdabiola.designsystem.theme.LocalTintTheme
+import com.mshdabiola.designsystem.component.SeriesEditorButton
+import com.mshdabiola.designsystem.component.SeriesEditorTextField
+import com.mshdabiola.designsystem.theme.extendedColorScheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
-import com.mshdabiola.ui.logNoteOpened
-import com.mshdabiola.ui.state.ExamUiState
-import org.jetbrains.compose.resources.stringResource
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.parameter.parametersOf
-import serieseditor.features.main.generated.resources.Res
-import serieseditor.features.main.generated.resources.features_main_empty_description
-import serieseditor.features.main.generated.resources.features_main_empty_error
-import serieseditor.features.main.generated.resources.features_main_loading
-
-// import org.koin.androidx.compose.koinViewModel
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun MainRoute(
     modifier: Modifier = Modifier,
-    navigateToQuestion: (Long) -> Unit,
-    updateExam: (Long) -> Unit,
-    subjectId: Long,
+    onShowSnack: suspend (String, String?) -> Boolean,
+    navigateToSubject: (Long) -> Unit = {},
 ) {
-    val viewModel: MainViewModel =
-        koinViewModel(parameters = { parametersOf(subjectId) }, key = "test")
+    val viewModel: MainViewModel = koinViewModel()
 
-    val feedNote = viewModel.examUiMainState.collectAsStateWithLifecycleCommon()
-    val isSelect = viewModel.isSelectMode.collectAsStateWithLifecycleCommon()
+    val update = viewModel.mainState.collectAsStateWithLifecycleCommon()
+    var deleteId by remember { mutableStateOf<Long?>(null) }
 
     MainScreen(
         modifier = modifier,
-        mainState = feedNote.value,
-        navigateToQuestion = navigateToQuestion,
-        onDelete = viewModel::onDeleteExam,
-        onUpdate = updateExam,
-        toggleSelect = viewModel::toggleSelect,
-        isSelectMode = isSelect.value,
-
+        subjectState = viewModel.classState,
+        mainState = update.value,
+        onAdd = viewModel::addClass,
+        onDelete = { deleteId = it },
+        onUpdate = viewModel::updateClass,
+        onClick = navigateToSubject,
+        signOut = viewModel::signOut,
     )
+    if (deleteId != null) {
+        DeleteClassDialog(
+            onDismiss = { deleteId = null },
+            onConfirm = {
+                deleteId?.let(viewModel::deleteClass)
+                deleteId = null
+            },
+        )
+    }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun MainScreen(
     modifier: Modifier = Modifier,
-    mainState: Result<List<ExamUiState>>,
+    subjectState: TextFieldState,
+    mainState: MainState,
+    onAdd: () -> Unit = {},
     onDelete: (Long) -> Unit = {},
     onUpdate: (Long) -> Unit = {},
-    toggleSelect: (Long) -> Unit = {},
-    isSelectMode: Boolean = false,
-    navigateToQuestion: (Long) -> Unit = {},
+    onClick: (Long) -> Unit = {},
+    signOut: () -> Unit = {},
 ) {
-    val state = rememberLazyListState()
-
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .testTag("main:screen"),
+    FlowRow(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
 
     ) {
-        LazyColumn(
-            state = state,
-            // contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .testTag("main:list"),
+        FlowRow(
+            modifier = Modifier.weight(0.6f),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         ) {
-            item {
-                // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
-            }
-            when (mainState) {
-                is Result.Loading -> item {
-                    LoadingState()
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Welcome")
+                Text(mainState.user.name, style = MaterialTheme.typography.titleMedium)
+                TextButton(onClick = signOut) {
+                    Text("SignOut")
                 }
+            }
+            val generalModifier = Modifier.width(180.dp)
+            MainCard(
+                modifier = generalModifier,
+                icon = Icons.AutoMirrored.Outlined.Subject,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color2.colorContainer),
+                title = "Subjects",
+                description = mainState.subjectNumber.toString(),
+            )
 
-                is Result.Error -> TODO()
-                is Result.Success -> {
-                    if (mainState.data.isEmpty()) {
-                        item {
-                            EmptyState()
-                        }
-                    } else {
-                        examItems(
-                            items = mainState.data,
-                            onExamClick = navigateToQuestion,
-                            itemModifier = Modifier,
-                            onDelete = onDelete,
-                            onUpdate = onUpdate,
-                            toggleSelect = toggleSelect,
-                            isSelectMode = isSelectMode,
-                        )
-                    }
+            MainCard(
+                modifier = generalModifier,
+                icon = Icons.Outlined.Newspaper,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color1.colorContainer),
+                title = "Examinations",
+                description = mainState.examNumber.toString(),
+            )
+
+            MainCard(
+                modifier = generalModifier,
+                icon = Icons.Default.People,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color3.colorContainer),
+                title = "Students",
+                description = "10",
+            )
+            MainCard(
+                modifier = generalModifier,
+                icon = Icons.Outlined.Quiz,
+                color = ListItemDefaults.colors(containerColor = extendedColorScheme.color4.colorContainer),
+                title = "Questions",
+                description = mainState.questionNumber.toString(),
+            )
+        }
+        Column(
+            modifier = Modifier.widthIn(300.dp, 600.dp),
+        ) {
+            FlowRow(
+                verticalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            ) {
+                SeriesEditorTextField(
+                    modifier = Modifier.weight(1f).testTag("main:class"),
+                    state = subjectState,
+                    label = "Class",
+                    placeholder = "Freshman",
+                )
+
+                SeriesEditorButton(
+                    modifier = Modifier.testTag("main:add"),
+                    onClick = onAdd,
+                    enabled = subjectState.text.isNotBlank(),
+                ) {
+                    Text("Add Class")
                 }
             }
-            item {
-                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            ContextualFlowColumn(
+                modifier = Modifier.fillMaxWidth(),
+                itemCount = mainState.series.size,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) { index ->
+                val series = mainState.series.getOrNull(index)
+                if (series != null) {
+                    MainCard(
+                        series = series,
+                        onDelete = onDelete,
+                        onUpdate = onUpdate,
+                        onClick = onClick,
+                    )
+                }
             }
         }
-        val itemsAvailable = examUiStateItemsSize(mainState)
-        val scrollbarState = state.scrollbarState(
-            itemsAvailable = itemsAvailable,
-        )
-        state.DraggableScrollbar(
-            modifier = Modifier
-                .fillMaxHeight()
-                .windowInsetsPadding(WindowInsets.systemBars)
-                .padding(horizontal = 2.dp)
-                .align(Alignment.CenterEnd),
-            state = scrollbarState,
-            orientation = Orientation.Vertical,
-            onThumbMoved = state.rememberDraggableScroller(
-                itemsAvailable = itemsAvailable,
-            ),
+    }
+}
+
+@Composable
+fun MainCard(
+    modifier: Modifier = Modifier,
+    series: com.mshdabiola.seriesmodel.Series,
+    onDelete: (Long) -> Unit = {},
+    onUpdate: (Long) -> Unit = {},
+    onClick: (Long) -> Unit = {},
+) {
+    val state = rememberSwipeToDismissBoxState()
+    val coroutineScope = rememberCoroutineScope()
+
+    SwipeToDismissBox(
+        state = state,
+        modifier = modifier,
+        enableDismissFromEndToStart = false,
+        backgroundContent = {
+            ListItem(
+                modifier = Modifier,
+                headlineContent = {
+                },
+                trailingContent = {
+                    Row {
+                        IconButton(onClick = { onDelete(series.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "delete",
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    state.reset()
+                                }
+                                onUpdate(series.id)
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Update,
+                                contentDescription = null,
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    state.reset()
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Outlined.NavigateBefore,
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                },
+
+            )
+        },
+    ) {
+        ListItem(
+            modifier = Modifier.clickable {
+                onClick(series.id)
+            },
+            headlineContent = {
+                Text(series.name)
+            },
+            trailingContent = {
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            state.dismiss(SwipeToDismissBoxValue.StartToEnd)
+                        }
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.NavigateNext,
+                        contentDescription = null,
+                    )
+                }
+            },
         )
     }
 }
 
 @Composable
-private fun LoadingState(modifier: Modifier = Modifier) {
-    SeriesEditorLoadingWheel(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentSize()
-            .testTag("main:loading"),
-        contentDesc = stringResource(Res.string.features_main_loading),
+fun MainCard(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    title: String,
+    description: String,
+    color: ListItemColors = ListItemDefaults.colors(),
+) {
+    ListItem(
+        modifier = modifier,
+        colors = color,
+        leadingContent = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+            )
+        },
+        headlineContent = {
+            Text(title)
+        },
+        supportingContent = {
+            Text(description)
+        },
     )
 }
 
 @Composable
-private fun EmptyState(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxSize()
-            .testTag("main:empty"),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        val iconTint = LocalTintTheme.current.iconTint
-        Image(
-            modifier = Modifier.size(200.dp),
-            painter = emptyCartIcon,
-            colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,
-            contentDescription = null,
-        )
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        Text(
-            text = stringResource(Res.string.features_main_empty_error),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = stringResource(Res.string.features_main_empty_description),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-    }
+fun DeleteClassDialog(
+    modifier: Modifier = Modifier,
+    onDismiss: () -> Unit = {},
+    onConfirm: () -> Unit = {},
+) {
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Delete")
+            }
+        },
+        dismissButton = {
+            SeriesEditorButton(onClick = onDismiss) {
+                Text("Dismiss")
+            }
+        },
+        title = {
+            Text("Delete Class")
+        },
+        text = {
+            Text("Are you sure you want to delete this class?")
+        },
+    )
 }
-
-private fun examUiStateItemsSize(
-    topicUiState: Result<List<ExamUiState>>,
-) = when (topicUiState) {
-    is Result.Error -> 0 // Nothing
-    is Result.Loading -> 1 // Loading bar
-    is Result.Success -> topicUiState.data.size + 2
-}
-
-fun LazyListScope.examItems(
-    items: List<ExamUiState>,
-    onExamClick: (Long) -> Unit,
-    itemModifier: Modifier = Modifier,
-    onDelete: (Long) -> Unit = {},
-    onUpdate: (Long) -> Unit = {},
-    toggleSelect: (Long) -> Unit = {},
-    isSelectMode: Boolean = false,
-) = items(
-    items = items,
-    key = { it.id },
-    itemContent = { examUiState ->
-        val analyticsHelper = LocalAnalyticsHelper.current
-
-        ExamCard(
-            modifier = itemModifier,
-            examUiState = examUiState,
-            onDelete = onDelete,
-            onUpdate = onUpdate,
-            toggleSelect = toggleSelect,
-            isSelectMode = isSelectMode,
-            onExamClick = {
-                analyticsHelper.logNoteOpened(examUiState.id.toString())
-                onExamClick(examUiState.id)
-            },
-        )
-    },
-)

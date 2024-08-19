@@ -6,10 +6,7 @@ package com.mshdabiola.composesubject
 
 import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
-import co.touchlab.kermit.Logger
-import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.exportableData
 import com.mshdabiola.testing.util.MainDispatcherRule
@@ -39,10 +36,7 @@ class CsViewModelTest : KoinTest {
     val koinTestRule = KoinTestRule.create {
         this.modules(dataTestModule)
     }
-    private val seriesRepository by inject<ISeriesRepository>()
-    private val userdataRepository by inject<UserDataRepository>()
     private val subjectRepository by inject<ISubjectRepository>()
-    private val logger = Logger
 
     @Test
     fun init_update() = runTest(testDispatcher) {
@@ -50,11 +44,9 @@ class CsViewModelTest : KoinTest {
         val subject = default.subjects[0]
 
         val viewModel = ComposeSubjectViewModel(
+            1,
             subject.id,
-            seriesRepository,
             subjectRepository,
-            userdataRepository,
-            logger,
         )
 
         viewModel
@@ -68,11 +60,7 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Success)
 
-                state = awaitItem()
-
-                assertTrue(state is CsState.Success)
-
-                assertEquals(subject.seriesId, state.currentSeries)
+                assertEquals(subject.seriesId, state.id)
                 assertEquals(subject.title, viewModel.subjectState.text)
 
                 cancelAndIgnoreRemainingEvents()
@@ -85,11 +73,9 @@ class CsViewModelTest : KoinTest {
         val subject = default.subjects[2]
 
         val viewModel = ComposeSubjectViewModel(
+            subject.seriesId,
             subject.id,
-            seriesRepository,
             subjectRepository,
-            userdataRepository,
-            logger,
         )
 
         viewModel
@@ -98,10 +84,6 @@ class CsViewModelTest : KoinTest {
                 var state = awaitItem()
 
                 assertTrue(state is CsState.Loading)
-
-                state = awaitItem()
-
-                assertTrue(state is CsState.Success)
 
                 state = awaitItem()
 
@@ -134,11 +116,9 @@ class CsViewModelTest : KoinTest {
     @Test
     fun init_new() = runTest(testDispatcher) {
         val viewModel = ComposeSubjectViewModel(
+            1,
             -1,
-            seriesRepository,
             subjectRepository,
-            userdataRepository,
-            logger,
         )
 
         viewModel
@@ -152,11 +132,7 @@ class CsViewModelTest : KoinTest {
 
                 assertTrue(state is CsState.Success)
 
-                state = awaitItem()
-
-                assertTrue(state is CsState.Success)
-
-                assertEquals(1, state.currentSeries)
+                assertEquals(1, state.id)
                 assertEquals("", viewModel.subjectState.text)
 
                 cancelAndIgnoreRemainingEvents()
@@ -166,11 +142,9 @@ class CsViewModelTest : KoinTest {
     @Test
     fun addNew() = runTest(testDispatcher) {
         val viewModel = ComposeSubjectViewModel(
+            1,
             -1,
-            seriesRepository,
             subjectRepository,
-            userdataRepository,
-            logger,
         )
 
         viewModel
@@ -179,10 +153,6 @@ class CsViewModelTest : KoinTest {
                 var state = awaitItem()
 
                 assertTrue(state is CsState.Loading)
-
-                state = awaitItem()
-
-                assertTrue(state is CsState.Success)
 
                 state = awaitItem()
 

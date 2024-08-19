@@ -8,5 +8,7 @@ interface IUserRepository {
 
     suspend fun setUser(user: User): Long
 
+    fun getUserByPassword(name: String, password: String): Flow<User?>
+
     suspend fun deleteUser(id: Long)
 }

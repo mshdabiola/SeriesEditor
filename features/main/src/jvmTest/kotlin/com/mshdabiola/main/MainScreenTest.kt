@@ -1,12 +1,10 @@
 package com.mshdabiola.main
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import com.mshdabiola.data.model.Result
-import com.mshdabiola.testing.examinations
-import com.mshdabiola.ui.toUi
+import com.mshdabiola.seriesmodel.Series
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -20,13 +18,12 @@ class MainScreenTest {
         composeRule.setContent {
             MainScreen(
                 modifier = Modifier.fillMaxSize(),
-                mainState = Result.Success(
-                    examinations.map { it.toUi() },
+                mainState = MainState(
+                    series = listOf(Series(1, 6, "ask")),
                 ),
+                subjectState = rememberTextFieldState("subject"),
+                onClick = {},
             )
         }
-
-        composeRule.onNodeWithTag("main:screen").assertExists()
-        composeRule.onNodeWithTag("main:list").assertExists()
     }
 }

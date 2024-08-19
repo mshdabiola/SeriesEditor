@@ -4,69 +4,96 @@
 
 package com.mshdabiola.serieseditor.navigation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
 import com.mshdabiola.composeexam.navigation.composeExaminationScreen
-import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
-import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
-import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
-import com.mshdabiola.main.navigation.DEFAULT_ROUTE
+import com.mshdabiola.login.navigation.LOGIN_ROUTE
+import com.mshdabiola.login.navigation.loginScreen
+import com.mshdabiola.login.navigation.navigateToLogin
+import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.serieseditor.ui.Extended
 import com.mshdabiola.serieseditor.ui.Other
-import com.mshdabiola.serieseditor.ui.exampanel.examPanelScreen
-import com.mshdabiola.serieseditor.ui.exampanelother.examPanelScreen
-import com.mshdabiola.serieseditor.ui.exampanelother.navigateToExamPanel
-import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.mainpanel.mainPanelScreen
-import com.mshdabiola.serieseditor.ui.topicpanel.navigateToTopicPanel
-import com.mshdabiola.serieseditor.ui.topicpanel.topicPanelScreen
+import com.mshdabiola.serieseditor.ui.examItemspanel.examItemOtherPanelScreen
+import com.mshdabiola.serieseditor.ui.examItemspanel.examItemPanelScreen
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.navigateToSubjectItemPanel
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelOtherScreen
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelScreen
+import com.mshdabiola.serieseditor.ui.subjectpanel.navigateToSubjectPanel
+import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
-import com.mshdabiola.topics.navigation.navigateToTopic
-import com.mshdabiola.topics.navigation.topicScreen
+import com.mshdabiola.subjects.navigation.navigateToSubjects
+import com.mshdabiola.subjects.navigation.subjectScreen
 
 @Composable
 fun ExtendNavHost(
     appState: Extended,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = MAIN_PANEL_ROUTE,
+    startDestination: String = MAIN_ROUTE,
+    userId: Long = -1L,
 ) {
     val navController = appState.navController
     val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
+    LaunchedEffect(userId) {
+        if (userId == -1L) {
+            appState.navController.navigateToLogin(
+                navOptions = navOptions {
+                    popUpTo(MAIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        } else {
+            appState.navController.navigateToMain(
+                navOptions = navOptions {
+                    popUpTo(LOGIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        }
+    }
 
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        mainPanelScreen(
+        loginScreen(screenModifier)
+        mainScreen(
+            modifier = screenModifier,
+            onShowSnack = onShowSnackbar,
+            onNavigateToSubject = navController::navigateToSubjectPanel,
+        )
+        subjectPanelScreen(
+            appState = appState,
+            onShowSnack = onShowSnackbar,
+        )
+        subjectItemPanelScreen(
             onShowSnack = onShowSnackbar,
             appState = appState,
         )
-        examPanelScreen(
+        examItemPanelScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
-            navigateToTopicPanel = navController::navigateToTopicPanel,
+        )
 
-        )
-        topicPanelScreen(
-            modifier,
-            onShowSnackbar,
-        )
         settingScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
@@ -75,13 +102,14 @@ fun ExtendNavHost(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OtherNavHost(
     appState: Other,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
-    startDestination: String = DEFAULT_ROUTE,
+    startDestination: String = MAIN_ROUTE,
+    userId: Long = -1L,
+
 ) {
     val navController = appState.navController
     val screenModifier = modifier
@@ -89,17 +117,51 @@ fun OtherNavHost(
         .padding(horizontal = 8.dp, vertical = 8.dp)
         .windowInsetsPadding(WindowInsets.systemBars)
 
+    LaunchedEffect(userId) {
+        if (userId == -1L) {
+            appState.navController.navigateToLogin(
+                navOptions = navOptions {
+                    popUpTo(MAIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        } else {
+            appState.navController.navigateToMain(
+                navOptions = navOptions {
+                    popUpTo(LOGIN_ROUTE) {
+                        inclusive = true
+                    }
+                },
+            )
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        loginScreen(screenModifier)
         mainScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
-            navigateToQuestion = navController::navigateToExamPanel,
-            updateExam = navController::navigateToComposeExamination,
+            onNavigateToSubject = navController::navigateToSubjects,
+
         )
+
+        subjectScreen(
+            modifier = screenModifier,
+            onShowSnack = onShowSnackbar,
+            navigateToExam = navController::navigateToSubjectItemPanel,
+            updateSubject = navController::navigateToComposeSubject,
+        )
+
+        subjectItemPanelOtherScreen(
+            onShowSnack = onShowSnackbar,
+            appState = appState,
+        )
+
         composeSubjectScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
@@ -109,19 +171,16 @@ fun OtherNavHost(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
             onBack = navController::popBackStack,
-            onAddSubject = { navController.navigateToComposeSubject(-1) },
         )
 
-        examPanelScreen(
-            modifier = Modifier.fillMaxSize(),
+        examItemOtherPanelScreen(
+            modifier = Modifier,
             onShowSnack = onShowSnackbar,
             appState = appState,
         )
         composeQuestionScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
-            navigateToInstruction = navController::navigateToComposeInstruction,
-            navigateToTopic = navController::navigateToTopic,
             onFinish = { navController.popBackStack() },
         )
 
@@ -130,12 +189,7 @@ fun OtherNavHost(
             onShowSnack = onShowSnackbar,
             onFinish = navController::popBackStack,
         )
-        topicScreen(
-            modifier = screenModifier,
-            onShowSnack = onShowSnackbar,
-            navigateToComposeTopic = navController::navigateToComposeTopic,
-            subjectId = -1,
-        )
+
         composeTopicScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,

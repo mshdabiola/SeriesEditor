@@ -24,7 +24,6 @@ class CeScreenScreenshotTests {
                 ComposeExaminationScreen(
                     modifier = Modifier.fillMaxSize(),
                     ceState = CeState.Loading(),
-                    subject = rememberTextFieldState(),
                     duration = rememberTextFieldState(),
                     year = rememberTextFieldState(),
                     addExam = {},
@@ -42,7 +41,6 @@ class CeScreenScreenshotTests {
                 ComposeExaminationScreen(
                     modifier = Modifier.fillMaxSize(),
                     ceState = CeState.Loading(),
-                    subject = rememberTextFieldState(),
                     duration = rememberTextFieldState(),
                     year = rememberTextFieldState(),
                     addExam = {},
@@ -59,8 +57,7 @@ class CeScreenScreenshotTests {
             Surface {
                 ComposeExaminationScreen(
                     modifier = Modifier.fillMaxSize(),
-                    ceState = CeState.Success(isUpdate = false, subjects = emptyList()),
-                    subject = rememberTextFieldState("Math"),
+                    ceState = CeState.Success(isUpdate = false),
                     duration = rememberTextFieldState("12"),
                     year = rememberTextFieldState("1556"),
                     addExam = {},
@@ -77,8 +74,7 @@ class CeScreenScreenshotTests {
             Surface {
                 ComposeExaminationScreen(
                     modifier = Modifier.fillMaxSize(),
-                    ceState = CeState.Success(isUpdate = false, subjects = emptyList()),
-                    subject = rememberTextFieldState("Math"),
+                    ceState = CeState.Success(isUpdate = false),
                     duration = rememberTextFieldState("12"),
                     year = rememberTextFieldState("1556"),
                     addExam = {},

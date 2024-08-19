@@ -29,8 +29,6 @@ fun NavGraphBuilder.composeQuestionScreen(
     modifier: Modifier = Modifier,
     defaultExamId: Long = -1,
     onShowSnack: suspend (String, String?) -> Boolean,
-    navigateToTopic: (Long) -> Unit,
-    navigateToInstruction: (Long, Long) -> Unit,
     onFinish: () -> Unit,
 
 ) {
@@ -55,8 +53,6 @@ fun NavGraphBuilder.composeQuestionScreen(
             onFinish = onFinish,
             examId = examId,
             questionId = questionId,
-            navigateToTopic = navigateToTopic,
-            navigateToInstruction = navigateToInstruction,
         )
     }
 }

@@ -17,15 +17,17 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
-import com.mshdabiola.composequestion.navigation.EXAM_ARG
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
 import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
+import com.mshdabiola.login.navigation.LOGIN_ROUTE
 import com.mshdabiola.main.navigation.MAIN_ROUTE
-import com.mshdabiola.main.navigation.SUBJECT_ARG
-import com.mshdabiola.main.navigation.navigateToMain
-import com.mshdabiola.serieseditor.ui.exampanelother.EXAM_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.mainpanel.MAIN_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_ARG
+import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ITEM_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
+import com.mshdabiola.subjects.navigation.SERIES_ID
+import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
 
@@ -34,26 +36,17 @@ fun rememberExtend(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-    mainNavController: NavHostController = rememberNavController(),
-    subjectNavHostController: NavHostController = rememberNavController(),
-    examNavHostController: NavHostController = rememberNavController(),
 ): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,
         coroutineScope,
         windowSizeClass,
-        mainNavController,
-        subjectNavHostController,
-        examNavHostController,
     ) {
         Extended(
             navController,
             coroutineScope,
             windowSizeClass,
-            mainNavController,
-            subjectNavHostController,
-            examNavHostController,
         )
     }
 }
@@ -64,7 +57,9 @@ fun rememberOther(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-    pagerState: PagerState = rememberPagerState { 2 },
+    examPagerState: PagerState = rememberPagerState { 2 },
+    subjectPagerState: PagerState = rememberPagerState { 2 },
+
 ): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
@@ -76,7 +71,8 @@ fun rememberOther(
             navController,
             coroutineScope,
             windowSizeClass,
-            pagerState,
+            examPagerState,
+            subjectPagerState,
         )
     }
 }
@@ -93,26 +89,17 @@ sealed class SeriesEditorAppState(
     abstract val showMainTopBar: Boolean
         @Composable get
 
-    abstract val showPermanentDrawer: Boolean
+    abstract val topbarTitle: String
         @Composable get
 
-    abstract val showDrawer: Boolean
+    abstract val hideTopBar: Boolean
         @Composable get
-
-    abstract val currentSubjectId: Long
-        @Composable get
-
-    abstract fun onSubjectClick(id: Long)
-    abstract fun onUpdateSubject(id: Long)
 }
 
 class Extended(
     override val navController: NavHostController,
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
-    val mainNavController: NavHostController,
-    val subjectNavHostController: NavHostController,
-    val examNavHostController: NavHostController,
 
 ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
@@ -121,37 +108,26 @@ class Extended(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true ||
+            currentDestination?.route?.contains("setting") == true
 
-    override val showPermanentDrawer: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_PANEL_ROUTE) == true
-    override val showDrawer: Boolean
-        @Composable get() = false
-
-    override val currentSubjectId: Long
-        @Composable get() = mainNavController
-            .currentBackStackEntryAsState()
-            .value
-            ?.arguments
-            ?.getLong(SUBJECT_ARG) ?: -1
-
-    override fun onSubjectClick(id: Long) {
-        navController.popBackStack()
-        mainNavController.navigateToMain(id)
-    }
-
-    override fun onUpdateSubject(id: Long) {
-        subjectNavHostController.popBackStack()
-        subjectNavHostController.navigateToComposeSubject(id)
-    }
+    override val topbarTitle: String
+        @Composable get() = when {
+            currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> "Subject"
+            currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
+            currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
+            else -> ""
+        }
+    override val hideTopBar: Boolean
+        @Composable get() = currentDestination?.route?.contains(LOGIN_ROUTE) == true
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 class Other(
     override val navController: NavHostController,
     override val coroutineScope: CoroutineScope,
     override val windowSizeClass: WindowSizeClass,
-    val pagerState: PagerState,
+    val examPagerState: PagerState,
+    val subjectPagerState: PagerState,
 ) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
 
     override val currentDestination: NavDestination?
@@ -159,39 +135,27 @@ class Other(
             .currentBackStackEntryAsState().value?.destination
 
     override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
+        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true ||
+            currentDestination?.route?.contains("setting") == true
 
-    override val currentSubjectId: Long
-        @Composable get() = navController
-            .currentBackStackEntryAsState()
-            .value
-            ?.arguments
-            ?.getLong(SUBJECT_ARG) ?: -1
+    override val topbarTitle: String
+        @Composable get() = when {
+            currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Subject"
+            currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
+            currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
+            else -> ""
+        }
 
-    override val showPermanentDrawer: Boolean
-        @Composable get() = false
-    override val showDrawer: Boolean
-        @Composable get() = true
-
-    override fun onSubjectClick(id: Long) {
-        navController.popBackStack()
-        navController.navigateToMain(id)
-    }
-
-    override fun onUpdateSubject(id: Long) {
-        navController.navigateToComposeSubject(id)
-    }
-
-    val isMain
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true
+    override val hideTopBar: Boolean
+        @Composable get() = currentDestination?.route?.contains(LOGIN_ROUTE) == true
 
     val isList
         @Composable
         get() =
             when {
-                currentDestination?.route?.contains(MAIN_ROUTE) == true -> true
-                currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> true
-                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> true
+                currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> true
+                currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> true
+                currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> true
                 else -> false
             }
 
@@ -199,32 +163,54 @@ class Other(
         @Composable
         get() =
             when {
-                currentDestination?.route?.contains(MAIN_ROUTE) == true -> "Add Exam"
-                currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> {
-                    if (pagerState.currentPage == 0) {
+                currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Add Subject"
+                currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
+                    if (examPagerState.currentPage == 0) {
                         "Add Question"
                     } else {
                         "Add Instruction"
                     }
                 }
 
-                currentDestination?.route?.contains(TOPIC_ROUTE) == true -> "Add Topic"
+                currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> {
+                    if (subjectPagerState.currentPage == 0) {
+                        "Add Examination"
+                    } else {
+                        "Add Topic"
+                    }
+                }
+
                 else -> "Add"
             }
 
     fun onAdd() {
         when {
-            navController.currentDestination?.route?.contains(MAIN_ROUTE) == true -> {
-                navController.navigateToComposeExamination(-1)
+            navController.currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> {
+                val seriesId =
+                    navController.currentBackStackEntry?.arguments?.getLong(SERIES_ID)
+                        ?: -1
+                navController.navigateToComposeSubject(seriesId, -1)
             }
 
-            navController.currentDestination?.route?.contains(EXAM_PANEL_ROUTE) == true -> {
-                val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ARG) ?: -1
+            navController.currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
+                val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ITEM_ARG) ?: -1
 
-                if (pagerState.currentPage == 0) {
+                if (examPagerState.currentPage == 0) {
                     navController.navigateToComposeQuestion(exam, -1)
                 } else {
                     navController.navigateToComposeInstruction(exam, -1)
+                }
+            }
+
+            navController.currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> {
+                val subjectId =
+                    navController.currentBackStackEntry?.arguments?.getLong(com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ARG)
+                        ?: -1
+
+                if (subjectPagerState.currentPage == 0) {
+                    navController.navigateToComposeExamination(subjectId, -1)
+                } else {
+                    navController.navigateToComposeTopic(subjectId, -1)
                 }
             }
 

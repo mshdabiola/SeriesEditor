@@ -14,7 +14,7 @@ class UserRepository(
     private val ioDispatcher: CoroutineDispatcher,
 ) : IUserRepository {
     override fun getUser(id: Long): Flow<User?> {
-        return userDao.getUserById(1)
+        return userDao.getUserById(id)
             .map {
                 it?.asModel()
             }
@@ -24,6 +24,13 @@ class UserRepository(
         return withContext(ioDispatcher) {
             userDao.insertUser(user.asEntity())
         }
+    }
+
+    override fun getUserByPassword(name: String, password: String): Flow<User?> {
+        return userDao.getUserByNameAndPassword(name, password)
+            .map {
+                it?.asModel()
+            }
     }
 
     override suspend fun deleteUser(id: Long) {

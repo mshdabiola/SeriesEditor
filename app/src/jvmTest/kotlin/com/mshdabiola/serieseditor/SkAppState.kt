@@ -33,9 +33,7 @@ class SkAppState {
         composeTestRule.setContent {
             val density = LocalDensity.current
             val navController = rememberTestNavController()
-            val subjectNav = rememberTestNavController()
-            val examNav = rememberTestNavController()
-            val mainNav = rememberTestNavController()
+
             state = remember(navController) {
                 Extended(
                     navController = navController,
@@ -44,9 +42,6 @@ class SkAppState {
                         size = Size(456f, 3f),
                         density = density,
                     ),
-                    mainNavController = mainNav,
-                    subjectNavHostController = subjectNav,
-                    examNavHostController = examNav,
 
                 )
             }

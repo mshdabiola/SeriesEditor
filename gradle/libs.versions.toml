@@ -7,23 +7,23 @@ androidxActivity = "1.9.1"
 androidxAppCompat = "1.7.0"
 
 androidxComposeMaterial3Adaptive = "1.0.0-beta04"
-androidxComposeMaterial3AdaptiveNavigationSuite = "1.3.0-beta04"
+androidxComposeMaterial3AdaptiveNavigationSuite = "1.3.0-beta05"
 androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
 androidxDataStore = "1.1.1"
 androidxEspresso = "3.6.1"
-androidxLifecycle = "2.8.3"
-androidxMacroBenchmark = "1.3.0-beta02"
+androidxLifecycle = "2.8.4"
+androidxMacroBenchmark = "1.3.0-rc01"
 androidxMetrics = "1.0.0-beta01"
 androidxProfileinstaller = "1.3.1"
 androidxTestCore = "1.6.1"
 androidxTestExt = "1.2.1"
 androidxTestRules = "1.6.1"
-androidxTestRunner = "1.6.1"
+androidxTestRunner = "1.6.2"
 androidxTracing = "1.3.0-alpha02"
 androidxUiAutomator = "2.3.0"
 androidxWindowManager = "1.3.0"
-androidxWork = "2.9.0"
+androidxWork = "2.9.1"
 coil = "3.0.0-alpha07"
 dependencyGuard = "0.5.0"
 firebaseBom = "33.1.0"
@@ -47,8 +47,8 @@ turbine = "1.1.0"
 
 compose-plugin = "1.7.0-alpha02"
 composeNavigation="2.8.0-alpha08"
-androidxNavigationTest = "2.8.0-beta03" #for nav test
-compose = "1.7.0-beta03"
+androidxNavigationTest = "2.8.0-beta07" #for nav test
+compose = "1.7.0-beta07"
 
 
 playGame = "20.1.0"
@@ -62,7 +62,7 @@ firebaseCrashylyticsPlugins = "2.9.9"
 ktor = "2.3.11"
 uiTextGoogleFonts = "1.6.8"
 
-koin = "3.6.0-Beta4"
+koin = "3.6.0-alpha3"
 koinCompose = "1.2.0-Beta4"
 
 conveyor = "1.10"
@@ -71,15 +71,15 @@ kermit = "2.0.4"
 slf4jSimple = "2.0.13"
 
 androidx-paging = "3.3.0"
-sqlite = "2.5.0-alpha05"
+sqlite = "2.5.0-alpha06"
 kotlinxCollectionImmutable = "0.3.7"
 windowSizeClass = "0.5.0"
 
-screenshot = "0.0.1-alpha03"
+screenshot = "0.0.1-alpha04"
 kover = "0.8.3"
 
 
-series = "0.0.17"
+series = "0.0.19"
 calf = "0.4.0"
 
 versionCode = "14"

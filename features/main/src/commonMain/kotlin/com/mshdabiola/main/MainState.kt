@@ -1,25 +1,21 @@
 package com.mshdabiola.main
 
-import com.mshdabiola.ui.state.ExamUiState
-import com.mshdabiola.ui.state.SubjectUiState
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
-
-// sealed interface MainState {
-//    data class Show(val models: List<ModelUiState>) : MainState
-//    object Error : MainState
-//
-//    object Loading : MainState
-// }
+import com.mshdabiola.seriesmodel.Series
+import com.mshdabiola.seriesmodel.User
+import com.mshdabiola.seriesmodel.UserType
 
 data class MainState(
-    val name: String = "abiola",
-    val currentSubjectId: Long = -1,
-    val examination: ExamUiState = ExamUiState(),
-    val subject: SubjectUiState = SubjectUiState(name = "", seriesLabel = "Jamb"),
-    val dateError: Boolean = false,
-    val isSelectMode: Boolean = false,
-    val examinations: ImmutableList<ExamUiState> = emptyList<ExamUiState>().toImmutableList(),
-    val subjects: ImmutableList<SubjectUiState> = emptyList<SubjectUiState>().toImmutableList(),
-//    val messages: ImmutableList<Notify> = emptyList<Notify>().toImmutableList()
+    val series: List<Series> = emptyList(),
+    val user: User = User(
+        id = 1,
+        name = "Abiola",
+        type = UserType.TEACHER,
+        password = "123456",
+        imagePath = "",
+        points = 1,
+    ),
+    val subjectNumber: Int = 0,
+    val examNumber: Int = 0,
+    val questionNumber: Int = 0,
+    val studentNumber: Int = 0,
 )

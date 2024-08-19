@@ -5,22 +5,25 @@
 package com.mshdabiola.main
 
 import app.cash.turbine.test
-import com.mshdabiola.data.model.Result
 import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IQuestionRepository
+import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
+import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.testing.dataTestModule
 import com.mshdabiola.testing.util.MainDispatcherRule
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
-import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class MainViewModelTest : KoinTest {
 
@@ -36,36 +39,34 @@ class MainViewModelTest : KoinTest {
     val koinTestRule = KoinTestRule.create {
         this.modules(dataTestModule)
     }
+    private val seriesRepository by inject<ISeriesRepository>()
     private val subjectRepository by inject<ISubjectRepository>()
-    private val examinationRepository by inject<IExaminationRepository>()
-    private val userdataRepository by inject<UserDataRepository>()
+    private val examRepository by inject<IExaminationRepository>()
+    private val questionRepository by inject<IQuestionRepository>()
+    private val iUserRepository by inject<IUserRepository>()
+    private val userDataRepository by inject<UserDataRepository>()
 
     @Test
     fun init() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = MainViewModel(
+            seriesRepository,
             subjectRepository,
-            examinationRepository,
-            userdataRepository,
-            1,
+            examRepository,
+            questionRepository,
+            iUserRepository,
+            userDataRepository,
         )
 
         viewModel
-            .examUiMainState
+            .mainState
             .test {
                 var state = awaitItem()
 
-                assertTrue(state is Result.Loading)
+                assertEquals(0, state.series.size)
 
                 state = awaitItem()
 
-                assertTrue(state is Result.Success)
-
-                assertEquals(
-                    10,
-                    state.data.size,
-
-                )
-
+                assertEquals(2, state.series.size)
                 cancelAndIgnoreRemainingEvents()
             }
     }
@@ -73,34 +74,88 @@ class MainViewModelTest : KoinTest {
     @Test
     fun delete() = runTest(mainDispatcherRule.testDispatcher) {
         val viewModel = MainViewModel(
+            seriesRepository,
             subjectRepository,
-            examinationRepository,
-            userdataRepository,
-            1,
+            examRepository,
+            questionRepository,
+            iUserRepository,
+            userDataRepository,
         )
 
         viewModel
-            .examUiMainState
+            .mainState
             .test {
                 var state = awaitItem()
 
-                assertTrue(state is Result.Loading)
+                assertEquals(0, state.series.size)
+
+                awaitItem()
+
+                viewModel.deleteClass(1)
 
                 state = awaitItem()
 
-                assertTrue(state is Result.Success)
+                assertEquals(1, state.series.size)
+                cancelAndIgnoreRemainingEvents()
+            }
+    }
 
-                viewModel.onDeleteExam(1)
+    @Test
+    fun update() = runTest(mainDispatcherRule.testDispatcher) {
+        val viewModel = MainViewModel(
+            seriesRepository,
+            subjectRepository,
+            examRepository,
+            questionRepository,
+            iUserRepository,
+            userDataRepository,
+        )
+
+        viewModel
+            .mainState
+            .test {
+                var state = awaitItem()
+
+                assertEquals(0, state.series.size)
+
+                awaitItem()
+                val series = seriesRepository.getOne(1).first()!!
+
+                viewModel.updateClass(series.id)
+                delay(2000)
+                assertEquals(series.name, viewModel.classState.text.toString())
+
+                cancelAndIgnoreRemainingEvents()
+            }
+    }
+
+    @Test
+    fun add() = runTest(mainDispatcherRule.testDispatcher) {
+        val viewModel = MainViewModel(
+            seriesRepository,
+            subjectRepository,
+            examRepository,
+            questionRepository,
+            iUserRepository,
+            userDataRepository,
+        )
+
+        viewModel
+            .mainState
+            .test {
+                var state = awaitItem()
+
+                assertEquals(0, state.series.size)
+
+                awaitItem()
+
+                viewModel.classState.edit {
+                    append("Moshood")
+                }
+                viewModel.addClass()
 
                 state = awaitItem()
-
-                assertTrue(state is Result.Success)
-
-                assertEquals(
-                    9,
-                    state.data.size,
-
-                )
+                assertEquals("Moshood", state.series.last().name)
 
                 cancelAndIgnoreRemainingEvents()
             }
