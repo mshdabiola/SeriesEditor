@@ -6,6 +6,7 @@ package com.mshdabiola.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +33,7 @@ internal fun LoginRoute(
         password = viewModel.password,
         login = viewModel::login,
 
-    )
+        )
 }
 
 @Composable
@@ -50,15 +51,17 @@ internal fun LoginScreen(
         SeriesEditorTextField(
             modifier = Modifier.testTag("login:user"),
             state = user,
+            maxNum = TextFieldLineLimits.SingleLine,
             label = "Username",
             imeAction = ImeAction.Next,
         )
         SeriesEditorTextField(
             modifier = Modifier.testTag("login:password"),
             state = password,
+            maxNum = TextFieldLineLimits.SingleLine,
             label = "Password",
             imeAction = ImeAction.Next,
-            )
+        )
         SeriesEditorButton(
             modifier = Modifier.testTag("login:button"),
             onClick = login,
