@@ -60,8 +60,8 @@ class NavigationTest {
     fun firstScreen_isForYou() {
         composeTestRule.apply {
             // VERIFY for you is selected
-            waitUntilExactlyOneExists(hasTestTag("login:user"))
-            onNodeWithTag("login:user").assertExists()
+            waitUntilExactlyOneExists(hasTestTag("main:add"))
+            onNodeWithTag("main:add").assertExists()
         }
     }
 }
