@@ -7,28 +7,18 @@ plugins {
 
     id("mshdabiola.android.application")
     id("mshdabiola.android.application.compose")
-    id("mshdabiola.android.application.jacoco")
+    //id("mshdabiola.android.application.jacoco")
     id("mshdabiola.android.application.flavor")
     alias(libs.plugins.conveyor)
     alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.roborazzi)
 
 }
 
 group = "com.mshdabiola.serieseditor"
 version = libs.versions.versionName.get()
 
+
 dependencies {
-
-//    implementation(project(":modules:app"))
-//    implementation(project(":modules:model"))
-//    implementation(project(":modules:data"))
-//    implementation(project(":modules:navigation"))
-//    implementation(project(":modules:analytics"))
-//    implementation(project(":modules:mvvn"))
-//    implementation(project(":modules:designsystem"))
-//
-
     linuxAmd64(compose.desktop.linux_x64)
     macAmd64(compose.desktop.macos_x64)
     macAarch64(compose.desktop.macos_arm64)
@@ -42,8 +32,6 @@ dependencies {
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)
     implementation(libs.androidx.compose.material3.adaptive.navigation)
-//    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.compose.runtime.tracing)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -52,25 +40,17 @@ dependencies {
     implementation(libs.androidx.tracing.ktx)
     implementation(libs.androidx.window.core)
     implementation(libs.kotlinx.coroutines.guava)
-    implementation(libs.coil.kt)
-
 
     debugImplementation(libs.androidx.compose.ui.testManifest)
 
 
-    testImplementation(projects.modules.testing)
-    testImplementation(libs.androidx.compose.ui.test)
-    testImplementation(libs.androidx.work.testing)
-
-    testFossReliantImplementation(libs.robolectric)
-    testFossReliantImplementation(libs.roborazzi)
-    //testFossReliantImplementation(projects.modules.screenshotTesting)
-
-
+//    testImplementation(projects.modules.testing)
+//    testImplementation(libs.androidx.work.testing)
     androidTestImplementation(projects.modules.testing)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+//    androidTestImplementation("androidx.startup:startup-runtime:1.1.1")
+//    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.navigation.testing)
-    androidTestImplementation(libs.androidx.compose.ui.test)
+//    androidTestImplementation(libs.androidx.compose.ui.test)
 
     baselineProfile(projects.benchmarks)
 
@@ -93,34 +73,13 @@ dependencies {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-//    wasmJs {
-//        moduleName = "composeApp"
-//        browser {
-//            commonWebpackConfig {
-//                outputFileName = "composeApp.js"
-//            }
-//        }
-//        binaries.executable()
-//    }
-
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
-        }
-    }
-
-    // jvm("desktop")
+    androidTarget()
     jvm()
-    // jvmToolchain(17)
 
     sourceSets {
         val jvmMain by getting
 
         androidMain.dependencies {
-            //implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
 
@@ -134,12 +93,13 @@ kotlin {
             implementation(projects.modules.ui)
             implementation(projects.modules.model)
             implementation(projects.modules.analytics)
-            implementation(libs.androidx.compose.material3.adaptive)
-
+//            implementation(libs.androidx.compose.material3.adaptive)
 
 
             implementation(projects.features.main)
-            // implementation(projects.features.detail)
+            implementation(projects.features.login)
+            implementation(projects.features.examinations)
+            implementation(projects.features.subjects)
             implementation(projects.features.setting)
             implementation(projects.features.composesubject)
             implementation(projects.features.composeexamination)
@@ -150,6 +110,7 @@ kotlin {
             implementation(projects.features.instructions)
             implementation(projects.features.topics)
 
+            api(libs.androidx.compose.material3.windowSizeClass2)
 
             // Logger
             implementation(libs.kermit)
@@ -161,24 +122,23 @@ kotlin {
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-            // implementation(project(":modules:app"))
-
             implementation(libs.kotlinx.coroutines.swing)
 
         }
-        targets.all {
-            compilations.all {
-                compilerOptions.configure {
-                    freeCompilerArgs.add("-Xexpect-actual-classes")
-                }
-            }
+        jvmTest.dependencies {
+            implementation(projects.modules.testing)
         }
-//        configurations.commonMainApi {
-//            exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-android")
+//        targets.all {
+//            compilations.all {
+//                compilerOptions.configure {
+//                    freeCompilerArgs.add("-Xexpect-actual-classes")
+//                }
+//            }
 //        }
 
     }
 }
+
 
 android {
 
@@ -194,7 +154,7 @@ android {
         versionName = System.getenv("VERSION_NAME") ?: libs.versions.versionName.get()
 
         // Custom test runner to set up Hilt dependency graph
-        testInstrumentationRunner = "com.mshdabiola.testing.TestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }

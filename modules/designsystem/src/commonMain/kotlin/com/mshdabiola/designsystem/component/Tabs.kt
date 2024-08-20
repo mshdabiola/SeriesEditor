@@ -89,7 +89,7 @@ fun SkTabRow(
 @Composable
 fun Section(modifier: Modifier = Modifier, title: String) {
     Text(
-        modifier = modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
+        modifier = modifier.padding(bottom = 16.dp),
         text = title,
         style = MaterialTheme.typography.titleMedium,
     )

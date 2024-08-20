@@ -7,30 +7,27 @@ android {
     namespace = "com.mshdabiola.data"
 }
 
+
+
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":modules:model"))
                 implementation(project(":modules:analytics"))
-
                 implementation(libs.koin.core)
-                //   implementation(libs.kermit.log)
                 implementation(project(":modules:model"))
 //                implementation(project(":modules:database"))
                 api(project(":modules:datastore"))
                 implementation(project(":modules:network"))
                 implementation(libs.kotlinx.coroutines.core)
                 api(libs.database)
-
-
-
                 implementation(libs.paging.common)
-
-                // alternatively - without Android dependencies for tests
-                //testImplementation "androidx.paging:paging-common:$paging_version"
-
             }
+        }
+        jvmMain.dependencies {
+            implementation(libs.poi)
+            implementation(projects.modules.ui)
         }
 
     }

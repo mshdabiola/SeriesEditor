@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChangeCircle
@@ -23,12 +24,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,16 +42,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
-import com.mshdabiola.generalmodel.Type
 import com.mshdabiola.model.ImageUtil
-import com.mshdabiola.retex.Latex
-import com.mshdabiola.retex.MarkUpText
+import com.mshdabiola.serieslatex.Latex
+import com.mshdabiola.serieslatex.MarkUpText
+import com.mshdabiola.seriesmodel.Type
 import com.mshdabiola.ui.state.ItemUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentView(
     modifier: Modifier = Modifier,
@@ -93,12 +93,11 @@ fun ContentView(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     modifier: Modifier = Modifier,
     items: ImmutableList<ItemUiState>,
-    label: String,
+    label: String? = null,
     addUp: (Int) -> Unit = {},
     addBottom: (Int) -> Unit = {},
     delete: (Int) -> Unit = {},
@@ -110,6 +109,9 @@ fun Content(
 
 ) {
     Column(modifier) {
+        if (label != null) {
+            Text(label, color = MaterialTheme.colorScheme.secondary)
+        }
         items.forEachIndexed { index, item ->
             var showContext by remember { mutableStateOf(false) }
             var showChange by remember { mutableStateOf(false) }
@@ -138,7 +140,7 @@ fun Content(
                         }
                     }
 
-                    Type.TEXT -> TextContent(childModifier, item, "$label line ${index + 1}")
+                    Type.TEXT -> TextContent(childModifier, item)
 
                     Type.IMAGE -> {
                         if (item.content.text.isBlank()) {
@@ -279,15 +281,12 @@ fun Content(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EquationContent(
     modifier: Modifier = Modifier,
     equation: ItemUiState,
 ) {
-    key(equation.content.text) {
-        Latex(modifier = modifier, equation.content.text.toString())
-    }
+    Latex(modifier = modifier, equation.content.text.toString())
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -306,12 +305,11 @@ fun ImageContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TextContent(
     modifier: Modifier = Modifier,
     text: ItemUiState,
-    label: String,
+    label: String? = null,
 ) {
     val focusRequester = remember {
         FocusRequester()
@@ -320,7 +318,11 @@ fun TextContent(
         launch {
             if (text.focus) {
                 delay(1000)
-                focusRequester.requestFocus()
+                try {
+                    focusRequester.requestFocus()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -328,7 +330,7 @@ fun TextContent(
         SeriesEditorTextField(
             modifier = modifier.focusRequester(focusRequester),
             label = label,
-            maxNum = androidx.compose.foundation.text2.input.TextFieldLineLimits.SingleLine,
+            maxNum = TextFieldLineLimits.SingleLine,
             state = text.content,
             imeAction = ImeAction.Next,
         )

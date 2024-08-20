@@ -1,8 +1,8 @@
 package com.mshdabiola.ui.state
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
-import com.mshdabiola.generalmodel.Type
+import androidx.compose.foundation.text.input.TextFieldState
+import com.mshdabiola.seriesmodel.Type
 
 @OptIn(ExperimentalFoundationApi::class)
 data class ItemUiState(

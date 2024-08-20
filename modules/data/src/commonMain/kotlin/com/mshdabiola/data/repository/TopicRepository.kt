@@ -1,16 +1,17 @@
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.data.model.asEntity
-import com.mshdabiola.data.model.asModel
-import com.mshdabiola.database.dao.TopicDao
-import com.mshdabiola.generalmodel.Topic
+import com.mshdabiola.seriesdatabase.asEntity
+import com.mshdabiola.seriesdatabase.asModel
+import com.mshdabiola.seriesdatabase.dao.TopicDao
+import com.mshdabiola.seriesmodel.Topic
+import com.mshdabiola.seriesmodel.TopicWithCategory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-internal class TopicRepository constructor(
+internal class TopicRepository(
     private val topicDao: TopicDao,
     private val ioDispatcher: CoroutineDispatcher,
 ) : ITopicRepository {
@@ -39,7 +40,7 @@ internal class TopicRepository constructor(
 
     override fun getAllBySubject(subjectID: Long): Flow<List<Topic>> {
         return topicDao
-            .getAllBySubject(subjectID)
+            .getAllByCategory(subjectID)
             .map { noteEntities ->
                 noteEntities.map {
                     it.asModel()
@@ -51,6 +52,13 @@ internal class TopicRepository constructor(
     override fun getOne(id: Long): Flow<Topic?> {
         return topicDao
             .getOne(id)
+            .map { it?.asModel() }
+            .flowOn(ioDispatcher)
+    }
+
+    override fun getOneWithCategory(id: Long): Flow<TopicWithCategory?> {
+        return topicDao
+            .getOneWithCategory(id)
             .map { it?.asModel() }
             .flowOn(ioDispatcher)
     }

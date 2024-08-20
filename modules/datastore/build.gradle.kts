@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mshdabiola.setting"
+    namespace = "com.mshdabiola.datastore"
     //proguard here
 }
 
@@ -14,8 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":modules:model"))
-
-
+                implementation(libs.model)
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.coroutines.core)

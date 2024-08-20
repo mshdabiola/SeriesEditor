@@ -1,0 +1,5 @@
+<resources>
+    <string name="features_main_loading">Loading Subjects</string>
+    <string name="features_main_empty_error">No Subjects Found</string>
+    <string name="features_main_empty_description">Add some subjects to get started</string>
+</resources>

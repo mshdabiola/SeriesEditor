@@ -4,48 +4,28 @@
 
 package com.mshdabiola.composeexam
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mshdabiola.data.model.Update
 import com.mshdabiola.data.repository.IExaminationRepository
-import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.generalmodel.Examination
-import com.mshdabiola.ui.toSubject
-import com.mshdabiola.ui.toUi
-import kotlinx.coroutines.delay
+import com.mshdabiola.seriesmodel.Examination
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 class ComposeExaminationViewModel(
+    private val subjectId: Long,
     private val examId: Long,
-    private val subjectRepository: ISubjectRepository,
     private val examRepository: IExaminationRepository,
 ) : ViewModel() {
 
-    val subjects = subjectRepository
-        .getAll()
-        .map { subjectList -> subjectList.map { it.toUi() } }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf(),
-        )
-
-    private val _update = MutableStateFlow(Update.Edit)
-    val update = _update.asStateFlow()
-
+    private val _ceState = MutableStateFlow<CeState>(CeState.Loading())
+    val ceState = _ceState.asStateFlow()
     val duration = TextFieldState("15")
-    val year = TextFieldState("2015")
-    val subject = TextFieldState()
+    val year = TextFieldState("")
 
     init {
         viewModelScope.launch {
@@ -53,40 +33,39 @@ class ComposeExaminationViewModel(
                 .getOne(examId)
                 .first()
 
-            if (initExam != null) {
-                subject.edit {
-                    append(initExam.subject.title)
-                }
+            val isUpdate = if (initExam != null) {
+                year.clearText()
+                duration.clearText()
+
                 year.edit {
-                    append(initExam.year.toString())
+                    append(initExam.examination.year.toString())
                 }
                 duration.edit {
-                    append(initExam.duration.toString())
+                    append(initExam.examination.duration.toString())
                 }
+                true
             } else {
-                delay(2000)
-                subject.edit {
-                    append(subjects.value.firstOrNull()?.name ?: "")
-                }
+                false
+            }
+            _ceState.update {
+
+                CeState.Success(isUpdate)
             }
         }
     }
 
     fun addExam() {
         viewModelScope.launch {
-            _update.update { Update.Saving }
-            val subject = subjects.value.single { it.name == subject.text.toString() }
+            _ceState.update { CeState.Loading() }
             val exam = Examination(
-                id = if (examId > 0) examId else null,
+                id = examId,
                 duration = duration.text.toString().toLong(),
                 year = year.text.toString().toLong(),
-                subject = subject.toSubject(),
-                isObjectiveOnly = true,
-                updateTime = System.currentTimeMillis(),
+                subjectId = subjectId,
             )
             examRepository.upsert(exam)
 
-            _update.update { Update.Success }
+            _ceState.update { CeState.Loading(isLoading = true) }
         }
     }
 }

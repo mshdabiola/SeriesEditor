@@ -4,82 +4,125 @@
 
 package com.mshdabiola.main
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mshdabiola.data.model.Result
-import com.mshdabiola.data.model.asResult
 import com.mshdabiola.data.repository.IExaminationRepository
+import com.mshdabiola.data.repository.IQuestionRepository
+import com.mshdabiola.data.repository.ISeriesRepository
 import com.mshdabiola.data.repository.ISubjectRepository
-import com.mshdabiola.ui.state.ExamUiState
-import com.mshdabiola.ui.toUi
+import com.mshdabiola.data.repository.IUserRepository
+import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.seriesmodel.Series
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class MainViewModel constructor(
-    private val iSubjectRepository: ISubjectRepository,
-    private val iExamRepository: IExaminationRepository,
-    val subjectId: Long,
-
+class MainViewModel(
+    private val seriesRepository: ISeriesRepository,
+    private val subjectRepository: ISubjectRepository,
+    private val examRepository: IExaminationRepository,
+    private val questionRepository: IQuestionRepository,
+    private val userRepository: IUserRepository,
+    private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
-//    private val _mainState = MutableStateFlow(MainState())
-//    val mainState = _mainState.asStateFlow()
+    val classState = TextFieldState()
 
-    val isSelectMode = iExamRepository
-        .isSelectMode
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+    private val _mainState = MutableStateFlow(MainState())
+    val mainState = _mainState.asStateFlow()
 
-    // private val _examUiStates = MutableStateFlow<Result<List<ExamUiState>>>(Result.Loading)
+    private var currentId: Long = -1
+    private val userId = userDataRepository
+        .userData
+        .map { it.userId }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 1)
 
-    val examUiMainState: StateFlow<Result<List<ExamUiState>>> =
-        combine(iExamRepository.getAll(), iExamRepository.selectedList) { list, ids ->
-            Pair(list, ids)
-        }
-            .map { notes ->
-                notes.first
-                    .filter {
-                        if (subjectId > 0) {
-                            it.subject.id == subjectId
-                        } else {
-                            true
-                        }
-                    }
-                    .map { it.toUi().copy(isSelected = notes.second.contains(it.id)) }
-            }
-            .asResult()
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Result.Loading)
-
-    fun onDeleteExam(id: Long) {
+    init {
         viewModelScope.launch {
-            iExamRepository.delete(id)
+
+            combine(
+                userDataRepository
+                    .userData
+                    .map { it.userId },
+                seriesRepository.getAll(),
+                subjectRepository.getAll(),
+                examRepository.getAll(),
+                questionRepository.getAll(),
+            ) { userId, series, subject, exam, question ->
+                Triple(userId, series, Triple(subject, exam, question))
+            }.collectLatest { triplePair ->
+                val id = triplePair.first
+                if (id > 0) {
+                    val user = userRepository.getUser(id).first()!!
+                    val series = triplePair.second.filter { it.userId == id }
+                    val subjects =
+                        triplePair.third.first.filter { subject -> subject.seriesId in series.map { it.id } }
+                    val exams =
+                        triplePair.third.second.filter { subject -> subject.subjectId in subjects.map { it.id } }
+
+                    val questions =
+                        triplePair.third.third.filter { subject -> subject.examId in exams.map { it.id } }
+
+                    _mainState.update {
+                        it.copy(
+                            user = user,
+                            series = series,
+                            subjectNumber = subjects.count(),
+                            examNumber = exams.count(),
+                            questionNumber = questions.count(),
+                        )
+                    }
+                }
+            }
         }
     }
 
-    fun toggleSelect(index: Long) {
+    fun addClass() {
         viewModelScope.launch {
-            val examSelect = iExamRepository.selectedList
-                .first()
-                .toMutableList()
+            seriesRepository.upsert(
+                Series(
+                    currentId,
+                    mainState.value.user.id,
+                    classState.text.toString(),
+                ),
+            )
 
-            if (examSelect.contains(index)) {
-                examSelect.remove(index)
-                iExamRepository.updateSelectedList(examSelect)
-                if (examSelect.isEmpty()) {
-                    iExamRepository.updateSelect(false)
+            currentId = -1
+            classState.clearText()
+        }
+    }
+
+    fun deleteClass(id: Long) {
+        viewModelScope.launch {
+            seriesRepository.delete(id)
+        }
+    }
+
+    fun updateClass(id: Long) {
+        viewModelScope.launch {
+            val series = seriesRepository.getOne(id).first()
+            if (series != null) {
+                currentId = series.id
+                classState.clearText()
+                classState.edit {
+                    this.append(series.name)
                 }
-            } else {
-                examSelect.add(index)
-
-                iExamRepository.updateSelectedList(examSelect)
-                iExamRepository.updateSelect(true)
             }
         }
+    }
 
-        //  _examUiStates.value = exams.toImmutableList()
+    fun signOut() {
+        viewModelScope.launch {
+            userDataRepository.setUserId(-1)
+        }
     }
 }

@@ -1,10 +1,11 @@
 package com.mshdabiola.data
 
-import com.mshdabiola.generalmodel.Content
-import com.mshdabiola.generalmodel.Instruction
-import com.mshdabiola.generalmodel.Option
-import com.mshdabiola.generalmodel.Question
-import com.mshdabiola.generalmodel.Topic
+import com.mshdabiola.seriesmodel.Content
+import com.mshdabiola.seriesmodel.Instruction
+import com.mshdabiola.seriesmodel.Option
+import com.mshdabiola.seriesmodel.QUESTION_TYPE
+import com.mshdabiola.seriesmodel.Question
+import com.mshdabiola.seriesmodel.Topic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -12,7 +13,7 @@ class Converter {
 
     suspend fun textToTopic(
         path: String,
-        subjectId: Long,
+        categoryId: Long,
     ): List<Topic> {
         return withContext(Dispatchers.IO) {
             path
@@ -20,7 +21,7 @@ class Converter {
                 .filter { it.isNotBlank() }
                 .map {
                     Topic(
-                        subjectId = subjectId,
+                        categoryId = categoryId, // Todo: get category id
                         title = it,
                     )
                 }
@@ -45,100 +46,98 @@ class Converter {
         }
     }
 
-    suspend fun textToQuestion(
+    fun textToQuestion(
         path: String,
         examId: Long,
         nextObjNumber: Long,
         nextTheoryNumber: Long,
     ): List<Question> {
-        return withContext(Dispatchers.IO) {
-            val list = mutableListOf<Question>()
-            var options = mutableListOf<String>()
-            var answer: String? = null
-            var isTheory = false
-            var objNo = nextObjNumber
-            var thrNo = nextTheoryNumber
-            var question: String? = null
-            val s = path
-                .split(Regex("\\s*\\*\\s*"))
-                .toMutableList()
-            println(s.joinToString())
-            s.removeAt(0)
+        val list = mutableListOf<Question>()
+        var options = mutableListOf<String>()
+        var answer: String? = null
+        var isTheory = false
+        var objNo = nextObjNumber
+        var thrNo = nextTheoryNumber
+        var question: String? = null
+        val s = path
+            .split(Regex("\\s*\\*\\s*"))
+            .toMutableList()
+//            println(s.joinToString())
+        s.removeAt(0)
 
-            s.chunked(2) {
-                Pair(it[0].trim(), it[1])
-            }
-                .forEachIndexed { _, pair ->
-                    when (pair.first) {
-                        "q" -> {
-                            if (question != null) {
-                                if (isTheory) {
-                                    list.add(
-                                        convertThe(
-                                            theoryNo = thrNo,
-                                            content = question!!,
-                                            examId = examId,
-                                            answer = answer ?: "",
-                                        ),
-                                    )
+        s.chunked(2) {
+            Pair(it[0].trim(), it[1])
+        }
+            .forEachIndexed { _, pair ->
+                when (pair.first) {
+                    "q" -> {
+                        if (question != null) {
+                            if (isTheory) {
+                                list.add(
+                                    convertThe(
+                                        theoryNo = thrNo,
+                                        content = question!!,
+                                        examId = examId,
+                                        answer = answer ?: "",
+                                    ),
+                                )
 
-                                    thrNo += 1
-                                } else {
-                                    list.add(
-                                        convertObj(
-                                            questionNos = objNo,
-                                            content = question!!,
-                                            examId = examId,
-                                            options = options,
-                                        ),
-                                    )
-                                    objNo += 1
-                                }
-                                isTheory = false
-                                answer = null
-                                question = null
-                                options = mutableListOf()
+                                thrNo += 1
+                            } else {
+                                list.add(
+                                    convertObj(
+                                        questionNos = objNo,
+                                        content = question!!,
+                                        examId = examId,
+                                        options = options,
+                                    ),
+                                )
+                                objNo += 1
                             }
-                            question = pair.second
+                            isTheory = false
+                            answer = null
+                            question = null
+                            options = mutableListOf()
                         }
+                        question = pair.second
+                    }
 
-                        "o" -> {
-                            options.add(pair.second)
-                        }
+                    "o" -> {
+                        options.add(pair.second)
+                    }
 
-                        "t" -> {
-                            isTheory = (pair.second.toIntOrNull() ?: 0) == 1
-                        }
+                    "t" -> {
+                        isTheory = (pair.second.toIntOrNull() ?: 0) == 1
+                    }
 
-                        "a" -> {
-                            answer = pair.second
-                        }
+                    "a" -> {
+                        answer = pair.second
                     }
                 }
-            if (question != null) {
-                if (isTheory) {
-                    list.add(
-                        convertThe(
-                            theoryNo = thrNo,
-                            content = question!!,
-                            examId = examId,
-                            answer = answer ?: "",
-                        ),
-                    )
-                } else {
-                    list.add(
-                        convertObj(
-                            questionNos = objNo,
-                            content = question!!,
-                            examId = examId,
-                            options = options,
-                        ),
-                    )
-                }
             }
-
-            list
+        if (question != null) {
+            if (isTheory) {
+                list.add(
+                    convertThe(
+                        theoryNo = thrNo,
+                        content = question!!,
+                        examId = examId,
+                        answer = answer ?: "",
+                    ),
+                )
+            } else {
+                list.add(
+                    convertObj(
+                        questionNos = objNo,
+                        content = question!!,
+                        examId = examId,
+                        options = options,
+                    ),
+                )
+            }
         }
+
+        return list
     }
 
     private fun convertObj(
@@ -152,11 +151,10 @@ class Converter {
                 Option(
                     number = index + 1L,
                     questionId = questionNos,
-                    examId = examId,
                     contents = listOf(itemise(s)),
                     isAnswer = false,
                     title = "",
-                    id = null,
+                    id = -1,
                 )
             }
 
@@ -165,7 +163,7 @@ class Converter {
             examId = examId,
             contents = listOf(itemise(content)),
             options = opti,
-            isTheory = opti.isEmpty(),
+            type = if (opti.isEmpty()) QUESTION_TYPE.ESSAY else QUESTION_TYPE.MULTIPLE_CHOICE,
             answers = emptyList(),
             instruction = null,
             topic = null,
@@ -183,7 +181,7 @@ class Converter {
             examId = examId,
             contents = listOf(itemise(content)),
             options = emptyList(),
-            isTheory = true,
+            type = QUESTION_TYPE.ESSAY,
             answers = listOf(itemise(answer)),
             instruction = null,
             topic = null,

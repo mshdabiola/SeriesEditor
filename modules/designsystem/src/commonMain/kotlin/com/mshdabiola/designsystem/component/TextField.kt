@@ -11,19 +11,18 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.TextFieldBuffer
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.CodepointTransformation
-import androidx.compose.foundation.text2.input.InputTransformation
-import androidx.compose.foundation.text2.input.TextFieldBuffer
-import androidx.compose.foundation.text2.input.TextFieldCharSequence
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
-import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -56,6 +55,8 @@ fun SeriesEditorTextField(
     state: TextFieldState,
     placeholder: String? = null,
     label: String? = null,
+    supportingText: String? = null,
+    isError: Boolean = false,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -78,17 +79,23 @@ fun SeriesEditorTextField(
                 Text(text = placeholder)
             }
         },
+        supportingText = {
+            if (supportingText != null) {
+                Text(supportingText)
+            }
+        },
+        isError = isError,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
             disabledContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.primaryContainer,
         ),
 
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.Sentences,
-            autoCorrect = true,
+            autoCorrectEnabled = true,
             imeAction = imeAction,
             keyboardType = keyboardType,
         ),
@@ -99,7 +106,7 @@ fun SeriesEditorTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTextField(
     state: TextFieldState,
@@ -125,7 +132,7 @@ fun MyTextField(
     inputTransformation: InputTransformation? = null,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default,
     onTextLayout: (Density.(getResult: () -> TextLayoutResult?) -> Unit)? = null,
-    codepointTransformation: CodepointTransformation? = null,
+    // codepointTransformation: CodepointTransformation? = null,
     scrollState: ScrollState = rememberScrollState(),
 
 ) {
@@ -136,7 +143,7 @@ fun MyTextField(
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
-        BasicTextField2(
+        BasicTextField(
             state = state,
             modifier = modifier
                 .defaultErrorSemantics(isError, "Error occur")
@@ -149,13 +156,13 @@ fun MyTextField(
             textStyle = mergedTextStyle,
             cursorBrush = SolidColor(colors.cursorColor(isError).value),
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
+            // keyboardActions = keyboardActions,
             interactionSource = interactionSource,
 
             inputTransformation = inputTransformation,
             lineLimits = lineLimits,
             onTextLayout = onTextLayout,
-            codepointTransformation = codepointTransformation,
+            // codepointTransformation = codepointTransformation,
             decorator = @Composable { innerTextField ->
                 // places leading icon, text field with label and placeholder, trailing icon
                 TextFieldDefaults.DecorationBox(
@@ -310,12 +317,18 @@ internal val OutlinedTextFieldTopPadding = 8.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 object DigitOnlyTransformation : InputTransformation {
-    override fun transformInput(
-        originalValue: TextFieldCharSequence,
-        valueWithChanges: TextFieldBuffer,
-    ) {
-        if (!valueWithChanges.asCharSequence().isDigitOnly()) {
-            valueWithChanges.revertAllChanges()
+//    override fun transformInput(
+//        originalValue: TextFieldCharSequence,
+//        valueWithChanges: TextFieldBuffer,
+//    ) {
+//        if (!valueWithChanges.asCharSequence().isDigitOnly()) {
+//            valueWithChanges.revertAllChanges()
+//        }
+//    }
+
+    override fun TextFieldBuffer.transformInput() {
+        if (!this.asCharSequence().isDigitOnly()) {
+            this.revertAllChanges()
         }
     }
 }

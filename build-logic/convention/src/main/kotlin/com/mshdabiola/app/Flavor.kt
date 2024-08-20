@@ -24,7 +24,7 @@ enum class Flavor(
 ) {
     //    demo(FlavorDimension.contentType, applicationIdSuffix = ".demo", "-demo"),
 //    prod(FlavorDimension.contentType),
-    fossReliant(FlavorDimension.store, applicationIdSuffix = ".foss"),
+    fossReliant(FlavorDimension.store,applicationIdSuffix=".foss"),
     googlePlay(FlavorDimension.store, applicationIdSuffix = ".play", versionNameSuffix = "-play")
 }
 
@@ -48,7 +48,7 @@ fun Project.configureFlavors(
                         if (it.versionNameSuffix != null) {
                             this.versionNameSuffix = it.versionNameSuffix
                         }
-                        if (it == Flavor.googlePlay) {
+                        if(it ==Flavor.googlePlay){
                             with(pluginManager) {
                                 apply("mshdabiola.android.application.firebase")
                             }

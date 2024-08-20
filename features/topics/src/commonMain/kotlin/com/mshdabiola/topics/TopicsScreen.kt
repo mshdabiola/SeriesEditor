@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -42,10 +43,10 @@ import com.mshdabiola.designsystem.component.SeriesEditorLoadingWheel
 import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
+import com.mshdabiola.designsystem.drawable.emptyCartIcon
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import com.mshdabiola.ui.state.TopicUiState
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -53,7 +54,6 @@ import org.koin.core.parameter.parametersOf
 import serieseditor.features.topics.generated.resources.Res
 import serieseditor.features.topics.generated.resources.features_main_empty_description
 import serieseditor.features.topics.generated.resources.features_main_empty_error
-import serieseditor.features.topics.generated.resources.features_main_img_empty_bookmarks
 import serieseditor.features.topics.generated.resources.features_main_loading
 
 // import org.koin.androidx.compose.koinViewModel
@@ -92,14 +92,14 @@ internal fun TopicScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .testTag("main:screen"),
+            .testTag("topics:screen"),
 
     ) {
         LazyColumn(
             state = state,
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .testTag("main:list"),
+                .testTag("topics:list"),
         ) {
             item {
                 // Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
@@ -153,7 +153,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .wrapContentSize()
-            .testTag("main:loading"),
+            .testTag("topics:loading"),
         contentDesc = stringResource(Res.string.features_main_loading),
     )
 }
@@ -170,8 +170,8 @@ private fun EmptyState(modifier: Modifier = Modifier) {
     ) {
         val iconTint = LocalTintTheme.current.iconTint
         Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(Res.drawable.features_main_img_empty_bookmarks),
+            modifier = Modifier.size(200.dp),
+            painter = emptyCartIcon,
             colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,
             contentDescription = null,
         )

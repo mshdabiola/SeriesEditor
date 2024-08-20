@@ -31,6 +31,9 @@ fun TopicCard(
     var showDrop by remember { mutableStateOf(false) }
     ListItem(
         modifier = modifier,
+        overlineContent = {
+            Text(topicUiState.topicCategory.name)
+        },
         headlineContent = {
             Text(topicUiState.name)
         },
