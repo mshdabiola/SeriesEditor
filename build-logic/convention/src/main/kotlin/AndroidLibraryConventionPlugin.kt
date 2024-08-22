@@ -63,7 +63,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTarget()
                 // jvm("desktop")
                 jvm()
-                jvmToolchain(17)
+                jvmToolchain(21)
 
                 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
                 with(sourceSets) {
