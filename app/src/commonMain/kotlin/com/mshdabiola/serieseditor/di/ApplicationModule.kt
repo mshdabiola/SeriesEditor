@@ -13,7 +13,7 @@ import com.mshdabiola.questions.questionsModule
 import com.mshdabiola.serieseditor.MainAppViewModel
 import com.mshdabiola.setting.settingModule
 import com.mshdabiola.topics.topicModule
-import org.koin.compose.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
