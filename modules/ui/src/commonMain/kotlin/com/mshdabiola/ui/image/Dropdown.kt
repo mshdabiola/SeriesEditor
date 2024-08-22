@@ -4,6 +4,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -36,7 +37,7 @@ fun DropdownMenu(
     ) {
         TextField(
             // The `menuAnchor` modifier must be passed to the text field for correctness.
-            modifier = textModifier.menuAnchor(),
+            modifier = textModifier.menuAnchor(MenuAnchorType.PrimaryEditable, expanded),
             readOnly = true,
             value = data.getOrNull(if (currentIndex < 0) 0 else currentIndex) ?: "",
             onValueChange = {},
