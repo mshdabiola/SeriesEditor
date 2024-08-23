@@ -1,5 +1,4 @@
 import com.mshdabiola.app.BuildType
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -110,7 +109,7 @@ kotlin {
             implementation(projects.features.instructions)
             implementation(projects.features.topics)
 
-            api(libs.androidx.compose.material3.windowSizeClass2)
+            api(libs.androidx.compose.material3.windowSizeClass)
 
             // Logger
             implementation(libs.kermit)
