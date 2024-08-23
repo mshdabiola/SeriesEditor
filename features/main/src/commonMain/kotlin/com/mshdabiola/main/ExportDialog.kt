@@ -114,7 +114,6 @@ fun ExportDialog(
                         Button(
                             onClick = {
                                 onExport()
-                                onDismiss() // Dismiss after export
                             },
                         ) {
                             Text("Export")
@@ -223,7 +222,6 @@ fun ExportWordDialog(
                         Button(
                             onClick = {
                                 onExport()
-                                onDismiss() // Dismiss after export
                             },
                         ) {
                             Text("Export")
