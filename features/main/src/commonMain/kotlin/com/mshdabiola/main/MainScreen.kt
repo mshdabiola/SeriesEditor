@@ -58,6 +58,8 @@ import com.mshdabiola.designsystem.component.PermissionDialog
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.designsystem.theme.extendedColorScheme
+import com.mshdabiola.model.Platform
+import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -237,16 +239,23 @@ internal fun MainScreen(
                 title = "Questions",
                 description = mainState.questionNumber.toString(),
             )
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
                 TextButton(
                     onClick = onExport,
                 ) {
                     Text("Export")
                 }
-                TextButton(
-                    onClick = onExportWord,
-                ) {
-                    Text("Export to Word")
+                if (currentPlatform != Platform.Android) {
+
+                    TextButton(
+                        onClick = onExportWord,
+                    ) {
+                        Text("Export to Word")
+                    }
+
                 }
             }
 
@@ -394,7 +403,7 @@ fun MainCard(
             )
         },
         headlineContent = {
-            Text(text = title,maxLines = 1)
+            Text(text = title, maxLines = 1)
         },
         supportingContent = {
             Text(description)
