@@ -16,5 +16,5 @@
      export TOKEN=
      conveyor make rendered-icons
      conveyor make site
-     ./gradlew run
      ./gradlew generateFossReliantReleaseBaselineProfile
+     ./gradlew run -t --quiet
