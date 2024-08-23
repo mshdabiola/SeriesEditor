@@ -77,7 +77,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(
     ExperimentalMaterial3WindowSizeClassApi::class,
-    KoinExperimentalAPI::class,
 )
 @Composable
 fun SeriesEditorApp() {
