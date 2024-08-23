@@ -1,7 +1,5 @@
 package com.mshdabiola.main
 
-import com.mshdabiola.seriesmodel.TopicCategory
-
 sealed class ExportState {
 
     data class Loading(val isLoading: Boolean = false) : ExportState()

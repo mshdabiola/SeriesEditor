@@ -1,6 +1,5 @@
 package com.mshdabiola.main
 
-import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
@@ -8,17 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -39,25 +33,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.data.model.Result
-import com.mshdabiola.designsystem.component.GetFilePath
-import com.mshdabiola.designsystem.component.HasWrittenPermission
-import com.mshdabiola.designsystem.component.MainExportDialog
-import com.mshdabiola.designsystem.component.PermissionDialog
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
-import io.ktor.http.parameters
-import io.ktor.http.parametersOf
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
 /**
  * Dialog for exporting data with password protection.
@@ -78,8 +62,6 @@ fun ExportDialog(
     onExport: () -> Unit = { },
     onDismiss: () -> Unit = {},
 ) {
-
-
     if (show) {
         when (exams) {
             is ExportState.Loading -> {
@@ -94,10 +76,8 @@ fun ExportDialog(
                     },
                     onDismissRequest = {},
                     dismissButton = {
-
                     },
                     confirmButton = {
-
                     },
                 )
             }
@@ -107,7 +87,6 @@ fun ExportDialog(
                 val itemIsSelected by remember(exams) {
                     derivedStateOf { exams.exams.any { it.isSelected } }
                 }
-
 
                 AlertDialog(
 
@@ -148,7 +127,6 @@ fun ExportDialog(
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
                                     horizontalItemSpacing = 8.dp,
                                 ) {
-
                                     items(exams.exams, key = { it.id }) { exam ->
                                         ExamItem(
                                             exam = exam,
@@ -180,7 +158,6 @@ fun ExportDialog(
 
             else -> {}
         }
-
     }
 }
 
@@ -192,7 +169,6 @@ fun ExportWordDialog(
     onExport: () -> Unit = { },
     onDismiss: () -> Unit = {},
 ) {
-
     if (show) {
         when (exams) {
             is ExportState.Loading -> {
@@ -207,10 +183,8 @@ fun ExportWordDialog(
                     },
                     onDismissRequest = {},
                     dismissButton = {
-
                     },
                     confirmButton = {
-
                     },
                 )
             }
@@ -252,7 +226,6 @@ fun ExportWordDialog(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                                 horizontalItemSpacing = 8.dp,
                             ) {
-
                                 items(exams.exams, key = { it.id }) { exam ->
                                     ExamItem(
                                         exam = exam,
@@ -277,14 +250,12 @@ fun ExportWordDialog(
                                 ),
                             )
                         }
-
                     },
                 )
             }
 
             else -> {}
         }
-
     }
 }
 

@@ -49,7 +49,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.designsystem.component.GetFilePath
@@ -85,7 +84,6 @@ internal fun MainRoute(
     var showPermissionDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     var showWordDialog by remember { mutableStateOf(false) }
-
 
     HasWrittenPermission {
         hasPermission = it
@@ -187,13 +185,13 @@ internal fun MainScreen(
     onExport: () -> Unit = {},
     onExportWord: () -> Unit = {},
 
-    ) {
+) {
     FlowRow(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
 
-        ) {
+    ) {
         FlowRow(
             modifier = Modifier.weight(0.6f),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -251,16 +249,13 @@ internal fun MainScreen(
                     }
                 }
                 if (currentPlatform != Platform.Android && mainState.examNumber > 0) {
-
                     TextButton(
                         onClick = onExportWord,
                     ) {
                         Text("Export to Word")
                     }
-
                 }
             }
-
         }
         Column(
             modifier = Modifier.widthIn(300.dp, 600.dp),
@@ -359,7 +354,7 @@ fun MainCard(
                     }
                 },
 
-                )
+            )
         },
     ) {
         ListItem(

@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mshdabiola.data.model.Result
 import com.mshdabiola.data.repository.IExaminationRepository
 import com.mshdabiola.data.repository.IQuestionRepository
 import com.mshdabiola.data.repository.ISeriesRepository
@@ -19,8 +18,6 @@ import com.mshdabiola.data.repository.toWord
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.seriesmodel.Series
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -163,10 +160,8 @@ class MainViewModel(
             _examState.update {
                 ExportState.Success(list)
             }
-
         }
     }
-
 
     fun onExport(path: String) {
         viewModelScope.launch {
@@ -195,15 +190,12 @@ class MainViewModel(
                     "successfully exported to desktop, series directory"
                 }
                 _examState.value = ExportState.Loading(true)
-
             } catch (e: Exception) {
                 e.printStackTrace()
                 _examState.value = ExportState.Error(e)
 
-
 //                _mainState.value = MainState.Success("Failed to export")
             }
-
 
             delay(1500)
 
@@ -249,8 +241,6 @@ class MainViewModel(
             _examState.value = ExportState.Loading(false)
         }
     }
-
-
 
     fun onSelect(id: Long) {
         val list = (examState.value as ExportState.Success).exams.toMutableList()
