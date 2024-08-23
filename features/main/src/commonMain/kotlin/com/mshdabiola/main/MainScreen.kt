@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,10 +50,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mshdabiola.designsystem.component.GetFilePath
+import com.mshdabiola.designsystem.component.HasWrittenPermission
+import com.mshdabiola.designsystem.component.PermissionDialog
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.designsystem.theme.extendedColorScheme
+import com.mshdabiola.model.Platform
+import com.mshdabiola.model.currentPlatform
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -67,7 +75,32 @@ internal fun MainRoute(
     val viewModel: MainViewModel = koinViewModel()
 
     val update = viewModel.mainState.collectAsStateWithLifecycleCommon()
+    val exportState = viewModel.examState.collectAsStateWithLifecycle()
+
     var deleteId by remember { mutableStateOf<Long?>(null) }
+
+    var hasPermission by remember { mutableStateOf(false) }
+    var path by remember { mutableStateOf<String?>(null) }
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+    var showWordDialog by remember { mutableStateOf(false) }
+
+    HasWrittenPermission {
+        hasPermission = it
+    }
+    GetFilePath {
+        path = it?.absolutePath
+    }
+    LaunchedEffect(exportState.value) {
+        if (exportState.value is ExportState.Loading) {
+            if ((exportState.value as ExportState.Loading).isLoading) {
+                showDialog = false
+                showWordDialog = false
+                delay(500)
+                onShowSnack("Export examinations", null)
+            }
+        }
+    }
 
     MainScreen(
         modifier = modifier,
@@ -78,6 +111,22 @@ internal fun MainRoute(
         onUpdate = viewModel::updateClass,
         onClick = navigateToSubject,
         signOut = viewModel::signOut,
+        onExport = {
+            if (hasPermission) {
+                showDialog = true
+                viewModel.loadExams()
+            } else {
+                showPermissionDialog = true
+            }
+        },
+        onExportWord = {
+            if (hasPermission) {
+                showWordDialog = true
+                viewModel.loadExams()
+            } else {
+                showPermissionDialog = true
+            }
+        },
     )
     if (deleteId != null) {
         DeleteClassDialog(
@@ -88,6 +137,38 @@ internal fun MainRoute(
             },
         )
     }
+    if (showPermissionDialog) {
+        PermissionDialog(
+            onDismiss = { showPermissionDialog = false },
+            onFile = {
+                path = it?.absolutePath
+                if (it != null) {
+                    hasPermission = true
+                }
+                showPermissionDialog = false
+            },
+        )
+    }
+
+    ExportDialog(
+        show = showDialog,
+        onDismiss = { showDialog = false },
+        exams = exportState.value,
+        passwordState = viewModel.passwordState,
+        onExport = {
+            path?.let(viewModel::onExport)
+        },
+        onExamSelected = viewModel::onSelect,
+    )
+    ExportWordDialog(
+        show = showWordDialog,
+        onDismiss = { showWordDialog = false },
+        exams = exportState.value,
+        onExport = {
+            path?.let(viewModel::onExportWord)
+        },
+        onExamSelected = viewModel::onSelect,
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -101,6 +182,9 @@ internal fun MainScreen(
     onUpdate: (Long) -> Unit = {},
     onClick: (Long) -> Unit = {},
     signOut: () -> Unit = {},
+    onExport: () -> Unit = {},
+    onExportWord: () -> Unit = {},
+
 ) {
     FlowRow(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -122,7 +206,7 @@ internal fun MainScreen(
                     Text("SignOut")
                 }
             }
-            val generalModifier = Modifier.width(180.dp)
+            val generalModifier = Modifier.width(150.dp).weight(0.3f)
             MainCard(
                 modifier = generalModifier,
                 icon = Icons.AutoMirrored.Outlined.Subject,
@@ -153,6 +237,25 @@ internal fun MainScreen(
                 title = "Questions",
                 description = mainState.questionNumber.toString(),
             )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
+                if (mainState.examNumber > 0) {
+                    TextButton(
+                        onClick = onExport,
+                    ) {
+                        Text("Export")
+                    }
+                }
+                if (currentPlatform != Platform.Android && mainState.examNumber > 0) {
+                    TextButton(
+                        onClick = onExportWord,
+                    ) {
+                        Text("Export to Word")
+                    }
+                }
+            }
         }
         Column(
             modifier = Modifier.widthIn(300.dp, 600.dp),
@@ -297,7 +400,7 @@ fun MainCard(
             )
         },
         headlineContent = {
-            Text(title)
+            Text(text = title, maxLines = 1)
         },
         supportingContent = {
             Text(description)
