@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mshdabiola.designsystem.component.GetFilePath
+import com.mshdabiola.designsystem.component.HasWrittenPermission
+import com.mshdabiola.designsystem.component.PermissionDialog
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.designsystem.theme.extendedColorScheme
@@ -69,6 +74,18 @@ internal fun MainRoute(
     val update = viewModel.mainState.collectAsStateWithLifecycleCommon()
     var deleteId by remember { mutableStateOf<Long?>(null) }
 
+    var hasPermission by remember { mutableStateOf(false) }
+    var path by remember { mutableStateOf<String?>(null) }
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+
+    HasWrittenPermission {
+        hasPermission = it
+    }
+    GetFilePath {
+        path = it?.absolutePath
+    }
+
     MainScreen(
         modifier = modifier,
         subjectState = viewModel.classState,
@@ -78,6 +95,14 @@ internal fun MainRoute(
         onUpdate = viewModel::updateClass,
         onClick = navigateToSubject,
         signOut = viewModel::signOut,
+        onExport = {
+            if (hasPermission) {
+                showDialog = true
+                viewModel.loadExams()
+            } else {
+                showPermissionDialog = true
+            }
+        },
     )
     if (deleteId != null) {
         DeleteClassDialog(
@@ -88,6 +113,30 @@ internal fun MainRoute(
             },
         )
     }
+    if (showPermissionDialog) {
+        PermissionDialog(
+            onDismiss = { showPermissionDialog = false },
+            onFile = {
+                path = it?.absolutePath
+                if (it != null) {
+                    hasPermission = true
+                }
+                showPermissionDialog = false
+            },
+        )
+    }
+    val exportState=viewModel.examState.collectAsStateWithLifecycle()
+
+    ExportDialog(
+        show = showDialog,
+        onDismiss = { showDialog = false },
+        exams = exportState.value,
+        passwordState = viewModel.passwordState,
+        onExport = {
+            path?.let(viewModel::onExport)
+        },
+        onExamSelected = viewModel::onSelect,
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -101,13 +150,14 @@ internal fun MainScreen(
     onUpdate: (Long) -> Unit = {},
     onClick: (Long) -> Unit = {},
     signOut: () -> Unit = {},
+    onExport: () -> Unit = {},
 ) {
     FlowRow(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
 
-    ) {
+        ) {
         FlowRow(
             modifier = Modifier.weight(0.6f),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -153,6 +203,12 @@ internal fun MainScreen(
                 title = "Questions",
                 description = mainState.questionNumber.toString(),
             )
+            SeriesEditorButton(
+                modifier = generalModifier,
+                onClick = onExport,
+            ) {
+                Text("Export")
+            }
         }
         Column(
             modifier = Modifier.widthIn(300.dp, 600.dp),
@@ -251,7 +307,7 @@ fun MainCard(
                     }
                 },
 
-            )
+                )
         },
     ) {
         ListItem(
