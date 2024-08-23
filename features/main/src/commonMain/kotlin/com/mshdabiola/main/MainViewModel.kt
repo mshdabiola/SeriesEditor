@@ -170,10 +170,11 @@ class MainViewModel(
 
     fun onExport(path: String) {
         viewModelScope.launch {
-//            _mainState.value = MainState.Loading
+            val list = (examState.value as ExportState.Success).exams
+            _examState.value = ExportState.Loading()
             val key = passwordState.text.toString()
             try {
-                val ids = (examState.value as ExportState.Success).exams.filter { it.isSelected }
+                val ids = list.filter { it.isSelected }
                     .map { it.id }
                     .toSet()
                 val file = File(path)
@@ -188,31 +189,34 @@ class MainViewModel(
                     File(file, nameByDate).apply { createNewFile() }.outputStream()
 
                 examRepository.export(ids, outputStream, key)
-                deselectAll()
                 val messeage = if (Platform.Android == currentPlatform) {
                     "Successfully exported to internal storage, series directory"
                 } else {
                     "successfully exported to desktop, series directory"
                 }
-//                _mainState.value = MainState.Success(messeage)
+                _examState.value = ExportState.Loading(true)
+
             } catch (e: Exception) {
                 e.printStackTrace()
-                deselectAll()
+                _examState.value = ExportState.Error(e)
+
 
 //                _mainState.value = MainState.Success("Failed to export")
             }
 
+
             delay(1500)
 
-//            _mainState.value = MainState.Success("")
+            _examState.value = ExportState.Loading(false)
         }
     }
 
     fun onExportWord(path: String) {
         viewModelScope.launch {
-//            _mainState.value = MainState.Loading
+            val list = (examState.value as ExportState.Success).exams
+            _examState.value = ExportState.Loading()
             try {
-                val ids = (examState.value as ExportState.Success).exams.filter { it.isSelected }
+                val ids = list.filter { it.isSelected }
                     .map { it.id }.toSet()
                 val file = File(path)
                 if (!file.exists()) {
@@ -229,38 +233,24 @@ class MainViewModel(
                         toWord(newPath.path, it, questions)
                     }
 
-                deselectAll()
                 val messeage = if (Platform.Android == currentPlatform) {
                     "Successfully Saved to internal storage, series directory"
                 } else {
                     "successfully Saved to desktop, series directory"
                 }
-//                _mainState.value = MainState.Success(messeage)
+                _examState.value = ExportState.Loading(true)
             } catch (e: Exception) {
                 e.printStackTrace()
-                deselectAll()
 
-//                _mainState.value = MainState.Success("Failed to export")
+                _examState.value = ExportState.Error(e)
             }
-
             delay(1500)
 
-//            _mainState.value = MainState.Success("")
+            _examState.value = ExportState.Loading(false)
         }
     }
 
-    private fun deselectAll() {
-        viewModelScope.launch {
-            val list = (examState.value as ExportState.Success).exams.map {
-                it.copy(isSelected = false)
-            }
 
-
-            _examState.update {
-                ExportState.Success(list)
-            }
-        }
-    }
 
     fun onSelect(id: Long) {
         val list = (examState.value as ExportState.Success).exams.toMutableList()

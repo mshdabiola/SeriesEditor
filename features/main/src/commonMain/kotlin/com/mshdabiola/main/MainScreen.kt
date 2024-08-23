@@ -58,6 +58,7 @@ import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import com.mshdabiola.designsystem.theme.extendedColorScheme
 import com.mshdabiola.ui.collectAsStateWithLifecycleCommon
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -72,6 +73,8 @@ internal fun MainRoute(
     val viewModel: MainViewModel = koinViewModel()
 
     val update = viewModel.mainState.collectAsStateWithLifecycleCommon()
+    val exportState=viewModel.examState.collectAsStateWithLifecycle()
+
     var deleteId by remember { mutableStateOf<Long?>(null) }
 
     var hasPermission by remember { mutableStateOf(false) }
@@ -84,6 +87,15 @@ internal fun MainRoute(
     }
     GetFilePath {
         path = it?.absolutePath
+    }
+    LaunchedEffect(exportState.value){
+        if(exportState.value is ExportState.Loading){
+            if ((exportState.value as ExportState.Loading).isLoading){
+                showDialog=false
+                delay(500)
+                onShowSnack("Export examinations",null)
+            }
+        }
     }
 
     MainScreen(
@@ -125,7 +137,6 @@ internal fun MainRoute(
             },
         )
     }
-    val exportState=viewModel.examState.collectAsStateWithLifecycle()
 
     ExportDialog(
         show = showDialog,
