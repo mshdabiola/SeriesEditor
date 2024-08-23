@@ -73,7 +73,7 @@ internal fun MainRoute(
     val viewModel: MainViewModel = koinViewModel()
 
     val update = viewModel.mainState.collectAsStateWithLifecycleCommon()
-    val exportState=viewModel.examState.collectAsStateWithLifecycle()
+    val exportState = viewModel.examState.collectAsStateWithLifecycle()
 
     var deleteId by remember { mutableStateOf<Long?>(null) }
 
@@ -81,6 +81,8 @@ internal fun MainRoute(
     var path by remember { mutableStateOf<String?>(null) }
     var showPermissionDialog by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
+    var showWordDialog by remember { mutableStateOf(false) }
+
 
     HasWrittenPermission {
         hasPermission = it
@@ -88,12 +90,13 @@ internal fun MainRoute(
     GetFilePath {
         path = it?.absolutePath
     }
-    LaunchedEffect(exportState.value){
-        if(exportState.value is ExportState.Loading){
-            if ((exportState.value as ExportState.Loading).isLoading){
-                showDialog=false
+    LaunchedEffect(exportState.value) {
+        if (exportState.value is ExportState.Loading) {
+            if ((exportState.value as ExportState.Loading).isLoading) {
+                showDialog = false
+                showWordDialog = false
                 delay(500)
-                onShowSnack("Export examinations",null)
+                onShowSnack("Export examinations", null)
             }
         }
     }
@@ -110,6 +113,14 @@ internal fun MainRoute(
         onExport = {
             if (hasPermission) {
                 showDialog = true
+                viewModel.loadExams()
+            } else {
+                showPermissionDialog = true
+            }
+        },
+        onExportWord = {
+            if (hasPermission) {
+                showWordDialog = true
                 viewModel.loadExams()
             } else {
                 showPermissionDialog = true
@@ -148,6 +159,15 @@ internal fun MainRoute(
         },
         onExamSelected = viewModel::onSelect,
     )
+    ExportWordDialog(
+        show = showWordDialog,
+        onDismiss = { showWordDialog = false },
+        exams = exportState.value,
+        onExport = {
+            path?.let(viewModel::onExportWord)
+        },
+        onExamSelected = viewModel::onSelect,
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -162,7 +182,9 @@ internal fun MainScreen(
     onClick: (Long) -> Unit = {},
     signOut: () -> Unit = {},
     onExport: () -> Unit = {},
-) {
+    onExportWord: () -> Unit = {},
+
+    ) {
     FlowRow(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -219,6 +241,12 @@ internal fun MainScreen(
                 onClick = onExport,
             ) {
                 Text("Export")
+            }
+            SeriesEditorButton(
+                modifier = generalModifier,
+                onClick = onExportWord,
+            ) {
+                Text("Export to Word")
             }
         }
         Column(

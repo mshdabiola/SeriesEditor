@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -166,6 +167,107 @@ fun ExportDialog(
                                 )
                             }
                         }
+                    },
+                )
+            }
+
+            else -> {}
+        }
+
+    }
+}
+
+@Composable
+fun ExportWordDialog(
+    show: Boolean,
+    exams: ExportState,
+    onExamSelected: (Long) -> Unit,
+    onExport: () -> Unit = { },
+    onDismiss: () -> Unit = {},
+) {
+
+    if (show) {
+        when (exams) {
+            is ExportState.Loading -> {
+                AlertDialog(
+                    text = {
+                        Box(
+                            modifier = Modifier.height(180.dp).fillMaxWidth(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    },
+                    onDismissRequest = {},
+                    dismissButton = {
+
+                    },
+                    confirmButton = {
+
+                    },
+                )
+            }
+
+            is ExportState.Success -> {
+                val state = rememberLazyStaggeredGridState()
+
+                AlertDialog(
+
+                    onDismissRequest = onDismiss,
+                    dismissButton = {
+                        TextButton(onClick = onDismiss) {
+                            Text("Cancel")
+                        }
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                onExport()
+                                onDismiss() // Dismiss after export
+                            },
+                        ) {
+                            Text("Export")
+                        }
+                    },
+                    icon = { Icon(Icons.Default.DocumentScanner, contentDescription = "password") },
+                    title = { Text("Export to word") }, // More descriptive title
+                    text = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            LazyHorizontalStaggeredGrid(
+                                state = state,
+                                modifier = Modifier.height(180.dp),
+                                rows = StaggeredGridCells.Fixed(2),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                horizontalItemSpacing = 8.dp,
+                            ) {
+
+                                items(exams.exams, key = { it.id }) { exam ->
+                                    ExamItem(
+                                        exam = exam,
+                                        onSelected = onExamSelected,
+                                    )
+                                }
+                            }
+                            val itemsAvailable = exams.exams.size
+                            val scrollbarState = state.scrollbarState(
+                                itemsAvailable = itemsAvailable,
+                            )
+                            state.DraggableScrollbar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .windowInsetsPadding(WindowInsets.systemBars)
+                                    .padding(horizontal = 2.dp)
+                                    .align(Alignment.BottomEnd),
+                                state = scrollbarState,
+                                orientation = Orientation.Horizontal,
+                                onThumbMoved = state.rememberDraggableScroller(
+                                    itemsAvailable = itemsAvailable,
+                                ),
+                            )
+                        }
+
                     },
                 )
             }
