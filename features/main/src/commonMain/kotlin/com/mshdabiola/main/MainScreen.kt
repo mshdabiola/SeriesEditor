@@ -49,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.designsystem.component.GetFilePath
@@ -205,7 +206,7 @@ internal fun MainScreen(
                     Text("SignOut")
                 }
             }
-            val generalModifier = Modifier.width(180.dp)
+            val generalModifier = Modifier.width(150.dp).weight(0.3f)
             MainCard(
                 modifier = generalModifier,
                 icon = Icons.AutoMirrored.Outlined.Subject,
@@ -236,18 +237,19 @@ internal fun MainScreen(
                 title = "Questions",
                 description = mainState.questionNumber.toString(),
             )
-            SeriesEditorButton(
-                modifier = generalModifier,
-                onClick = onExport,
-            ) {
-                Text("Export")
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                TextButton(
+                    onClick = onExport,
+                ) {
+                    Text("Export")
+                }
+                TextButton(
+                    onClick = onExportWord,
+                ) {
+                    Text("Export to Word")
+                }
             }
-            SeriesEditorButton(
-                modifier = generalModifier,
-                onClick = onExportWord,
-            ) {
-                Text("Export to Word")
-            }
+
         }
         Column(
             modifier = Modifier.widthIn(300.dp, 600.dp),
@@ -392,7 +394,7 @@ fun MainCard(
             )
         },
         headlineContent = {
-            Text(title)
+            Text(text = title,maxLines = 1)
         },
         supportingContent = {
             Text(description)
