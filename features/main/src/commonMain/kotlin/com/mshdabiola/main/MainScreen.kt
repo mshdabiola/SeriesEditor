@@ -243,12 +243,14 @@ internal fun MainScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                TextButton(
-                    onClick = onExport,
-                ) {
-                    Text("Export")
+                if (mainState.examNumber > 0) {
+                    TextButton(
+                        onClick = onExport,
+                    ) {
+                        Text("Export")
+                    }
                 }
-                if (currentPlatform != Platform.Android) {
+                if (currentPlatform != Platform.Android && mainState.examNumber > 0) {
 
                     TextButton(
                         onClick = onExportWord,

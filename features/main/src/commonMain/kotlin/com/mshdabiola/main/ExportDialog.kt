@@ -1,5 +1,6 @@
 package com.mshdabiola.main
 
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -77,6 +79,7 @@ fun ExportDialog(
     onDismiss: () -> Unit = {},
 ) {
 
+
     if (show) {
         when (exams) {
             is ExportState.Loading -> {
@@ -101,6 +104,10 @@ fun ExportDialog(
 
             is ExportState.Success -> {
                 val state = rememberLazyStaggeredGridState()
+                val itemIsSelected by remember(exams) {
+                    derivedStateOf { exams.exams.any { it.isSelected } }
+                }
+
 
                 AlertDialog(
 
@@ -112,6 +119,7 @@ fun ExportDialog(
                     },
                     confirmButton = {
                         Button(
+                            enabled = passwordState.text.isNotBlank() && itemIsSelected,
                             onClick = {
                                 onExport()
                             },
@@ -209,6 +217,9 @@ fun ExportWordDialog(
 
             is ExportState.Success -> {
                 val state = rememberLazyStaggeredGridState()
+                val itemIsSelected by remember(exams) {
+                    derivedStateOf { exams.exams.any { it.isSelected } }
+                }
 
                 AlertDialog(
 
@@ -220,6 +231,7 @@ fun ExportWordDialog(
                     },
                     confirmButton = {
                         Button(
+                            enabled = itemIsSelected,
                             onClick = {
                                 onExport()
                             },
