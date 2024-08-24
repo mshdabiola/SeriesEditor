@@ -24,8 +24,8 @@ import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_ARG
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ITEM_PANEL_ROUTE
+import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.subjects.navigation.SERIES_ID
-import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
 
@@ -74,7 +74,7 @@ class SeriesEditorAppState(
 
     val topbarTitle: String
         @Composable get() = when {
-            currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Subject"
+            currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> "Subject"
             currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
             currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
             else -> "Compose"
@@ -87,7 +87,7 @@ class SeriesEditorAppState(
         @Composable
         get() =
             when {
-                currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> true
+                currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> true
                 currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> true
                 currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> true
                 else -> false
@@ -97,7 +97,7 @@ class SeriesEditorAppState(
         @Composable
         get() =
             when {
-                currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Add Subject"
+                currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> "Add Subject"
                 currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
                     if (examPagerState.currentPage == 0) {
                         "Add Question"
@@ -117,22 +117,22 @@ class SeriesEditorAppState(
                 else -> "Add"
             }
 
-    fun onAdd() {
+    fun onNavigateToCompose(id: Long=-1) {
         when {
-            navController.currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> {
+            navController.currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> {
                 val seriesId =
                     navController.currentBackStackEntry?.arguments?.getLong(SERIES_ID)
                         ?: -1
-                navController.navigateToComposeSubject(seriesId, -1)
+                navController.navigateToComposeSubject(seriesId, id)
             }
 
             navController.currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> {
                 val exam = navController.currentBackStackEntry?.arguments?.getLong(EXAM_ITEM_ARG) ?: -1
 
                 if (examPagerState.currentPage == 0) {
-                    navController.navigateToComposeQuestion(exam, -1)
+                    navController.navigateToComposeQuestion(exam, id)
                 } else {
-                    navController.navigateToComposeInstruction(exam, -1)
+                    navController.navigateToComposeInstruction(exam, id)
                 }
             }
 
@@ -142,9 +142,9 @@ class SeriesEditorAppState(
                         ?: -1
 
                 if (subjectPagerState.currentPage == 0) {
-                    navController.navigateToComposeExamination(subjectId, -1)
+                    navController.navigateToComposeExamination(subjectId, id)
                 } else {
-                    navController.navigateToComposeTopic(subjectId, -1)
+                    navController.navigateToComposeTopic(subjectId, id)
                 }
             }
 
@@ -152,7 +152,7 @@ class SeriesEditorAppState(
                 val subject =
                     navController.currentBackStackEntry?.arguments?.getLong(com.mshdabiola.composetopic.navigation.SUBJECT_ARG)
                         ?: -1
-                navController.navigateToComposeTopic(subject, -1)
+                navController.navigateToComposeTopic(subject, id)
             }
 
             else -> {}
