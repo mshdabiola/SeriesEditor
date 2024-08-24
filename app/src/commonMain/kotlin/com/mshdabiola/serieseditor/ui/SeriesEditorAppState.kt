@@ -4,7 +4,6 @@
 
 package com.mshdabiola.serieseditor.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -25,35 +24,13 @@ import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_ARG
 import com.mshdabiola.serieseditor.ui.examItemspanel.EXAM_ITEM_PANEL_ROUTE
 import com.mshdabiola.serieseditor.ui.subjectitemspanel.SUBJECT_ITEM_PANEL_ROUTE
-import com.mshdabiola.serieseditor.ui.subjectpanel.SUBJECT_PANEL_ROUTE
 import com.mshdabiola.subjects.navigation.SERIES_ID
 import com.mshdabiola.subjects.navigation.SUBJECT_ROUTE
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberExtend(
-    windowSizeClass: WindowSizeClass,
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    navController: NavHostController = rememberNavController(),
-): SeriesEditorAppState {
-    // NavigationTrackingSideEffect(navController)
-    return remember(
-        navController,
-        coroutineScope,
-        windowSizeClass,
-    ) {
-        Extended(
-            navController,
-            coroutineScope,
-            windowSizeClass,
-        )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun rememberOther(
+fun rememberAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
@@ -67,7 +44,7 @@ fun rememberOther(
         coroutineScope,
         windowSizeClass,
     ) {
-        Other(
+        SeriesEditorAppState(
             navController,
             coroutineScope,
             windowSizeClass,
@@ -77,76 +54,33 @@ fun rememberOther(
     }
 }
 
-sealed class SeriesEditorAppState(
-    open val navController: NavHostController,
-    open val coroutineScope: CoroutineScope,
-    open val windowSizeClass: WindowSizeClass,
-) {
-
-    abstract val currentDestination: NavDestination?
-        @Composable get
-
-    abstract val showMainTopBar: Boolean
-        @Composable get
-
-    abstract val topbarTitle: String
-        @Composable get
-
-    abstract val hideTopBar: Boolean
-        @Composable get
-}
-
-class Extended(
-    override val navController: NavHostController,
-    override val coroutineScope: CoroutineScope,
-    override val windowSizeClass: WindowSizeClass,
-
-) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
-
-    override val currentDestination: NavDestination?
-        @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination
-
-    override val showMainTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true ||
-            currentDestination?.route?.contains("setting") == true
-
-    override val topbarTitle: String
-        @Composable get() = when {
-            currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> "Subject"
-            currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
-            currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
-            else -> ""
-        }
-    override val hideTopBar: Boolean
-        @Composable get() = currentDestination?.route?.contains(LOGIN_ROUTE) == true
-}
-
-class Other(
-    override val navController: NavHostController,
-    override val coroutineScope: CoroutineScope,
-    override val windowSizeClass: WindowSizeClass,
+class SeriesEditorAppState(
+    val navController: NavHostController,
+    val coroutineScope: CoroutineScope,
+    val windowSizeClass: WindowSizeClass,
     val examPagerState: PagerState,
     val subjectPagerState: PagerState,
-) : SeriesEditorAppState(navController, coroutineScope, windowSizeClass) {
+) {
 
-    override val currentDestination: NavDestination?
+    val isSmallScreen: Boolean
+        @Composable get() = windowSizeClass.widthSizeClass != androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded
+    val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    override val showMainTopBar: Boolean
+    val showMainTopBar: Boolean
         @Composable get() = currentDestination?.route?.contains(MAIN_ROUTE) == true ||
             currentDestination?.route?.contains("setting") == true
 
-    override val topbarTitle: String
+    val topbarTitle: String
         @Composable get() = when {
             currentDestination?.route?.contains(SUBJECT_ROUTE) == true -> "Subject"
             currentDestination?.route?.contains(SUBJECT_ITEM_PANEL_ROUTE) == true -> "Subject Item"
             currentDestination?.route?.contains(EXAM_ITEM_PANEL_ROUTE) == true -> "Examination"
-            else -> ""
+            else -> "Compose"
         }
 
-    override val hideTopBar: Boolean
+    val hideTopBar: Boolean
         @Composable get() = currentDestination?.route?.contains(LOGIN_ROUTE) == true
 
     val isList

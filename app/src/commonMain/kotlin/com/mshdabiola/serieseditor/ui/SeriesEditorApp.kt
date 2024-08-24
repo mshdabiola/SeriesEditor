@@ -37,7 +37,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -63,7 +62,6 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.serieseditor.MainActivityUiState
 import com.mshdabiola.serieseditor.MainAppViewModel
-import com.mshdabiola.serieseditor.navigation.ExtendNavHost
 import com.mshdabiola.serieseditor.navigation.OtherNavHost
 import com.mshdabiola.serieslatex.LoadTex
 import com.mshdabiola.seriesmodel.User
@@ -73,20 +71,15 @@ import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.ui.state.SubjectUiState
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(
     ExperimentalMaterial3WindowSizeClassApi::class,
-    KoinExperimentalAPI::class,
 )
 @Composable
 fun SeriesEditorApp() {
     val windowSizeClass = calculateWindowSizeClass()
-    val appState =
-        when (windowSizeClass.widthSizeClass) {
-            WindowWidthSizeClass.Expanded -> rememberExtend(windowSizeClass)
-            else -> rememberOther(windowSizeClass)
-        }
+    val appState = rememberAppState(windowSizeClass)
+
     val shouldShowGradientBackground = false
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -119,7 +112,7 @@ fun SeriesEditorApp() {
                         contentWindowInsets = WindowInsets(0, 0, 0, 0),
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                         floatingActionButton = {
-                            if (appState is Other) {
+                            if (appState.isSmallScreen) {
                                 if (appState.isList) {
                                     ExtendedFloatingActionButton(
                                         modifier = Modifier.testTag("add").navigationBarsPadding(),
@@ -163,36 +156,18 @@ fun SeriesEditorApp() {
                                     ),
                                 ),
                         ) {
-                            when (appState) {
-                                is Extended -> {
-                                    ExtendNavHost(
-                                        appState = appState,
-                                        onShowSnackbar = { message, action ->
-                                            snackbarHostState.showSnackbar(
-                                                message = message,
-                                                actionLabel = action,
-                                                duration = SnackbarDuration.Short,
-                                            ) == SnackbarResult.ActionPerformed
-                                        },
-                                        userId = viewModel.mainState.value.userId,
-                                    )
-                                }
+                            OtherNavHost(
+                                appState = appState,
+                                onShowSnackbar = { message, action ->
+                                    snackbarHostState.showSnackbar(
+                                        message = message,
+                                        actionLabel = action,
+                                        duration = SnackbarDuration.Short,
+                                    ) == SnackbarResult.ActionPerformed
+                                },
+                                userId = viewModel.mainState.value.userId,
 
-                                is Other -> {
-                                    OtherNavHost(
-                                        appState = appState,
-                                        onShowSnackbar = { message, action ->
-                                            snackbarHostState.showSnackbar(
-                                                message = message,
-                                                actionLabel = action,
-                                                duration = SnackbarDuration.Short,
-                                            ) == SnackbarResult.ActionPerformed
-                                        },
-                                        userId = viewModel.mainState.value.userId,
-
-                                    )
-                                }
-                            }
+                            )
                         }
                     }
                 }
