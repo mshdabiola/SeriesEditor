@@ -73,7 +73,6 @@ import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.ui.state.SubjectUiState
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(
     ExperimentalMaterial3WindowSizeClassApi::class,
