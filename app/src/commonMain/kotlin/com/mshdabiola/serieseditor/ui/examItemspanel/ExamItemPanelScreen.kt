@@ -8,7 +8,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -42,6 +41,7 @@ fun ExamItemPaneScreen(
     val instructionNavHostController = rememberNavController()
     val ciNavHostController = rememberNavController()
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
+    val isSmallScreen = appState.isSmallScreen
 
     Column(modifier) {
         TabRow(
@@ -81,10 +81,20 @@ fun ExamItemPaneScreen(
                                 modifier = screenModifier,
                                 onShowSnack = onShowSnackbar,
                                 defaultExamId = examId,
-                                navigateToComposeQuestion = cmNavHostController::navigateToComposeQuestion,
+                                navigateToComposeQuestion =
+                                { id1, id2 ->
+                                    if (isSmallScreen) {
+                                        appState.navController.navigateToComposeQuestion(
+                                            id1,
+                                            id2,
+                                        )
+                                    } else {
+                                        cmNavHostController.navigateToComposeQuestion(id1, id2)
+                                    }
+                                },
                             )
                         }
-                        if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                        if (!isSmallScreen) {
                             NavHost(
                                 navController = cmNavHostController,
                                 startDestination = COMPOSE_QUESTION_ROUTE,
@@ -120,12 +130,26 @@ fun ExamItemPaneScreen(
                             instructionScreen(
                                 modifier = screenModifier,
                                 onShowSnack = onShowSnackbar,
-                                navigateToComposeInstruction = ciNavHostController::navigateToComposeInstruction,
+                                navigateToComposeInstruction =
+                                { id1, id2 ->
+                                    if (isSmallScreen) {
+                                        appState.navController.navigateToComposeInstruction(
+                                            id1,
+                                            id2,
+                                        )
+                                    } else {
+                                        ciNavHostController.navigateToComposeInstruction(
+                                            id1,
+                                            id2,
+                                        )
+                                    }
+                                },
+
                                 defaultExamId = examId,
 
                             )
                         }
-                        if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                        if (!isSmallScreen) {
                             NavHost(
                                 navController = ciNavHostController,
                                 startDestination = COMPOSE_INSTRUCTION_ROUTE,

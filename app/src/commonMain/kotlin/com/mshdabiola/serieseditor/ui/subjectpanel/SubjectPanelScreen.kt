@@ -26,6 +26,7 @@ fun SubjectPaneScreen(
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
     val subjectNavHostController = rememberNavController()
     val csNavHostController = rememberNavController()
+    val isSmallScreen = appState.isSmallScreen
 
     Row(modifier) {
         NavHost(
@@ -37,30 +38,40 @@ fun SubjectPaneScreen(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 navigateToExam = appState.navController::navigateToSubjectItemPanel,
-                updateSubject = csNavHostController::navigateToComposeSubject,
-                defaultSeriesId = seriesId,
-            )
-        }
-        if (appState.windowSizeClass.widthSizeClass == androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded) { NavHost(
-            navController = csNavHostController,
-            startDestination = FULL_CS_ROUTE,
-            modifier = Modifier.weight(0.4f),
-        ) {
-            composeSubjectScreen(
-                modifier = Modifier.padding(8.dp),
-                onShowSnack = onShowSnackbar,
-                onFinish = {
-                    csNavHostController.popBackStack()
-                    if (csNavHostController.currentDestination == null) {
-                        csNavHostController.navigateToComposeSubject(
-                            seriesId,
-                            -1,
+                updateSubject = { id1, id2 ->
+                    if (isSmallScreen) {
+                        appState.navController.navigateToComposeSubject(
+                            id1,
+                            id2,
                         )
+                    } else {
+                        csNavHostController.navigateToComposeSubject(id1, id2)
                     }
                 },
                 defaultSeriesId = seriesId,
             )
         }
+        if (!isSmallScreen) {
+            NavHost(
+                navController = csNavHostController,
+                startDestination = FULL_CS_ROUTE,
+                modifier = Modifier.weight(0.4f),
+            ) {
+                composeSubjectScreen(
+                    modifier = Modifier.padding(8.dp),
+                    onShowSnack = onShowSnackbar,
+                    onFinish = {
+                        csNavHostController.popBackStack()
+                        if (csNavHostController.currentDestination == null) {
+                            csNavHostController.navigateToComposeSubject(
+                                seriesId,
+                                -1,
+                            )
+                        }
+                    },
+                    defaultSeriesId = seriesId,
+                )
+            }
         }
     }
 }

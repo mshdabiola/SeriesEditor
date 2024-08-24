@@ -117,7 +117,7 @@ class SeriesEditorAppState(
                 else -> "Add"
             }
 
-    fun onNavigateToCompose(id: Long=-1) {
+    fun onNavigateToCompose(id: Long = -1) {
         when {
             navController.currentDestination?.route?.contains(SUBJECT_PANEL_ROUTE) == true -> {
                 val seriesId =
