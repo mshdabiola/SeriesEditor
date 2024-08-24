@@ -37,7 +37,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -76,8 +75,7 @@ import org.koin.compose.viewmodel.koinViewModel
     ExperimentalMaterial3WindowSizeClassApi::class,
 )
 @Composable
-fun SeriesEditorApp() {
-    val windowSizeClass = calculateWindowSizeClass()
+fun SeriesEditorApp(windowSizeClass: androidx.compose.material3.windowsizeclass.WindowSizeClass) {
     val appState = rememberAppState(windowSizeClass)
 
     val shouldShowGradientBackground = false

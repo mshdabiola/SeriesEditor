@@ -1,18 +1,20 @@
-package com.mshdabiola.skeletonapp
+package com.mshdabiola.serieseditor
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
-import com.mshdabiola.serieseditor.ui.Extended
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
+import com.mshdabiola.serieseditor.ui.rememberAppState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +25,7 @@ class SkAppState {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var state: Extended
+    private lateinit var state: SeriesEditorAppState
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Test
@@ -34,17 +36,12 @@ class SkAppState {
             val density = LocalDensity.current
             val navController = rememberTestNavController()
 
-            state = remember(navController) {
-                Extended(
-                    navController = navController,
-                    coroutineScope = backgroundScope,
-                    windowSizeClass = WindowSizeClass.calculateFromSize(
-                        size = Size(456f, 3f),
-                        density = density,
-                    ),
-
-                )
-            }
+            state = rememberAppState(
+                navController = navController,
+                windowSizeClass = WindowSizeClass.calculateFromSize(
+                    size = DpSize(456.dp, 456.dp),
+                ),
+            )
 
             // Update currentDestination whenever it changes
             currentDestination = state.currentDestination?.route
