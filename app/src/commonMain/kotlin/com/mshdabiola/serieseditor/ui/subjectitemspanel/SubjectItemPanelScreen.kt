@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -25,105 +22,20 @@ import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.composetopic.navigation.navigateToComposeTopic
 import com.mshdabiola.examinations.navigation.DEFAULT_ROUTE
 import com.mshdabiola.examinations.navigation.examScreen
-import com.mshdabiola.serieseditor.ui.Extended
-import com.mshdabiola.serieseditor.ui.Other
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 import com.mshdabiola.serieseditor.ui.examItemspanel.navigateToExamItemPanel
 import com.mshdabiola.topics.navigation.TOPIC_ROUTE
 import com.mshdabiola.topics.navigation.topicScreen
 import kotlinx.coroutines.launch
 
 @Composable
-fun SubjectItemPaneOtherScreen(
-    modifier: Modifier = Modifier,
-    appState: Other,
-    onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
-    subjectId: Long,
-) {
-    val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
-
-    val coroutineScope = rememberCoroutineScope()
-    val examNavHostController = rememberNavController()
-    val topicNavHostController = rememberNavController()
-
-    Column(modifier) {
-        TabRow(
-//                containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                contentColor = MaterialTheme.colorScheme.onSurface,
-            selectedTabIndex = appState.subjectPagerState.currentPage,
-//                modifier = Modifier.statusBarsPadding(),
-
-        ) {
-            Tab(
-                selected = appState.subjectPagerState.currentPage == 0,
-                onClick = {
-                    coroutineScope.launch {
-                        appState.subjectPagerState.animateScrollToPage(0)
-                    }
-                },
-                text = { Text("Examinations") },
-            )
-            Tab(
-                selected = appState.subjectPagerState.currentPage == 1,
-                onClick = {
-                    coroutineScope.launch {
-                        appState.subjectPagerState.animateScrollToPage(1)
-                    }
-                },
-                text = { Text("Topics") },
-            )
-        }
-
-        HorizontalPager(state = appState.subjectPagerState) {
-            when (it) {
-                0 -> {
-                    Column(Modifier.fillMaxSize()) {
-                        NavHost(
-                            modifier = modifier.weight(0.6f),
-                            startDestination = DEFAULT_ROUTE,
-                            navController = examNavHostController,
-                        ) {
-                            examScreen(
-                                modifier = screenModifier,
-                                onShowSnack = onShowSnackbar,
-                                navigateToQuestion = appState.navController::navigateToExamItemPanel,
-                                updateExam = appState.navController::navigateToComposeExamination,
-                                subjectId = subjectId,
-                            )
-                        }
-                    }
-                }
-
-                1 -> {
-                    Column(Modifier.fillMaxSize()) {
-                        NavHost(
-                            modifier = modifier.weight(0.6f),
-                            startDestination = TOPIC_ROUTE,
-                            navController = topicNavHostController,
-                        ) {
-                            topicScreen(
-                                modifier = screenModifier,
-                                onShowSnack = onShowSnackbar,
-                                subjectId = subjectId,
-                                navigateToComposeTopic = appState.navController::navigateToComposeTopic,
-                            )
-                        }
-                    }
-                }
-
-                else -> {}
-            }
-        }
-    }
-}
-
-@Composable
 fun SubjectItemPaneScreen(
     modifier: Modifier = Modifier,
-    appState: Extended,
+    appState: SeriesEditorAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     subjectId: Long,
 ) {
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val pagerState = appState.subjectPagerState
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier) {
@@ -167,6 +79,7 @@ fun SubjectItemPaneScreen(
                         modifier = modifier,
                         onShowSnackbar = onShowSnackbar,
                         subjectId = subjectId,
+                        appState = appState,
                     )
                 }
 
@@ -180,7 +93,7 @@ fun SubjectItemPaneScreen(
 fun ExamPanel(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    appState: Extended,
+    appState: SeriesEditorAppState,
     subjectId: Long,
 ) {
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
@@ -201,12 +114,12 @@ fun ExamPanel(
                 subjectId = subjectId,
             )
         }
-        Column(Modifier.weight(0.4f).verticalScroll(rememberScrollState())) {
+        if (appState.windowSizeClass.widthSizeClass == androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded) {
             if (subjectId > 0) {
                 NavHost(
                     navController = ceNavHostController,
                     startDestination = FULL_COMPOSE_EXAMINATION_ROUTE,
-                    modifier = Modifier,
+                    modifier = Modifier.weight(0.4f),
                 ) {
                     composeExaminationScreen(
                         modifier = Modifier.padding(8.dp),
@@ -233,6 +146,7 @@ fun TopicPanel(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     subjectId: Long,
+    appState: SeriesEditorAppState,
 ) {
     val topicNav = rememberNavController()
     val ctNav = rememberNavController()
@@ -251,29 +165,28 @@ fun TopicPanel(
                 navigateToComposeTopic = ctNav::navigateToComposeTopic,
             )
         }
-        Column(Modifier.weight(0.4f)) {
-            NavHost(
-                navController = ctNav,
-                startDestination = COMPOSE_TOPIC_ROUTE,
-                modifier = Modifier,
+        if (appState.windowSizeClass.widthSizeClass == androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded) { NavHost(
+            navController = ctNav,
+            startDestination = COMPOSE_TOPIC_ROUTE,
+            modifier = Modifier.weight(0.4f),
 
-            ) {
-                composeTopicScreen(
-                    modifier = screenModifier,
-                    onShowSnack = onShowSnackbar,
-                    onFinish = {
-                        ctNav.popBackStack()
-                        if (ctNav.currentDestination == null) {
-                            ctNav.navigateToComposeTopic(
-                                subjectId,
-                                -1,
-                            )
-                        }
-                    },
-                    subjectId = subjectId,
+        ) {
+            composeTopicScreen(
+                modifier = screenModifier,
+                onShowSnack = onShowSnackbar,
+                onFinish = {
+                    ctNav.popBackStack()
+                    if (ctNav.currentDestination == null) {
+                        ctNav.navigateToComposeTopic(
+                            subjectId,
+                            -1,
+                        )
+                    }
+                },
+                subjectId = subjectId,
 
-                )
-            }
+            )
+        }
         }
     }
 }

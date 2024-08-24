@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -27,100 +25,17 @@ import com.mshdabiola.instructions.navigation.INSTRUCTION_ROUTE
 import com.mshdabiola.instructions.navigation.instructionScreen
 import com.mshdabiola.questions.navigation.QUESTIONS_ROUTE
 import com.mshdabiola.questions.navigation.questionScreen
-import com.mshdabiola.serieseditor.ui.Other
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 import kotlinx.coroutines.launch
-
-@Composable
-fun ExamItemPaneOtherScreen(
-    modifier: Modifier = Modifier,
-    appState: Other,
-    onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
-    examId: Long,
-) {
-    val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
-
-    val coroutineScope = rememberCoroutineScope()
-    val questionNavHostController = rememberNavController()
-    val instructionNavHostController = rememberNavController()
-
-    Column(modifier) {
-        TabRow(
-//                containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                contentColor = MaterialTheme.colorScheme.onSurface,
-            selectedTabIndex = appState.examPagerState.currentPage,
-//                modifier = Modifier.statusBarsPadding(),
-
-        ) {
-            Tab(
-                selected = appState.examPagerState.currentPage == 0,
-                onClick = {
-                    coroutineScope.launch {
-                        appState.examPagerState.animateScrollToPage(0)
-                    }
-                },
-                text = { Text("Question") },
-            )
-            Tab(
-                selected = appState.examPagerState.currentPage == 1,
-                onClick = {
-                    coroutineScope.launch {
-                        appState.examPagerState.animateScrollToPage(1)
-                    }
-                },
-                text = { Text("Instruction") },
-            )
-        }
-
-        HorizontalPager(state = appState.examPagerState) {
-            when (it) {
-                0 -> {
-                    Column(Modifier.fillMaxSize()) {
-                        NavHost(
-                            modifier = modifier,
-                            startDestination = QUESTIONS_ROUTE,
-                            navController = questionNavHostController,
-                        ) {
-                            questionScreen(
-                                modifier = screenModifier,
-                                onShowSnack = onShowSnackbar,
-                                defaultExamId = examId,
-                                navigateToComposeQuestion = appState.navController::navigateToComposeQuestion,
-                            )
-                        }
-                    }
-                }
-
-                1 -> {
-                    Column(Modifier.fillMaxSize()) {
-                        NavHost(
-                            modifier = modifier,
-                            startDestination = INSTRUCTION_ROUTE,
-                            navController = instructionNavHostController,
-                        ) {
-                            instructionScreen(
-                                modifier = screenModifier,
-                                onShowSnack = onShowSnackbar,
-                                navigateToComposeInstruction = appState.navController::navigateToComposeInstruction,
-                                defaultExamId = examId,
-
-                            )
-                        }
-                    }
-                }
-
-                else -> {}
-            }
-        }
-    }
-}
 
 @Composable
 fun ExamItemPaneScreen(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     examId: Long,
+    appState: SeriesEditorAppState,
 ) {
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val pagerState = appState.examPagerState
     val coroutineScope = rememberCoroutineScope()
     val questionNavHostController = rememberNavController()
     val cmNavHostController = rememberNavController()
@@ -169,12 +84,11 @@ fun ExamItemPaneScreen(
                                 navigateToComposeQuestion = cmNavHostController::navigateToComposeQuestion,
                             )
                         }
-                        Column(Modifier.weight(0.4f)) {
+                        if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
                             NavHost(
                                 navController = cmNavHostController,
                                 startDestination = COMPOSE_QUESTION_ROUTE,
-                                modifier = Modifier,
-
+                                modifier = Modifier.weight(0.4f),
                             ) {
                                 composeQuestionScreen(
                                     modifier = screenModifier,
@@ -211,11 +125,11 @@ fun ExamItemPaneScreen(
 
                             )
                         }
-                        Column(Modifier.weight(0.4f)) {
+                        if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
                             NavHost(
                                 navController = ciNavHostController,
                                 startDestination = COMPOSE_INSTRUCTION_ROUTE,
-                                modifier = Modifier,
+                                modifier = Modifier.weight(0.4f),
                             ) {
                                 composeInstructionScreen(
                                     modifier = screenModifier,

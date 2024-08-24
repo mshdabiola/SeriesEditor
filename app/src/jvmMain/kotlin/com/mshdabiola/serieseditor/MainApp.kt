@@ -2,6 +2,8 @@ package com.mshdabiola.serieseditor
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,7 @@ import kotlinx.coroutines.delay
 import org.koin.core.context.GlobalContext.startKoin
 import java.io.File
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 fun mainApp() {
     application {
         val windowState = rememberWindowState(
@@ -49,7 +52,9 @@ fun mainApp() {
                 show.value = false
             }
             Box(Modifier.fillMaxSize()) {
-                SeriesEditorApp()
+                val windowSizeClass = calculateWindowSizeClass()
+
+                SeriesEditorApp(windowSizeClass)
                 if (show.value) {
                     SplashScreen()
                 }

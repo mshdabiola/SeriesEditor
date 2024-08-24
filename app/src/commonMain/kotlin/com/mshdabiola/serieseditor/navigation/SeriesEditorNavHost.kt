@@ -19,7 +19,6 @@ import com.mshdabiola.composeexam.navigation.composeExaminationScreen
 import com.mshdabiola.composeinstruction.navigation.composeInstructionScreen
 import com.mshdabiola.composequestion.navigation.composeQuestionScreen
 import com.mshdabiola.composesubject.navigation.composeSubjectScreen
-import com.mshdabiola.composesubject.navigation.navigateToComposeSubject
 import com.mshdabiola.composetopic.navigation.composeTopicScreen
 import com.mshdabiola.login.navigation.LOGIN_ROUTE
 import com.mshdabiola.login.navigation.loginScreen
@@ -27,22 +26,16 @@ import com.mshdabiola.login.navigation.navigateToLogin
 import com.mshdabiola.main.navigation.MAIN_ROUTE
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.main.navigation.navigateToMain
-import com.mshdabiola.serieseditor.ui.Extended
-import com.mshdabiola.serieseditor.ui.Other
-import com.mshdabiola.serieseditor.ui.examItemspanel.examItemOtherPanelScreen
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 import com.mshdabiola.serieseditor.ui.examItemspanel.examItemPanelScreen
-import com.mshdabiola.serieseditor.ui.subjectitemspanel.navigateToSubjectItemPanel
-import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelOtherScreen
 import com.mshdabiola.serieseditor.ui.subjectitemspanel.subjectItemPanelScreen
 import com.mshdabiola.serieseditor.ui.subjectpanel.navigateToSubjectPanel
 import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
-import com.mshdabiola.subjects.navigation.navigateToSubjects
-import com.mshdabiola.subjects.navigation.subjectScreen
 
 @Composable
 fun ExtendNavHost(
-    appState: Extended,
+    appState: SeriesEditorAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
     startDestination: String = MAIN_ROUTE,
@@ -92,6 +85,7 @@ fun ExtendNavHost(
         examItemPanelScreen(
             modifier = Modifier,
             onShowSnack = onShowSnackbar,
+            appState = appState,
         )
 
         settingScreen(
@@ -104,7 +98,7 @@ fun ExtendNavHost(
 
 @Composable
 fun OtherNavHost(
-    appState: Other,
+    appState: SeriesEditorAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,
     startDestination: String = MAIN_ROUTE,
@@ -146,18 +140,18 @@ fun OtherNavHost(
         mainScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
-            onNavigateToSubject = navController::navigateToSubjects,
-
+            onNavigateToSubject = navController::navigateToSubjectPanel,
         )
-
-        subjectScreen(
-            modifier = screenModifier,
+        subjectPanelScreen(
+            appState = appState,
             onShowSnack = onShowSnackbar,
-            navigateToExam = navController::navigateToSubjectItemPanel,
-            updateSubject = navController::navigateToComposeSubject,
         )
-
-        subjectItemPanelOtherScreen(
+        subjectItemPanelScreen(
+            onShowSnack = onShowSnackbar,
+            appState = appState,
+        )
+        examItemPanelScreen(
+            modifier = Modifier,
             onShowSnack = onShowSnackbar,
             appState = appState,
         )
@@ -173,11 +167,6 @@ fun OtherNavHost(
             onBack = navController::popBackStack,
         )
 
-        examItemOtherPanelScreen(
-            modifier = Modifier,
-            onShowSnack = onShowSnackbar,
-            appState = appState,
-        )
         composeQuestionScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,
