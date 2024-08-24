@@ -7,8 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mshdabiola.serieseditor.ui.Extended
-import com.mshdabiola.serieseditor.ui.Other
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 
 const val SUBJECT_ITEM_PANEL_ROUTE = "subject_item_panel_route"
 const val SUBJECT_ARG = "subject_arg"
@@ -22,7 +21,7 @@ fun NavController.navigateToSubjectItemPanel(
 
 fun NavGraphBuilder.subjectItemPanelScreen(
     modifier: Modifier = Modifier,
-    appState: Extended,
+    appState: SeriesEditorAppState,
     onShowSnack: suspend (String, String?) -> Boolean,
 ) {
     composable(
@@ -36,30 +35,6 @@ fun NavGraphBuilder.subjectItemPanelScreen(
     ) {
         val subjectId = it.arguments?.getLong(SUBJECT_ARG) ?: -1L
         SubjectItemPaneScreen(
-            modifier = modifier,
-            appState = appState,
-            onShowSnackbar = onShowSnack,
-            subjectId = subjectId,
-        )
-    }
-}
-
-fun NavGraphBuilder.subjectItemPanelOtherScreen(
-    modifier: Modifier = Modifier,
-    appState: Other,
-    onShowSnack: suspend (String, String?) -> Boolean,
-) {
-    composable(
-        route = DEFAULT_SUBJECT_ITEM_PANEL_ROUTE,
-        arguments = listOf(
-            navArgument(SUBJECT_ARG) {
-                type = NavType.LongType
-                defaultValue = -1
-            },
-        ),
-    ) {
-        val subjectId = it.arguments?.getLong(SUBJECT_ARG) ?: -1L
-        SubjectItemPaneOtherScreen(
             modifier = modifier,
             appState = appState,
             onShowSnackbar = onShowSnack,
