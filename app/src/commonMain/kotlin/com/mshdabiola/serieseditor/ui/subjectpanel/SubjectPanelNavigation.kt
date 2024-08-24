@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mshdabiola.serieseditor.ui.Extended
+import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 
 const val SUBJECT_PANEL_ROUTE = "subject_panel_route"
 const val SERIES_ID = "series_id"
@@ -21,7 +21,7 @@ fun NavController.navigateToSubjectPanel(
 
 fun NavGraphBuilder.subjectPanelScreen(
     modifier: Modifier = Modifier,
-    appState: Extended,
+    appState: SeriesEditorAppState,
     onShowSnack: suspend (String, String?) -> Boolean,
 ) {
     composable(
