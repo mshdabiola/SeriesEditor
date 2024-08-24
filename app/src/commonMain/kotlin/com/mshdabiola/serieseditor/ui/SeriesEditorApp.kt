@@ -114,7 +114,7 @@ fun SeriesEditorApp(windowSizeClass: androidx.compose.material3.windowsizeclass.
                                 if (appState.isList) {
                                     ExtendedFloatingActionButton(
                                         modifier = Modifier.testTag("add").navigationBarsPadding(),
-                                        onClick = appState::onAdd,
+                                        onClick = appState::onNavigateToCompose,
                                     ) {
                                         Icon(Icons.Outlined.Add, "add")
                                         Text(appState.fabText)

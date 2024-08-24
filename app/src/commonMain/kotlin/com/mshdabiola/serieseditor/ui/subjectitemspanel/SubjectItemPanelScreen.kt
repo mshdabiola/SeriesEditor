@@ -99,6 +99,7 @@ fun ExamPanel(
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
     val examNavHostController = rememberNavController()
     val ceNavHostController = rememberNavController()
+    val isSmallScreen = appState.isSmallScreen
 
     Row(modifier) {
         NavHost(
@@ -110,11 +111,21 @@ fun ExamPanel(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 navigateToQuestion = appState.navController::navigateToExamItemPanel,
-                updateExam = ceNavHostController::navigateToComposeExamination,
+                updateExam =
+                { id1, id2 ->
+                    if (isSmallScreen) {
+                        appState.navController.navigateToComposeExamination(
+                            id1,
+                            id2,
+                        )
+                    } else {
+                        ceNavHostController.navigateToComposeExamination(id1, id2)
+                    }
+                },
                 subjectId = subjectId,
             )
         }
-        if (appState.windowSizeClass.widthSizeClass == androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded) {
+        if (!isSmallScreen) {
             if (subjectId > 0) {
                 NavHost(
                     navController = ceNavHostController,
@@ -151,6 +162,7 @@ fun TopicPanel(
     val topicNav = rememberNavController()
     val ctNav = rememberNavController()
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
+    val isSmallScreen = appState.isSmallScreen
 
     Row(Modifier.fillMaxSize()) {
         NavHost(
@@ -162,31 +174,42 @@ fun TopicPanel(
                 modifier = screenModifier,
                 onShowSnack = onShowSnackbar,
                 subjectId = subjectId,
-                navigateToComposeTopic = ctNav::navigateToComposeTopic,
-            )
-        }
-        if (appState.windowSizeClass.widthSizeClass == androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded) { NavHost(
-            navController = ctNav,
-            startDestination = COMPOSE_TOPIC_ROUTE,
-            modifier = Modifier.weight(0.4f),
-
-        ) {
-            composeTopicScreen(
-                modifier = screenModifier,
-                onShowSnack = onShowSnackbar,
-                onFinish = {
-                    ctNav.popBackStack()
-                    if (ctNav.currentDestination == null) {
-                        ctNav.navigateToComposeTopic(
-                            subjectId,
-                            -1,
+                navigateToComposeTopic =
+                { id1, id2 ->
+                    if (isSmallScreen) {
+                        appState.navController.navigateToComposeTopic(
+                            id1,
+                            id2,
                         )
+                    } else {
+                        ctNav.navigateToComposeTopic(id1, id2)
                     }
                 },
-                subjectId = subjectId,
-
             )
         }
+        if (!isSmallScreen) {
+            NavHost(
+                navController = ctNav,
+                startDestination = COMPOSE_TOPIC_ROUTE,
+                modifier = Modifier.weight(0.4f),
+
+            ) {
+                composeTopicScreen(
+                    modifier = screenModifier,
+                    onShowSnack = onShowSnackbar,
+                    onFinish = {
+                        ctNav.popBackStack()
+                        if (ctNav.currentDestination == null) {
+                            ctNav.navigateToComposeTopic(
+                                subjectId,
+                                -1,
+                            )
+                        }
+                    },
+                    subjectId = subjectId,
+
+                )
+            }
         }
     }
 }
