@@ -6,6 +6,7 @@ package com.mshdabiola.serieseditor.navigation
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -109,6 +110,7 @@ fun OtherNavHost(
     val screenModifier = modifier
         .fillMaxSize()
         .padding(horizontal = 8.dp, vertical = 8.dp)
+        .imePadding() // padding for the bottom for the IME
         .windowInsetsPadding(WindowInsets.systemBars)
 
     LaunchedEffect(userId) {
