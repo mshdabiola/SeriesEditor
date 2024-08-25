@@ -35,69 +35,6 @@ import com.mshdabiola.serieseditor.ui.subjectpanel.subjectPanelScreen
 import com.mshdabiola.setting.navigation.settingScreen
 
 @Composable
-fun ExtendNavHost(
-    appState: SeriesEditorAppState,
-    onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
-    modifier: Modifier = Modifier,
-    startDestination: String = MAIN_ROUTE,
-    userId: Long = -1L,
-) {
-    val navController = appState.navController
-    val screenModifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
-    LaunchedEffect(userId) {
-        if (userId == -1L) {
-            appState.navController.navigateToLogin(
-                navOptions = navOptions {
-                    popUpTo(MAIN_ROUTE) {
-                        inclusive = true
-                    }
-                },
-            )
-        } else {
-            appState.navController.navigateToMain(
-                navOptions = navOptions {
-                    popUpTo(LOGIN_ROUTE) {
-                        inclusive = true
-                    }
-                },
-            )
-        }
-    }
-
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier,
-    ) {
-        loginScreen(screenModifier)
-        mainScreen(
-            modifier = screenModifier,
-            onShowSnack = onShowSnackbar,
-            onNavigateToSubject = navController::navigateToSubjectPanel,
-        )
-        subjectPanelScreen(
-            appState = appState,
-            onShowSnack = onShowSnackbar,
-        )
-        subjectItemPanelScreen(
-            onShowSnack = onShowSnackbar,
-            appState = appState,
-        )
-        examItemPanelScreen(
-            modifier = Modifier,
-            onShowSnack = onShowSnackbar,
-            appState = appState,
-        )
-
-        settingScreen(
-            modifier = Modifier,
-            onShowSnack = onShowSnackbar,
-            onBack = navController::popBackStack,
-        )
-    }
-}
-
-@Composable
 fun OtherNavHost(
     appState: SeriesEditorAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
@@ -122,14 +59,6 @@ fun OtherNavHost(
                     }
                 },
             )
-        } else {
-            appState.navController.navigateToMain(
-                navOptions = navOptions {
-                    popUpTo(LOGIN_ROUTE) {
-                        inclusive = true
-                    }
-                },
-            )
         }
     }
 
@@ -138,7 +67,19 @@ fun OtherNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        loginScreen(screenModifier)
+        loginScreen(
+            screenModifier,
+            navigateToMain = {
+                appState.navController.navigateToMain(
+                    navOptions = navOptions {
+                        popUpTo(LOGIN_ROUTE) {
+                            inclusive = true
+                        }
+                    },
+                )
+            },
+
+        )
         mainScreen(
             modifier = screenModifier,
             onShowSnack = onShowSnackbar,

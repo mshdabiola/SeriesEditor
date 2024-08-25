@@ -20,12 +20,14 @@ fun NavController.navigateToLogin(
 
 fun NavGraphBuilder.loginScreen(
     modifier: Modifier = Modifier,
+    navigateToMain: () -> Unit = {},
 ) {
     composable(
         route = LOGIN_ROUTE,
     ) {
         LoginRoute(
             modifier = modifier,
+            navigateToMain = navigateToMain,
         )
     }
 }
