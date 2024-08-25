@@ -11,7 +11,10 @@ import com.mshdabiola.data.repository.IUserRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.seriesmodel.User
 import com.mshdabiola.seriesmodel.UserType
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -21,6 +24,10 @@ class LoginViewModel(
 
     val username = TextFieldState("")
     val password = TextFieldState("")
+    val userId = userDataRepository
+        .userData
+        .map { it.userId }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, -1L)
 
     fun login() {
         viewModelScope.launch {

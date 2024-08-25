@@ -10,11 +10,13 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.designsystem.component.SeriesEditorButton
 import com.mshdabiola.designsystem.component.SeriesEditorTextField
 import org.koin.compose.viewmodel.koinViewModel
@@ -24,8 +26,16 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 internal fun LoginRoute(
     modifier: Modifier = Modifier,
+    navigateToMain: () -> Unit,
 ) {
     val viewModel: LoginViewModel = koinViewModel()
+    val userId = viewModel.userId.collectAsStateWithLifecycle()
+
+    LaunchedEffect(userId.value) {
+        if (userId.value > 0) {
+            navigateToMain()
+        }
+    }
 
     LoginScreen(
         modifier = modifier,
