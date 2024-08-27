@@ -8,7 +8,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -35,6 +34,7 @@ fun ExamItemPaneScreen(
     examId: Long,
     appState: SeriesEditorAppState,
 ) {
+    val isSmallScreen = appState.isSmallScreen
     val pagerState = appState.examPagerState
     val coroutineScope = rememberCoroutineScope()
     val questionNavHostController = rememberNavController()
@@ -94,7 +94,7 @@ fun ExamItemPaneScreen(
                                 },
                             )
                         }
-                        if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                        if (!isSmallScreen) {
                             NavHost(
                                 navController = cmNavHostController,
                                 startDestination = COMPOSE_QUESTION_ROUTE,
@@ -149,7 +149,7 @@ fun ExamItemPaneScreen(
 
                             )
                         }
-                        if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                        if (!isSmallScreen) {
                             NavHost(
                                 navController = ciNavHostController,
                                 startDestination = COMPOSE_INSTRUCTION_ROUTE,
