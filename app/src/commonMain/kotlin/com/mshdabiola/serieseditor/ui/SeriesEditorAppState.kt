@@ -38,7 +38,7 @@ fun rememberAppState(
     examPagerState: PagerState = rememberPagerState { 2 },
     subjectPagerState: PagerState = rememberPagerState { 2 },
 
-    ): SeriesEditorAppState {
+): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,

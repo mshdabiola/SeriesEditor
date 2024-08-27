@@ -74,7 +74,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun SeriesEditorApp() {
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
-     val appState = rememberAppState(windowAdaptiveInfo.windowSizeClass)
+    val appState = rememberAppState(windowAdaptiveInfo.windowSizeClass)
 
     val shouldShowGradientBackground = false
     val snackbarHostState = remember { SnackbarHostState() }
