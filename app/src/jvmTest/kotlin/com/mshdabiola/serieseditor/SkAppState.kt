@@ -1,18 +1,15 @@
 package com.mshdabiola.serieseditor
 
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
+import androidx.window.core.layout.WindowSizeClass
 import com.mshdabiola.serieseditor.ui.SeriesEditorAppState
 import com.mshdabiola.serieseditor.ui.rememberAppState
 import kotlinx.coroutines.test.runTest
@@ -27,7 +24,6 @@ class SkAppState {
 
     private lateinit var state: SeriesEditorAppState
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Test
     fun currentDestination() = runTest {
         var currentDestination: String? = null
@@ -38,9 +34,9 @@ class SkAppState {
 
             state = rememberAppState(
                 navController = navController,
-                windowSizeClass = WindowSizeClass.calculateFromSize(
-                    size = DpSize(456.dp, 456.dp),
-                ),
+                windowSizeClass =
+                WindowSizeClass.compute(456f, 456f),
+
             )
 
             // Update currentDestination whenever it changes
