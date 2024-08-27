@@ -6,7 +6,6 @@ package com.mshdabiola.serieseditor.ui
 
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -14,6 +13,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.window.core.layout.WindowSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.mshdabiola.composeexam.navigation.navigateToComposeExamination
 import com.mshdabiola.composeinstruction.navigation.navigateToComposeInstruction
 import com.mshdabiola.composequestion.navigation.navigateToComposeQuestion
@@ -37,7 +38,7 @@ fun rememberAppState(
     examPagerState: PagerState = rememberPagerState { 2 },
     subjectPagerState: PagerState = rememberPagerState { 2 },
 
-): SeriesEditorAppState {
+    ): SeriesEditorAppState {
     // NavigationTrackingSideEffect(navController)
     return remember(
         navController,
@@ -63,7 +64,7 @@ class SeriesEditorAppState(
 ) {
 
     val isSmallScreen: Boolean
-        @Composable get() = windowSizeClass.widthSizeClass != androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Expanded
+        @Composable get() = windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.EXPANDED
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination

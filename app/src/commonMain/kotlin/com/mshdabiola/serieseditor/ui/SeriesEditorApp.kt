@@ -36,7 +36,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -71,12 +71,10 @@ import com.mshdabiola.ui.state.SubjectUiState
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(
-    ExperimentalMaterial3WindowSizeClassApi::class,
-)
 @Composable
-fun SeriesEditorApp(windowSizeClass: androidx.compose.material3.windowsizeclass.WindowSizeClass) {
-    val appState = rememberAppState(windowSizeClass)
+fun SeriesEditorApp() {
+    val windowAdaptiveInfo = currentWindowAdaptiveInfo()
+     val appState = rememberAppState(windowAdaptiveInfo.windowSizeClass)
 
     val shouldShowGradientBackground = false
     val snackbarHostState = remember { SnackbarHostState() }
