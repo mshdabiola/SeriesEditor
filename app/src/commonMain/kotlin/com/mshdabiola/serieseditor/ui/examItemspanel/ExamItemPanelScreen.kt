@@ -34,6 +34,7 @@ fun ExamItemPaneScreen(
     examId: Long,
     appState: SeriesEditorAppState,
 ) {
+    val isSmallScreen = appState.isSmallScreen
     val pagerState = appState.examPagerState
     val coroutineScope = rememberCoroutineScope()
     val questionNavHostController = rememberNavController()
@@ -41,7 +42,6 @@ fun ExamItemPaneScreen(
     val instructionNavHostController = rememberNavController()
     val ciNavHostController = rememberNavController()
     val screenModifier = modifier.fillMaxSize().padding(8.dp)
-    val isSmallScreen = appState.isSmallScreen
 
     Column(modifier) {
         TabRow(
